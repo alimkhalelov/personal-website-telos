@@ -48,11 +48,15 @@ export async function POST(req: Request) {
       system: systemPrompt,
     });
 
+    if (typeof result.toUIMessageStreamResponse === 'function') {
+      return result.toUIMessageStreamResponse();
+    }
+    
     if (typeof result.toDataStreamResponse === 'function') {
       return result.toDataStreamResponse();
     }
     
-    // Fallback if toDataStreamResponse is not available
+    // Fallback if none are available
     return result.toTextStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
