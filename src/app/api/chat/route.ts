@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       ],
     });
 
-    return typeof result.toDataStreamResponse === 'function' ? result.toDataStreamResponse() : (result as any).toUIMessageStreamResponse();
+    return typeof (result as any).toDataStreamResponse === 'function' ? (result as any).toDataStreamResponse() : (result as any).toUIMessageStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
