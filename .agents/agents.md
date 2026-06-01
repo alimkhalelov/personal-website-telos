@@ -7,7 +7,8 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - **Framework**: Next.js (App Router)
 - **Styling**: Tailwind CSS v4, custom minimalist dark theme.
 - **CMS**: **Outstatic** (Git-backed CMS) will be integrated to fulfill the "any device, password+2FA" requirement (via GitHub auth).
-- **AI Drafting**: Custom `/admin/draft` feature using Vercel AI SDK. Built-in "Grill Me" and "Humanizer" flows.
+- **AI Drafting**: Custom `/admin/draft` feature using Vercel AI SDK **5** (`ai@6.x`, `@ai-sdk/react@3.x`). Built-in "Grill Me" and "Humanizer" flows.
+  - ⚠️ **CRITICAL**: `useChat` (SDK 5) uses `sendMessage({text})`, NOT `append({role, content})`. Server must return `toUIMessageStreamResponse()` (SSE + JSON). `toDataStreamResponse()` does NOT exist. Messages are `UIMessage` with `parts[]`, NOT `{content}`. Use `convertToModelMessages()` in route handlers.
 - **Typography**: Google Sans fallback (Outfit / Geist Mono).
 
 ## Catalog / Index
