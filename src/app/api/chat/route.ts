@@ -44,20 +44,25 @@ export async function POST(req: Request) {
           ]
         }
       },
-      messages: [
-        { role: "system", content: systemPrompt },
-        ...messages,
-      ],
+      messages,
+      system: systemPrompt,
     });
 
     // Manually construct the data-stream format to bypass all AI SDK version mismatch bugs
+    const encoder = new TextEncoder();
     const dataStream = result.textStream.pipeThrough(
       new TransformStream({
         transform(chunk, controller) {
-          controller.enqueue(`0:${JSON.stringify(chunk)}\n`);
+          controller.enqueue(encoder.encode(`0:${JSON.stringify(chunk)}\n`));
+        },
+        flush(controller) {
+          // end of stream
         }
       })
     );
+    
+    // Log to verify it's working
+    console.log("Stream successfully initiated");
     
     return new Response(dataStream, {
       headers: {

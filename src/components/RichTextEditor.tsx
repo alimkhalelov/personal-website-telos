@@ -58,6 +58,15 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     },
   });
 
+  React.useEffect(() => {
+    if (editor && content !== undefined) {
+      const currentContent = (editor.storage as any).markdown.getMarkdown();
+      if (currentContent !== content) {
+        editor.commands.setContent(content);
+      }
+    }
+  }, [editor, content]);
+
   useImperativeHandle(ref, () => ({
     applySuggestion: (commentId: string, newText: string) => {
       if (!editor) return;
