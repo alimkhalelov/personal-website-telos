@@ -135,7 +135,9 @@ export default function RichTextEditor({ content, onChange, onAskAI }: RichTextE
                 onClick={() => {
                   const selection = editor.state.selection;
                   const text = editor.state.doc.textBetween(selection.from, selection.to, ' ');
-                  if (text) onAskAI(text);
+                  if (text && typeof onAskAI === 'function') {
+                    onAskAI(text);
+                  }
                 }}
                 className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-accent hover:text-accent-hover flex items-center gap-1.5"
                 title="Ask AI (Grill Mode)"
