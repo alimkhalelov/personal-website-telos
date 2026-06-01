@@ -4,16 +4,16 @@
 import { useChat } from "@ai-sdk/react";
 import { Send, Bot, User, FileText, ArrowLeft, Copy, Check, Save } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { useCompletion } from "@ai-sdk/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function DraftingRoom() {
+function DraftingRoomContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const existingSlug = searchParams.get("slug");
   
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat();
   const { completion, complete, isLoading: isHumanizing } = useCompletion({
     api: "/api/humanize",
   });
@@ -225,5 +225,13 @@ ${finalContent}`;
         </form>
       </div>
     </main>
+  );
+}
+
+export default function DraftingRoom() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Загрузка...</div>}>
+      <DraftingRoomContent />
+    </Suspense>
   );
 }
