@@ -12,12 +12,6 @@ export default function AdminDashboard() {
             <h1 className="text-4xl font-bold tracking-tighter uppercase font-mono">Demiurge.OS</h1>
             <p className="text-muted-foreground text-sm tracking-widest uppercase">Content Management & Orchestration</p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono tracking-widest uppercase flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              Secure Local
-            </div>
-          </div>
         </header>
 
         <DashboardClient initialArticles={articles} />

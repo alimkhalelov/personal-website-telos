@@ -2,12 +2,14 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { Send, Bot, User, FileText, ArrowLeft, Copy, Check } from "lucide-react";
+import { Send, Bot, User, FileText, ArrowLeft, Copy, Check, Save } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCompletion } from "@ai-sdk/react";
+import { useRouter } from "next/navigation";
 
 export default function DraftingRoom() {
+  const router = useRouter();
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
   const { completion, complete, isLoading: isHumanizing } = useCompletion({
     api: "/api/humanize",
@@ -15,6 +17,10 @@ export default function DraftingRoom() {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
+  const [slug, setSlug] = useState("");
+  const [editableContent, setEditableContent] = useState("");
+  const [userEdited, setUserEdited] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const isReady = messages.some(m => m.content.includes(">>>READY_TO_HUMANIZE<<<"));
 
@@ -22,22 +28,63 @@ export default function DraftingRoom() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, completion]);
 
+  useEffect(() => {
+    if (!userEdited) {
+      setEditableContent(completion);
+    }
+  }, [completion, userEdited]);
+
   const handleHumanize = () => {
     complete("", { body: { messages } });
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(completion);
+    navigator.clipboard.writeText(editableContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSave = async () => {
+    if (!slug) return alert("Пожалуйста, введите URL (slug) для поста.");
+    if (!editableContent) return alert("Контент пуст.");
+    setIsSaving(true);
+    
+    let finalContent = editableContent;
+    if (!finalContent.startsWith("---")) {
+      finalContent = `---
+title: '${slug.replace(/-/g, " ")}'
+date: '${new Date().toISOString()}'
+description: 'Новый пост от Demiurge'
+---
+
+${finalContent}`;
+    }
+
+    try {
+      const res = await fetch("/api/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug, content: finalContent }),
+      });
+      if (res.ok) {
+        router.push("/admin");
+      } else {
+        const err = await res.json();
+        alert("Ошибка при сохранении: " + err.error);
+      }
+    } catch(e) {
+      alert("Ошибка при сохранении");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-8 sm:py-12 flex flex-col h-[100dvh]">
       <header className="flex items-center justify-between mb-8 shrink-0">
-        <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors">
+        <Link href="/admin" className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm font-medium">На главную</span>
+          <span className="text-sm font-medium">В дашборд</span>
         </Link>
         <div className="px-3 py-1 bg-card border border-border rounded-full text-xs font-mono text-muted">
           Drafting Room (Grill Mode)
@@ -70,21 +117,39 @@ export default function DraftingRoom() {
           ))
         )}
         
-        {/* Final Draft Display */}
+        {/* Final Draft Display / Editor */}
         {completion && (
-          <div className="mt-8 border border-accent/30 rounded-2xl bg-accent/5 overflow-hidden">
-            <div className="bg-accent/10 px-4 py-3 border-b border-accent/20 flex justify-between items-center">
+          <div className="mt-8 border border-accent/30 rounded-2xl bg-accent/5 overflow-hidden flex flex-col">
+            <div className="bg-accent/10 px-4 py-3 border-b border-accent/20 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
               <h3 className="font-medium text-accent flex items-center gap-2">
                 <FileText className="w-4 h-4" />
-                Финальный Чистовик (RU & EN)
+                Финальный Чистовик
               </h3>
-              <button onClick={copyToClipboard} className="text-accent hover:bg-accent/20 p-2 rounded-md transition-colors flex items-center gap-2 text-sm">
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Скопировано" : "Копировать MDX"}
-              </button>
+              
+              <div className="flex items-center gap-2">
+                <input 
+                  type="text" 
+                  placeholder="URL поста (slug)" 
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  className="bg-background border border-border rounded px-3 py-1 text-sm focus:outline-none focus:border-accent w-40"
+                />
+                <button onClick={handleSave} disabled={isSaving} className="bg-accent hover:bg-accent/90 text-white px-3 py-1 rounded text-sm font-medium transition-colors flex items-center gap-1">
+                  <Save className="w-4 h-4" />
+                  {isSaving ? "Saving..." : "Publish"}
+                </button>
+              </div>
             </div>
-            <div className="p-6 prose prose-invert max-w-none">
-              <p className="whitespace-pre-wrap font-sans text-sm">{completion}</p>
+            <div className="p-0 flex-1 flex flex-col min-h-[300px]">
+              <textarea
+                value={editableContent}
+                onChange={(e) => {
+                  setUserEdited(true);
+                  setEditableContent(e.target.value);
+                }}
+                className="w-full h-full min-h-[300px] bg-transparent border-none focus:ring-0 resize-y p-6 font-sans text-sm leading-relaxed placeholder:text-muted/50"
+                placeholder="Редактируй текст здесь..."
+              />
             </div>
           </div>
         )}

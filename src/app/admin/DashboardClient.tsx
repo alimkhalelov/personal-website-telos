@@ -38,7 +38,7 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
         <div className="flex gap-4">
           <Link
             href="/admin/draft"
-            className="group relative overflow-hidden rounded-md bg-accent px-6 py-2.5 text-sm font-medium text-accent-foreground transition-all hover:bg-accent/90"
+            className="group relative overflow-hidden rounded-md bg-accent px-6 py-2.5 text-sm font-medium text-white transition-all hover:bg-accent/90"
           >
             <span className="relative z-10 flex items-center gap-2">
               <Plus className="w-4 h-4" /> New Log
