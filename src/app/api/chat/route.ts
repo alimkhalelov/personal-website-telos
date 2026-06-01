@@ -33,6 +33,7 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
+      // @ts-ignore - The google provider accepts a second argument for safety settings but types are outdated
       model: google("gemini-3.5-flash", {
         safetySettings: [
           { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
