@@ -43,6 +43,25 @@ function DraftingRoomContent() {
     }
   }, [existingSlug]);
 
+  // Load threads from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("telos_draft_threads");
+      if (saved) {
+        try {
+          setThreads(JSON.parse(saved));
+        } catch(e) {}
+      }
+    }
+  }, []);
+
+  // Save threads to localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("telos_draft_threads", JSON.stringify(threads));
+    }
+  }, [threads]);
+
   const handleSave = async () => {
     if (!slug) return alert("Пожалуйста, введите URL (slug) для поста.");
     if (!editableContent) return alert("Контент пуст.");

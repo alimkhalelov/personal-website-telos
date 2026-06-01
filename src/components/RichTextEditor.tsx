@@ -60,11 +60,12 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
       });
       
       if (from !== -1 && to !== -1) {
+        const textToInsert = newText || "";
         editor.chain()
           .setTextSelection({ from, to })
           .setSuggestion(commentId, 'deletion')
-          .insertContentAt(to, newText)
-          .setTextSelection({ from: to, to: to + newText.length })
+          .insertContentAt(to, textToInsert)
+          .setTextSelection({ from: to, to: to + textToInsert.length })
           .setSuggestion(commentId, 'addition')
           .setComment(commentId)
           .run();
