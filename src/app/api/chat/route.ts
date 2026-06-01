@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
-      model: google("gemini-3.5-flash"),
+      model: google("gemini-3.1-flash"),
       providerOptions: {
         google: {
           safetySettings: [
