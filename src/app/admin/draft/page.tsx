@@ -6,10 +6,13 @@ import { Send, Bot, User, FileText, ArrowLeft, Copy, Check, Save } from "lucide-
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCompletion } from "@ai-sdk/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function DraftingRoom() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const existingSlug = searchParams.get("slug");
+  
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
   const { completion, complete, isLoading: isHumanizing } = useCompletion({
     api: "/api/humanize",
@@ -21,6 +24,23 @@ export default function DraftingRoom() {
   const [editableContent, setEditableContent] = useState("");
   const [userEdited, setUserEdited] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    if (existingSlug) {
+      setSlug(existingSlug);
+      setIsEditMode(true);
+      fetch(`/api/cms?slug=${existingSlug}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.content) {
+            setEditableContent(data.content);
+            setUserEdited(true); // Treat as manually edited so completion doesn't override
+          }
+        })
+        .catch(console.error);
+    }
+  }, [existingSlug]);
 
   const isReady = messages.some(m => m.content.includes(">>>READY_TO_HUMANIZE<<<"));
 
@@ -118,12 +138,12 @@ ${finalContent}`;
         )}
         
         {/* Final Draft Display / Editor */}
-        {completion && (
+        {(completion || isEditMode) && (
           <div className="mt-8 border border-accent/30 rounded-2xl bg-accent/5 overflow-hidden flex flex-col">
             <div className="bg-accent/10 px-4 py-3 border-b border-accent/20 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
               <h3 className="font-medium text-accent flex items-center gap-2">
                 <FileText className="w-4 h-4" />
-                Финальный Чистовик
+                {isEditMode ? "Редактирование поста" : "Финальный Чистовик"}
               </h3>
               
               <div className="flex items-center gap-2">
@@ -180,21 +200,28 @@ ${finalContent}`;
           </button>
         )}
         
-        <form onSubmit={handleSubmit} className="flex relative group">
-          <input
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Твой черновик..."
-            className="w-full bg-card border border-border rounded-xl px-4 py-4 pr-12 text-sm sm:text-base focus:outline-none focus:border-muted transition-all text-foreground placeholder:text-muted/50"
-            disabled={isLoading || isHumanizing}
-          />
-          <button 
-            type="submit" 
-            disabled={isLoading || isHumanizing || !(input || '').trim()}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed group-focus-within:shadow-md"
-          >
-            <Send className="w-4 h-4" />
-          </button>
+        <form onSubmit={handleSubmit} className="flex flex-col relative group gap-2">
+          {error && (
+            <div className="text-red-500 text-xs px-2 mb-1">
+              Ошибка: {error.message}. Проверьте консоль браузера или добавьте API ключ.
+            </div>
+          )}
+          <div className="relative flex w-full">
+            <input
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Твой черновик..."
+              className="w-full bg-card border border-border rounded-xl px-4 py-4 pr-12 text-sm sm:text-base focus:outline-none focus:border-muted transition-all text-foreground placeholder:text-muted/50"
+              disabled={isLoading || isHumanizing}
+            />
+            <button 
+              type="submit" 
+              disabled={isLoading || isHumanizing || !(input || '').trim()}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed group-focus-within:shadow-md"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
         </form>
       </div>
     </main>

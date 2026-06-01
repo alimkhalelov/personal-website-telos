@@ -22,6 +22,50 @@ async function getGithubFileSha(filePath: string) {
   return null;
 }
 
+export async function GET(req: NextRequest) {
+  try {
+    const slug = req.nextUrl.searchParams.get("slug");
+    if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
+
+    if (IS_PROD) {
+      if (!GITHUB_TOKEN) return NextResponse.json({ error: "GITHUB_TOKEN not set in Vercel" }, { status: 500 });
+
+      const filePath = `src/content/posts/${slug}.mdx`;
+      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`;
+      
+      const res = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          Accept: "application/vnd.github.v3+json",
+        },
+      });
+
+      if (!res.ok) {
+        return NextResponse.json({ error: "File not found on GitHub" }, { status: 404 });
+      }
+
+      const data = await res.json();
+      const content = Buffer.from(data.content, 'base64').toString('utf8');
+      return NextResponse.json({ content });
+    } else {
+      const fullPathMDX = path.join(process.cwd(), `src/content/posts/${slug}.mdx`);
+      const fullPathMD = path.join(process.cwd(), `src/content/posts/${slug}.md`);
+
+      if (fs.existsSync(fullPathMDX)) {
+        const content = fs.readFileSync(fullPathMDX, "utf8");
+        return NextResponse.json({ content });
+      } else if (fs.existsSync(fullPathMD)) {
+        const content = fs.readFileSync(fullPathMD, "utf8");
+        return NextResponse.json({ content });
+      } else {
+        return NextResponse.json({ error: "File not found" }, { status: 404 });
+      }
+    }
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { slug, content } = await req.json();
