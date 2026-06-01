@@ -183,7 +183,7 @@ ${finalContent}`;
             </div>
 
             {/* COMMENTS MARGIN (Google Docs style) */}
-            <div className="w-80 shrink-0 hidden lg:flex flex-col gap-4">
+            <div className="w-80 shrink-0 hidden md:flex flex-col gap-4">
               {threads.map(thread => (
                 <ThreadCard
                   key={thread.id}
