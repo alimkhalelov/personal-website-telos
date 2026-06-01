@@ -29,6 +29,8 @@ function DraftingRoomContent() {
   
   const editorRef = useRef<RichTextEditorRef>(null);
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     if (existingSlug) {
       setSlug(existingSlug);
@@ -38,6 +40,7 @@ function DraftingRoomContent() {
           if (data.content) {
             setEditableContent(data.content);
           }
+          setIsLoaded(true);
         })
         .catch(console.error);
     }
@@ -46,36 +49,35 @@ function DraftingRoomContent() {
   // Load draft state from localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedThreads = localStorage.getItem("telos_draft_threads");
-      if (savedThreads) {
-        try {
-          setThreads(JSON.parse(savedThreads));
-        } catch(e) {}
-      }
-
-      // Only load content from localStorage if we're not editing an existing CMS post
       if (!existingSlug) {
+        const savedThreads = localStorage.getItem("telos_draft_threads");
+        if (savedThreads) {
+          try {
+            setThreads(JSON.parse(savedThreads));
+          } catch(e) {}
+        }
         const savedContent = localStorage.getItem("telos_draft_content");
         if (savedContent) setEditableContent(savedContent);
 
         const savedSlug = localStorage.getItem("telos_draft_slug");
         if (savedSlug) setSlug(savedSlug);
+        
+        setIsLoaded(true);
       }
     }
   }, [existingSlug]);
 
   // Save state to localStorage
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && isLoaded) {
       localStorage.setItem("telos_draft_threads", JSON.stringify(threads));
       
-      // Only save to draft storage if not editing an existing slug, or if we want to preserve edits anyway
       if (!existingSlug) {
         localStorage.setItem("telos_draft_content", editableContent);
         localStorage.setItem("telos_draft_slug", slug);
       }
     }
-  }, [threads, editableContent, slug, existingSlug]);
+  }, [threads, editableContent, slug, existingSlug, isLoaded]);
 
   const handleSave = async () => {
     if (!slug) return alert("Пожалуйста, введите URL (slug) для поста.");
