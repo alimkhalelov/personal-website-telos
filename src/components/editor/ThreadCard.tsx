@@ -32,9 +32,9 @@ export function ThreadCard({ id, selectedText, isActive, onClick, onDelete, onAp
   
   const chatContext = useChat({
     id,
-    api: '/api/chat', // We can adjust this or pass it
+    api: '/api/chat',
     body: { skill }
-  }) as any;
+  } as any) as any;
   
   const messages = chatContext.messages || [];
   const append = chatContext.append || chatContext.sendMessage;
