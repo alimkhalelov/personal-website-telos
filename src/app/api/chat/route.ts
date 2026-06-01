@@ -33,22 +33,24 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
-      // @ts-ignore - The google provider accepts a second argument for safety settings but types are outdated
-      model: google("gemini-3.5-flash", {
-        safetySettings: [
-          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-          { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-        ]
-      }), // using latest gemini 3.5 flash free tier with safety disabled
+      model: google("gemini-3.5-flash"),
+      providerOptions: {
+        google: {
+          safetySettings: [
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+          ]
+        }
+      },
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,
       ],
     });
 
-    return result.toTextStreamResponse();
+    return typeof result.toDataStreamResponse === 'function' ? result.toDataStreamResponse() : (result as any).toUIMessageStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
