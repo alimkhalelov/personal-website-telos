@@ -13,7 +13,7 @@ function DraftingRoomContent() {
   const searchParams = useSearchParams();
   const existingSlug = searchParams.get("slug");
   
-  const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat();
+  const { messages, input, setInput, append, isLoading, error } = useChat();
   const { completion, complete, isLoading: isHumanizing } = useCompletion({
     api: "/api/humanize",
   });
@@ -25,6 +25,26 @@ function DraftingRoomContent() {
   const [userEdited, setUserEdited] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [customError, setCustomError] = useState("");
+
+  const handleManualSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCustomError("");
+    if (!input.trim() || isLoading || isHumanizing) return;
+    
+    const userText = input;
+    setInput(""); 
+    
+    try {
+      await append({
+        role: "user",
+        content: userText
+      });
+    } catch (err: any) {
+      setCustomError(err.message || "Ошибка отправки");
+      setInput(userText);
+    }
+  };
 
   useEffect(() => {
     if (existingSlug) {
@@ -200,23 +220,23 @@ ${finalContent}`;
           </button>
         )}
         
-        <form onSubmit={handleSubmit} className="flex flex-col relative group gap-2">
-          {error && (
+        <form onSubmit={handleManualSubmit} className="flex flex-col relative group gap-2">
+          {(error || customError) && (
             <div className="text-red-500 text-xs px-2 mb-1">
-              Ошибка: {error.message}. Проверьте консоль браузера или добавьте API ключ.
+              Ошибка: {error?.message || customError}. Проверьте консоль браузера или добавьте API ключ.
             </div>
           )}
           <div className="relative flex w-full">
             <input
               value={input}
-              onChange={handleInputChange}
+              onChange={(e) => setInput(e.target.value)}
               placeholder="Твой черновик..."
               className="w-full bg-card border border-border rounded-xl px-4 py-4 pr-12 text-sm sm:text-base focus:outline-none focus:border-muted transition-all text-foreground placeholder:text-muted/50"
               disabled={isLoading || isHumanizing}
             />
             <button 
               type="submit" 
-              disabled={isLoading || isHumanizing || !(input || '').trim()}
+              disabled={isLoading || isHumanizing || !input.trim()}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed group-focus-within:shadow-md"
             >
               <Send className="w-4 h-4" />
