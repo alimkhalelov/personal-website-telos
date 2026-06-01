@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-const contentDirectory = path.join(process.cwd(), "outstatic/content/posts");
+const contentDirectory = path.join(process.cwd(), "src/content/posts");
 
 export type ArticleMeta = {
   slug: string;

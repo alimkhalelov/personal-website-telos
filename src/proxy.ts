@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
-  if (!pathname.startsWith('/admin') && !pathname.startsWith('/outstatic')) {
+  if (!pathname.startsWith('/admin')) {
     return NextResponse.next()
   }
 
