@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
-      model: google("gemini-3.0-flash"), // using gemini 3.0 as requested in global rules
+      model: google("gemini-3.5-flash"), // using latest gemini 3.5 flash free tier
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,
