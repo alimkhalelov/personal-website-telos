@@ -21,7 +21,7 @@ interface RichTextEditorProps {
   activeThreadId?: string | null;
 }
 
-const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ content, onChange, onAskAI, activeThreadId }, ref) => {
+const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ content, onChange, onAskAI, onActiveThreadChange, activeThreadId }, ref) => {
   const extensions = React.useMemo(() => [
     StarterKit,
     Markdown.configure({
