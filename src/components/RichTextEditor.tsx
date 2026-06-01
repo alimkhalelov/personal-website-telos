@@ -32,7 +32,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
     },
     onUpdate: ({ editor }) => {
       // Get the markdown output using the extension
-      const markdown = editor.storage.markdown.getMarkdown();
+      const markdown = (editor.storage as any).markdown.getMarkdown();
       onChange(markdown);
     },
   });
