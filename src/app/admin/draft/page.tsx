@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useCompletion } from "@ai-sdk/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import RichTextEditor from "@/components/RichTextEditor";
 
 function DraftingRoomContent() {
   const router = useRouter();
@@ -180,15 +181,13 @@ ${finalContent}`;
                 </button>
               </div>
             </div>
-            <div className="p-0 flex-1 flex flex-col min-h-[300px]">
-              <textarea
-                value={editableContent}
-                onChange={(e) => {
+            <div className="p-0 flex-1 flex flex-col min-h-[300px] overflow-hidden">
+              <RichTextEditor 
+                content={userEdited ? editableContent : (completion || "")}
+                onChange={(md) => {
                   setUserEdited(true);
-                  setEditableContent(e.target.value);
+                  setEditableContent(md);
                 }}
-                className="w-full h-full min-h-[300px] bg-transparent border-none focus:ring-0 resize-y p-6 font-sans text-sm leading-relaxed placeholder:text-muted/50"
-                placeholder="Редактируй текст здесь..."
               />
             </div>
           </div>
