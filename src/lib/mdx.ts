@@ -8,6 +8,7 @@ export type ArticleMeta = {
   slug: string;
   title: string;
   date: string;
+  description?: string;
 };
 
 export function getSortedArticles(): ArticleMeta[] {
