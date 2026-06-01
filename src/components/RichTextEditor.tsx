@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
@@ -14,17 +15,19 @@ interface RichTextEditorProps {
 }
 
 export default function RichTextEditor({ content, onChange, onAskAI }: RichTextEditorProps) {
+  const extensions = React.useMemo(() => [
+    StarterKit,
+    Markdown,
+    Link.configure({
+      openOnClick: false,
+      HTMLAttributes: {
+        class: 'text-accent underline underline-offset-4 cursor-pointer',
+      },
+    }),
+  ], []);
+
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Markdown,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: 'text-accent underline underline-offset-4 cursor-pointer',
-        },
-      }),
-    ],
+    extensions,
     content,
     editorProps: {
       attributes: {
