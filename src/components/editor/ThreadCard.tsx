@@ -34,7 +34,6 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
   const chatContext = useChat({
     id,
     api: '/api/chat',
-    streamProtocol: 'text',
     body: { skill }
   } as any) as any;
   
