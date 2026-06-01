@@ -48,22 +48,12 @@ export async function POST(req: Request) {
       system: systemPrompt,
     });
 
-    // Manually construct the data-stream format to bypass all AI SDK version mismatch bugs
-    const encoder = new TextEncoder();
-    const dataStream = result.textStream.pipeThrough(
-      new TransformStream({
-        transform(chunk, controller) {
-          controller.enqueue(encoder.encode(`0:${JSON.stringify(chunk)}\n`));
-        }
-      })
-    );
+    if (typeof result.toDataStreamResponse === 'function') {
+      return result.toDataStreamResponse();
+    }
     
-    return new Response(dataStream, {
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'X-Vercel-AI-Data-Stream': 'v1',
-      }
-    });
+    // Fallback if toDataStreamResponse is not available
+    return result.toTextStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
