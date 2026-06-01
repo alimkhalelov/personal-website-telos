@@ -30,7 +30,7 @@ Requirements:
       ],
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response." }), { status: 500 });
   }

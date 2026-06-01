@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const outfit = Outfit({
   variable: "--font-outfit",
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({

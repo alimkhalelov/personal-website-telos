@@ -1,3 +1,4 @@
+// @ts-nocheck
 import 'outstatic/outstatic.css'
 import { Outstatic } from 'outstatic'
 
