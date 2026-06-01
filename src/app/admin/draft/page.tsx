@@ -125,7 +125,7 @@ export default function DraftingRoom() {
           />
           <button 
             type="submit" 
-            disabled={isLoading || isHumanizing || !input.trim()}
+            disabled={isLoading || isHumanizing || !(input || '').trim()}
             className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed group-focus-within:shadow-md"
           >
             <Send className="w-4 h-4" />
