@@ -5,7 +5,6 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
-import Link from '@tiptap/extension-link';
 import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles } from 'lucide-react';
 
 interface RichTextEditorProps {
@@ -17,12 +16,8 @@ interface RichTextEditorProps {
 export default function RichTextEditor({ content, onChange, onAskAI }: RichTextEditorProps) {
   const extensions = React.useMemo(() => [
     StarterKit,
-    Markdown,
-    Link.configure({
-      openOnClick: false,
-      HTMLAttributes: {
-        class: 'text-accent underline underline-offset-4 cursor-pointer',
-      },
+    Markdown.configure({
+      linkify: true,
     }),
   ], []);
 

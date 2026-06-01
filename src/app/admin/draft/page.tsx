@@ -14,7 +14,12 @@ function DraftingRoomContent() {
   const searchParams = useSearchParams();
   const existingSlug = searchParams.get("slug");
   
-  const { messages, append, isLoading, error } = useChat();
+  const chatContext = useChat() as any;
+  const messages = chatContext.messages || [];
+  const append = chatContext.append || chatContext.sendMessage;
+  const isLoading = chatContext.isLoading || false;
+  const error = chatContext.error;
+  
   const [chatInput, setChatInput] = useState("");
   const { completion, complete, isLoading: isHumanizing } = useCompletion({
     api: "/api/humanize",
@@ -33,18 +38,22 @@ function DraftingRoomContent() {
     if (!(chatInput || "").trim() || isLoading || isHumanizing) return;
     
     const userText = chatInput;
-    setChatInput(""); 
+    if (typeof setChatInput === 'function') setChatInput(""); 
     
     try {
-      await append({
-        role: "user",
-        content: userText
-      });
-      // Automatically open sidebar if closed and user submits
-      if (!isSidebarOpen) setIsSidebarOpen(true);
+      if (typeof append === 'function') {
+        await append({
+          role: "user",
+          content: userText
+        });
+      } else {
+        throw new Error("Функция отправки (append/sendMessage) недоступна в useChat");
+      }
+      
+      if (!isSidebarOpen && typeof setIsSidebarOpen === 'function') setIsSidebarOpen(true);
     } catch (err: any) {
       setCustomError(err.message || "Ошибка отправки");
-      setChatInput(userText);
+      if (typeof setChatInput === 'function') setChatInput(userText);
     }
   };
 
@@ -167,8 +176,16 @@ ${finalContent}`;
               content={editableContent}
               onChange={(md) => setEditableContent(md)}
               onAskAI={(text) => {
-                setChatInput(`Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${text}\n\n`);
-                if (!isSidebarOpen) setIsSidebarOpen(true);
+                try {
+                  if (typeof setChatInput === 'function') {
+                    setChatInput(`Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${text}\n\n`);
+                  }
+                  if (!isSidebarOpen && typeof setIsSidebarOpen === 'function') {
+                    setIsSidebarOpen(true);
+                  }
+                } catch(e) {
+                  console.error("onAskAI error:", e);
+                }
               }}
             />
           </div>
