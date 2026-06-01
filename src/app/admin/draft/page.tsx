@@ -152,7 +152,7 @@ ${finalContent}`;
             </button>
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-lg transition-colors lg:hidden"
+              className={`p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-lg transition-colors ${isSidebarOpen ? 'lg:hidden' : ''}`}
             >
               <MessageSquare className="w-5 h-5" />
             </button>
@@ -256,8 +256,7 @@ ${finalContent}`;
               />
               <button 
                 type="submit" 
-                disabled={isLoading || isHumanizing || !(input || "").trim()}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 bg-accent hover:bg-accent-hover text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-colors ${(isLoading || isHumanizing || !(input || "").trim()) ? 'bg-accent/50 text-white/50 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
