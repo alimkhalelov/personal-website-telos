@@ -1,24 +1,32 @@
 "use client";
 
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
-import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles } from 'lucide-react';
+import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles, MessageSquarePlus } from 'lucide-react';
+import { CommentMark, SuggestionMark } from './editor/extensions';
+
+export interface RichTextEditorRef {
+  applySuggestion: (commentId: string, newText: string) => void;
+  resolveSuggestion: (commentId: string, accept: boolean) => void;
+}
 
 interface RichTextEditorProps {
   content: string;
   onChange: (markdown: string) => void;
-  onAskAI?: (text: string) => void;
+  onAskAI?: (text: string, commentId: string) => void;
 }
 
-export default function RichTextEditor({ content, onChange, onAskAI }: RichTextEditorProps) {
+const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ content, onChange, onAskAI }, ref) => {
   const extensions = React.useMemo(() => [
     StarterKit,
     Markdown.configure({
       linkify: true,
     }),
+    CommentMark,
+    SuggestionMark,
   ], []);
 
   const editor = useEditor({
@@ -30,11 +38,94 @@ export default function RichTextEditor({ content, onChange, onAskAI }: RichTextE
       },
     },
     onUpdate: ({ editor }) => {
-      // Get the markdown output using the extension
       const markdown = (editor.storage as any).markdown.getMarkdown();
       onChange(markdown);
     },
   });
+
+  useImperativeHandle(ref, () => ({
+    applySuggestion: (commentId: string, newText: string) => {
+      if (!editor) return;
+      
+      // Find the mark with this commentId
+      const state = editor.state;
+      let from = -1;
+      let to = -1;
+      
+      state.doc.descendants((node, pos) => {
+        const hasComment = node.marks.find(m => m.type.name === 'comment' && m.attrs.id === commentId);
+        if (hasComment) {
+          if (from === -1) from = pos;
+          to = pos + node.nodeSize;
+        }
+      });
+      
+      if (from !== -1 && to !== -1) {
+        editor.chain()
+          .setTextSelection({ from, to })
+          .setSuggestion(commentId, 'deletion')
+          .insertContentAt(to, newText)
+          .setTextSelection({ from: to, to: to + newText.length })
+          .setSuggestion(commentId, 'addition')
+          .setComment(commentId)
+          .run();
+      }
+    },
+    resolveSuggestion: (commentId: string, accept: boolean) => {
+      if (!editor) return;
+      
+      const state = editor.state;
+      let delFrom = -1, delTo = -1;
+      let addFrom = -1, addTo = -1;
+      
+      state.doc.descendants((node, pos) => {
+        const sugMark = node.marks.find(m => m.type.name === 'suggestion' && m.attrs.id === commentId);
+        if (sugMark) {
+          if (sugMark.attrs.type === 'deletion') {
+            if (delFrom === -1) delFrom = pos;
+            delTo = pos + node.nodeSize;
+          } else if (sugMark.attrs.type === 'addition') {
+            if (addFrom === -1) addFrom = pos;
+            addTo = pos + node.nodeSize;
+          }
+        }
+      });
+      
+      editor.chain().focus().run();
+      
+      if (accept) {
+        // Remove the deleted text completely
+        if (delFrom !== -1 && delTo !== -1) {
+          editor.chain().deleteRange({ from: delFrom, to: delTo }).run();
+          // Adjust addition coordinates because we deleted text before it
+          const offset = delTo - delFrom;
+          if (addFrom !== -1) addFrom -= offset;
+          if (addTo !== -1) addTo -= offset;
+        }
+        // Remove the suggestion/comment marks from the new text
+        if (addFrom !== -1 && addTo !== -1) {
+          editor.chain()
+            .setTextSelection({ from: addFrom, to: addTo })
+            .unsetSuggestion(commentId)
+            .unsetComment(commentId)
+            .run();
+        }
+      } else {
+        // Reject: Remove the added text completely
+        if (addFrom !== -1 && addTo !== -1) {
+          editor.chain().deleteRange({ from: addFrom, to: addTo }).run();
+        }
+        // Remove the suggestion/comment marks from the old text
+        if (delFrom !== -1 && delTo !== -1) {
+          editor.chain()
+            .setTextSelection({ from: delFrom, to: delTo })
+            .unsetSuggestion(commentId)
+            .unsetComment(commentId)
+            .run();
+        }
+      }
+    }
+  }), [editor]);
 
   if (!editor) {
     return null;
@@ -43,16 +134,11 @@ export default function RichTextEditor({ content, onChange, onAskAI }: RichTextE
   const toggleLink = () => {
     const previousUrl = editor.getAttributes('link').href;
     const url = window.prompt('URL:', previousUrl);
-    
-    if (url === null) {
-      return; // cancelled
-    }
-    
+    if (url === null) return;
     if (url === '') {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
       return;
     }
-    
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
   };
 
@@ -134,13 +220,15 @@ export default function RichTextEditor({ content, onChange, onAskAI }: RichTextE
                   const selection = editor.state.selection;
                   const text = editor.state.doc.textBetween(selection.from, selection.to, ' ');
                   if (text && typeof onAskAI === 'function') {
-                    onAskAI(text);
+                    const commentId = Math.random().toString(36).substring(2, 10);
+                    editor.chain().focus().setComment(commentId).run();
+                    onAskAI(text, commentId);
                   }
                 }}
                 className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-accent hover:text-accent-hover flex items-center gap-1.5"
-                title="Ask AI (Grill Mode)"
+                title="Ask AI & Comment"
               >
-                <Sparkles className="w-4 h-4" />
+                <MessageSquarePlus className="w-4 h-4" />
                 <span className="text-xs font-medium pr-1">Ask AI</span>
               </button>
             </>
@@ -153,4 +241,8 @@ export default function RichTextEditor({ content, onChange, onAskAI }: RichTextE
       </div>
     </div>
   );
-}
+});
+
+RichTextEditor.displayName = 'RichTextEditor';
+
+export default RichTextEditor;
