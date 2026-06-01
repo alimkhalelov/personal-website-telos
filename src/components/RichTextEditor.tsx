@@ -5,14 +5,15 @@ import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
 import Link from '@tiptap/extension-link';
-import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code } from 'lucide-react';
+import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles } from 'lucide-react';
 
 interface RichTextEditorProps {
   content: string;
   onChange: (markdown: string) => void;
+  onAskAI?: (text: string) => void;
 }
 
-export default function RichTextEditor({ content, onChange }: RichTextEditorProps) {
+export default function RichTextEditor({ content, onChange, onAskAI }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -126,6 +127,24 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           >
             <Code className="w-4 h-4" />
           </button>
+          
+          {onAskAI && (
+            <>
+              <div className="w-px h-4 bg-border mx-1" />
+              <button
+                onClick={() => {
+                  const selection = editor.state.selection;
+                  const text = editor.state.doc.textBetween(selection.from, selection.to, ' ');
+                  if (text) onAskAI(text);
+                }}
+                className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-accent hover:text-accent-hover flex items-center gap-1.5"
+                title="Ask AI (Grill Mode)"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span className="text-xs font-medium pr-1">Ask AI</span>
+              </button>
+            </>
+          )}
         </BubbleMenu>
       )}
       

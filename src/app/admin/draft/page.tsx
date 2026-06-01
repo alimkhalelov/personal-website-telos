@@ -165,6 +165,10 @@ ${finalContent}`;
             <RichTextEditor 
               content={editableContent}
               onChange={(md) => setEditableContent(md)}
+              onAskAI={(text) => {
+                setInput(`Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${text}\n\n`);
+                if (!isSidebarOpen) setIsSidebarOpen(true);
+              }}
             />
           </div>
         </div>
