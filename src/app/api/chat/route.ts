@@ -1,4 +1,4 @@
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
 
 export async function POST(req: Request) {
@@ -13,7 +13,7 @@ Once you feel you have enough context and the logic is rock solid, say: ">>>READ
 
   try {
     const result = streamText({
-      model: openai("gpt-4o"),
+      model: google("gemini-3.0-flash"),
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,
@@ -22,6 +22,6 @@ Once you feel you have enough context and the logic is rock solid, say: ">>>READ
 
     return result.toDataStreamResponse();
   } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add OPENAI_API_KEY?" }), { status: 500 });
+    return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
 }
