@@ -1,10 +1,10 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import { Send, Bot, User, FileText, ArrowLeft, Copy, Check } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { useCompletion } from "ai/react";
+import { useCompletion } from "@ai-sdk/react";
 
 export default function DraftingRoom() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat();
