@@ -38,28 +38,38 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
   } as any) as any;
   
   const messages = chatContext.messages || [];
-  const append = chatContext.append || chatContext.sendMessage;
-  const isLoading = chatContext.isLoading || false;
+  const sendMessage = chatContext.sendMessage;
+  const status: string = chatContext.status || 'ready';
+  const isLoading = status === 'submitted' || status === 'streaming';
   const error = chatContext.error;
   
   const initialized = useRef(false);
 
   // Auto-start the conversation on creation
   useEffect(() => {
-    if (!initialized.current && append) {
+    if (!initialized.current && sendMessage) {
       initialized.current = true;
       const initialPrompt = `Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${selectedText}`;
-      append({ role: 'user', content: initialPrompt });
+      sendMessage({ text: initialPrompt });
     }
-  }, [append, selectedText]);
+  }, [sendMessage, selectedText]);
 
-  const lastAiMessage = [...messages].reverse().find(m => m.role === 'assistant');
+  const lastAiMessage = [...messages].reverse().find((m: any) => m.role === 'assistant');
 
   // Auto-apply suggestion when AI finishes generating (except for chat-oriented skills)
+  // Extract text content from AI message parts
+  const getMessageText = (msg: any) => {
+    if (msg?.parts) {
+      return msg.parts.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('');
+    }
+    return msg?.content || '';
+  };
+
   useEffect(() => {
     if (!isLoading && lastAiMessage && !suggestionResolved && !suggestionApplied && !error) {
+      const aiText = getMessageText(lastAiMessage);
       if (initialSkill !== 'grill-me') {
-        onApplySuggestion(id, lastAiMessage.content);
+        onApplySuggestion(id, aiText);
         setSuggestionApplied(true);
       } else {
         // For grill-me, just mark it as applied so we don't keep checking, but don't actually replace text
@@ -105,8 +115,8 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
     setChatInput('');
     setShowMentions(false);
     
-    if (append) {
-      append({ role: 'user', content: text });
+    if (sendMessage) {
+      sendMessage({ text });
       // Reset suggestion states for next AI response
       setSuggestionApplied(false);
       setSuggestionResolved(false);
@@ -161,7 +171,7 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
                       : 'bg-background border border-border/50 text-foreground rounded-tl-sm shadow-sm'
                   }`}>
                     <div className="prose prose-sm dark:prose-invert max-w-none text-[13px]">
-                      {m.content}
+                      {m.parts?.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('') || m.content || ''}
                     </div>
                   </div>
                 </div>

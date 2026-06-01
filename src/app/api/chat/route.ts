@@ -1,5 +1,5 @@
 import { google } from "@ai-sdk/google";
-import { streamText } from "ai";
+import { streamText, convertToModelMessages } from "ai";
 
 const SKILL_PROMPTS: Record<string, string> = {
   'grill-me': `You are a strict, analytical interrogator acting as the 'grill-me' skill for a Demiurge/Vibecoder named Alimzhan.
@@ -32,6 +32,9 @@ export async function POST(req: Request) {
   const systemPrompt = SKILL_PROMPTS[selectedSkill];
 
   try {
+    // Convert UIMessages (from useChat SDK 5) to ModelMessages (for streamText)
+    const modelMessages = await convertToModelMessages(messages);
+
     const result = streamText({
       model: google("gemini-2.5-flash"),
       providerOptions: {
@@ -44,20 +47,12 @@ export async function POST(req: Request) {
           ]
         }
       },
-      messages,
+      messages: modelMessages,
       system: systemPrompt,
     });
 
-    if (typeof result.toUIMessageStreamResponse === 'function') {
-      return result.toUIMessageStreamResponse();
-    }
-    
-    if (typeof result.toDataStreamResponse === 'function') {
-      return result.toDataStreamResponse();
-    }
-    
-    // Fallback if none are available
-    return result.toTextStreamResponse();
+    // SDK 5: useChat expects UIMessageStream format (SSE with JSON chunks)
+    return result.toUIMessageStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
