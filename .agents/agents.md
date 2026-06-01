@@ -1,21 +1,25 @@
 # Project Memory
 
 ## Vision
-Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (Alimzhan). Built on Next.js 15 (App Router), Tailwind CSS v4, and MDX for local CMS. The focus is on SEO/GEO optimization, clean Avant-Garde minimalism (dark theme, #1e1e1e), and performance. 
+Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (Alimzhan). Built on Next.js 15 (App Router), Tailwind CSS v4. Focus on SEO/GEO, clean Avant-Garde minimalism (dark theme default, `next-themes` added).
 
-## Architecture
+## Architecture (Demiurge CMS)
 - **Framework**: Next.js (App Router)
-- **Styling**: Tailwind CSS v4 (minimal custom config, mostly semantic HTML)
-- **CMS**: Local Markdown/MDX files parsed via `next-mdx-remote` and `gray-matter`.
-- **Typography**: Google Sans (with fallback to similar sans-serifs).
+- **Styling**: Tailwind CSS v4, custom minimalist dark theme.
+- **CMS**: **Outstatic** (Git-backed CMS) will be integrated to fulfill the "any device, password+2FA" requirement (via GitHub auth).
+- **AI Drafting**: Custom `/admin/draft` feature using Vercel AI SDK. Built-in "Grill Me" and "Humanizer" flows.
+- **Typography**: Google Sans fallback (Outfit / Geist Mono).
 
 ## Catalog / Index
-- `src/app`: Next.js App Router root.
-- `content/articles`: Directory containing local `.mdx` files.
+- `src/app/admin/draft`: AI Drafting room.
+- `src/app/blog/[slug]`: MDX renderer.
+- `content/articles`: Local Markdown files (until Outstatic fully configured).
 
 ## Current Roadmap
 - [x] Initial setup (Next.js, Tailwind).
-- [ ] Configure Dark Minimalist Theme & Typography.
-- [ ] Implement Main Page (Header, Bio, YouTube embed, Blog list).
-- [ ] Implement MDX CMS system.
-- [ ] Optimize SEO/GEO.
+- [x] Configure Dark/Light Minimalist Theme & Typography.
+- [x] Implement Main Page & Blog listing.
+- [x] Implement MDX CMS system.
+- [x] Build AI Drafting Room UI (Grill Me flow).
+- [ ] Connect Outstatic for CMS + Auth.
+- [ ] Add i18n auto-translation flows.
