@@ -14,7 +14,8 @@ function DraftingRoomContent() {
   const searchParams = useSearchParams();
   const existingSlug = searchParams.get("slug");
   
-  const { messages, input, setInput, append, isLoading, error } = useChat();
+  const { messages, append, isLoading, error } = useChat();
+  const [chatInput, setChatInput] = useState("");
   const { completion, complete, isLoading: isHumanizing } = useCompletion({
     api: "/api/humanize",
   });
@@ -29,10 +30,10 @@ function DraftingRoomContent() {
   const handleManualSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setCustomError("");
-    if (!(input || "").trim() || isLoading || isHumanizing) return;
+    if (!(chatInput || "").trim() || isLoading || isHumanizing) return;
     
-    const userText = input;
-    setInput(""); 
+    const userText = chatInput;
+    setChatInput(""); 
     
     try {
       await append({
@@ -43,7 +44,7 @@ function DraftingRoomContent() {
       if (!isSidebarOpen) setIsSidebarOpen(true);
     } catch (err: any) {
       setCustomError(err.message || "Ошибка отправки");
-      setInput(userText);
+      setChatInput(userText);
     }
   };
 
@@ -166,7 +167,7 @@ ${finalContent}`;
               content={editableContent}
               onChange={(md) => setEditableContent(md)}
               onAskAI={(text) => {
-                setInput(`Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${text}\n\n`);
+                setChatInput(`Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${text}\n\n`);
                 if (!isSidebarOpen) setIsSidebarOpen(true);
               }}
             />
@@ -252,15 +253,15 @@ ${finalContent}`;
             )}
             <div className="relative flex w-full">
               <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Ответить..."
                 className="w-full bg-background border border-border rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none focus:border-muted transition-all text-foreground placeholder:text-muted/50"
                 disabled={isLoading || isHumanizing}
               />
               <button 
                 type="submit" 
-                className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-colors ${(isLoading || isHumanizing || !(input || "").trim()) ? 'bg-accent/50 text-white/50 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
+                className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-colors ${(isLoading || isHumanizing || !(chatInput || "").trim()) ? 'bg-accent/50 text-white/50 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
               >
                 <Send className="w-3.5 h-3.5" />
               </button>
