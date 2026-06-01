@@ -17,9 +17,10 @@ interface RichTextEditorProps {
   content: string;
   onChange: (markdown: string) => void;
   onAskAI?: (text: string, commentId: string, skill?: string) => void;
+  activeThreadId?: string | null;
 }
 
-const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ content, onChange, onAskAI }, ref) => {
+const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ content, onChange, onAskAI, activeThreadId }, ref) => {
   const extensions = React.useMemo(() => [
     StarterKit,
     Markdown.configure({
@@ -149,6 +150,19 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
 
   return (
     <div className="relative w-full h-full flex flex-col group/editor">
+      <style>{`
+        .tiptap span[data-comment-id] {
+          background-color: transparent !important;
+          border-bottom: 2px solid rgba(150, 150, 150, 0.4) !important;
+          transition: all 0.2s ease;
+        }
+        ${activeThreadId ? `
+        .tiptap span[data-comment-id="${activeThreadId}"] {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-bottom: 2px solid rgba(255, 255, 255, 0.8) !important;
+        }
+        ` : ''}
+      `}</style>
       {editor && (
         <BubbleMenu 
           editor={editor} 

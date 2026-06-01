@@ -148,10 +148,14 @@ ${finalContent}`;
           <div className="max-w-6xl mx-auto px-6 py-12 sm:py-20 min-h-full flex items-start gap-8">
             
             {/* EDITOR COLUMN */}
-            <div className="flex-1 max-w-3xl bg-background rounded-xl">
+            <div className="flex-1 max-w-3xl bg-background rounded-xl" onClick={(e) => {
+              // Only clear if clicking outside the text content
+              if (e.target === e.currentTarget) setActiveThreadId(null);
+            }}>
               <RichTextEditor 
                 ref={editorRef}
                 content={editableContent}
+                activeThreadId={activeThreadId}
                 onChange={(md) => setEditableContent(md)}
                 onAskAI={(text, commentId, skill) => {
                   setThreads(prev => [...prev, { id: commentId, selectedText: text, initialSkill: skill || 'default' }]);

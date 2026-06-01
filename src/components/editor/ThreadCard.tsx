@@ -55,14 +55,18 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
 
   const lastAiMessage = [...messages].reverse().find(m => m.role === 'assistant');
 
-  // Auto-apply suggestion when AI finishes generating
+  // Auto-apply suggestion when AI finishes generating (except for chat-oriented skills)
   useEffect(() => {
     if (!isLoading && lastAiMessage && !suggestionResolved && !suggestionApplied && !error) {
-      // It finished generating! Apply the suggestion directly to the editor overlay
-      onApplySuggestion(id, lastAiMessage.content);
-      setSuggestionApplied(true);
+      if (initialSkill !== 'grill-me') {
+        onApplySuggestion(id, lastAiMessage.content);
+        setSuggestionApplied(true);
+      } else {
+        // For grill-me, just mark it as applied so we don't keep checking, but don't actually replace text
+        setSuggestionApplied(true);
+      }
     }
-  }, [isLoading, lastAiMessage, suggestionResolved, suggestionApplied, id, onApplySuggestion, error]);
+  }, [isLoading, lastAiMessage, suggestionResolved, suggestionApplied, id, onApplySuggestion, error, initialSkill]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -179,7 +183,7 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
           </div>
 
           {/* ACTION BUTTONS (Accept / Reject) */}
-          {!isLoading && lastAiMessage && !suggestionResolved && (
+          {!isLoading && lastAiMessage && !suggestionResolved && initialSkill !== 'grill-me' && (
             <div className="px-3 pb-3 flex gap-2">
               <button
                 onClick={(e) => {

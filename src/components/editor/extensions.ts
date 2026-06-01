@@ -29,7 +29,7 @@ export const CommentMark = Mark.create<CommentMarkOptions>({
   addOptions() {
     return {
       HTMLAttributes: {
-        class: 'bg-accent/30 border-b-2 border-accent/50 cursor-pointer transition-colors hover:bg-accent/40',
+        class: 'cursor-pointer',
       },
     };
   },
