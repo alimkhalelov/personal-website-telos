@@ -21,53 +21,15 @@ export default function Home() {
     <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full">
       {/* Hero Section */}
       <section className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-        <div className="flex items-center gap-3 text-accent text-sm font-mono uppercase tracking-widest">
-          <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          System Active
-        </div>
-        
         <h1 className="text-5xl sm:text-7xl font-bold tracking-tighter leading-[1.1]">
-          Alimzhan
+          Alim Khalelov
           <br />
           <span className="text-muted-foreground/50">Architect of Autonomous Systems</span>
         </h1>
         
         <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl leading-relaxed font-light mt-4">
-          I am a <strong className="text-foreground font-medium">Demiurge</strong>, AI-Native Product Manager, and Game Designer. I build high-leverage products using the <span className="italic">Fan-Filter-Scale</span> methodology.
+          I am an AI-Native Product Manager and Game Designer. I build high-leverage products using the <span className="italic">Fan-Filter-Scale</span> methodology.
         </p>
-      </section>
-
-      {/* Philosophy Section */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 rounded-2xl bg-accent/5 border border-accent/10 hover:border-accent/30 transition-colors flex flex-col gap-4 group">
-          <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <h3 className="font-semibold text-lg tracking-tight">The Spark</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Starting with 100% creativity and hyperfocus. Products must be built for fun to protect attention and prevent burnout.
-          </p>
-        </div>
-        
-        <div className="p-6 rounded-2xl bg-accent/5 border border-accent/10 hover:border-accent/30 transition-colors flex flex-col gap-4 group">
-          <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-            <Layers className="w-5 h-5" />
-          </div>
-          <h3 className="font-semibold text-lg tracking-tight">The Filter</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Ruthless pragmatism. Analyzing ROI, identifying the market bottleneck, and utilizing orphaned infrastructure.
-          </p>
-        </div>
-
-        <div className="p-6 rounded-2xl bg-accent/5 border border-accent/10 hover:border-accent/30 transition-colors flex flex-col gap-4 group">
-          <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:scale-110 transition-transform">
-            <Cpu className="w-5 h-5" />
-          </div>
-          <h3 className="font-semibold text-lg tracking-tight">The Scale</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Automating the solution via AI agents (SAE Levels 3-5). The system sells and services itself, preserving my autonomy.
-          </p>
-        </div>
       </section>
 
       {/* Lab Log / Blog Section */}
