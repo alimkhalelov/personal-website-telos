@@ -40,6 +40,7 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
   const messages = chatContext.messages || [];
   const append = chatContext.append || chatContext.sendMessage;
   const isLoading = chatContext.isLoading || false;
+  const error = chatContext.error;
   
   const initialized = useRef(false);
 
@@ -56,12 +57,12 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
 
   // Auto-apply suggestion when AI finishes generating
   useEffect(() => {
-    if (!isLoading && lastAiMessage && !suggestionResolved && !suggestionApplied) {
+    if (!isLoading && lastAiMessage && !suggestionResolved && !suggestionApplied && !error) {
       // It finished generating! Apply the suggestion directly to the editor overlay
       onApplySuggestion(id, lastAiMessage.content);
       setSuggestionApplied(true);
     }
-  }, [isLoading, lastAiMessage, suggestionResolved, suggestionApplied, id, onApplySuggestion]);
+  }, [isLoading, lastAiMessage, suggestionResolved, suggestionApplied, id, onApplySuggestion, error]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -112,113 +113,141 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
 
   return (
     <div 
-      className={`border rounded-xl mb-4 transition-all overflow-visible ${isActive ? 'border-accent shadow-md ring-1 ring-accent/20' : 'border-border/50 hover:border-border cursor-pointer opacity-70 hover:opacity-100'}`}
-      onClick={!isActive ? onClick : undefined}
-    >
-      <div className="bg-muted/30 px-3 py-2 flex items-center justify-between border-b border-border/50">
-        <div className="text-xs font-medium text-muted-foreground truncate pr-2">
-          "{selectedText.substring(0, 40)}{selectedText.length > 40 ? '...' : ''}"
+      onClick={onClick}
+      className={`flex flex-col bg-card/90 backdrop-blur-md border rounded-xl overflow-hidden transition-all duration-300 w-full relative
+      ${isActive ? 'border-accent shadow-xl shadow-accent/10 ring-1 ring-accent/20 -translate-x-2' : 'border-border/40 shadow-sm opacity-60 hover:opacity-100 hover:border-border cursor-pointer'}
+    `}>
+      {/* HEADER */}
+      <div className="flex items-center justify-between px-3 py-2.5 border-b border-border/30 bg-muted/10">
+        <div className="flex items-center gap-2 overflow-hidden">
+          <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+            <Bot className="w-3 h-3 text-accent" />
+          </div>
+          <span className="text-xs font-semibold text-foreground tracking-wide truncate">
+            {AVAILABLE_SKILLS.find(s => s.id === skill)?.name || 'AI Assistant'}
+          </span>
         </div>
         <button 
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
-          className="text-muted-foreground hover:text-red-500 transition-colors p-1"
-          title="Remove comment"
+          className="text-muted hover:text-red-400 transition-colors p-1 rounded-md hover:bg-red-400/10"
         >
           <Trash2 className="w-3.5 h-3.5" />
         </button>
       </div>
 
       {isActive && (
-        <div className="flex flex-col bg-card">
-          <div className="max-h-[300px] overflow-y-auto p-3 flex flex-col gap-3">
-            {messages.map((m: any) => (
-              <div key={m.id} className={`flex gap-2 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                <div className={`p-2.5 rounded-xl max-w-[85%] text-[13px] leading-relaxed ${m.role === 'user' ? 'bg-accent/10 text-foreground rounded-tr-sm' : 'bg-muted/30 border border-border/50 text-foreground rounded-tl-sm'}`}>
-                  <p className="whitespace-pre-wrap">{m.content}</p>
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex gap-2">
-                <div className="p-2.5 rounded-xl rounded-tl-sm bg-muted/30 border border-border/50 flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
-                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
-                  <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Suggestion Actions */}
-          {!isLoading && lastAiMessage && !suggestionResolved && suggestionApplied && (
-            <div className="px-3 py-2 bg-accent/5 border-t border-b border-accent/10 flex flex-col gap-2">
-              <div className="text-[11px] text-muted-foreground flex items-center gap-1 mb-1">
-                <Zap className="w-3 h-3 text-accent" />
-                <span>AI suggestion applied. Review in editor.</span>
-              </div>
-              <div className="flex gap-2">
-                <button 
-                  onClick={() => {
-                    onResolveSuggestion(id, true);
-                    setSuggestionResolved(true);
-                  }}
-                  className="flex-1 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded text-xs font-medium transition-colors flex items-center justify-center gap-1"
-                >
-                  <Check className="w-3.5 h-3.5" /> Accept
-                </button>
-                <button 
-                  onClick={() => {
-                    onResolveSuggestion(id, false);
-                    setSuggestionApplied(false); // Can be retried
-                  }}
-                  className="flex-1 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded text-xs font-medium transition-colors flex items-center justify-center gap-1"
-                >
-                  <X className="w-3.5 h-3.5" /> Reject
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className="p-3 border-t border-border/50 relative">
-            {/* Mentions Dropdown */}
-            {showMentions && filteredSkills.length > 0 && (
-              <div className="absolute bottom-full left-3 right-3 mb-1 bg-card border border-border shadow-lg rounded-lg overflow-hidden z-50">
-                <div className="px-3 py-1.5 bg-muted/50 text-[10px] uppercase font-semibold text-muted-foreground">
-                  Select Skill
-                </div>
-                <div className="max-h-[150px] overflow-y-auto">
-                  {filteredSkills.map(s => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => insertMention(s.id)}
-                      className="w-full text-left px-3 py-2 hover:bg-accent/10 flex flex-col transition-colors border-b border-border/50 last:border-0"
-                    >
-                      <span className="text-sm font-medium text-foreground">{s.name} <span className="text-xs text-muted-foreground ml-1">@{s.id}</span></span>
-                      <span className="text-xs text-muted-foreground">{s.desc}</span>
-                    </button>
-                  ))}
-                </div>
+        <div className="flex flex-col">
+          {/* MESSAGES */}
+          <div className="flex flex-col max-h-[300px] overflow-y-auto p-3 gap-3 scrollbar-hide text-sm">
+            {messages.length === 0 && isLoading && (
+              <div className="flex items-center gap-2 text-muted px-2 py-1">
+                <div className="w-3.5 h-3.5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                <span className="text-xs font-medium animate-pulse">Thinking...</span>
               </div>
             )}
             
-            <form onSubmit={handleSubmit} className="relative flex w-full">
+            {messages.map((m: any, idx: number) => {
+              if (idx === 0 && m.role === 'user') return null;
+
+              return (
+                <div key={m.id} className={`flex flex-col gap-1 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
+                  <div className={`px-3 py-2 rounded-xl max-w-[95%] leading-relaxed ${
+                    m.role === 'user' 
+                      ? 'bg-accent/10 text-foreground rounded-tr-sm' 
+                      : 'bg-background border border-border/50 text-foreground rounded-tl-sm shadow-sm'
+                  }`}>
+                    <div className="prose prose-sm dark:prose-invert max-w-none text-[13px]">
+                      {m.content}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {isLoading && messages.length > 0 && messages[messages.length - 1].role === 'user' && (
+              <div className="flex items-center gap-2 text-muted px-2 py-1 mt-1">
+                <div className="w-3.5 h-3.5 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                <span className="text-xs font-medium animate-pulse">Thinking...</span>
+              </div>
+            )}
+            
+            {error && (
+              <div className="px-3 py-2 bg-red-500/10 text-red-500 rounded-lg text-xs font-medium border border-red-500/20">
+                Ошибка: {error.message || 'Не удалось получить ответ'}
+              </div>
+            )}
+          </div>
+
+          {/* ACTION BUTTONS (Accept / Reject) */}
+          {!isLoading && lastAiMessage && !suggestionResolved && (
+            <div className="px-3 pb-3 flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onResolveSuggestion(id, true);
+                  setSuggestionResolved(true);
+                }}
+                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-green-500/10 hover:bg-green-500/20 text-green-500 rounded-lg text-xs font-semibold transition-colors"
+              >
+                <Check className="w-3.5 h-3.5" />
+                Accept
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onResolveSuggestion(id, false);
+                  setSuggestionResolved(true);
+                  setSuggestionApplied(false);
+                }}
+                className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg text-xs font-semibold transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+                Reject
+              </button>
+            </div>
+          )}
+
+          {/* REPLY INPUT */}
+          <div className="p-2 border-t border-border/30 bg-muted/5 relative">
+            <form onSubmit={handleSubmit} className="relative flex items-center">
               <input
                 ref={inputRef}
                 value={chatInput}
                 onChange={handleInput}
                 placeholder="Reply or type @ for skills..."
-                className="w-full bg-background border border-border rounded-lg px-3 py-2 pr-8 text-xs focus:outline-none focus:border-muted transition-all"
                 disabled={isLoading}
-                autoComplete="off"
+                className="w-full bg-background border border-border/50 rounded-lg pl-3 pr-8 py-1.5 text-xs focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all disabled:opacity-50"
               />
               <button 
                 type="submit" 
-                className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-md transition-colors ${isLoading || !chatInput.trim() ? 'bg-muted/50 text-muted-foreground/50 cursor-not-allowed' : 'bg-accent hover:bg-accent-hover text-white'}`}
+                disabled={isLoading || !chatInput.trim()}
+                className="absolute right-1.5 p-1 bg-accent hover:bg-accent-hover text-white rounded-md disabled:opacity-50 transition-colors"
               >
                 <Send className="w-3 h-3" />
               </button>
             </form>
+
+            {/* MENTIONS DROPDOWN */}
+            {showMentions && (
+              <div className="absolute bottom-full left-0 w-full mb-1 bg-card border border-border rounded-lg shadow-xl overflow-hidden z-50">
+                <div className="max-h-[150px] overflow-y-auto">
+                  {filteredSkills.length > 0 ? (
+                    filteredSkills.map(s => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => insertMention(s.id)}
+                        className="w-full flex flex-col items-start px-3 py-1.5 hover:bg-accent/10 transition-colors text-left border-b border-border/30 last:border-0"
+                      >
+                        <span className="text-xs font-medium text-foreground">{s.name} <span className="text-[10px] text-muted ml-1">@{s.id}</span></span>
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-3 py-2 text-xs text-muted text-center">No skills found</div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

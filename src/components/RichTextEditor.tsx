@@ -141,7 +141,7 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     const text = editor.state.doc.textBetween(selection.from, selection.to, ' ');
     if (text && typeof onAskAI === 'function') {
       const commentId = Math.random().toString(36).substring(2, 10);
-      editor.chain().focus().setComment(commentId).run();
+      editor.chain().focus().setComment(commentId).setTextSelection(selection.to).run();
       onAskAI(text, commentId, skill);
     }
   };

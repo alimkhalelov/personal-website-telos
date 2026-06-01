@@ -33,14 +33,14 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
-      model: google("gemini-3.0-flash"),
+      model: google("gemini-3.0-flash"), // using gemini 3.0 as requested in global rules
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,
       ],
     });
 
-    return result.toTextStreamResponse();
+    return result.toDataStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
