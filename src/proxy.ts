@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl
+  if (!pathname.startsWith('/admin') && !pathname.startsWith('/outstatic')) {
+    return NextResponse.next()
+  }
+
   const basicAuth = req.headers.get('authorization')
   
   if (basicAuth) {
