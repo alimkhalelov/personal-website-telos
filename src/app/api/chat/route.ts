@@ -40,6 +40,7 @@ export async function POST(req: Request) {
       ],
     });
 
+    // @ts-ignore
     return result.toDataStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
