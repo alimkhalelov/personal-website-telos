@@ -17,6 +17,7 @@ interface RichTextEditorProps {
   content: string;
   onChange: (markdown: string) => void;
   onAskAI?: (text: string, commentId: string, skill?: string) => void;
+  onActiveThreadChange?: (id: string | null) => void;
   activeThreadId?: string | null;
 }
 
@@ -41,6 +42,19 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     onUpdate: ({ editor }) => {
       const markdown = (editor.storage as any).markdown.getMarkdown();
       onChange(markdown);
+    },
+    onSelectionUpdate: ({ editor }) => {
+      if (!onActiveThreadChange) return;
+      
+      const { $from } = editor.state.selection;
+      const marks = $from.marks();
+      const commentMark = marks.find(m => m.type.name === 'comment');
+      
+      if (commentMark) {
+        onActiveThreadChange(commentMark.attrs.id);
+      } else {
+        onActiveThreadChange(null);
+      }
     },
   });
 

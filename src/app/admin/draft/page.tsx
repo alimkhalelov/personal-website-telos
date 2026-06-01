@@ -43,24 +43,39 @@ function DraftingRoomContent() {
     }
   }, [existingSlug]);
 
-  // Load threads from localStorage
+  // Load draft state from localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("telos_draft_threads");
-      if (saved) {
+      const savedThreads = localStorage.getItem("telos_draft_threads");
+      if (savedThreads) {
         try {
-          setThreads(JSON.parse(saved));
+          setThreads(JSON.parse(savedThreads));
         } catch(e) {}
       }
-    }
-  }, []);
 
-  // Save threads to localStorage
+      // Only load content from localStorage if we're not editing an existing CMS post
+      if (!existingSlug) {
+        const savedContent = localStorage.getItem("telos_draft_content");
+        if (savedContent) setEditableContent(savedContent);
+
+        const savedSlug = localStorage.getItem("telos_draft_slug");
+        if (savedSlug) setSlug(savedSlug);
+      }
+    }
+  }, [existingSlug]);
+
+  // Save state to localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("telos_draft_threads", JSON.stringify(threads));
+      
+      // Only save to draft storage if not editing an existing slug, or if we want to preserve edits anyway
+      if (!existingSlug) {
+        localStorage.setItem("telos_draft_content", editableContent);
+        localStorage.setItem("telos_draft_slug", slug);
+      }
     }
-  }, [threads]);
+  }, [threads, editableContent, slug, existingSlug]);
 
   const handleSave = async () => {
     if (!slug) return alert("Пожалуйста, введите URL (slug) для поста.");
@@ -161,6 +176,7 @@ ${finalContent}`;
                   setThreads(prev => [...prev, { id: commentId, selectedText: text, initialSkill: skill || 'default' }]);
                   setActiveThreadId(commentId);
                 }}
+                onActiveThreadChange={(id) => setActiveThreadId(id)}
               />
             </div>
 

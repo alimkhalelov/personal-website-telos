@@ -33,7 +33,14 @@ export async function POST(req: Request) {
 
   try {
     const result = streamText({
-      model: google("gemini-3.5-flash"), // using latest gemini 3.5 flash free tier
+      model: google("gemini-3.5-flash", {
+        safetySettings: [
+          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+          { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+        ]
+      }), // using latest gemini 3.5 flash free tier with safety disabled
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,

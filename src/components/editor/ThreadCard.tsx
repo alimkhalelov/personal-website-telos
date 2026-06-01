@@ -34,6 +34,7 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
   const chatContext = useChat({
     id,
     api: '/api/chat',
+    streamProtocol: 'text',
     body: { skill }
   } as any) as any;
   
@@ -178,6 +179,12 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
             {error && (
               <div className="px-3 py-2 bg-red-500/10 text-red-500 rounded-lg text-xs font-medium border border-red-500/20">
                 Ошибка: {error.message || 'Не удалось получить ответ'}
+              </div>
+            )}
+
+            {!isLoading && !error && messages.length === 1 && (
+              <div className="px-3 py-2 bg-yellow-500/10 text-yellow-500 rounded-lg text-xs font-medium border border-yellow-500/20 mt-2">
+                ИИ не вернул ответ (возможно из-за фильтров). Попробуйте перефразировать текст или написать сообщение ниже.
               </div>
             )}
           </div>
