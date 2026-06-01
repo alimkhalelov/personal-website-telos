@@ -5,6 +5,7 @@ import { Bot, User, Check, X, Send, Trash2, Zap } from 'lucide-react';
 interface ThreadCardProps {
   id: string;
   selectedText: string;
+  initialSkill?: string;
   isActive: boolean;
   onClick: () => void;
   onDelete: () => void;
@@ -19,8 +20,8 @@ const AVAILABLE_SKILLS = [
   { id: 'translator', name: 'Translator', desc: 'Идеальный перевод' },
 ];
 
-export function ThreadCard({ id, selectedText, isActive, onClick, onDelete, onApplySuggestion, onResolveSuggestion }: ThreadCardProps) {
-  const [skill, setSkill] = useState<string>('default');
+export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, onDelete, onApplySuggestion, onResolveSuggestion }: ThreadCardProps) {
+  const [skill, setSkill] = useState<string>(initialSkill || 'default');
   const [suggestionApplied, setSuggestionApplied] = useState(false);
   const [suggestionResolved, setSuggestionResolved] = useState(false);
   const [chatInput, setChatInput] = useState('');

@@ -5,7 +5,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
-import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles, MessageSquarePlus } from 'lucide-react';
+import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles, MessageSquarePlus, PenTool } from 'lucide-react';
 import { CommentMark, SuggestionMark } from './editor/extensions';
 
 export interface RichTextEditorRef {
@@ -16,7 +16,7 @@ export interface RichTextEditorRef {
 interface RichTextEditorProps {
   content: string;
   onChange: (markdown: string) => void;
-  onAskAI?: (text: string, commentId: string) => void;
+  onAskAI?: (text: string, commentId: string, skill?: string) => void;
 }
 
 const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ content, onChange, onAskAI }, ref) => {
@@ -47,7 +47,6 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     applySuggestion: (commentId: string, newText: string) => {
       if (!editor) return;
       
-      // Find the mark with this commentId
       const state = editor.state;
       let from = -1;
       let to = -1;
@@ -94,15 +93,12 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
       editor.chain().focus().run();
       
       if (accept) {
-        // Remove the deleted text completely
         if (delFrom !== -1 && delTo !== -1) {
           editor.chain().deleteRange({ from: delFrom, to: delTo }).run();
-          // Adjust addition coordinates because we deleted text before it
           const offset = delTo - delFrom;
           if (addFrom !== -1) addFrom -= offset;
           if (addTo !== -1) addTo -= offset;
         }
-        // Remove the suggestion/comment marks from the new text
         if (addFrom !== -1 && addTo !== -1) {
           editor.chain()
             .setTextSelection({ from: addFrom, to: addTo })
@@ -111,11 +107,9 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
             .run();
         }
       } else {
-        // Reject: Remove the added text completely
         if (addFrom !== -1 && addTo !== -1) {
           editor.chain().deleteRange({ from: addFrom, to: addTo }).run();
         }
-        // Remove the suggestion/comment marks from the old text
         if (delFrom !== -1 && delTo !== -1) {
           editor.chain()
             .setTextSelection({ from: delFrom, to: delTo })
@@ -142,6 +136,16 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
   };
 
+  const handleAIAction = (skill: string) => {
+    const selection = editor.state.selection;
+    const text = editor.state.doc.textBetween(selection.from, selection.to, ' ');
+    if (text && typeof onAskAI === 'function') {
+      const commentId = Math.random().toString(36).substring(2, 10);
+      editor.chain().focus().setComment(commentId).run();
+      onAskAI(text, commentId, skill);
+    }
+  };
+
   return (
     <div className="relative w-full h-full flex flex-col group/editor">
       {editor && (
@@ -162,13 +166,6 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
             title="Italic"
           >
             <Italic className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-1.5 rounded-md hover:bg-accent/10 transition-colors ${editor.isActive('strike') ? 'bg-accent/20 text-accent' : 'text-muted hover:text-foreground'}`}
-            title="Strikethrough"
-          >
-            <Strikethrough className="w-4 h-4" />
           </button>
           
           <div className="w-px h-4 bg-border mx-1" />
@@ -204,32 +201,30 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
           >
             <LinkIcon className="w-4 h-4" />
           </button>
-          <button
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            className={`p-1.5 rounded-md hover:bg-accent/10 transition-colors ${editor.isActive('code') ? 'bg-accent/20 text-accent' : 'text-muted hover:text-foreground'}`}
-            title="Code"
-          >
-            <Code className="w-4 h-4" />
-          </button>
           
           {onAskAI && (
             <>
               <div className="w-px h-4 bg-border mx-1" />
               <button
-                onClick={() => {
-                  const selection = editor.state.selection;
-                  const text = editor.state.doc.textBetween(selection.from, selection.to, ' ');
-                  if (text && typeof onAskAI === 'function') {
-                    const commentId = Math.random().toString(36).substring(2, 10);
-                    editor.chain().focus().setComment(commentId).run();
-                    onAskAI(text, commentId);
-                  }
-                }}
-                className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-accent hover:text-accent-hover flex items-center gap-1.5"
-                title="Ask AI & Comment"
+                onClick={() => handleAIAction('grill-me')}
+                className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-orange-500 hover:text-orange-400 flex items-center gap-1.5"
+                title="Grill Mode (Critique)"
               >
                 <MessageSquarePlus className="w-4 h-4" />
-                <span className="text-xs font-medium pr-1">Ask AI</span>
+              </button>
+              <button
+                onClick={() => handleAIAction('humanizer')}
+                className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-blue-500 hover:text-blue-400 flex items-center gap-1.5"
+                title="Humanizer"
+              >
+                <Sparkles className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleAIAction('writer')}
+                className="p-1.5 rounded-md hover:bg-accent/10 transition-colors text-green-500 hover:text-green-400 flex items-center gap-1.5"
+                title="Writer (Rewrite)"
+              >
+                <PenTool className="w-4 h-4" />
               </button>
             </>
           )}

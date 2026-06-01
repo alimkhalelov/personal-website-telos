@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Send, Bot, User, FileText, ArrowLeft, Check, Save, MessageSquare, PanelRightClose, PanelRightOpen, MessageSquarePlus } from "lucide-react";
+import { Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,6 +11,7 @@ import { ThreadCard } from "@/components/editor/ThreadCard";
 type Thread = {
   id: string;
   selectedText: string;
+  initialSkill?: string;
 };
 
 function DraftingRoomContent() {
@@ -21,7 +22,6 @@ function DraftingRoomContent() {
   const [slug, setSlug] = useState("");
   const [editableContent, setEditableContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Threads State
   const [threads, setThreads] = useState<Thread[]>([]);
@@ -85,7 +85,7 @@ ${finalContent}`;
   const handleResolveSuggestion = (id: string, accept: boolean) => {
     editorRef.current?.resolveSuggestion(id, accept);
     if (accept) {
-      // Option: Close/delete thread on accept?
+      // Option: Remove thread after accept
       // setThreads(prev => prev.filter(t => t.id !== id));
     }
   };
@@ -93,8 +93,8 @@ ${finalContent}`;
   return (
     <div className="flex h-[100dvh] w-full bg-background overflow-hidden">
       
-      {/* LEFT: MAIN EDITOR CANVAS */}
-      <main className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${isSidebarOpen ? 'mr-0' : 'mr-0'}`}>
+      {/* MAIN CONTENT AREA */}
+      <main className="flex-1 flex flex-col min-w-0 transition-all duration-300">
         
         {/* TOP HEADER */}
         <header className="h-16 shrink-0 flex items-center justify-between px-6 border-b border-border/50 bg-background/80 backdrop-blur-md z-10">
@@ -121,82 +121,39 @@ ${finalContent}`;
               <Save className="w-4 h-4" />
               <span className="hidden sm:inline">{isSaving ? "Saving..." : "Publish"}</span>
             </button>
-            <button 
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={`p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-lg transition-colors ${isSidebarOpen ? 'lg:hidden' : ''}`}
-            >
-              <MessageSquare className="w-5 h-5" />
-            </button>
           </div>
         </header>
 
-        {/* EDITOR AREA */}
+        {/* EDITOR AREA + COMMENTS MARGIN */}
         <div className="flex-1 overflow-y-auto relative scrollbar-hide">
-          <div className="max-w-3xl mx-auto px-6 py-12 sm:py-20 min-h-full">
-            <RichTextEditor 
-              ref={editorRef}
-              content={editableContent}
-              onChange={(md) => setEditableContent(md)}
-              onAskAI={(text, commentId) => {
-                setThreads(prev => [...prev, { id: commentId, selectedText: text }]);
-                setActiveThreadId(commentId);
-                if (!isSidebarOpen) {
-                  setIsSidebarOpen(true);
-                }
-              }}
-            />
-          </div>
-        </div>
-      </main>
-
-      {/* RIGHT: GRILL MODE SIDEBAR */}
-      <aside 
-        className={`${isSidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0 lg:w-[350px] lg:border-l lg:mr-[-350px]'} 
-        fixed lg:static right-0 top-0 h-full w-[350px] max-w-[90vw] sm:max-w-sm bg-card/95 backdrop-blur-xl border-l border-border/50 
-        flex flex-col shadow-2xl lg:shadow-none transition-transform duration-300 z-50`}
-      >
-        <div className="h-16 shrink-0 flex items-center justify-between px-5 border-b border-border/50">
-          <div className="flex items-center gap-2 text-muted">
-            <Bot className="w-5 h-5 text-accent" />
-            <span className="text-sm font-medium text-foreground">AI Comments</span>
-          </div>
-          <button 
-            onClick={() => setIsSidebarOpen(false)}
-            className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-lg transition-colors lg:hidden"
-          >
-            <PanelRightClose className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={() => setIsSidebarOpen(false)}
-            className="hidden lg:flex p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-lg transition-colors"
-          >
-            <PanelRightOpen className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col scrollbar-hide">
-          {threads.length === 0 ? (
-            <div className="m-auto text-center flex flex-col items-center justify-center text-muted gap-3 p-4">
-              <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center">
-                <MessageSquarePlus className="w-6 h-6 opacity-50" />
-              </div>
-              <p className="text-sm leading-relaxed">
-                Выделите текст в редакторе и нажмите "Ask AI", чтобы добавить комментарий и запросить помощь ИИ.
-              </p>
+          <div className="max-w-6xl mx-auto px-6 py-12 sm:py-20 min-h-full flex items-start gap-8">
+            
+            {/* EDITOR COLUMN */}
+            <div className="flex-1 max-w-3xl bg-background rounded-xl">
+              <RichTextEditor 
+                ref={editorRef}
+                content={editableContent}
+                onChange={(md) => setEditableContent(md)}
+                onAskAI={(text, commentId, skill) => {
+                  setThreads(prev => [...prev, { id: commentId, selectedText: text, initialSkill: skill || 'default' }]);
+                  setActiveThreadId(commentId);
+                }}
+              />
             </div>
-          ) : (
-            <div className="flex flex-col">
+
+            {/* COMMENTS MARGIN (Google Docs style) */}
+            <div className="w-80 shrink-0 hidden lg:flex flex-col gap-4">
               {threads.map(thread => (
                 <ThreadCard
                   key={thread.id}
                   id={thread.id}
                   selectedText={thread.selectedText}
+                  initialSkill={thread.initialSkill}
                   isActive={activeThreadId === thread.id}
                   onClick={() => setActiveThreadId(thread.id)}
                   onDelete={() => {
                     setThreads(prev => prev.filter(t => t.id !== thread.id));
                     if (activeThreadId === thread.id) setActiveThreadId(null);
-                    // Optionally remove the mark from editor
                     editorRef.current?.resolveSuggestion(thread.id, false);
                   }}
                   onApplySuggestion={handleApplySuggestion}
@@ -204,17 +161,11 @@ ${finalContent}`;
                 />
               ))}
             </div>
-          )}
-        </div>
-      </aside>
 
-      {/* OVERLAY FOR MOBILE SIDEBAR */}
-      {isSidebarOpen && (
-        <div 
-          onClick={() => setIsSidebarOpen(false)}
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-        />
-      )}
+          </div>
+        </div>
+      </main>
+
     </div>
   );
 }
