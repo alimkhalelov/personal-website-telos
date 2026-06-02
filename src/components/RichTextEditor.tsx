@@ -5,12 +5,16 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import { marked } from 'marked';
 import { Bold, Italic, Strikethrough, Link as LinkIcon, Heading1, Heading2, Quote, Code, Sparkles, MessageSquarePlus, PenTool } from 'lucide-react';
 import { CommentMark, SuggestionMark } from './editor/extensions';
 
 export interface RichTextEditorRef {
   applySuggestion: (commentId: string, newText: string) => void;
   resolveSuggestion: (commentId: string, accept: boolean) => void;
+  appendAsTasks: (text: string) => void;
 }
 
 interface RichTextEditorProps {
@@ -26,6 +30,10 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     StarterKit,
     Markdown.configure({
       linkify: true,
+    }),
+    TaskList,
+    TaskItem.configure({
+      nested: true,
     }),
     CommentMark,
     SuggestionMark,
@@ -85,15 +93,51 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
       
       if (from !== -1 && to !== -1) {
         const textToInsert = newText || "";
+        
+        // Convert Markdown to HTML to preserve formatting
+        const htmlContent = marked.parse(textToInsert) as string;
+        
+        // First set selection to the original text and mark it as a deletion (red, strikethrough)
         editor.chain()
           .setTextSelection({ from, to })
           .setSuggestion(commentId, 'deletion')
-          .insertContentAt(to, textToInsert)
-          .setTextSelection({ from: to, to: to + textToInsert.length })
+          .run();
+          
+        // Then insert the new text right after it, marked as an addition (green)
+        editor.chain()
+          .insertContentAt(to, htmlContent, {
+            updateSelection: true,
+          })
+          // The newly inserted content might be multiple nodes, so we select what was just inserted
+          .command(({ tr, commands }) => {
+            const addedFrom = to;
+            const addedTo = tr.selection.to;
+            return commands.setTextSelection({ from: addedFrom, to: addedTo });
+          })
           .setSuggestion(commentId, 'addition')
           .setComment(commentId)
+          .setTextSelection(to) // reset cursor
           .run();
       }
+    },
+    appendAsTasks: (text: string) => {
+      if (!editor) return;
+      
+      // We convert text like "- [ ] Question" into Tiptap's TaskList format.
+      // Tiptap can parse standard markdown lists if we pass them as HTML using marked, 
+      // but Github Flavored Markdown (which marked uses for checkboxes) isn't natively converted to Tiptap TaskList easily via raw HTML insertion.
+      // However, tiptap-markdown handles markdown checkboxes correctly via paste/input.
+      // Another way is to format it as a markdown string and let tiptap-markdown or `insertContent` handle it.
+      
+      const htmlContent = marked.parse(text, { gfm: true }) as string;
+      
+      // We insert at the very end of the document
+      const endPos = editor.state.doc.content.size;
+      
+      editor.chain()
+        .focus()
+        .insertContentAt(endPos, `\n\n<div class="mt-8 pt-4 border-t border-border/50"><h3>AI Обратная связь:</h3>${htmlContent}</div>`)
+        .run();
     },
     resolveSuggestion: (commentId: string, accept: boolean) => {
       if (!editor) return;

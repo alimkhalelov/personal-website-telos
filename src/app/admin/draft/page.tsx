@@ -118,6 +118,10 @@ ${finalContent}`;
     editorRef.current?.applySuggestion(id, text);
   };
 
+  const handleAppendTasks = (text: string) => {
+    editorRef.current?.appendAsTasks(text);
+  };
+
   const handleResolveSuggestion = (id: string, accept: boolean) => {
     editorRef.current?.resolveSuggestion(id, accept);
     if (accept) {
@@ -199,6 +203,7 @@ ${finalContent}`;
                   }}
                   onApplySuggestion={handleApplySuggestion}
                   onResolveSuggestion={handleResolveSuggestion}
+                  onAppendTasks={handleAppendTasks}
                 />
               ))}
             </div>

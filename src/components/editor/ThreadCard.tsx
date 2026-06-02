@@ -11,6 +11,7 @@ interface ThreadCardProps {
   onDelete: () => void;
   onApplySuggestion: (id: string, text: string) => void;
   onResolveSuggestion: (id: string, accept: boolean) => void;
+  onAppendTasks?: (text: string) => void;
 }
 
 const AVAILABLE_SKILLS = [
@@ -20,7 +21,7 @@ const AVAILABLE_SKILLS = [
   { id: 'translator', name: 'Translator', desc: 'Идеальный перевод' },
 ];
 
-export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, onDelete, onApplySuggestion, onResolveSuggestion }: ThreadCardProps) {
+export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, onDelete, onApplySuggestion, onResolveSuggestion, onAppendTasks }: ThreadCardProps) {
   const [skill, setSkill] = useState<string>(initialSkill || 'default');
   const [suggestionApplied, setSuggestionApplied] = useState(false);
   const [suggestionResolved, setSuggestionResolved] = useState(false);
@@ -45,14 +46,16 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
   
   const initialized = useRef(false);
 
-  // Auto-start the conversation on creation
+  // Auto-start the conversation on creation (except for writer skill, which waits for user input)
   useEffect(() => {
     if (!initialized.current && sendMessage) {
       initialized.current = true;
-      const initialPrompt = `Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${selectedText}`;
-      sendMessage({ text: initialPrompt });
+      if (initialSkill !== 'writer') {
+        const initialPrompt = `Пожалуйста, проанализируй или улучши этот фрагмент:\n\n> ${selectedText}`;
+        sendMessage({ text: initialPrompt });
+      }
     }
-  }, [sendMessage, selectedText]);
+  }, [sendMessage, selectedText, initialSkill]);
 
   const lastAiMessage = [...messages].reverse().find((m: any) => m.role === 'assistant');
 
@@ -68,15 +71,16 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
   useEffect(() => {
     if (!isLoading && lastAiMessage && !suggestionResolved && !suggestionApplied && !error) {
       const aiText = getMessageText(lastAiMessage);
-      if (initialSkill !== 'grill-me') {
-        onApplySuggestion(id, aiText);
+      if (initialSkill === 'grill-me') {
+        if (onAppendTasks) onAppendTasks(aiText);
         setSuggestionApplied(true);
       } else {
-        // For grill-me, just mark it as applied so we don't keep checking, but don't actually replace text
+        // humanizer, writer, default
+        onApplySuggestion(id, aiText);
         setSuggestionApplied(true);
       }
     }
-  }, [isLoading, lastAiMessage, suggestionResolved, suggestionApplied, id, onApplySuggestion, error, initialSkill]);
+  }, [isLoading, lastAiMessage, suggestionResolved, suggestionApplied, id, onApplySuggestion, onAppendTasks, error, initialSkill]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -111,11 +115,15 @@ export function ThreadCard({ id, selectedText, initialSkill, isActive, onClick, 
       setSkill(currentSkill);
     }
 
-    const text = chatInput;
+    let text = chatInput;
     setChatInput('');
     setShowMentions(false);
     
     if (sendMessage) {
+      if (initialSkill === 'writer' && messages.length === 0) {
+        text = `Пожалуйста, перепиши или улучши этот фрагмент с учетом моего комментария:\n\nИсходный текст:\n> ${selectedText}\n\nКомментарий/Инструкция:\n${text}`;
+      }
+      
       sendMessage({ text });
       // Reset suggestion states for next AI response
       setSuggestionApplied(false);
