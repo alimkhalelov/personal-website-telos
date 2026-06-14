@@ -23,20 +23,20 @@ export default function Home() {
       <section className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         <h1 className="text-5xl sm:text-7xl font-bold tracking-tighter leading-[1.1]">
           Alim Khalelov
-          <br />
-          <span className="text-muted-foreground/50">Architect of Autonomous Systems</span>
         </h1>
+        <h2 className="text-2xl sm:text-4xl text-muted-foreground/50 font-medium mt-2">
+          Architect of Autonomous Systems
+        </h2>
         
         <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl leading-relaxed font-light mt-4">
-          I am an AI-Native Product Manager and Game Designer. I build high-leverage products using the <span className="italic">Fan-Filter-Scale</span> methodology.
+          I am an AI-Native Product Manager and Game Designer. I build high-leverage products using the <Link href="/blog/fan-filter-scale-methodology" className="italic hover:text-accent underline decoration-muted-foreground/30 underline-offset-4 transition-colors">Fan-Filter-Scale</Link> methodology.
         </p>
       </section>
 
       {/* Lab Log / Blog Section */}
       <section className="flex flex-col gap-10">
         <div className="flex items-center justify-between border-b border-border pb-6">
-          <h2 className="text-3xl font-bold tracking-tight">System Logs</h2>
-          <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest bg-muted/30 px-3 py-1 rounded-full">Output</span>
+          <h2 className="text-3xl font-bold tracking-tight">Posts</h2>
         </div>
         
         <div className="flex flex-col gap-1">
