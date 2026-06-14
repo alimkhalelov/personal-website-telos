@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { CopyToAgentButton } from "@/components/copy-to-agent-button";
 
 export async function generateStaticParams() {
   const articles = getSortedArticles();
@@ -68,7 +69,10 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <article>
         <header className="mb-10 flex flex-col gap-3">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{article.meta.title}</h1>
-          <time className="text-muted font-mono text-sm">{formatDate(article.meta.date)}</time>
+          <div className="flex items-center justify-between">
+            <time className="text-muted font-mono text-sm">{formatDate(article.meta.date)}</time>
+            <CopyToAgentButton title={article.meta.title} content={article.content} />
+          </div>
         </header>
 
         <div className="prose prose-invert max-w-none">
