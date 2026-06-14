@@ -45,18 +45,17 @@ export default function Home() {
               <Link 
                 href={`/blog/${article.slug}`} 
                 key={article.slug}
-                className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-2"
+                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4"
               >
-                <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-6">
+                  <time className="text-sm font-mono text-muted-foreground shrink-0">
+                    {formatDate(article.date)}
+                  </time>
                   <h3 className="text-lg font-medium group-hover:text-accent transition-colors">
                     {article.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-1">{article.description}</p>
                 </div>
-                <div className="flex items-center gap-4 text-muted-foreground">
-                  <time className="text-sm font-mono shrink-0">
-                    {formatDate(article.date)}
-                  </time>
+                <div className="flex items-center shrink-0">
                   <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent" />
                 </div>
               </Link>
