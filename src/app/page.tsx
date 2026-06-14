@@ -64,13 +64,13 @@ export default function Home() {
               <Link 
                 href={`/blog/${article.slug}`} 
                 key={article.slug}
-                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4"
+                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !text-foreground !no-underline"
               >
-                <div className="flex items-center gap-6">
-                  <time className="text-sm font-mono text-muted-foreground shrink-0">
+                <div className="flex items-center gap-4">
+                  <time className="text-base font-mono text-muted-foreground w-24 shrink-0">
                     {formatDate(article.date)}
                   </time>
-                  <h3 className="text-lg font-medium group-hover:text-accent transition-colors">
+                  <h3 className="text-base font-medium text-foreground group-hover:text-accent transition-colors">
                     {article.title}
                   </h3>
                 </div>
