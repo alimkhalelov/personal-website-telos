@@ -69,46 +69,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pet-Projects Labs Section */}
-      <section className="flex flex-col gap-10">
-        <div className="flex items-center justify-between border-b border-border pb-6 relative">
-          <h2 className="text-3xl font-bold tracking-tight">Pet-Projects Labs</h2>
-          {/* Hamster Pet Container */}
-          <div id="hamster-pet" className="absolute right-0 bottom-2 w-16 h-16 pointer-events-none opacity-50 border border-dashed border-muted-foreground rounded-lg flex items-center justify-center text-[10px] text-muted-foreground text-center leading-tight">
-            Hamster<br/>Sprite
-          </div>
-        </div>
 
-        {/* Featured App */}
-        <div className="w-full aspect-[21/9] sm:aspect-[21/9] bg-muted/20 border border-border rounded-2xl overflow-hidden relative group cursor-pointer hover:border-accent transition-colors flex items-center justify-center">
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent z-10" />
-          <p className="text-muted-foreground z-20 font-mono text-sm tracking-widest uppercase">Featured Project Image</p>
-          <div className="absolute bottom-6 left-6 z-20 flex flex-col gap-2">
-            <h3 className="text-2xl font-bold text-foreground group-hover:text-accent transition-colors">Project Telos</h3>
-            <p className="text-muted-foreground">The autonomous OS for demiurges.</p>
-          </div>
-        </div>
-
-        {/* Grid 3-in-a-row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="aspect-square bg-muted/10 border border-border rounded-xl flex items-center justify-center hover:border-accent hover:bg-muted/20 transition-all cursor-pointer group flex-col p-6 text-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-muted/30 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
-              </div>
-              <div>
-                <h4 className="font-medium group-hover:text-accent transition-colors">Experiment {i}</h4>
-                <p className="text-sm text-muted-foreground mt-1">AI driven lab project.</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Terminal Links */}
       <section className="flex flex-col gap-8 pt-8">
         <h2 className="text-lg font-medium text-muted-foreground uppercase tracking-wider text-center sm:text-left">Network</h2>
         <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-start">
+          <Link href="/petprojects" className="flex items-center gap-2 px-5 py-3 rounded-full border border-accent hover:border-accent text-accent bg-accent/10 hover:bg-accent/20 transition-all text-sm font-medium">
+            Pet-Projects Labs
+            <ArrowUpRight className="w-3 h-3" />
+          </Link>
           <a href="#" className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium">
             Telegram
             <ArrowUpRight className="w-3 h-3" />
