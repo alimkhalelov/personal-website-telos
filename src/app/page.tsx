@@ -17,8 +17,27 @@ const formatDate = (dateString: string) => {
 export default function Home() {
   const articles = getSortedArticles();
 
-  return (
-    <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full">
+    <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative">
+      {/* Top Header / Hamster Area */}
+      <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-50">
+        <div className="relative group flex items-center gap-4">
+          <Link href="/petprojects" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">
+            Pet-Projects Labs
+          </Link>
+          
+          {/* Hamster Pet Placeholder */}
+          <div className="w-10 h-10 border border-dashed border-muted-foreground/50 rounded-full flex items-center justify-center text-[8px] text-muted-foreground text-center cursor-pointer transition-all duration-300 group-hover:-translate-x-2">
+            {/* 
+              CSS animations to be added when sprites arrive:
+              - Default: occasionally wave hand
+              - Hover: point to the left side
+              - Active/Random: roll around like a kolobok
+            */}
+            Hamster
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         <h1 className="text-5xl sm:text-7xl font-bold tracking-tighter leading-[1.1]">
@@ -74,10 +93,6 @@ export default function Home() {
       <section className="flex flex-col gap-8 pt-8">
         <h2 className="text-lg font-medium text-muted-foreground uppercase tracking-wider text-center sm:text-left">Network</h2>
         <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-start">
-          <Link href="/petprojects" className="flex items-center gap-2 px-5 py-3 rounded-full border border-accent hover:border-accent text-accent bg-accent/10 hover:bg-accent/20 transition-all text-sm font-medium">
-            Pet-Projects Labs
-            <ArrowUpRight className="w-3 h-3" />
-          </Link>
           <a href="#" className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium">
             Telegram
             <ArrowUpRight className="w-3 h-3" />
