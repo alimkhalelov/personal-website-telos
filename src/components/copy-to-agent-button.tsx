@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Bot } from "lucide-react";
+import { Check } from "lucide-react";
 
 interface CopyToAgentButtonProps {
   title: string;
@@ -54,12 +54,8 @@ Implementation Guidelines
       className="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-muted hover:text-foreground bg-muted/20 hover:bg-muted/30 border border-muted/30 rounded-md transition-colors"
       aria-label="Copy prompt for AI agent"
     >
-      {isCopied ? (
-        <Check className="w-4 h-4 text-green-500" />
-      ) : (
-        <Bot className="w-4 h-4" />
-      )}
-      <span>{isCopied ? "Copied to Agent!" : "Copy to Agent"}</span>
+      {isCopied && <Check className="w-4 h-4 text-green-500" />}
+      <span>{isCopied ? "Copied to AI Agent!" : "Copy to AI Agent"}</span>
     </button>
   );
 }

@@ -60,19 +60,19 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <main className="max-w-2xl mx-auto px-6 py-16 sm:py-24 w-full">
-      <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground mb-12 transition-colors">
-        <ArrowLeft className="w-4 h-4" />
-        <span className="text-sm font-medium">На главную</span>
-      </Link>
+    <main className="max-w-4xl mx-auto px-6 py-16 sm:py-24 w-full">
+      <div className="flex items-center justify-between mb-12">
+        <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          <span className="text-sm font-medium">Home</span>
+        </Link>
+        <CopyToAgentButton title={article.meta.title} content={article.content} />
+      </div>
 
       <article>
         <header className="mb-10 flex flex-col gap-3">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">{article.meta.title}</h1>
-          <div className="flex items-center justify-between">
-            <time className="text-muted font-mono text-sm">{formatDate(article.meta.date)}</time>
-            <CopyToAgentButton title={article.meta.title} content={article.content} />
-          </div>
+          <time className="text-muted font-mono text-sm">{formatDate(article.meta.date)}</time>
         </header>
 
         <div className="prose prose-invert max-w-none">
