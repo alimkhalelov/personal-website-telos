@@ -21,7 +21,7 @@ export default function Home() {
       {/* Top Header / Hamster Area */}
       <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-50">
         <div className="relative group flex items-center gap-4">
-          <Link href="/petprojects" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">
+          <Link href="/petprojects" className="text-lg font-medium text-white/50 hover:text-white transition-colors">
             Pet-Projects Labs
           </Link>
           
@@ -67,7 +67,7 @@ export default function Home() {
                 className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !text-foreground !no-underline"
               >
                 <div className="flex items-center gap-4">
-                  <time className="text-base font-mono text-muted-foreground w-24 shrink-0">
+                  <time className="text-base font-mono text-muted-foreground w-[105px] shrink-0 tracking-[-0.05em]">
                     {formatDate(article.date)}
                   </time>
                   <h3 className="text-base font-medium text-foreground group-hover:text-accent transition-colors">

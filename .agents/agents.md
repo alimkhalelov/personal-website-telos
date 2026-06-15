@@ -24,3 +24,5 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - [x] Build AI Drafting Room UI (Grill Me flow).
 - [ ] Connect Outstatic for CMS + Auth.
 - [ ] Add i18n auto-translation flows.
+- [x] Refine landing UI typography and rename blog section.
+- [x] Add Pet-Projects Labs gallery UI and prepare pixel hamster placeholder.
