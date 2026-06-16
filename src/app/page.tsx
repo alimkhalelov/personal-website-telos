@@ -21,20 +21,9 @@ export default function Home() {
       {/* Top Header / Hamster Area */}
       <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-50">
         <div className="relative group flex items-center gap-4">
-          <Link href="/petprojects" className="text-lg font-medium text-white/50 hover:text-white transition-colors">
+          <Link href="/petprojects" className="text-lg font-medium !text-white/50 hover:!text-white transition-colors !no-underline">
             Pet-Projects Labs
           </Link>
-          
-          {/* Hamster Pet Placeholder */}
-          <div className="w-10 h-10 border border-dashed border-muted-foreground/50 rounded-full flex items-center justify-center text-[8px] text-muted-foreground text-center cursor-pointer transition-all duration-300 group-hover:-translate-x-2">
-            {/* 
-              CSS animations to be added when sprites arrive:
-              - Default: occasionally wave hand
-              - Hover: point to the left side
-              - Active/Random: roll around like a kolobok
-            */}
-            Hamster
-          </div>
         </div>
       </header>
 
@@ -64,18 +53,24 @@ export default function Home() {
               <Link 
                 href={`/blog/${article.slug}`} 
                 key={article.slug}
-                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !text-foreground !no-underline"
+                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !no-underline"
               >
                 <div className="flex items-center gap-4">
-                  <time className="text-base font-mono text-muted-foreground w-[105px] shrink-0 tracking-[-0.05em]">
+                  <time 
+                    className="text-base w-[105px] shrink-0 text-blue-600 group-hover:underline"
+                    style={{ fontFamily: "'Google Sans', sans-serif" }}
+                  >
                     {formatDate(article.date)}
                   </time>
-                  <h3 className="text-base font-medium text-foreground group-hover:text-accent transition-colors">
+                  <h3 
+                    className="text-base font-medium text-blue-600 group-hover:underline transition-colors"
+                    style={{ fontFamily: "'Google Sans', sans-serif" }}
+                  >
                     {article.title}
                   </h3>
                 </div>
                 <div className="flex items-center shrink-0">
-                  <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent" />
+                  <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-600" />
                 </div>
               </Link>
             ))

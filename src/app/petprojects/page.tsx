@@ -13,10 +13,6 @@ export default function PetProjectsPage() {
       <section className="flex flex-col gap-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
         <div className="flex items-center justify-between border-b border-border pb-6 relative">
           <h1 className="text-4xl font-bold tracking-tight">Pet-Projects Labs</h1>
-          {/* Hamster Pet Container */}
-          <div id="hamster-pet" className="absolute right-0 bottom-2 w-16 h-16 pointer-events-none opacity-50 border border-dashed border-muted-foreground rounded-lg flex items-center justify-center text-[10px] text-muted-foreground text-center leading-tight">
-            Hamster<br/>Sprite
-          </div>
         </div>
 
         <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed font-light">
