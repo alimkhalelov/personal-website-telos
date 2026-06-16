@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Save, ArrowLeft } from "lucide-react";
+import { Save, ArrowLeft, Twitter, Linkedin, Send } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,6 +18,7 @@ function DraftingRoomContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const existingSlug = searchParams.get("slug");
+  const braindumpId = searchParams.get("braindumpId");
   
   const [slug, setSlug] = useState("");
   const [editableContent, setEditableContent] = useState("");
@@ -49,7 +50,14 @@ function DraftingRoomContent() {
   // Load draft state from localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!existingSlug) {
+      if (braindumpId) {
+        const braindumps = JSON.parse(localStorage.getItem("telos_braindumps") || "[]");
+        const dump = braindumps.find((b: any) => b.id === braindumpId);
+        if (dump && dump.result) {
+          setEditableContent(dump.result);
+        }
+        setIsLoaded(true);
+      } else if (!existingSlug) {
         const savedThreads = localStorage.getItem("telos_draft_threads");
         if (savedThreads) {
           try {
@@ -65,11 +73,11 @@ function DraftingRoomContent() {
         setIsLoaded(true);
       }
     }
-  }, [existingSlug]);
+  }, [existingSlug, braindumpId]);
 
   // Save state to localStorage
   useEffect(() => {
-    if (typeof window !== "undefined" && isLoaded) {
+    if (typeof window !== "undefined" && isLoaded && !braindumpId) {
       localStorage.setItem("telos_draft_threads", JSON.stringify(threads));
       
       if (!existingSlug) {
@@ -77,7 +85,7 @@ function DraftingRoomContent() {
         localStorage.setItem("telos_draft_slug", slug);
       }
     }
-  }, [threads, editableContent, slug, existingSlug, isLoaded]);
+  }, [threads, editableContent, slug, existingSlug, isLoaded, braindumpId]);
 
   const handleSave = async () => {
     if (!slug) return alert("Пожалуйста, введите URL (slug) для поста.");
@@ -130,6 +138,23 @@ ${finalContent}`;
     }
   };
 
+  const handleCopyPrompt = (platform: 'x' | 'linkedin' | 'telegram') => {
+    let prompt = '';
+    if (platform === 'x') {
+      prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи:\n\n${editableContent}`;
+    } else if (platform === 'linkedin') {
+      prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии:\n\n${editableContent}`;
+    } else if (platform === 'telegram') {
+      prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру:\n\n${editableContent}`;
+    }
+
+    navigator.clipboard.writeText(prompt).then(() => {
+      alert(`Промпт для ${platform.toUpperCase()} скопирован в буфер обмена! Можно вставлять в ChatGPT/Claude.`);
+    }).catch(() => {
+      alert("Не удалось скопировать текст.");
+    });
+  };
+
   return (
     <div className="flex h-[100dvh] w-full bg-background overflow-hidden">
       
@@ -152,7 +177,30 @@ ${finalContent}`;
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 mr-4 border-r border-border/50 pr-4">
+              <button 
+                onClick={() => handleCopyPrompt('x')} 
+                title="Copy X (Twitter) Prompt"
+                className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
+              >
+                <Twitter className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => handleCopyPrompt('linkedin')} 
+                title="Copy LinkedIn Prompt"
+                className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
+              >
+                <Linkedin className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => handleCopyPrompt('telegram')} 
+                title="Copy Telegram Prompt"
+                className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
             <button 
               onClick={handleSave} 
               disabled={isSaving} 
