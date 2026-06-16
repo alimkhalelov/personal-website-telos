@@ -128,8 +128,7 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        fullText += chunk;
+        fullText += decoder.decode(value, { stream: true });
       }
 
       setBraindumps(prev => prev.map(bd => bd.id === item.id ? { ...bd, status: 'done', result: fullText } : bd));

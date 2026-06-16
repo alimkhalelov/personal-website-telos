@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Save, ArrowLeft } from "lucide-react";
+import { Save, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,6 +23,7 @@ function DraftingRoomContent() {
   const [slug, setSlug] = useState("");
   const [editableContent, setEditableContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
 
   // Threads State
   const [threads, setThreads] = useState<Thread[]>([]);
@@ -122,6 +123,43 @@ ${finalContent}`;
     }
   };
 
+  const handleGenerateSlug = async () => {
+    if (!editableContent || editableContent.length < 10) return alert("Контент слишком короткий для генерации слага.");
+    setIsGeneratingSlug(true);
+    try {
+      const promptText = editableContent.substring(0, 1000);
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: promptText }],
+          skill: "slug-generator"
+        })
+      });
+
+      if (!res.ok) throw new Error("API Error");
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No reader");
+
+      const decoder = new TextDecoder();
+      let fullText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        fullText += decoder.decode(value, { stream: true });
+      }
+
+      setSlug(fullText.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''));
+    } catch (e) {
+      console.error(e);
+      alert("Ошибка при генерации слага.");
+    } finally {
+      setIsGeneratingSlug(false);
+    }
+  };
+
   const handleApplySuggestion = (id: string, text: string) => {
     editorRef.current?.applySuggestion(id, text);
   };
@@ -168,13 +206,23 @@ ${finalContent}`;
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="h-6 w-[1px] bg-border hidden sm:block"></div>
-            <input 
-              type="text" 
-              placeholder="post-url-slug" 
-              value={slug}
-              onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
-              className="bg-transparent border-none text-sm sm:text-base font-medium focus:outline-none focus:ring-0 placeholder:text-muted/50 w-32 sm:w-64"
-            />
+            <div className="flex items-center group relative">
+              <input 
+                type="text" 
+                placeholder="post-url-slug" 
+                value={slug}
+                onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
+                className="bg-transparent border-none text-sm sm:text-base font-medium focus:outline-none focus:ring-0 placeholder:text-muted/50 w-32 sm:w-64"
+              />
+              <button 
+                onClick={handleGenerateSlug}
+                disabled={isGeneratingSlug || !editableContent}
+                title="Сгенерировать слаг с помощью ИИ"
+                className="absolute right-0 p-1 text-muted-foreground hover:text-accent disabled:opacity-50 transition-opacity opacity-0 group-hover:opacity-100"
+              >
+                {isGeneratingSlug ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
