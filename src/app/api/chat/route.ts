@@ -96,8 +96,8 @@ export async function POST(req: Request) {
       system: systemPrompt,
     });
 
-    // SDK expects DataStreamResponse format for useChat
-    return result.toDataStreamResponse();
+    // SDK expects TextStreamResponse format for this version
+    return result.toTextStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
