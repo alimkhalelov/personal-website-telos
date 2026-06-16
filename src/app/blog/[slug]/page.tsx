@@ -49,7 +49,7 @@ const components = {
   blockquote: (props: any) => (
     <blockquote className="border-l-4 border-muted pl-6 py-2 italic my-8 text-muted-foreground bg-muted/20 rounded-r-lg" {...props}><Bionify>{props.children}</Bionify></blockquote>
   ),
-  strong: (props: any) => <strong className="font-bold text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></strong>,
+  strong: (props: any) => <strong className="font-bold text-accent" {...props}><Bionify>{props.children}</Bionify></strong>,
 };
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
