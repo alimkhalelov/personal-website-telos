@@ -46,14 +46,8 @@ export const Bionify = ({ children }: { children: ReactNode }): ReactNode => {
     return Children.map(children, (child) => <Bionify>{child}</Bionify>);
   }
   if (isValidElement(children)) {
-    // Check if element has children prop
-    const props = children.props as any;
-    if (props && props.children) {
-      return React.cloneElement(children as React.ReactElement<any>, {
-        ...props,
-        children: <Bionify>{props.children}</Bionify>,
-      });
-    }
+    // Return React elements as-is. They will handle their own Bionify if they are MDX components.
+    return children;
   }
   return children;
 };
