@@ -128,17 +128,8 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(l => l.trim() !== '');
-        
-        for (const line of lines) {
-          if (line.startsWith('0:')) {
-            try {
-              const parsed = JSON.parse(line.substring(2));
-              if (typeof parsed === 'string') fullText += parsed;
-            } catch (e) {}
-          }
-        }
+        const chunk = decoder.decode(value, { stream: true });
+        fullText += chunk;
       }
 
       setBraindumps(prev => prev.map(bd => bd.id === item.id ? { ...bd, status: 'done', result: fullText } : bd));

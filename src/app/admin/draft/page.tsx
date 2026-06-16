@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Save, ArrowLeft, Hash, Briefcase, Send } from "lucide-react";
+import { Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -182,23 +182,23 @@ ${finalContent}`;
               <button 
                 onClick={() => handleCopyPrompt('x')} 
                 title="Copy X (Twitter) Prompt"
-                className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
+                className="px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
               >
-                <Hash className="w-4 h-4" />
+                X / Twitter
               </button>
               <button 
                 onClick={() => handleCopyPrompt('linkedin')} 
                 title="Copy LinkedIn Prompt"
-                className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
+                className="px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
               >
-                <Briefcase className="w-4 h-4" />
+                LinkedIn
               </button>
               <button 
                 onClick={() => handleCopyPrompt('telegram')} 
                 title="Copy Telegram Prompt"
-                className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
+                className="px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
               >
-                <Send className="w-4 h-4" />
+                Telegram
               </button>
             </div>
             <button 
