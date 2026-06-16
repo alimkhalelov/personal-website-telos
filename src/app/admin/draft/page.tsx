@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Save, ArrowLeft, Twitter, Linkedin, Send } from "lucide-react";
+import { Save, ArrowLeft, Hash, Briefcase, Send } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -184,14 +184,14 @@ ${finalContent}`;
                 title="Copy X (Twitter) Prompt"
                 className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
               >
-                <Twitter className="w-4 h-4" />
+                <Hash className="w-4 h-4" />
               </button>
               <button 
                 onClick={() => handleCopyPrompt('linkedin')} 
                 title="Copy LinkedIn Prompt"
                 className="p-2 text-muted hover:text-foreground hover:bg-accent/10 rounded-md transition-colors"
               >
-                <Linkedin className="w-4 h-4" />
+                <Briefcase className="w-4 h-4" />
               </button>
               <button 
                 onClick={() => handleCopyPrompt('telegram')} 
