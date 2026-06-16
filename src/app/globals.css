@@ -49,3 +49,12 @@ a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* Bionic Reading Utilities */
+body.bionic-reading-enabled .bionic-bold {
+  font-weight: 700;
+}
+
+body.bionic-reading-enabled .bionic-rest {
+  opacity: 0.85;
+}
