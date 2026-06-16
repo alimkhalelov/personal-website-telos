@@ -80,9 +80,6 @@ export async function POST(req: Request) {
   const systemPrompt = SKILL_PROMPTS[selectedSkill];
 
   try {
-    // Convert UIMessages (from useChat SDK 5) to ModelMessages (for streamText)
-    const modelMessages = await convertToModelMessages(messages);
-
     const result = streamText({
       model: google("gemini-2.5-flash"),
       providerOptions: {
@@ -95,12 +92,12 @@ export async function POST(req: Request) {
           ]
         }
       },
-      messages: modelMessages,
+      messages: messages,
       system: systemPrompt,
     });
 
-    // SDK 5: useChat expects UIMessageStream format (SSE with JSON chunks)
-    return result.toUIMessageStreamResponse();
+    // SDK expects DataStreamResponse format for useChat
+    return result.toDataStreamResponse();
   } catch (e: any) {
     return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
   }
