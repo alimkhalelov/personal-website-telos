@@ -22,9 +22,23 @@ function DraftingRoomContent() {
   
   const [slug, setSlug] = useState("");
   const [editableContent, setEditableContent] = useState("");
+  const [frontmatter, setFrontmatter] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+
+  const parseContent = (text: string) => {
+    if (text.startsWith("---")) {
+      const endIdx = text.indexOf("---", 3);
+      if (endIdx !== -1) {
+        setFrontmatter(text.substring(3, endIdx));
+        setEditableContent(text.substring(endIdx + 3).replace(/^\n+/, ''));
+        return;
+      }
+    }
+    setFrontmatter("");
+    setEditableContent(text);
+  };
 
   const showToast = (msg: string) => {
     setToastMsg(msg);
@@ -46,7 +60,7 @@ function DraftingRoomContent() {
         .then(res => res.json())
         .then(data => {
           if (data.content) {
-            setEditableContent(data.content);
+            parseContent(data.content);
           }
           setIsLoaded(true);
         })
@@ -61,7 +75,7 @@ function DraftingRoomContent() {
         const braindumps = JSON.parse(localStorage.getItem("telos_braindumps") || "[]");
         const dump = braindumps.find((b: any) => b.id === braindumpId);
         if (dump && dump.result) {
-          setEditableContent(dump.result);
+          parseContent(dump.result);
         }
         setIsLoaded(true);
       } else if (!existingSlug) {
@@ -73,6 +87,9 @@ function DraftingRoomContent() {
         }
         const savedContent = localStorage.getItem("telos_draft_content");
         if (savedContent) setEditableContent(savedContent);
+
+        const savedFrontmatter = localStorage.getItem("telos_draft_fm");
+        if (savedFrontmatter) setFrontmatter(savedFrontmatter);
 
         const savedSlug = localStorage.getItem("telos_draft_slug");
         if (savedSlug) setSlug(savedSlug);
@@ -89,10 +106,11 @@ function DraftingRoomContent() {
       
       if (!existingSlug) {
         localStorage.setItem("telos_draft_content", editableContent);
+        localStorage.setItem("telos_draft_fm", frontmatter);
         localStorage.setItem("telos_draft_slug", slug);
       }
     }
-  }, [threads, editableContent, slug, existingSlug, isLoaded, braindumpId]);
+  }, [threads, editableContent, frontmatter, slug, existingSlug, isLoaded, braindumpId]);
 
   const handleSave = async () => {
     let currentSlug = slug;
@@ -143,16 +161,15 @@ function DraftingRoomContent() {
     }
     
     setIsSaving(true);
-    let finalContent = editableContent;
-    if (!finalContent.startsWith("---")) {
-      finalContent = `---
-title: '${currentSlug.replace(/-/g, " ")}'
-date: '${new Date().toISOString()}'
-description: 'Новый пост от Demiurge'
----
-
-${finalContent}`;
+    let currentFm = frontmatter;
+    if (!currentFm) {
+      currentFm = `\ntitle: '${currentSlug.replace(/-/g, " ")}'\ndate: '${new Date().toISOString()}'\ndescription: 'Новый пост от Demiurge'\n`;
+      setFrontmatter(currentFm);
     }
+    
+    const finalContent = `---${currentFm}---
+
+${editableContent}`;
 
     try {
       const res = await fetch("/api/cms", {
@@ -197,32 +214,30 @@ ${finalContent}`;
   };
 
   const toggleMeta = async (key: 'hidden' | 'archived') => {
-    if (!editableContent.startsWith('---')) {
+    if (!frontmatter) {
       alert("Please save the draft first to create the initial frontmatter.");
       return;
     }
-    const endOfFrontmatter = editableContent.indexOf('---', 3);
-    if (endOfFrontmatter === -1) return;
     
-    let frontmatter = editableContent.substring(3, endOfFrontmatter);
-    
+    let currentFm = frontmatter;
     const regex = new RegExp(`\n${key}:\\s*(true|false)`);
     let newValue = true;
-    if (regex.test(frontmatter)) {
-      frontmatter = frontmatter.replace(regex, (match, p1) => {
+    
+    if (regex.test(currentFm)) {
+      currentFm = currentFm.replace(regex, (match, p1) => {
         newValue = p1 === 'false';
         return `\n${key}: ${newValue}`;
       });
     } else {
-      if (!frontmatter.endsWith('\n')) frontmatter += '\n';
-      frontmatter += `${key}: true\n`;
+      if (!currentFm.endsWith('\n')) currentFm += '\n';
+      currentFm += `${key}: true\n`;
       newValue = true;
     }
     
-    if (!frontmatter.endsWith('\n')) frontmatter += '\n';
-    
-    const newContent = `---${frontmatter}---${editableContent.substring(endOfFrontmatter + 3)}`;
-    setEditableContent(newContent);
+    setFrontmatter(currentFm);
+    const newContent = `---${currentFm}---
+
+${editableContent}`;
     
     let currentSlug = existingSlug || slug;
     if (!currentSlug) return;
@@ -247,8 +262,8 @@ ${finalContent}`;
     }
   };
 
-  const isHidden = editableContent.includes('\nhidden: true');
-  const isArchived = editableContent.includes('\narchived: true');
+  const isHidden = frontmatter.includes('\nhidden: true');
+  const isArchived = frontmatter.includes('\narchived: true');
 
   const handleGenerateSlug = async () => {
     if (!editableContent || editableContent.length < 10) return alert("Контент слишком короткий для генерации слага.");
@@ -420,7 +435,7 @@ ${finalContent}`;
               className="bg-accent hover:bg-accent-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm disabled:opacity-50 flex items-center gap-2"
             >
               <Save className="w-4 h-4" />
-              <span className="hidden sm:inline">{isSaving ? "Saving..." : "Publish"}</span>
+              <span className="hidden sm:inline">{isSaving ? "Saving..." : (existingSlug ? "Save Changes" : "Publish")}</span>
             </button>
           </div>
         </header>
