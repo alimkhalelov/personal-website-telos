@@ -2,7 +2,7 @@ import { getArticleBySlug, getSortedArticles } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
-import { ArrowLeft, Zap } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { CopyToAgentButton } from "@/components/copy-to-agent-button";
 import { Bionify } from "@/components/bionify";
 
@@ -96,10 +96,8 @@ const components = {
 
     if (isTldr) {
       return (
-        <div className="my-10 p-6 sm:p-8 bg-accent/5 border border-accent/20 rounded-2xl shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
-          <div className="flex items-center gap-2 mb-3">
-            <Zap className="w-5 h-5 text-accent fill-accent/20" />
+        <div className="my-10 p-6 sm:p-8 bg-accent/5 rounded-2xl">
+          <div className="mb-3">
             <span className="font-bold text-accent tracking-wide uppercase text-sm">TL;DR</span>
           </div>
           <p className="text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6] m-0">
