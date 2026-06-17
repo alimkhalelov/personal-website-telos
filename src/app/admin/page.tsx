@@ -2,7 +2,7 @@ import { getSortedArticles } from "@/lib/mdx";
 import DashboardClient from "./DashboardClient";
 
 export default function AdminDashboard() {
-  const articles = getSortedArticles();
+  const articles = getSortedArticles(true);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-accent/30 p-8 sm:p-16">

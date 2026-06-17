@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { Save, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
+import { Save, ArrowLeft, Sparkles, Loader2, Eye, EyeOff, Archive, Trash2, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,6 +24,12 @@ function DraftingRoomContent() {
   const [editableContent, setEditableContent] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const showToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3000);
+  };
 
   // Threads State
   const [threads, setThreads] = useState<Thread[]>([]);
@@ -89,14 +95,58 @@ function DraftingRoomContent() {
   }, [threads, editableContent, slug, existingSlug, isLoaded, braindumpId]);
 
   const handleSave = async () => {
-    if (!slug) return alert("Пожалуйста, введите URL (slug) для поста.");
-    if (!editableContent) return alert("Контент пуст.");
-    setIsSaving(true);
+    let currentSlug = slug;
     
+    if (!currentSlug) {
+      if (!editableContent || editableContent.length < 10) {
+        return alert("Слаг пуст, а контент слишком короткий для авто-генерации. Пожалуйста, введите слаг.");
+      }
+      setIsSaving(true);
+      try {
+        const promptText = editableContent.substring(0, 1000);
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: promptText }],
+            skill: "slug-generator"
+          })
+        });
+
+        if (!res.ok) throw new Error("API Error");
+
+        const reader = res.body?.getReader();
+        if (!reader) throw new Error("No reader");
+
+        const decoder = new TextDecoder();
+        let fullText = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          fullText += decoder.decode(value, { stream: true });
+        }
+
+        currentSlug = fullText.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        setSlug(currentSlug);
+      } catch (e) {
+        console.error(e);
+        alert("Ошибка при автоматической генерации слага.");
+        setIsSaving(false);
+        return;
+      }
+    }
+
+    if (!editableContent) {
+      setIsSaving(false);
+      return alert("Контент пуст.");
+    }
+    
+    setIsSaving(true);
     let finalContent = editableContent;
     if (!finalContent.startsWith("---")) {
       finalContent = `---
-title: '${slug.replace(/-/g, " ")}'
+title: '${currentSlug.replace(/-/g, " ")}'
 date: '${new Date().toISOString()}'
 description: 'Новый пост от Demiurge'
 ---
@@ -108,10 +158,17 @@ ${finalContent}`;
       const res = await fetch("/api/cms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, content: finalContent }),
+        body: JSON.stringify({ slug: currentSlug, content: finalContent }),
       });
       if (res.ok) {
-        router.push("/admin");
+        if (braindumpId) {
+          try {
+            const braindumps = JSON.parse(localStorage.getItem("telos_braindumps") || "[]");
+            const filtered = braindumps.filter((b: any) => b.id !== braindumpId);
+            localStorage.setItem("telos_braindumps", JSON.stringify(filtered));
+          } catch(e) {}
+        }
+        showToast("Changes saved.");
       } else {
         const err = await res.json();
         alert("Ошибка при сохранении: " + err.error);
@@ -122,6 +179,52 @@ ${finalContent}`;
       setIsSaving(false);
     }
   };
+
+  const handleDeleteArticle = async () => {
+    if (!existingSlug) return alert("Nothing to delete yet.");
+    if (!confirm("Are you sure you want to delete this article completely?")) return;
+    try {
+      const res = await fetch(`/api/cms?slug=${existingSlug}`, { method: "DELETE" });
+      if (res.ok) {
+        router.push("/admin");
+      } else {
+        alert("Failed to delete");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error deleting file.");
+    }
+  };
+
+  const toggleMeta = async (key: 'hidden' | 'archived') => {
+    if (!editableContent.startsWith('---')) {
+      alert("Please save the draft first to create the initial frontmatter.");
+      return;
+    }
+    const endOfFrontmatter = editableContent.indexOf('---', 3);
+    if (endOfFrontmatter === -1) return;
+    
+    let frontmatter = editableContent.substring(3, endOfFrontmatter);
+    
+    const regex = new RegExp(`\n${key}:\\s*(true|false)`);
+    let newValue = true;
+    if (regex.test(frontmatter)) {
+      frontmatter = frontmatter.replace(regex, (match, p1) => {
+        newValue = p1 === 'false';
+        return `\n${key}: ${newValue}`;
+      });
+    } else {
+      frontmatter += `\n${key}: true`;
+      newValue = true;
+    }
+    
+    const newContent = `---${frontmatter}---${editableContent.substring(endOfFrontmatter + 3)}`;
+    setEditableContent(newContent);
+    showToast(`${key} status changed to ${newValue}. Click Save to apply.`);
+  };
+
+  const isHidden = editableContent.includes('\nhidden: true');
+  const isArchived = editableContent.includes('\narchived: true');
 
   const handleGenerateSlug = async () => {
     if (!editableContent || editableContent.length < 10) return alert("Контент слишком короткий для генерации слага.");
@@ -206,13 +309,13 @@ ${finalContent}`;
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div className="h-6 w-[1px] bg-border hidden sm:block"></div>
-            <div className="flex items-center group relative">
+            <div className="flex items-center group relative min-w-[150px] sm:min-w-[300px]">
               <input 
                 type="text" 
                 placeholder="post-url-slug" 
                 value={slug}
                 onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
-                className="bg-transparent border-none text-sm sm:text-base font-medium focus:outline-none focus:ring-0 placeholder:text-muted/50 w-32 sm:w-64"
+                className="bg-transparent border-none text-sm sm:text-base font-medium focus:outline-none focus:ring-0 placeholder:text-muted/50 w-full pr-8 truncate"
               />
               <button 
                 onClick={handleGenerateSlug}
@@ -226,6 +329,44 @@ ${finalContent}`;
           </div>
 
           <div className="flex items-center gap-4">
+            {toastMsg && (
+              <span className="text-sm font-medium text-accent animate-pulse mr-2">
+                {toastMsg}
+              </span>
+            )}
+            {existingSlug && (
+              <div className="flex items-center gap-1 mr-2 border-r border-border/50 pr-4">
+                <a 
+                  href={`/blog/${existingSlug}`} 
+                  target="_blank"
+                  title="View Article"
+                  className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-md transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <button 
+                  onClick={() => toggleMeta('hidden')} 
+                  title={isHidden ? "Unhide (Make Public)" : "Hide (Make Private)"}
+                  className={`p-2 rounded-md transition-colors ${isHidden ? 'text-accent bg-accent/10 hover:bg-accent/20' : 'text-muted-foreground hover:text-accent hover:bg-accent/10'}`}
+                >
+                  {isHidden ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+                <button 
+                  onClick={() => toggleMeta('archived')} 
+                  title="Toggle Archive"
+                  className={`p-2 rounded-md transition-colors ${isArchived ? 'text-yellow-500 bg-yellow-500/10 hover:bg-yellow-500/20' : 'text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10'}`}
+                >
+                  <Archive className="w-4 h-4" />
+                </button>
+                <button 
+                  onClick={handleDeleteArticle} 
+                  title="Delete Article"
+                  className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-md transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            )}
             <div className="flex items-center gap-1 mr-4 border-r border-border/50 pr-4">
               <button 
                 onClick={() => handleCopyPrompt('x')} 

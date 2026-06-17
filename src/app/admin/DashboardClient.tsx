@@ -269,11 +269,12 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
               <motion.div
                 key={article.slug}
                 layout
+                onClick={() => router.push(`/admin/draft?slug=${article.slug}`)}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ delay: idx * 0.05, duration: 0.3 }}
-                className="group relative flex flex-col sm:flex-row sm:items-center justify-between p-6 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-accent/30 transition-all gap-4"
+                className="group relative flex flex-col sm:flex-row sm:items-center justify-between p-6 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-accent/30 transition-all gap-4 cursor-pointer"
               >
                 <div className="flex flex-col gap-1">
                   <h3 className="text-lg font-semibold tracking-tight group-hover:text-accent transition-colors">
@@ -281,6 +282,8 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
                   </h3>
                   <div className="flex items-center gap-3 text-xs text-muted-foreground font-mono mt-1">
                     <span className="flex items-center gap-1.5"><FileText className="w-3 h-3"/> {article.slug}.mdx</span>
+                    {article.hidden && <span className="text-accent">Hidden</span>}
+                    {article.archived && <span className="text-yellow-500">Archived</span>}
                     <span>•</span>
                     <span>{new Date(article.date).toISOString().split('T')[0]}</span>
                   </div>
@@ -289,13 +292,14 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
                 <div className="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                   <Link
                     href={`/admin/draft?slug=${article.slug}`}
+                    onClick={(e) => e.stopPropagation()}
                     className="p-2 rounded-md bg-white/5 hover:bg-accent/20 hover:text-accent text-muted-foreground transition-colors"
                     title="Edit Log"
                   >
                     <Edit3 className="w-4 h-4" />
                   </Link>
                   <button
-                    onClick={() => handleDelete(article.slug)}
+                    onClick={(e) => { e.stopPropagation(); handleDelete(article.slug); }}
                     disabled={isDeleting === article.slug}
                     className="p-2 rounded-md bg-white/5 hover:bg-red-500/20 hover:text-red-500 text-muted-foreground transition-colors disabled:opacity-50"
                     title="Delete Log"

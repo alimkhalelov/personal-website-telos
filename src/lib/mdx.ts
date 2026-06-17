@@ -11,7 +11,7 @@ export type ArticleMeta = {
   description?: string;
 };
 
-export function getSortedArticles(): ArticleMeta[] {
+export function getSortedArticles(includeHidden: boolean = false): ArticleMeta[] {
   if (!fs.existsSync(contentDirectory)) {
     return [];
   }
@@ -30,6 +30,10 @@ export function getSortedArticles(): ArticleMeta[] {
         date: matterResult.data.date || new Date().toISOString(),
         ...(matterResult.data as Omit<ArticleMeta, "slug" | "title" | "date">),
       };
+    })
+    .filter((article: any) => {
+      if (includeHidden) return true;
+      return !article.hidden && !article.archived;
     });
 
   return allArticles.sort((a, b) => {
