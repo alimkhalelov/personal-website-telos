@@ -38,9 +38,9 @@ const formatDate = (dateString: string) => {
 
 // Custom components for MDX
 const components = {
-  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h1>,
-  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h2>,
-  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h3>,
+  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h1>,
+  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h2>,
+  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h3>,
   p: (props: any) => <p className="mb-8 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props}><Bionify>{props.children}</Bionify></p>,
   a: (props: any) => <a className="text-accent hover:text-accent-hover hover:underline transition-colors" {...props}><Bionify>{props.children}</Bionify></a>,
   ul: (props: any) => <ul className="list-disc pl-6 mb-8 space-y-3 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props} />,
@@ -73,7 +73,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
         <article>
           <header className="mb-10 flex flex-col gap-3">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#222222] dark:text-foreground">{article.meta.title}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#222222]/70 dark:text-foreground/70">{article.meta.title}</h1>
             <time className="text-muted font-mono text-sm">{formatDate(article.meta.date)}</time>
           </header>
 
