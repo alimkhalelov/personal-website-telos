@@ -214,13 +214,37 @@ ${finalContent}`;
         return `\n${key}: ${newValue}`;
       });
     } else {
-      frontmatter += `\n${key}: true`;
+      if (!frontmatter.endsWith('\n')) frontmatter += '\n';
+      frontmatter += `${key}: true\n`;
       newValue = true;
     }
     
+    if (!frontmatter.endsWith('\n')) frontmatter += '\n';
+    
     const newContent = `---${frontmatter}---${editableContent.substring(endOfFrontmatter + 3)}`;
     setEditableContent(newContent);
-    showToast(`${key} status changed to ${newValue}. Click Save to apply.`);
+    
+    let currentSlug = existingSlug || slug;
+    if (!currentSlug) return;
+
+    setIsSaving(true);
+    try {
+      const res = await fetch("/api/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: currentSlug, content: newContent }),
+      });
+      if (res.ok) {
+        showToast(`${key} is now ${newValue ? 'ON' : 'OFF'}. Auto-saved!`);
+      } else {
+        const err = await res.json();
+        alert("Ошибка при сохранении: " + err.error);
+      }
+    } catch(e) {
+      alert("Ошибка при сохранении");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const isHidden = editableContent.includes('\nhidden: true');
@@ -330,7 +354,7 @@ ${finalContent}`;
 
           <div className="flex items-center gap-4">
             {toastMsg && (
-              <span className="text-sm font-medium text-accent animate-pulse mr-2">
+              <span className="text-sm font-medium bg-accent text-white px-3 py-1 rounded-md animate-in fade-in mr-2 shadow-sm">
                 {toastMsg}
               </span>
             )}
