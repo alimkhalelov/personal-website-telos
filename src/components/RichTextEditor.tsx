@@ -44,7 +44,17 @@ const RichTextEditor = forwardRef<RichTextEditorRef, RichTextEditorProps>(({ con
     content,
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose-base dark:prose-invert prose-p:leading-relaxed prose-headings:font-medium focus:outline-none min-h-[300px] max-w-none px-4 py-4',
+        class: 'prose dark:prose-invert focus:outline-none min-h-[300px] max-w-none px-4 py-4 ' +
+               'prose-p:text-[18px] sm:prose-p:text-[20px] prose-p:text-[#222222] dark:prose-p:text-foreground/90 prose-p:leading-[1.6] prose-p:mb-8 ' +
+               'prose-headings:tracking-tight prose-headings:text-[#222222] dark:prose-headings:text-foreground prose-headings:font-bold ' +
+               'prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:mt-10 prose-h1:mb-6 ' +
+               'prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 ' +
+               'prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 ' +
+               'prose-a:text-accent hover:prose-a:text-accent-hover prose-a:transition-colors ' +
+               'prose-strong:text-accent prose-strong:font-bold ' +
+               'prose-ul:text-[18px] sm:prose-ul:text-[20px] prose-ul:text-[#222222] dark:prose-ul:text-foreground/90 prose-ul:leading-[1.6] prose-ul:mb-8 prose-ul:space-y-3 ' +
+               'prose-ol:text-[18px] sm:prose-ol:text-[20px] prose-ol:text-[#222222] dark:prose-ol:text-foreground/90 prose-ol:leading-[1.6] prose-ol:mb-8 prose-ol:space-y-3 ' +
+               'prose-blockquote:border-l-4 prose-blockquote:border-muted prose-blockquote:pl-6 prose-blockquote:py-2 prose-blockquote:italic prose-blockquote:my-8 prose-blockquote:text-muted-foreground prose-blockquote:bg-muted/20 prose-blockquote:rounded-r-lg',
       },
     },
     onUpdate: ({ editor }) => {

@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BionicToggle } from "@/components/bionic-toggle";
+import { Analytics } from "@vercel/analytics/next";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -34,6 +35,7 @@ export default function RootLayout({
             <BionicToggle />
           </div>
           {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

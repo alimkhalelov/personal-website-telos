@@ -186,6 +186,9 @@ ${editableContent}`;
           } catch(e) {}
         }
         showToast("Changes saved.");
+        if (!existingSlug) {
+          router.replace(`/admin/draft?slug=${currentSlug}`);
+        }
       } else {
         const err = await res.json();
         alert("Ошибка при сохранении: " + err.error);

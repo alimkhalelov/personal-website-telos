@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import fs from "fs";
 import path from "path";
 
@@ -98,12 +99,16 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "GitHub API error: " + errorText }, { status: res.status });
       }
 
+      revalidatePath("/admin");
+      revalidatePath("/blog");
       return NextResponse.json({ success: true });
 
     } else {
       const dir = path.join(process.cwd(), "src/content/posts");
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(path.join(dir, `${slug}.mdx`), content, "utf8");
+      revalidatePath("/admin");
+      revalidatePath("/blog");
       return NextResponse.json({ success: true });
     }
   } catch (err: any) {
@@ -144,6 +149,8 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ error: "GitHub API error: " + errorText }, { status: res.status });
       }
 
+      revalidatePath("/admin");
+      revalidatePath("/blog");
       return NextResponse.json({ success: true });
 
     } else {
@@ -154,6 +161,8 @@ export async function DELETE(req: NextRequest) {
       if (fs.existsSync(fullPathMDX)) fs.unlinkSync(fullPathMDX);
       if (fs.existsSync(fullPathMD)) fs.unlinkSync(fullPathMD);
 
+      revalidatePath("/admin");
+      revalidatePath("/blog");
       return NextResponse.json({ success: true });
     }
   } catch (err: any) {

@@ -16,6 +16,7 @@ const formatDate = (dateString: string) => {
 
 export default function Home() {
   const articles = getSortedArticles();
+
   return (
     <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative">
       {/* Top Header / Hamster Area */}

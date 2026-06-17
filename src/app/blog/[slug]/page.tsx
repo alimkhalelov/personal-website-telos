@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { CopyToAgentButton } from "@/components/copy-to-agent-button";
 import { Bionify } from "@/components/bionify";
+import remarkGfm from "remark-gfm";
 
 export async function generateStaticParams() {
   const articles = getSortedArticles();
@@ -38,9 +39,9 @@ const formatDate = (dateString: string) => {
 
 // Custom components for MDX
 const components = {
-  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h1>,
-  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h2>,
-  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h3>,
+  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-blue-600/70 dark:text-blue-400/70" {...props}><Bionify>{props.children}</Bionify></h1>,
+  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-blue-600/70 dark:text-blue-400/70" {...props}><Bionify>{props.children}</Bionify></h2>,
+  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-blue-600/70 dark:text-blue-400/70" {...props}><Bionify>{props.children}</Bionify></h3>,
   p: (props: any) => {
     let isTldr = false;
     let modifiedChildren = props.children;
@@ -145,7 +146,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </header>
 
           <div className="prose prose-neutral dark:prose-invert max-w-none text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]">
-            <MDXRemote source={article.content} components={components} />
+            <MDXRemote 
+              source={article.content} 
+              components={components} 
+              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+            />
           </div>
         </article>
       </main>

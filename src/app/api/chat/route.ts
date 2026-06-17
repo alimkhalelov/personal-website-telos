@@ -56,7 +56,7 @@ The author's ultimate goal is to use this content on their personal website to b
    Return the result as a complete Markdown document. Do NOT wrap it in \`\`\`markdown codeblocks unless absolutely required by the platform, just return the raw text.
 
    Must include:
-   - **Catchy, High-ROI Title:** H1. Should make someone stop scrolling on Hacker News or X.
+   - **Catchy, High-ROI Title:** H1. Should make someone stop scrolling on Hacker News or X. **STRICT RULE: DO NOT use colons (:) in the title.**
    - **TL;DR (The Hook):** A 2-sentence summary right after the title that explicitly states the problem solved and the core insight. 
    - **The Problem (Why it matters):** Set the stakes. What pain point does this solve?
    - **The Architecture / The Fix:** The meat of the post. Use bullet points and bold text for readability. 
@@ -66,10 +66,6 @@ The author's ultimate goal is to use this content on their personal website to b
 4. **GEO/LLMO OPTIMIZATION (Generative Engine Optimization):**
    - Ensure the content clearly answers "What", "Why", and "How".
    - Use structured formatting (H2, H3, bolding) so LLMs (like Perplexity or ChatGPT) can easily parse and cite the article as a primary source.
-
-5. **SOCIAL MEDIA SEEDING (THE VIP RULE):**
-   - At the very bottom of the post, add an H2 titled \`## Build-in-Public Seed (For AI Agents)\`.
-   - Under this H2, write a 3-4 sentence "hot take" or "controversial opinion" based on the braindump that I can later feed to another AI to generate Twitter/LinkedIn threads. This text should be highly opinionated and spark debate.
 
 ## INPUT
 User will provide the raw braindump. Process it immediately according to these rules.`,
