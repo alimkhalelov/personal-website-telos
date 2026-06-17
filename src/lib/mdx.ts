@@ -9,6 +9,8 @@ export type ArticleMeta = {
   title: string;
   date: string;
   description?: string;
+  hidden?: boolean;
+  archived?: boolean;
 };
 
 export function getSortedArticles(includeHidden: boolean = false): ArticleMeta[] {
