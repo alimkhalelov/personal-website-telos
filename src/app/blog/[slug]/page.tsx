@@ -38,20 +38,60 @@ const formatDate = (dateString: string) => {
 
 // Custom components for MDX
 const components = {
-  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h1>,
-  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h2>,
-  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h3>,
+  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h1>,
+  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h2>,
+  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h3>,
   p: (props: any) => {
     let isTldr = false;
     let modifiedChildren = props.children;
 
-    if (typeof props.children === 'string' && props.children.trim().startsWith('TL;DR:')) {
+    const extractText = (child: any): string => {
+      if (typeof child === 'string') return child;
+      if (child && child.props && child.props.children) {
+        if (typeof child.props.children === 'string') return child.props.children;
+        if (Array.isArray(child.props.children)) return child.props.children.map(extractText).join('');
+      }
+      return '';
+    };
+
+    const fullText = Array.isArray(props.children) 
+      ? props.children.map(extractText).join('') 
+      : extractText(props.children);
+
+    if (fullText.trim().toUpperCase().startsWith('TL;DR:')) {
       isTldr = true;
-      modifiedChildren = props.children.trim().substring(6).trim();
-    } else if (Array.isArray(props.children) && typeof props.children[0] === 'string' && props.children[0].trim().startsWith('TL;DR:')) {
-      isTldr = true;
-      modifiedChildren = [...props.children];
-      modifiedChildren[0] = modifiedChildren[0].trim().substring(6).trim();
+      
+      const stripTldr = (child: any): any => {
+        if (typeof child === 'string') {
+           return child.replace(/^\s*TL;?DR:\s*/i, '');
+        }
+        if (Array.isArray(child)) {
+           let done = false;
+           return child.map(c => {
+             if (done) return c;
+             const text = extractText(c);
+             if (/^\s*TL;?DR:\s*/i.test(text)) {
+               done = true;
+               return stripTldr(c);
+             } else if (text.trim().toUpperCase() === 'TL;DR' || text.trim().toUpperCase() === 'TL;DR:') {
+               done = true;
+               return null; 
+             }
+             return c;
+           });
+        }
+        if (child && child.props && child.props.children) {
+           const text = extractText(child);
+           if (/^\s*TL;?DR:\s*/i.test(text) || text.trim().toUpperCase() === 'TL;DR:') {
+             const newChildren = stripTldr(child.props.children);
+             if (!newChildren || (typeof newChildren === 'string' && newChildren.trim() === '')) return null;
+             return { ...child, props: { ...child.props, children: newChildren } };
+           }
+        }
+        return child;
+      };
+
+      modifiedChildren = stripTldr(props.children);
     }
 
     if (isTldr) {
@@ -102,7 +142,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
         <article>
           <header className="mb-10 flex flex-col gap-3">
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#222222]/70 dark:text-foreground/70">{article.meta.title}</h1>
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#222222] dark:text-foreground">{article.meta.title}</h1>
             <time className="text-muted font-mono text-sm">{formatDate(article.meta.date)}</time>
           </header>
 
