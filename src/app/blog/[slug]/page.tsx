@@ -2,7 +2,7 @@ import { getArticleBySlug, getSortedArticles } from "@/lib/mdx";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Zap } from "lucide-react";
 import { CopyToAgentButton } from "@/components/copy-to-agent-button";
 import { Bionify } from "@/components/bionify";
 
@@ -38,10 +38,39 @@ const formatDate = (dateString: string) => {
 
 // Custom components for MDX
 const components = {
-  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h1>,
-  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h2>,
-  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222]/70 dark:text-foreground/70" {...props}><Bionify>{props.children}</Bionify></h3>,
-  p: (props: any) => <p className="mb-8 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props}><Bionify>{props.children}</Bionify></p>,
+  h1: (props: any) => <h1 className="text-3xl sm:text-4xl font-bold mt-10 mb-6 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h1>,
+  h2: (props: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-12 mb-6 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h2>,
+  h3: (props: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 tracking-tight text-[#222222] dark:text-foreground" {...props}><Bionify>{props.children}</Bionify></h3>,
+  p: (props: any) => {
+    let isTldr = false;
+    let modifiedChildren = props.children;
+
+    if (typeof props.children === 'string' && props.children.trim().startsWith('TL;DR:')) {
+      isTldr = true;
+      modifiedChildren = props.children.trim().substring(6).trim();
+    } else if (Array.isArray(props.children) && typeof props.children[0] === 'string' && props.children[0].trim().startsWith('TL;DR:')) {
+      isTldr = true;
+      modifiedChildren = [...props.children];
+      modifiedChildren[0] = modifiedChildren[0].trim().substring(6).trim();
+    }
+
+    if (isTldr) {
+      return (
+        <div className="my-10 p-6 sm:p-8 bg-accent/5 border border-accent/20 rounded-2xl shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-1 h-full bg-accent"></div>
+          <div className="flex items-center gap-2 mb-3">
+            <Zap className="w-5 h-5 text-accent fill-accent/20" />
+            <span className="font-bold text-accent tracking-wide uppercase text-sm">TL;DR</span>
+          </div>
+          <p className="text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6] m-0">
+            <Bionify>{modifiedChildren}</Bionify>
+          </p>
+        </div>
+      );
+    }
+
+    return <p className="mb-8 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props}><Bionify>{props.children}</Bionify></p>;
+  },
   a: (props: any) => <a className="text-accent hover:text-accent-hover hover:underline transition-colors" {...props}><Bionify>{props.children}</Bionify></a>,
   ul: (props: any) => <ul className="list-disc pl-6 mb-8 space-y-3 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props} />,
   ol: (props: any) => <ol className="list-decimal pl-6 mb-8 space-y-3 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props} />,

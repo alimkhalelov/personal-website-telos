@@ -26,9 +26,15 @@ export function getSortedArticles(includeHidden: boolean = false): ArticleMeta[]
       const fileContents = fs.readFileSync(fullPath, "utf8");
       const matterResult = matter(fileContents);
 
+      let title = matterResult.data.title || slug;
+      const h1Match = matterResult.content.match(/^#\s+(.+)$/m);
+      if (h1Match) {
+        title = h1Match[1].trim();
+      }
+
       return {
         slug,
-        title: matterResult.data.title || slug,
+        title,
         date: matterResult.data.date || new Date().toISOString(),
         ...(matterResult.data as Omit<ArticleMeta, "slug" | "title" | "date">),
       };
@@ -58,13 +64,22 @@ export function getArticleBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
+  let title = data.title || slug;
+  let cleanContent = content;
+
+  const h1Match = content.match(/^#\s+(.+)$/m);
+  if (h1Match) {
+    title = h1Match[1].trim();
+    cleanContent = content.replace(/^#\s+.+$/m, '').trim();
+  }
+
   return {
     slug,
     meta: {
       ...data,
-      title: data.title,
+      title,
       date: data.date,
     } as ArticleMeta,
-    content,
+    content: cleanContent,
   };
 }
