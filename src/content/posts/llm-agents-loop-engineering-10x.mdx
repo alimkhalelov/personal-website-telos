@@ -1,0 +1,53 @@
+---
+title: 'llm agents loop engineering 10x'
+date: '2026-06-19T11:23:04.681Z'
+description: 'Новый пост от Demiurge'
+---
+
+# The 10x Shift Autonomous LLM Agents Need Loop Engineering
+
+## TL;DR
+
+Stop hand-crafting prompts. Loop engineering moves beyond manual prompt adjustments to designing autonomous LLM agent systems that self-correct through iterative feedback loops, boosting agent productivity by 10x without human intervention during execution.
+
+## The Problem
+
+Traditional prompt engineering is a bottleneck. Developers are stuck in a human-in-the-loop cycle: manually monitoring agent outputs, providing feedback, and re-prompting. This approach scales poorly, creates delays, and fundamentally limits an agent's ability to achieve complex goals without constant oversight. The challenge is moving from instructing an agent to designing an environment where it can autonomously self-correct until a task is truly "done."
+
+## The Architecture The Fix
+
+Loop engineering transforms the developer's role from "prompter" to "system architect." The core idea is to establish self-correcting feedback loops around an always-on agent (like Hermes or Claude Code). This system empowers the agent to "prompt itself" iteratively until predefined criteria are met. This shift is analogous to a form of Reinforcement Learning, where the agent receives signals of correctness without explicit answers.
+
+A robust loop engineering system comprises five critical components:
+
+- **Context Management:** Efficiently manage the agent's working memory. As dialogues grow, system instructions can get "diluted" by new messages. Critical state should be externalized, not just held in the context window.
+- **Feedback Quality:** Ensure the feedback provided to the agent is precise and actionable. Poor feedback leads to ineffective corrections.
+- **Verification Gates:** Define explicit conditions or tests that validate the agent's output. These gates determine if the task is completed or if further iteration is needed.
+- **Termination Condition:** Crucial for preventing infinite loops or premature stops. Without clear "Done" criteria (e.g., test pass, token limit, attempt count), agents can hallucinate indefinitely or quit too early.
+- **State Management:** Maintain the agent's working state across multiple turns and tool calls, often in external files. This prevents agents from getting "stuck" in a broken state and ensures continuity. Always include robust error handling for every tool call.
+
+Loop types can be categorized based on their predictability:
+
+- **Deterministic Loops:** Ideal for tasks with clear, objective outcomes like code generation, testing, or build processes.
+  - **Mechanism:** The agent runs tests. If a test fails, it reads logs, corrects the code, and tries again.
+  - **Insight:** Leverage tools like Claude Code in non-interactive mode, tightly coupled to a test runner's results.
+- **Non-deterministic Loops:** Suited for subjective or creative tasks like UI design, creative writing, or concept generation.
+  - **Mechanism:** Employs an "Adversarial loop." One agent (the Builder) generates content, while another (the Verifier) critiques it against a set of rules (e.g., an AI Slop Detector for quality).
+  - **Insight:** This separation of roles prevents the accumulation of "slop" or low-quality output. If no clear test exists, use another LLM instance as the Verifier/judge. The Verifier's verdict should ideally update the Builder agent's internal rules or "skills" over time for self-evolving capabilities.
+
+## The Implementation
+
+Building an autonomous agent with loop engineering involves a clear roadmap:
+
+1. **Define the Task:** Choose between code generation (deterministic) or UI/creative design (non-deterministic).
+2. **Specify "Done" Criteria:** For code, this means comprehensive unit tests. For UI, it could involve linters, style guides, or a set of design principles.
+3. **Deploy an Always-On Agent:** Utilize a persistent agent framework (e.g., Hermes).
+4. **Configure External State Storage:** Implement a system for the agent to store and retrieve its working state across iterations, preventing context window bloat.
+5. **Develop a Verifier Script/Agent:** Create an automated process (or a separate LLM agent) that evaluates the output after each action against the "Done" criteria.
+6. **Initiate the Loop:** Start the agent's execution cycle, enforcing explicit termination conditions such as token limits, maximum attempts, or successful verification.
+
+## The Payoff Learnings
+
+Loop engineering unlocks a 10x productivity gain not through "magic," but by fundamentally changing the developer's role. You stop writing individual prompts and start designing control systems. This shifts the bottleneck from human iteration to automated self-correction, removing the human-in-the-loop constraint.
+
+However, the complete exclusion of humans remains a myth. While agents become more autonomous, designing robust "Done" criteria and verification gates still demands deep engineering expertise and careful manual setup. This means the process becomes *more* complex, not simpler, for beginners. The real payoff is in building systems that abstract away iterative prompting, allowing engineers to focus on higher-level architectural design and robust verification strategies. The hardest part is rigorously defining what "done" truly means for the agent, then building the systems to enforce it.
