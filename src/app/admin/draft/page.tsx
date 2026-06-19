@@ -31,6 +31,24 @@ function DraftingRoomContent() {
   const [publishToTwitter, setPublishToTwitter] = useState(false);
   const [publishedLinks, setPublishedLinks] = useState<{ linkedin?: string, telegram?: string, twitter?: string } | null>(null);
 
+  // Load publish toggles state
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setPublishToLinkedIn(localStorage.getItem("telos_pub_ln") === "true");
+      setPublishToTelegram(localStorage.getItem("telos_pub_tg") === "true");
+      setPublishToTwitter(localStorage.getItem("telos_pub_tw") === "true");
+    }
+  }, []);
+
+  // Save publish toggles state
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("telos_pub_ln", String(publishToLinkedIn));
+      localStorage.setItem("telos_pub_tg", String(publishToTelegram));
+      localStorage.setItem("telos_pub_tw", String(publishToTwitter));
+    }
+  }, [publishToLinkedIn, publishToTelegram, publishToTwitter]);
+
   const parseContent = (text: string) => {
     if (text.startsWith("---")) {
       const endIdx = text.indexOf("---", 3);

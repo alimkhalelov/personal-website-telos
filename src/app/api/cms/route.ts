@@ -51,7 +51,7 @@ async function postToTelegram(text: string) {
   }
 }
 
-async function postToTwitter(text: string) {
+async function postToTwitter(tweets: string[]) {
   if (!TWITTER_API_KEY || !TWITTER_API_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_SECRET) {
     return { error: "Отсутствуют ключи Twitter API" };
   }
@@ -64,8 +64,16 @@ async function postToTwitter(text: string) {
   });
 
   try {
-    const { data } = await client.v2.tweet(text);
-    return { url: `https://twitter.com/status/status/${data.id}` };
+    if (tweets.length === 1) {
+      const { data } = await client.v2.tweet(tweets[0]);
+      return { url: `https://twitter.com/status/status/${data.id}` };
+    } else {
+      const data = await client.v2.tweetThread(tweets);
+      if (data && data.length > 0) {
+        return { url: `https://twitter.com/status/status/${data[0].data.id}` };
+      }
+      return { url: "Успешно опубликовано (Тред)" };
+    }
   } catch (err: any) {
     console.error("Twitter post failed", err);
     // Return the actual API error message if available
@@ -259,10 +267,15 @@ export async function POST(req: NextRequest) {
       if (publishToTwitter) {
         aiPromises.push((async () => {
           try {
-            const prompt = `Сгенерируй короткий виральный пост для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом предложении, делай пробелы между строками и минимум эмодзи. Пост должен уложиться в 250 символов (лимит):\n\n${contentToAnalyze}`;
+            const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---):\n\n${contentToAnalyze}`;
             const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            const finalShareText = `${generatedText}\n\n${postUrl}`;
-            links.twitter = await postToTwitter(finalShareText);
+            let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
+            if (tweets.length > 0) {
+              tweets[tweets.length - 1] += `\n\n${postUrl}`;
+            } else {
+              tweets = [`Новый пост: ${postUrl}`];
+            }
+            links.twitter = await postToTwitter(tweets);
           } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
         })());
       }
@@ -312,10 +325,15 @@ export async function POST(req: NextRequest) {
       if (publishToTwitter) {
         aiPromises.push((async () => {
           try {
-            const prompt = `Сгенерируй короткий виральный пост для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом предложении, делай пробелы между строками и минимум эмодзи. Пост должен уложиться в 250 символов (лимит):\n\n${contentToAnalyze}`;
+            const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---):\n\n${contentToAnalyze}`;
             const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            const finalShareText = `${generatedText}\n\n${postUrl}`;
-            links.twitter = await postToTwitter(finalShareText);
+            let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
+            if (tweets.length > 0) {
+              tweets[tweets.length - 1] += `\n\n${postUrl}`;
+            } else {
+              tweets = [`Новый пост: ${postUrl}`];
+            }
+            links.twitter = await postToTwitter(tweets);
           } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
         })());
       }
