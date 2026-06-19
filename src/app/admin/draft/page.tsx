@@ -26,6 +26,10 @@ function DraftingRoomContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [isGeneratingSlug, setIsGeneratingSlug] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const [publishToLinkedIn, setPublishToLinkedIn] = useState(false);
+  const [publishToTelegram, setPublishToTelegram] = useState(false);
+  const [publishToTwitter, setPublishToTwitter] = useState(false);
+  const [publishedLinks, setPublishedLinks] = useState<{ linkedin?: string, telegram?: string, twitter?: string } | null>(null);
 
   const parseContent = (text: string) => {
     if (text.startsWith("---")) {
@@ -175,9 +179,13 @@ ${editableContent}`;
       const res = await fetch("/api/cms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: currentSlug, content: finalContent }),
+        body: JSON.stringify({ slug: currentSlug, content: finalContent, publishToLinkedIn, publishToTelegram, publishToTwitter }),
       });
       if (res.ok) {
+        const data = await res.json();
+        if (data.links && Object.keys(data.links).length > 0) {
+          setPublishedLinks(data.links);
+        }
         if (braindumpId) {
           try {
             const braindumps = JSON.parse(localStorage.getItem("telos_braindumps") || "[]");
@@ -341,6 +349,38 @@ ${editableContent}`;
   return (
     <div className="flex h-[100dvh] w-full bg-background overflow-hidden">
       
+      {/* PUBLISHED LINKS MODAL */}
+      {publishedLinks && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <div className="bg-background border border-border shadow-lg rounded-xl p-6 max-w-sm w-full mx-4">
+            <h3 className="text-lg font-bold mb-4">Опубликовано в соцсети! 🎉</h3>
+            <div className="flex flex-col gap-3 mb-6">
+              {publishedLinks.linkedin && (
+                <a href={publishedLinks.linkedin} target="_blank" className="text-sm font-medium text-blue-600 hover:underline flex items-center gap-2">
+                  <ExternalLink className="w-4 h-4" /> LinkedIn
+                </a>
+              )}
+              {publishedLinks.twitter && (
+                <a href={publishedLinks.twitter} target="_blank" className="text-sm font-medium text-sky-500 hover:underline flex items-center gap-2">
+                  <ExternalLink className="w-4 h-4" /> Twitter (X)
+                </a>
+              )}
+              {publishedLinks.telegram && (
+                <a href={publishedLinks.telegram} target="_blank" className="text-sm font-medium text-blue-500 hover:underline flex items-center gap-2">
+                  <ExternalLink className="w-4 h-4" /> Telegram
+                </a>
+              )}
+            </div>
+            <button 
+              onClick={() => setPublishedLinks(null)}
+              className="w-full bg-accent hover:bg-accent-hover text-white py-2 rounded-lg font-medium transition-colors"
+            >
+              Закрыть
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* MAIN CONTENT AREA */}
       <main className="flex-1 flex flex-col min-w-0 transition-all duration-300">
         
@@ -432,6 +472,33 @@ ${editableContent}`;
                 Telegram
               </button>
             </div>
+            <label className="flex items-center gap-2 cursor-pointer mr-2">
+              <input 
+                type="checkbox" 
+                checked={publishToLinkedIn}
+                onChange={(e) => setPublishToLinkedIn(e.target.checked)}
+                className="w-4 h-4 text-accent bg-background border-border rounded focus:ring-accent focus:ring-offset-background"
+              />
+              <span className="text-sm font-medium text-muted-foreground">In</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer mr-2">
+              <input 
+                type="checkbox" 
+                checked={publishToTwitter}
+                onChange={(e) => setPublishToTwitter(e.target.checked)}
+                className="w-4 h-4 text-accent bg-background border-border rounded focus:ring-accent focus:ring-offset-background"
+              />
+              <span className="text-sm font-medium text-muted-foreground">X</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer mr-4">
+              <input 
+                type="checkbox" 
+                checked={publishToTelegram}
+                onChange={(e) => setPublishToTelegram(e.target.checked)}
+                className="w-4 h-4 text-accent bg-background border-border rounded focus:ring-accent focus:ring-offset-background"
+              />
+              <span className="text-sm font-medium text-muted-foreground">Tg</span>
+            </label>
             <button 
               onClick={handleSave} 
               disabled={isSaving} 
