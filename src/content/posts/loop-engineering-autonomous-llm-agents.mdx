@@ -1,0 +1,78 @@
+---
+title: 'loop engineering autonomous llm agents'
+date: '2026-06-19T11:09:22.172Z'
+description: 'Новый пост от Demiurge'
+---
+
+# Loop Engineering Designing Autonomous LLM Agents for 10x Productivity
+
+Loop engineering shifts from manual prompt engineering to designing autonomous systems. An LLM agent manages its own development process through iterative feedback loops. The core insight for 10x performance lies in creating self-correcting, deterministic or non-deterministic loops, powered by always-on agents like Hermes or Claude Code, without human intervention during execution.
+
+## The Problem
+
+Traditional prompt engineering creates a bottleneck. Human developers become the critical "human-in-the-loop," manually monitoring, providing feedback, and making corrections. This approach scales poorly, limiting agent productivity and making it impossible for LLMs to reach their full autonomous potential. The promise of powerful agents often fails to materialize because the control system itself is manual.
+
+## The Architecture
+
+Loop engineering fundamentally changes the interaction model. Instead of prompting, you design control systems. Your role transitions from issuing instructions to defining goals and creating the conditions—tests, verifiers, and state management—under which an agent prompts itself until a task meets the "Done" criteria. This eliminates the human as the critical bottleneck.
+
+The core framework is simple: **Agent + Loop = Autonomy**. If an LLM cannot achieve a goal in a single attempt, you build a system where the model self-corrects through iterative cycles.
+
+Every effective loop consists of five critical components:
+
+- **Context Management:** How the agent retains relevant information across turns without overwhelming its context window.
+- **Feedback Quality:** The precision and clarity of signals indicating correct or incorrect execution.
+- **Verification Gates:** Explicit conditions or tests that determine if a task is complete and correct.
+- **Termination Condition:** Clear criteria for when the agent should stop, preventing infinite loops or premature halts.
+- **State Management:** Mechanisms to persist and update an agent's internal state across multiple interactions.
+
+Without a well-defined termination condition, an agent will either hallucinate indefinitely or stop before completing its task.
+
+### Deterministic Loops
+
+Deterministic loops are suitable for tasks with objective, testable outcomes, such as code generation, unit testing, or build processes.
+
+- The agent runs tests.
+- If a test fails, it reads logs, corrects the code, and tries again.
+- This cycle repeats until all tests pass or a termination condition is met.
+
+This approach leverages tools like Claude Code in a non-interactive mode, tightly coupled to the results of a test runner.
+
+### Non-Deterministic Loops
+
+Non-deterministic loops address subjective or creative tasks like UI design or content creation, where clear-cut pass/fail tests are challenging.
+
+- An "Adversarial loop" structure is used.
+- One agent (the Builder) generates output.
+- Another agent (the Verifier) critically evaluates the output against a list of rules (e.g., an "AI Slop Detector" for quality assurance).
+- The Verifier's feedback guides the Builder's next iteration.
+
+This separation of roles prevents the accumulation of "slop" or low-quality output.
+
+## The Implementation
+
+To implement loop engineering, follow a structured approach:
+
+1. **Define the Task:** Choose a target—code generation, UI design, or another creative endeavor.
+2. **Establish "Done" Criteria:** For code, this means specific test suites. For UI, define style guides, linting rules, or design principles.
+3. **Deploy an Agent:** Use an always-on agent like Hermes that can execute tasks autonomously.
+4. **External State Management:** Do not rely solely on the agent's context window. Implement external storage for persistent state files.
+5. **Create a Verifier Script:** Develop a script or a separate LLM instance to check the output after each agent action against your "Done" criteria.
+6. **Set Termination Conditions:** Configure a limit on tokens, attempts, or elapsed time to prevent runaway costs or infinite loops.
+7. **Implement Error Handling:** For every tool call or action, explicitly define how the agent should handle errors to avoid getting stuck in a broken state.
+
+For creative tasks, if objective tests are not available, use an additional LLM instance as the Verifier to provide adversarial feedback. The Verifier's judgment should also update the Builder agent's internal rules or "skills" over time, enabling self-evolving capabilities.
+
+## The Payoff and Learnings
+
+Loop engineering fundamentally shifts productivity by enabling agents to self-correct and iterate towards a goal, often with 10x efficiency compared to human-in-the-loop prompt engineering. This approach transforms the developer's role from prompt writer to system designer.
+
+Key learnings from this paradigm shift:
+
+- **Loops are Reinforcement Learning:** Understand that these feedback loops are a form of Reinforcement Learning, where you provide the agent with a signal of correctness without explicitly showing it the "right answer."
+- **Context Window Limitations:** The agent's context window is unreliable for long-term state. System instructions dilute over time with new messages. External state management is crucial.
+- **Robust Error Handling:** Always build explicit error handling logic for every tool call or action. Agents can get stuck in broken states without it.
+- **Adversarial Testing:** When objective rules are absent, another LLM instance can act as a powerful judge or critic (Verifier).
+- **Self-Evolving Skills:** The Verifier's feedback should be designed to update the Builder agent's internal rules or "skills," allowing the system to learn and improve over time.
+
+While loop engineering represents a significant trend in AI development, validated by architectures like AutoGPT and LangGraph, the complete elimination of human involvement is not yet fully realized. Crafting robust "Done" criteria and verification gates still demands deep engineering expertise and manual configuration. This makes the process more complex for beginners, not fully automatic.
