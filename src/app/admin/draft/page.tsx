@@ -194,6 +194,7 @@ ${editableContent}`;
           } catch(e) {}
         }
         showToast("Changes saved.");
+        router.refresh();
         if (!existingSlug) {
           router.replace(`/admin/draft?slug=${currentSlug}`);
         }
@@ -356,19 +357,37 @@ ${editableContent}`;
             <h3 className="text-lg font-bold mb-4">Опубликовано в соцсети! 🎉</h3>
             <div className="flex flex-col gap-3 mb-6">
               {publishedLinks.linkedin && (
-                <a href={publishedLinks.linkedin} target="_blank" className="text-sm font-medium text-blue-600 hover:underline flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" /> LinkedIn
-                </a>
+                publishedLinks.linkedin.url ? (
+                  <a href={publishedLinks.linkedin.url} target="_blank" className="text-sm font-medium text-blue-600 hover:underline flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4" /> LinkedIn
+                  </a>
+                ) : (
+                  <div className="text-sm font-medium text-red-500">
+                    LinkedIn Ошибка: {publishedLinks.linkedin.error}
+                  </div>
+                )
               )}
               {publishedLinks.twitter && (
-                <a href={publishedLinks.twitter} target="_blank" className="text-sm font-medium text-sky-500 hover:underline flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" /> Twitter (X)
-                </a>
+                publishedLinks.twitter.url ? (
+                  <a href={publishedLinks.twitter.url} target="_blank" className="text-sm font-medium text-sky-500 hover:underline flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4" /> Twitter (X)
+                  </a>
+                ) : (
+                  <div className="text-sm font-medium text-red-500">
+                    Twitter Ошибка: {publishedLinks.twitter.error}
+                  </div>
+                )
               )}
               {publishedLinks.telegram && (
-                <a href={publishedLinks.telegram} target="_blank" className="text-sm font-medium text-blue-500 hover:underline flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" /> Telegram
-                </a>
+                publishedLinks.telegram.url ? (
+                  <a href={publishedLinks.telegram.url} target="_blank" className="text-sm font-medium text-blue-500 hover:underline flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4" /> Telegram
+                  </a>
+                ) : (
+                  <div className="text-sm font-medium text-red-500">
+                    Telegram Ошибка: {publishedLinks.telegram.error}
+                  </div>
+                )
               )}
             </div>
             <button 

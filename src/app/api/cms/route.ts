@@ -3,6 +3,8 @@ import { revalidatePath } from "next/cache";
 import { TwitterApi } from "twitter-api-v2";
 import fs from "fs";
 import path from "path";
+import { generateText } from "ai";
+import { google } from "@ai-sdk/google";
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -20,16 +22,10 @@ const TWITTER_API_SECRET = process.env.TWITTER_API_SECRET;
 const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
 const TWITTER_ACCESS_SECRET = process.env.TWITTER_ACCESS_SECRET;
 
-async function postToTelegram(slug: string, content: string) {
+async function postToTelegram(text: string) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    console.error("Missing Telegram credentials.");
-    return null;
+    return { error: "Отсутствуют ключи TELEGRAM_BOT_TOKEN или TELEGRAM_CHAT_ID" };
   }
-  const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
-  const title = titleMatch ? titleMatch[1] : "Новый пост";
-  const postUrl = `https://alimzhan.com/blog/${slug}`;
-  const text = `🚀 **Новая статья!**\n\n**${title}**\n\nЧитать: ${postUrl}`;
-  
   try {
     const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: "POST",
@@ -43,21 +39,21 @@ async function postToTelegram(slug: string, content: string) {
     const data = await res.json();
     if (data.ok) {
       const chatUsername = data.result.chat.username;
-      if (chatUsername) return `https://t.me/${chatUsername}/${data.result.message_id}`;
-      return "Успешно отправлено в Telegram";
+      if (chatUsername) return { url: `https://t.me/${chatUsername}/${data.result.message_id}` };
+      return { url: "Успешно отправлено в Telegram" };
     } else {
       console.error("Telegram error:", data);
+      return { error: data.description || "Telegram API Error" };
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error("Telegram post failed", err);
+    return { error: err.message };
   }
-  return null;
 }
 
-async function postToTwitter(slug: string, content: string) {
+async function postToTwitter(text: string) {
   if (!TWITTER_API_KEY || !TWITTER_API_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_SECRET) {
-    console.error("Missing Twitter credentials.");
-    return null;
+    return { error: "Отсутствуют ключи Twitter API" };
   }
   
   const client = new TwitterApi({
@@ -67,31 +63,21 @@ async function postToTwitter(slug: string, content: string) {
     accessSecret: TWITTER_ACCESS_SECRET,
   });
 
-  const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
-  const title = titleMatch ? titleMatch[1] : "New Post";
-  const postUrl = `https://alimzhan.com/blog/${slug}`;
-  const text = `I just published a new article: "${title}"\n\nRead it here: ${postUrl}`;
-
   try {
     const { data } = await client.v2.tweet(text);
-    return `https://twitter.com/status/status/${data.id}`;
-  } catch (err) {
+    return { url: `https://twitter.com/status/status/${data.id}` };
+  } catch (err: any) {
     console.error("Twitter post failed", err);
+    // Return the actual API error message if available
+    const errorMsg = err.data?.detail || err.message || "Неизвестная ошибка Twitter API";
+    return { error: errorMsg };
   }
-  return null;
 }
 
-async function postToLinkedIn(slug: string, content: string) {
+async function postToLinkedIn(title: string, postUrl: string, textToShare: string) {
   if (!LINKEDIN_ACCESS_TOKEN || !LINKEDIN_PERSON_ID) {
-    console.error("Missing LinkedIn credentials in env.");
-    return;
+    return { error: "Отсутствуют ключи LinkedIn" };
   }
-  
-  const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
-  const title = titleMatch ? titleMatch[1] : "New Post";
-  const postUrl = `https://alimzhan.com/blog/${slug}`;
-
-  const textToShare = `I just published a new article: "${title}"\n\nRead it here: ${postUrl}`;
   
   const authorUrn = `urn:li:person:${LINKEDIN_PERSON_ID}`;
   const postData = {
@@ -130,15 +116,14 @@ async function postToLinkedIn(slug: string, content: string) {
     if (!res.ok) {
       const errorText = await res.text();
       console.error("LinkedIn post failed:", res.status, errorText);
-      return null;
+      return { error: `Ошибка ${res.status}: ${errorText}` };
     } else {
-      console.log("Successfully posted to LinkedIn for slug:", slug);
       const data = await res.json();
-      return `https://www.linkedin.com/feed/update/${data.id}`;
+      return { url: `https://www.linkedin.com/feed/update/${data.id}` };
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error("Error posting to LinkedIn:", err);
-    return null;
+    return { error: err.message };
   }
 }
 
@@ -237,19 +222,52 @@ export async function POST(req: NextRequest) {
       revalidatePath("/admin");
       revalidatePath("/blog");
       
-      let links: Record<string, string> = {};
+      revalidatePath("/admin");
+      revalidatePath("/blog");
+      
+      const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
+      const title = titleMatch ? titleMatch[1] : "Новый пост";
+      const postUrl = `https://alimzhan.com/blog/${slug}`;
+      const cleanContent = content.replace(/^---[\s\S]*?---/, '').trim();
+      const contentToAnalyze = cleanContent.substring(0, 3000);
+
+      let links: Record<string, any> = {};
+      const aiPromises = [];
+      
       if (publishToLinkedIn) {
-        const li = await postToLinkedIn(slug, content);
-        if (li) links.linkedin = li;
+        aiPromises.push((async () => {
+          try {
+            const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии:\n\n${contentToAnalyze}`;
+            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
+            const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
+            links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
+          } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
+        })());
       }
+
       if (publishToTelegram) {
-        const tg = await postToTelegram(slug, content);
-        if (tg) links.telegram = tg;
+        aiPromises.push((async () => {
+          try {
+            const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру:\n\n${contentToAnalyze}`;
+            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
+            const finalShareText = `🚀 **Новая статья: ${title}**\n\n${generatedText}\n\nЧитать: ${postUrl}`;
+            links.telegram = await postToTelegram(finalShareText);
+          } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
+        })());
       }
+
       if (publishToTwitter) {
-        const tw = await postToTwitter(slug, content);
-        if (tw) links.twitter = tw;
+        aiPromises.push((async () => {
+          try {
+            const prompt = `Сгенерируй короткий виральный пост для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом предложении, делай пробелы между строками и минимум эмодзи. Пост должен уложиться в 250 символов (лимит):\n\n${contentToAnalyze}`;
+            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
+            const finalShareText = `${generatedText}\n\n${postUrl}`;
+            links.twitter = await postToTwitter(finalShareText);
+          } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
+        })());
       }
+
+      await Promise.all(aiPromises);
       
       return NextResponse.json({ success: true, links });
 
@@ -260,19 +278,49 @@ export async function POST(req: NextRequest) {
       revalidatePath("/admin");
       revalidatePath("/blog");
       
-      let links: Record<string, string> = {};
+      const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
+      const title = titleMatch ? titleMatch[1] : "Новый пост";
+      const postUrl = `https://alimzhan.com/blog/${slug}`;
+      const cleanContent = content.replace(/^---[\s\S]*?---/, '').trim();
+      const contentToAnalyze = cleanContent.substring(0, 3000);
+
+      let links: Record<string, any> = {};
+      const aiPromises = [];
+      
       if (publishToLinkedIn) {
-        const li = await postToLinkedIn(slug, content);
-        if (li) links.linkedin = li;
+        aiPromises.push((async () => {
+          try {
+            const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии:\n\n${contentToAnalyze}`;
+            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
+            const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
+            links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
+          } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
+        })());
       }
+
       if (publishToTelegram) {
-        const tg = await postToTelegram(slug, content);
-        if (tg) links.telegram = tg;
+        aiPromises.push((async () => {
+          try {
+            const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру:\n\n${contentToAnalyze}`;
+            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
+            const finalShareText = `🚀 **Новая статья: ${title}**\n\n${generatedText}\n\nЧитать: ${postUrl}`;
+            links.telegram = await postToTelegram(finalShareText);
+          } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
+        })());
       }
+
       if (publishToTwitter) {
-        const tw = await postToTwitter(slug, content);
-        if (tw) links.twitter = tw;
+        aiPromises.push((async () => {
+          try {
+            const prompt = `Сгенерируй короткий виральный пост для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом предложении, делай пробелы между строками и минимум эмодзи. Пост должен уложиться в 250 символов (лимит):\n\n${contentToAnalyze}`;
+            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
+            const finalShareText = `${generatedText}\n\n${postUrl}`;
+            links.twitter = await postToTwitter(finalShareText);
+          } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
+        })());
       }
+
+      await Promise.all(aiPromises);
       
       return NextResponse.json({ success: true, links });
     }
