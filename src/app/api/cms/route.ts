@@ -137,7 +137,7 @@ async function postToLinkedIn(title: string, postUrl: string, textToShare: strin
 
 
 async function getGithubFileSha(filePath: string) {
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`;
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}?t=${Date.now()}`;
   const res = await fetch(url, {
     cache: "no-store",
     headers: {
@@ -161,7 +161,7 @@ export async function GET(req: NextRequest) {
       if (!GITHUB_TOKEN) return NextResponse.json({ error: "GITHUB_TOKEN not set in Vercel" }, { status: 500 });
 
       const filePath = `src/content/posts/${slug}.mdx`;
-      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`;
+      const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}?t=${Date.now()}`;
       
       const res = await fetch(url, {
         cache: "no-store",
@@ -263,7 +263,7 @@ export async function POST(req: NextRequest) {
       
       if (publishToLinkedIn) {
         try {
-          const prompt = `Generate a professional LinkedIn post based on the following text. Add key insights (bullet points) and a call to discussion at the end to gather comments.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases like "Here is a draft...", output ONLY the post text itself.\n\nArticle text:\n${contentToAnalyze}`;
+          const prompt = `Generate a professional LinkedIn post based on the following text. Add key insights (bullet points) and a call to discussion at the end to gather comments.\n\nCRITICAL: Generate the text STRICTLY IN THE SAME LANGUAGE as the original article. If the article is English, you MUST output English. DO NOT use any Markdown formatting. NO ASTERISKS. NO BACKTICKS. NO BOLDING. LinkedIn does not support Markdown. Use Unicode symbols like 🔹 or • for bullet points, and use UPPERCASE for emphasis instead of bolding.\n\nDO NOT write introductory phrases like "Here is a draft...", output ONLY the post text itself.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           const finalShareText = `${generatedText}\n\nRead original: ${postUrl}`;
           links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
@@ -272,7 +272,7 @@ export async function POST(req: NextRequest) {
 
       if (publishToTelegram) {
         try {
-          const prompt = `Generate an author's post for a Telegram channel based on the following text. Make it concise, use short paragraphs, highlight the main points in bold, and add structure.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. For formatting use ONLY basic HTML tags (<b>, <i>, <a>, <s>, <u>). DO NOT use Markdown (** or *). DO NOT write introductory phrases.\n\nArticle text:\n${contentToAnalyze}`;
+          const prompt = `Generate an author's post for a Telegram channel based on the following text. Make it concise, use short paragraphs, highlight the main points in bold, and add structure.\n\nCRITICAL: Generate the text STRICTLY IN THE SAME LANGUAGE as the original article. If the article is English, the output MUST be entirely in English. For formatting use ONLY basic HTML tags (<b>, <i>, <a>, <s>, <u>). DO NOT use Markdown (** or *). DO NOT write introductory phrases.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           const finalShareText = `🚀 <b>${title}</b>\n\n${generatedText}\n\nRead: <a href="${postUrl}">${postUrl}</a>`;
           links.telegram = await postToTelegram(finalShareText);
@@ -281,7 +281,7 @@ export async function POST(req: NextRequest) {
 
       if (publishToTwitter) {
         try {
-          const prompt = `Generate a viral thread for X (Twitter) based on the following text. Use short sentences, a powerful hook in the first tweet, space between lines, and a minimum of emojis. Separate tweets in the thread with three dashes (---).\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases, only the tweets themselves.\n\nArticle text:\n${contentToAnalyze}`;
+          const prompt = `Generate a viral thread for X (Twitter) based on the following text. Use short sentences, a powerful hook in the first tweet, space between lines, and a minimum of emojis. Separate tweets in the thread with three dashes (---).\n\nCRITICAL: Generate the text STRICTLY IN THE SAME LANGUAGE as the original article. If the article is English, the output MUST be entirely in English. DO NOT write introductory phrases, only the tweets themselves.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
           if (tweets.length > 0) {
@@ -330,7 +330,7 @@ export async function POST(req: NextRequest) {
       
       if (publishToLinkedIn) {
         try {
-          const prompt = `Generate a professional LinkedIn post based on the following text. Add key insights (bullet points) and a call to discussion at the end to gather comments.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases like "Here is a draft...", output ONLY the post text itself.\n\nArticle text:\n${contentToAnalyze}`;
+          const prompt = `Generate a professional LinkedIn post based on the following text. Add key insights (bullet points) and a call to discussion at the end to gather comments.\n\nCRITICAL: Generate the text STRICTLY IN THE SAME LANGUAGE as the original article. If the article is English, you MUST output English. DO NOT use any Markdown formatting. NO ASTERISKS. NO BACKTICKS. NO BOLDING. LinkedIn does not support Markdown. Use Unicode symbols like 🔹 or • for bullet points, and use UPPERCASE for emphasis instead of bolding.\n\nDO NOT write introductory phrases like "Here is a draft...", output ONLY the post text itself.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           const finalShareText = `${generatedText}\n\nRead original: ${postUrl}`;
           links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
@@ -339,7 +339,7 @@ export async function POST(req: NextRequest) {
 
       if (publishToTelegram) {
         try {
-          const prompt = `Generate an author's post for a Telegram channel based on the following text. Make it concise, use short paragraphs, highlight the main points in bold, and add structure.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. For formatting use ONLY basic HTML tags (<b>, <i>, <a>, <s>, <u>). DO NOT use Markdown (** or *). DO NOT write introductory phrases.\n\nArticle text:\n${contentToAnalyze}`;
+          const prompt = `Generate an author's post for a Telegram channel based on the following text. Make it concise, use short paragraphs, highlight the main points in bold, and add structure.\n\nCRITICAL: Generate the text STRICTLY IN THE SAME LANGUAGE as the original article. If the article is English, the output MUST be entirely in English. For formatting use ONLY basic HTML tags (<b>, <i>, <a>, <s>, <u>). DO NOT use Markdown (** or *). DO NOT write introductory phrases.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           const finalShareText = `🚀 <b>${title}</b>\n\n${generatedText}\n\nRead: <a href="${postUrl}">${postUrl}</a>`;
           links.telegram = await postToTelegram(finalShareText);
@@ -348,7 +348,7 @@ export async function POST(req: NextRequest) {
 
       if (publishToTwitter) {
         try {
-          const prompt = `Generate a viral thread for X (Twitter) based on the following text. Use short sentences, a powerful hook in the first tweet, space between lines, and a minimum of emojis. Separate tweets in the thread with three dashes (---).\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases, only the tweets themselves.\n\nArticle text:\n${contentToAnalyze}`;
+          const prompt = `Generate a viral thread for X (Twitter) based on the following text. Use short sentences, a powerful hook in the first tweet, space between lines, and a minimum of emojis. Separate tweets in the thread with three dashes (---).\n\nCRITICAL: Generate the text STRICTLY IN THE SAME LANGUAGE as the original article. If the article is English, the output MUST be entirely in English. DO NOT write introductory phrases, only the tweets themselves.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
           if (tweets.length > 0) {
@@ -375,8 +375,13 @@ export async function DELETE(req: NextRequest) {
     if (IS_PROD) {
       if (!GITHUB_TOKEN) return NextResponse.json({ error: "GITHUB_TOKEN not set in Vercel" }, { status: 500 });
 
-      const filePath = `src/content/posts/${slug}.mdx`;
-      const sha = await getGithubFileSha(filePath);
+      let filePath = `src/content/posts/${slug}.mdx`;
+      let sha = await getGithubFileSha(filePath);
+      
+      if (!sha) {
+        filePath = `src/content/posts/${slug}.md`;
+        sha = await getGithubFileSha(filePath);
+      }
       
       if (!sha) return NextResponse.json({ error: "File not found on GitHub" }, { status: 404 });
 
