@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Script from "next/script";
-import { Globe } from "lucide-react";
 
 const languages = [
   { code: "en", name: "English" },
@@ -100,21 +99,18 @@ export function LanguageToggle() {
       />
       
       <div className="relative inline-flex items-center">
-        <div className="absolute left-2.5 pointer-events-none text-muted-foreground/70">
-          <Globe className="w-3.5 h-3.5" />
-        </div>
         <select 
           value={currentLang} 
           onChange={handleLanguageChange}
-          className="bg-transparent text-xs font-medium border border-border/40 hover:border-border rounded-md pl-8 pr-6 py-1.5 outline-none text-muted-foreground hover:text-foreground transition-all appearance-none cursor-pointer"
+          className="bg-transparent text-sm font-medium outline-none text-muted-foreground hover:text-foreground transition-all appearance-none cursor-pointer pr-3"
         >
           {languages.map(lang => (
             <option key={lang.code} value={lang.code} className="bg-background text-foreground">
-              {lang.name}
+              {lang.code.toUpperCase()}
             </option>
           ))}
         </select>
-        <div className="absolute right-2.5 pointer-events-none text-muted-foreground/70">
+        <div className="absolute right-0 pointer-events-none text-muted-foreground/70">
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
       </div>
