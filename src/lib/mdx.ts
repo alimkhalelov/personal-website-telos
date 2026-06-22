@@ -33,11 +33,11 @@ export function getSortedArticles(includeHidden: boolean = false): ArticleMeta[]
       }
 
       return {
+        ...matterResult.data,
         slug,
         title,
         date: matterResult.data.date || new Date().toISOString(),
-        ...(matterResult.data as Omit<ArticleMeta, "slug" | "title" | "date">),
-      };
+      } as ArticleMeta;
     })
     .filter((article: any) => {
       if (includeHidden) return true;

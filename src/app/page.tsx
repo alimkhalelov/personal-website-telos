@@ -54,24 +54,24 @@ export default function Home() {
               <Link 
                 href={`/blog/${article.slug}`} 
                 key={article.slug}
-                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !no-underline"
+                className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !no-underline text-blue-600 visited:text-purple-600"
               >
                 <div className="flex items-center gap-4">
                   <time 
-                    className="text-base w-[105px] shrink-0 text-blue-600 group-hover:underline"
+                    className="text-base w-[105px] shrink-0 group-hover:underline"
                     style={{ fontFamily: "'Google Sans', sans-serif" }}
                   >
                     {formatDate(article.date)}
                   </time>
                   <h3 
-                    className="text-base font-medium text-blue-600 group-hover:underline transition-colors"
+                    className="text-base font-medium group-hover:underline transition-colors"
                     style={{ fontFamily: "'Google Sans', sans-serif" }}
                   >
                     {article.title}
                   </h3>
                 </div>
                 <div className="flex items-center shrink-0">
-                  <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-blue-600" />
+                  <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                 </div>
               </Link>
             ))
