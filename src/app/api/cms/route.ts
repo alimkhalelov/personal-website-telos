@@ -235,7 +235,7 @@ export async function POST(req: NextRequest) {
       
       const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
       const title = titleMatch ? titleMatch[1] : "Новый пост";
-      const postUrl = `https://alimzhan.com/blog/${slug}`;
+      const postUrl = `https://alim.dest.page/blog/${slug}`;
       const cleanContent = content.replace(/^---[\s\S]*?---/, '').trim();
       const contentToAnalyze = cleanContent.substring(0, 3000);
 
@@ -261,34 +261,34 @@ export async function POST(req: NextRequest) {
       
       if (publishToLinkedIn) {
         try {
-          const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья (если статья на английском, пиши на английском). НЕ пиши никаких вводных фраз вроде "Вот черновик...", выводи ТОЛЬКО сам текст поста.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const prompt = `Generate a professional LinkedIn post based on the following text. Add key insights (bullet points) and a call to discussion at the end to gather comments.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases like "Here is a draft...", output ONLY the post text itself.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
-          const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
+          const finalShareText = `${generatedText}\n\nRead original: ${postUrl}`;
           links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
-        } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
+        } catch (e: any) { links.linkedin = { error: "AI generation error: " + e.message }; }
       }
 
       if (publishToTelegram) {
         try {
-          const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. Для форматирования используй ТОЛЬКО базовые HTML теги (<b>, <i>, <a>, <s>, <u>). НЕ используй Markdown (** или *). НЕ пиши вводных фраз.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const prompt = `Generate an author's post for a Telegram channel based on the following text. Make it concise, use short paragraphs, highlight the main points in bold, and add structure.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. For formatting use ONLY basic HTML tags (<b>, <i>, <a>, <s>, <u>). DO NOT use Markdown (** or *). DO NOT write introductory phrases.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
-          const finalShareText = `🚀 <b>Новая статья: ${title}</b>\n\n${generatedText}\n\nЧитать: <a href="${postUrl}">${postUrl}</a>`;
+          const finalShareText = `🚀 <b>${title}</b>\n\n${generatedText}\n\nRead: <a href="${postUrl}">${postUrl}</a>`;
           links.telegram = await postToTelegram(finalShareText);
-        } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
+        } catch (e: any) { links.telegram = { error: "AI generation error: " + e.message }; }
       }
 
       if (publishToTwitter) {
         try {
-          const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---).\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. НЕ пиши вводных фраз, только сами твиты.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const prompt = `Generate a viral thread for X (Twitter) based on the following text. Use short sentences, a powerful hook in the first tweet, space between lines, and a minimum of emojis. Separate tweets in the thread with three dashes (---).\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases, only the tweets themselves.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
           if (tweets.length > 0) {
             tweets[tweets.length - 1] += `\n\n${postUrl}`;
           } else {
-            tweets = [`Новый пост: ${postUrl}`];
+            tweets = [`New post: ${postUrl}`];
           }
           links.twitter = await postToTwitter(tweets);
-        } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
+        } catch (e: any) { links.twitter = { error: "AI generation error: " + e.message }; }
       }
       
       return NextResponse.json({ success: true, links });
@@ -302,7 +302,7 @@ export async function POST(req: NextRequest) {
       
       const titleMatch = content.match(/title:\s*['"]?([^'"\n]+)['"]?/);
       const title = titleMatch ? titleMatch[1] : "Новый пост";
-      const postUrl = `https://alimzhan.com/blog/${slug}`;
+      const postUrl = `https://alim.dest.page/blog/${slug}`;
       const cleanContent = content.replace(/^---[\s\S]*?---/, '').trim();
       const contentToAnalyze = cleanContent.substring(0, 3000);
 
@@ -328,34 +328,34 @@ export async function POST(req: NextRequest) {
       
       if (publishToLinkedIn) {
         try {
-          const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья (если статья на английском, пиши на английском). НЕ пиши никаких вводных фраз вроде "Вот черновик...", выводи ТОЛЬКО сам текст поста.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const prompt = `Generate a professional LinkedIn post based on the following text. Add key insights (bullet points) and a call to discussion at the end to gather comments.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases like "Here is a draft...", output ONLY the post text itself.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
-          const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
+          const finalShareText = `${generatedText}\n\nRead original: ${postUrl}`;
           links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
-        } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
+        } catch (e: any) { links.linkedin = { error: "AI generation error: " + e.message }; }
       }
 
       if (publishToTelegram) {
         try {
-          const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. Для форматирования используй ТОЛЬКО базовые HTML теги (<b>, <i>, <a>, <s>, <u>). НЕ используй Markdown (** или *). НЕ пиши вводных фраз.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const prompt = `Generate an author's post for a Telegram channel based on the following text. Make it concise, use short paragraphs, highlight the main points in bold, and add structure.\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. For formatting use ONLY basic HTML tags (<b>, <i>, <a>, <s>, <u>). DO NOT use Markdown (** or *). DO NOT write introductory phrases.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
-          const finalShareText = `🚀 <b>Новая статья: ${title}</b>\n\n${generatedText}\n\nЧитать: <a href="${postUrl}">${postUrl}</a>`;
+          const finalShareText = `🚀 <b>${title}</b>\n\n${generatedText}\n\nRead: <a href="${postUrl}">${postUrl}</a>`;
           links.telegram = await postToTelegram(finalShareText);
-        } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
+        } catch (e: any) { links.telegram = { error: "AI generation error: " + e.message }; }
       }
 
       if (publishToTwitter) {
         try {
-          const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---).\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. НЕ пиши вводных фраз, только сами твиты.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const prompt = `Generate a viral thread for X (Twitter) based on the following text. Use short sentences, a powerful hook in the first tweet, space between lines, and a minimum of emojis. Separate tweets in the thread with three dashes (---).\n\nIMPORTANT: Generate the text strictly in the SAME LANGUAGE as the original article. If the article is in English, the output must be entirely in English. DO NOT write introductory phrases, only the tweets themselves.\n\nArticle text:\n${contentToAnalyze}`;
           const generatedText = await generateWithFallback(prompt);
           let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
           if (tweets.length > 0) {
             tweets[tweets.length - 1] += `\n\n${postUrl}`;
           } else {
-            tweets = [`Новый пост: ${postUrl}`];
+            tweets = [`New post: ${postUrl}`];
           }
           links.twitter = await postToTwitter(tweets);
-        } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
+        } catch (e: any) { links.twitter = { error: "AI generation error: " + e.message }; }
       }
       
       return NextResponse.json({ success: true, links });
