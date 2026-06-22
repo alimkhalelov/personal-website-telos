@@ -58,3 +58,27 @@ body.bionic-reading-enabled .bionic-bold {
 body.bionic-reading-enabled .bionic-rest {
   opacity: 0.8;
 }
+
+/* Google Translate Overrides to hide default UI */
+.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+  position: static !important;
+}
+#goog-gt-tt, .goog-te-balloon-frame {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important; 
+  box-shadow: none !important;
+}
+.goog-tooltip {
+    display: none !important;
+}
+.goog-tooltip:hover {
+    display: none !important;
+}
+

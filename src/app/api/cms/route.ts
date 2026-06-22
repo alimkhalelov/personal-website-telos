@@ -33,7 +33,7 @@ async function postToTelegram(text: string) {
       body: JSON.stringify({
         chat_id: TELEGRAM_CHAT_ID,
         text: text,
-        parse_mode: "Markdown"
+        parse_mode: "HTML"
       })
     });
     const data = await res.json();
@@ -239,48 +239,57 @@ export async function POST(req: NextRequest) {
       const cleanContent = content.replace(/^---[\s\S]*?---/, '').trim();
       const contentToAnalyze = cleanContent.substring(0, 3000);
 
+      const generateWithFallback = async (prompt: string) => {
+        const models = [
+          "gemini-3.1-pro-preview",
+          "gemini-3.5-flash",
+          "gemini-3.1-flash-lite",
+          "gemini-3.0-flash"
+        ];
+        for (const modelName of models) {
+          try {
+            const { text } = await generateText({ model: google(modelName), prompt });
+            return text;
+          } catch (err: any) {
+            console.warn(`Model ${modelName} failed:`, err.message);
+          }
+        }
+        throw new Error("All AI models failed.");
+      };
+
       let links: Record<string, any> = {};
-      const aiPromises = [];
       
       if (publishToLinkedIn) {
-        aiPromises.push((async () => {
-          try {
-            const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии:\n\n${contentToAnalyze}`;
-            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
-            links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
-          } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
-        })());
+        try {
+          const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья (если статья на английском, пиши на английском). НЕ пиши никаких вводных фраз вроде "Вот черновик...", выводи ТОЛЬКО сам текст поста.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const generatedText = await generateWithFallback(prompt);
+          const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
+          links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
+        } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
       }
 
       if (publishToTelegram) {
-        aiPromises.push((async () => {
-          try {
-            const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру:\n\n${contentToAnalyze}`;
-            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            const finalShareText = `🚀 **Новая статья: ${title}**\n\n${generatedText}\n\nЧитать: ${postUrl}`;
-            links.telegram = await postToTelegram(finalShareText);
-          } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
-        })());
+        try {
+          const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. Для форматирования используй ТОЛЬКО базовые HTML теги (<b>, <i>, <a>, <s>, <u>). НЕ используй Markdown (** или *). НЕ пиши вводных фраз.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const generatedText = await generateWithFallback(prompt);
+          const finalShareText = `🚀 <b>Новая статья: ${title}</b>\n\n${generatedText}\n\nЧитать: <a href="${postUrl}">${postUrl}</a>`;
+          links.telegram = await postToTelegram(finalShareText);
+        } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
       }
 
       if (publishToTwitter) {
-        aiPromises.push((async () => {
-          try {
-            const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---):\n\n${contentToAnalyze}`;
-            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
-            if (tweets.length > 0) {
-              tweets[tweets.length - 1] += `\n\n${postUrl}`;
-            } else {
-              tweets = [`Новый пост: ${postUrl}`];
-            }
-            links.twitter = await postToTwitter(tweets);
-          } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
-        })());
+        try {
+          const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---).\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. НЕ пиши вводных фраз, только сами твиты.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const generatedText = await generateWithFallback(prompt);
+          let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
+          if (tweets.length > 0) {
+            tweets[tweets.length - 1] += `\n\n${postUrl}`;
+          } else {
+            tweets = [`Новый пост: ${postUrl}`];
+          }
+          links.twitter = await postToTwitter(tweets);
+        } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
       }
-
-      await Promise.all(aiPromises);
       
       return NextResponse.json({ success: true, links });
 
@@ -297,48 +306,57 @@ export async function POST(req: NextRequest) {
       const cleanContent = content.replace(/^---[\s\S]*?---/, '').trim();
       const contentToAnalyze = cleanContent.substring(0, 3000);
 
+      const generateWithFallback = async (prompt: string) => {
+        const models = [
+          "gemini-3.1-pro-preview",
+          "gemini-3.5-flash",
+          "gemini-3.1-flash-lite",
+          "gemini-3.0-flash"
+        ];
+        for (const modelName of models) {
+          try {
+            const { text } = await generateText({ model: google(modelName), prompt });
+            return text;
+          } catch (err: any) {
+            console.warn(`Model ${modelName} failed:`, err.message);
+          }
+        }
+        throw new Error("All AI models failed.");
+      };
+
       let links: Record<string, any> = {};
-      const aiPromises = [];
       
       if (publishToLinkedIn) {
-        aiPromises.push((async () => {
-          try {
-            const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии:\n\n${contentToAnalyze}`;
-            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
-            links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
-          } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
-        })());
+        try {
+          const prompt = `Сгенерируй профессиональный пост для LinkedIn на основе следующего текста. Добавь ключевые инсайты (bullet points) и призыв к дискуссии в конце, чтобы собрать комментарии.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья (если статья на английском, пиши на английском). НЕ пиши никаких вводных фраз вроде "Вот черновик...", выводи ТОЛЬКО сам текст поста.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const generatedText = await generateWithFallback(prompt);
+          const finalShareText = `${generatedText}\n\nЧитать оригинал: ${postUrl}`;
+          links.linkedin = await postToLinkedIn(title, postUrl, finalShareText);
+        } catch (e: any) { links.linkedin = { error: "Ошибка генерации ИИ: " + e.message }; }
       }
 
       if (publishToTelegram) {
-        aiPromises.push((async () => {
-          try {
-            const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру:\n\n${contentToAnalyze}`;
-            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            const finalShareText = `🚀 **Новая статья: ${title}**\n\n${generatedText}\n\nЧитать: ${postUrl}`;
-            links.telegram = await postToTelegram(finalShareText);
-          } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
-        })());
+        try {
+          const prompt = `Сгенерируй авторский пост для Telegram-канала на основе следующего текста. Сделай его емким, абзацы короткими, выдели главное жирным и добавь структуру.\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. Для форматирования используй ТОЛЬКО базовые HTML теги (<b>, <i>, <a>, <s>, <u>). НЕ используй Markdown (** или *). НЕ пиши вводных фраз.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const generatedText = await generateWithFallback(prompt);
+          const finalShareText = `🚀 <b>Новая статья: ${title}</b>\n\n${generatedText}\n\nЧитать: <a href="${postUrl}">${postUrl}</a>`;
+          links.telegram = await postToTelegram(finalShareText);
+        } catch (e: any) { links.telegram = { error: "Ошибка генерации ИИ: " + e.message }; }
       }
 
       if (publishToTwitter) {
-        aiPromises.push((async () => {
-          try {
-            const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---):\n\n${contentToAnalyze}`;
-            const { text: generatedText } = await generateText({ model: google("gemini-2.5-flash"), prompt });
-            let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
-            if (tweets.length > 0) {
-              tweets[tweets.length - 1] += `\n\n${postUrl}`;
-            } else {
-              tweets = [`Новый пост: ${postUrl}`];
-            }
-            links.twitter = await postToTwitter(tweets);
-          } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
-        })());
+        try {
+          const prompt = `Сгенерируй виральный тред для X (Twitter) на основе следующего текста. Используй короткие предложения, мощный хук в первом твите, делай пробелы между строками и минимум эмодзи. Раздели твиты в треде тремя дефисами (---).\n\nОБЯЗАТЕЛЬНО: Генерируй текст строго на ТОМ ЖЕ ЯЗЫКЕ, на котором написана оригинальная статья. НЕ пиши вводных фраз, только сами твиты.\n\nТекст статьи:\n${contentToAnalyze}`;
+          const generatedText = await generateWithFallback(prompt);
+          let tweets = generatedText.split('---').map(t => t.trim()).filter(t => t.length > 0);
+          if (tweets.length > 0) {
+            tweets[tweets.length - 1] += `\n\n${postUrl}`;
+          } else {
+            tweets = [`Новый пост: ${postUrl}`];
+          }
+          links.twitter = await postToTwitter(tweets);
+        } catch (e: any) { links.twitter = { error: "Ошибка генерации ИИ: " + e.message }; }
       }
-
-      await Promise.all(aiPromises);
       
       return NextResponse.json({ success: true, links });
     }
