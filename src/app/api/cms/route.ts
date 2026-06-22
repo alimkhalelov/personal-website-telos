@@ -139,6 +139,7 @@ async function postToLinkedIn(title: string, postUrl: string, textToShare: strin
 async function getGithubFileSha(filePath: string) {
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`;
   const res = await fetch(url, {
+    cache: "no-store",
     headers: {
       Authorization: `Bearer ${GITHUB_TOKEN}`,
       Accept: "application/vnd.github.v3+json",
@@ -163,6 +164,7 @@ export async function GET(req: NextRequest) {
       const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${filePath}`;
       
       const res = await fetch(url, {
+        cache: "no-store",
         headers: {
           Authorization: `Bearer ${GITHUB_TOKEN}`,
           Accept: "application/vnd.github.v3+json",
