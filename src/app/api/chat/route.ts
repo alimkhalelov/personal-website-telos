@@ -79,48 +79,82 @@ export async function POST(req: Request) {
   const selectedSkill = (skill && SKILL_PROMPTS[skill]) ? skill : 'default';
   const systemPrompt = SKILL_PROMPTS[selectedSkill];
 
-  try {
-    const result = streamText({
-      model: google("gemini-2.5-flash"),
-      providerOptions: {
-        google: {
-          safetySettings: [
-            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-          ]
-        }
-      },
-      messages: messages,
-      system: systemPrompt,
-    });
+  const modelsToTry = [
+    "gemini-2.5-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro",
+  ];
 
-    const encoder = new TextEncoder();
-    const readable = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of result.textStream) {
-            console.log("Chunk generated:", chunk.length);
-            controller.enqueue(encoder.encode(chunk));
+  let lastError: any = null;
+
+  for (const modelName of modelsToTry) {
+    try {
+      console.log(`Trying model: ${modelName}`);
+      const result = streamText({
+        model: google(modelName),
+        providerOptions: {
+          google: {
+            safetySettings: [
+              { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+              { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+            ]
           }
-          controller.close();
-        } catch (error: any) {
-          console.error("Stream error inside start:", error);
-          controller.enqueue(encoder.encode(`\n\n[API STREAM ERROR: ${error.message || "Failed to generate"}]`));
-          controller.close();
-        }
-      }
-    });
+        },
+        messages: messages,
+        system: systemPrompt,
+      });
 
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message || "Failed to generate AI response. Did you add GOOGLE_GENERATIVE_AI_API_KEY?" }), { status: 500 });
+      // Get the async iterator to test the first chunk
+      const iterator = result.textStream[Symbol.asyncIterator]();
+      const firstResult = await iterator.next(); // This will throw if the API returns 429 Quota Exceeded
+
+      // If we reach here, the model is working!
+      console.log(`Successfully connected to ${modelName}`);
+
+      const encoder = new TextEncoder();
+      const readable = new ReadableStream({
+        async start(controller) {
+          try {
+            if (!firstResult.done) {
+              console.log("First chunk generated:", firstResult.value.length);
+              controller.enqueue(encoder.encode(firstResult.value));
+
+              // Stream the rest
+              while (true) {
+                const { done, value } = await iterator.next();
+                if (done) break;
+                console.log("Chunk generated:", value.length);
+                controller.enqueue(encoder.encode(value));
+              }
+            }
+            controller.close();
+          } catch (error: any) {
+            console.error(`Stream error inside start (${modelName}):`, error);
+            controller.enqueue(encoder.encode(`\n\n[API STREAM ERROR: ${error.message || "Failed to generate"}]`));
+            controller.close();
+          }
+        }
+      });
+
+      return new Response(readable, {
+        headers: {
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      });
+
+    } catch (e: any) {
+      console.warn(`Model ${modelName} failed:`, e.message || e);
+      lastError = e;
+      // Loop continues to the next model
+    }
   }
+
+  // If all models in the array failed
+  return new Response(JSON.stringify({ 
+    error: `All models failed. Last error: ${lastError?.message || "Unknown error"}` 
+  }), { status: 500 });
 }
