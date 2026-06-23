@@ -131,6 +131,10 @@ export default function DashboardClient({ initialArticles }: { initialArticles: 
         fullText += decoder.decode(value, { stream: true });
       }
 
+      if (!fullText.trim()) {
+        throw new Error("Received empty response from the AI. API Quota might be exceeded.");
+      }
+
       setBraindumps(prev => prev.map(bd => bd.id === item.id ? { ...bd, status: 'done', result: fullText } : bd));
 
     } catch (e) {

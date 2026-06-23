@@ -101,11 +101,14 @@ export async function POST(req: Request) {
       async start(controller) {
         try {
           for await (const chunk of result.textStream) {
+            console.log("Chunk generated:", chunk.length);
             controller.enqueue(encoder.encode(chunk));
           }
           controller.close();
-        } catch (error) {
-          controller.error(error);
+        } catch (error: any) {
+          console.error("Stream error inside start:", error);
+          controller.enqueue(encoder.encode(`\n\n[API STREAM ERROR: ${error.message || "Failed to generate"}]`));
+          controller.close();
         }
       }
     });
