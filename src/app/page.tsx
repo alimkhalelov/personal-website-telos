@@ -19,16 +19,13 @@ export default function Home() {
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative">
-      {/* Top Header */}
+      {/* Top Header / Hamster Area */}
       <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-50">
-        <nav className="flex items-center gap-6 text-base font-medium text-muted-foreground">
-          <Link href="/wiki" className="hover:text-foreground transition-colors !no-underline">
-            Wiki
-          </Link>
-          <Link href="/petprojects" className="hover:text-foreground transition-colors !no-underline">
+        <div className="relative group flex items-center gap-4">
+          <Link href="/petprojects" className="text-lg font-medium !text-white/50 hover:!text-white transition-colors !no-underline">
             Pet-Projects Labs
           </Link>
-        </nav>
+        </div>
       </header>
 
       {/* Hero Section */}

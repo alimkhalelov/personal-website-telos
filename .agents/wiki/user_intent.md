@@ -23,7 +23,13 @@
   Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трога, которое на https://alim.dest.page/ отображается. Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
 
 - [INTENT-008] [2026-08-15 11:50] [Category: Feature|Wiki|UI]
-  Summary: Build and deploy native high-performance Wiki page for https://alim.dest.page/ cataloging methodologies (Fan-Filter-Scale, Loop Engineering), AI concepts (GraphRAG, GEO/LLMO), systems (Demiurge OS, Telos), with Notion properties, search, and knowledge graph.
-  Status: Completed
+  Summary: Build and deploy native high-performance Wiki page for https://alim.dest.page/ cataloging methodologies, AI concepts, systems, with Notion properties, search, and knowledge graph.
+  Status: Reverted per user request (INTENT-009)
   Origin: "используя /wiki создай wiki page для https://alim.dest.page/ персонального сайта портфолио и блогов"
+
+- [INTENT-009] [2026-08-15 12:10] [Category: Refactor|Cleanup|Wiki]
+  Summary: Completely remove the newly generated /wiki UI page, graph components, and wiki entries, keeping all original sources and content intact (displaying on https://alim.dest.page/), waiting to build a fresh wiki page from scratch upon user prompt.
+  Status: Completed
+  Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трога, которое на https://alim.dest.page/ отображается. Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
+
 
