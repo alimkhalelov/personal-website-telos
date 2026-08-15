@@ -1,0 +1,38 @@
+# AI-Wiki Document Frontmatter Schema
+version: "1.0.0"
+required:
+  - title
+  - slug
+  - category
+  - summary
+  - tags
+  - version
+  - last_updated
+
+properties:
+  title:
+    type: string
+    description: "Human-readable title of the document"
+  slug:
+    type: string
+    description: "URL-friendly unique identifier (e.g., fan-filter-scale)"
+  category:
+    type: string
+    enum:
+      - "Concepts & Methodologies"
+      - "Autonomous Systems"
+      - "Architectural Invariants"
+      - "Entities & Models"
+  summary:
+    type: string
+    description: "Crisp 1-2 sentence TL;DR distillation"
+  tags:
+    type: array
+    items:
+      type: string
+  version:
+    type: string
+    description: "Semantic version / AST hash (e.g., v1.2.0-AST)"
+  last_updated:
+    type: string
+    format: "YYYY-MM-DD"
