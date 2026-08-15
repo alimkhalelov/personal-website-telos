@@ -26,6 +26,7 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - [x] Implement Main Page & Blog listing.
 - [x] Implement MDX CMS system.
 - [x] Build AI Drafting Room UI (Grill Me flow).
+- [x] Implement Native AI-Wiki Knowledge Portal (`/wiki` and `/wiki/[slug]`) with Notion properties, search, and AST graph.
 - [ ] Connect Outstatic for CMS + Auth.
 - [ ] Add i18n auto-translation flows.
 - [x] Refine landing UI typography and rename blog section.

@@ -19,5 +19,11 @@
 
 - [INTENT-007] [2026-08-15 11:45] [Category: Feature|Arch|Wiki]
   Summary: Remove external ai-wiki-docs Astro UI server and graphs, keep all original PersonalWebsite code/content intact (https://alim.dest.page/), and prepare for building a clean native wiki page from scratch.
-  Status: Active
+  Status: Completed
   Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трога, которое на https://alim.dest.page/ отображается. Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
+
+- [INTENT-008] [2026-08-15 11:50] [Category: Feature|Wiki|UI]
+  Summary: Build and deploy native high-performance Wiki page for https://alim.dest.page/ cataloging methodologies (Fan-Filter-Scale, Loop Engineering), AI concepts (GraphRAG, GEO/LLMO), systems (Demiurge OS, Telos), with Notion properties, search, and knowledge graph.
+  Status: Completed
+  Origin: "используя /wiki создай wiki page для https://alim.dest.page/ персонального сайта портфолио и блогов"
+
