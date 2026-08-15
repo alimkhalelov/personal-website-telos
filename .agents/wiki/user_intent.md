@@ -14,5 +14,10 @@
 ## Active Intent Nodes
 - [INTENT-006] [2026-08-14 13:07] [Category: Feature|Arch|Wiki]
   Summary: Create local wiki global skill and launch interactive Wiki UI server for the personal website.
-  Status: Completed
+  Status: Superseded by INTENT-007
   Origin: "можешь создать используя глобал скилл /wiki локально и запустить сервер с UI этого скилла, для локального проекта, т.е. моего персонального сайта?"
+
+- [INTENT-007] [2026-08-15 11:45] [Category: Feature|Arch|Wiki]
+  Summary: Remove external ai-wiki-docs Astro UI server and graphs, keep all original PersonalWebsite code/content intact (https://alim.dest.page/), and prepare for building a clean native wiki page from scratch.
+  Status: Active
+  Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трога, которое на https://alim.dest.page/ отображается. Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
