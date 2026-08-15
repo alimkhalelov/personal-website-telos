@@ -15,7 +15,9 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - `src/app/admin/draft`: AI Drafting room.
 - `src/app/blog/[slug]`: MDX renderer.
 - `content/articles`: Local Markdown files (until Outstatic fully configured).
-- `ai-wiki-docs`: Git-Native AST 3D Knowledge Graph & Docs Platform (`http://127.0.0.1:4321` / `http://127.0.0.1:4321/graph`). Global skill: `/wiki`.
+- `ai-wiki-docs`: Git-Native AST 3D Knowledge Graph & Docs Platform (`http://127.0.0.1:4321` / `http://127.0.0.1:4321/graph`).
+- **AI-Wiki Master Hook:** When capturing user intent/requirements (`raw/`), compiling project documentation (`wiki/`), recording architectural invariants, or managing the wiki portal — read `.agents/skills/wiki/SKILL.md` and follow its master router.
+
 
 
 ## Current Roadmap

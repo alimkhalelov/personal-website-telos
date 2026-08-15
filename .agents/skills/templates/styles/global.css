@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark light;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+  }
+  
+  body {
+    @apply bg-[#F6F5F4] dark:bg-[#0C0C0E] text-[#31302E] dark:text-[#E4E4E7] antialiased font-sans transition-colors duration-150 text-[16.5px] leading-[1.75];
+    letter-spacing: -0.012em;
+  }
+
+  /* Custom Clean Minimalist Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300 dark:bg-zinc-800 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-400 dark:bg-zinc-700;
+  }
+}
+
+/* Notion & Google Sans Editorial Prose */
+.prose {
+  @apply text-[#31302E] dark:text-[#D4D4D8] text-[16.5px] leading-[1.8];
+}
+
+.prose h1 {
+  @apply text-2xl sm:text-3xl font-bold text-[#191919] dark:text-[#F4F4F5] mt-10 mb-4 tracking-tight;
+  letter-spacing: -0.025em;
+}
+
+.prose h2 {
+  @apply text-xl sm:text-2xl font-bold text-[#191919] dark:text-[#F4F4F5] mt-9 mb-3.5 tracking-tight border-b border-[#E6E6E6] dark:border-[#222226] pb-2;
+  letter-spacing: -0.02em;
+}
+
+.prose h3 {
+  @apply text-lg sm:text-xl font-semibold text-[#191919] dark:text-[#F4F4F5] mt-7 mb-2.5 tracking-tight;
+  letter-spacing: -0.015em;
+}
+
+.prose p {
+  @apply my-4 leading-[1.8];
+}
+
+.prose a {
+  @apply text-[#0075DE] dark:text-[#38BDF8] hover:underline font-medium;
+}
+
+.prose code {
+  @apply font-mono text-[14px] px-2 py-0.5 rounded-md bg-zinc-200/70 dark:bg-[#1A1A1E] text-[#191919] dark:text-zinc-200 border border-zinc-300/60 dark:border-zinc-700/60 font-normal;
+}
+
+.prose pre:not(.mermaid) {
+  @apply p-5 rounded-xl bg-zinc-950 border border-zinc-800 text-zinc-200 my-6 text-[13.5px] overflow-x-auto font-mono leading-relaxed;
+}
+
+.prose pre:not(.mermaid) code {
+  @apply bg-transparent border-0 text-zinc-200 p-0 text-[13.5px];
+}
+
+.prose pre.mermaid {
+  @apply bg-transparent border-0 text-inherit p-0 m-0 shadow-none;
+}
+
+.prose pre.mermaid svg {
+  background-color: transparent !important;
+  max-width: 100%;
+}
+
+.prose ul {
+  @apply list-disc list-outside pl-6 my-4 space-y-2;
+}
+
+.prose ol {
+  @apply list-decimal list-outside pl-6 my-4 space-y-2;
+}
+
+.prose li {
+  @apply leading-[1.75];
+}
+
+.prose blockquote {
+  @apply border-l-4 border-blue-500/60 pl-4 py-1.5 italic text-zinc-600 dark:text-zinc-400 my-5 bg-blue-500/5 rounded-r-lg;
+}
+
+.prose strong {
+  @apply text-zinc-950 dark:text-white font-semibold;
+}

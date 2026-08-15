@@ -1,0 +1,162 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { getAllWikiPages } from '../lib/wiki-loader';
+import fs from 'node:fs';
+import path from 'node:path';
+import { History, Sparkles, Tag, GitCommit, ChevronDown, CheckCircle2, Zap, Network, Layers, ShieldCheck, FolderTree } from 'lucide-astro';
+
+const allPages = getAllWikiPages();
+const logPath = path.join(process.cwd(), 'wiki', 'log.md');
+const rawLogContent = fs.existsSync(logPath) ? fs.readFileSync(logPath, 'utf-8') : '# Changelog\nNo entries yet.';
+---
+
+<DocsLayout
+  title="Product Releases & Changelog"
+  summary="Thematic product release notes and atomic Git commit ledger for AI-Wiki Platform"
+  currentSlug="log"
+  category="Getting Started"
+  allPages={allPages}
+>
+  <!-- Page Header -->
+  <div class="border-b border-[#E6E6E6] dark:border-[#202024] pb-6 mb-8">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-semibold uppercase tracking-wider bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+        <History class="w-3.5 h-3.5" />
+        <span>Releases & Updates</span>
+      </span>
+      <span class="px-2 py-0.5 rounded text-xs font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-bold">
+        Latest: v1.2.0
+      </span>
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-zinc-950 dark:text-[#F4F4F5] tracking-tight">
+      Product Releases & Changelog
+    </h1>
+    <p class="text-base text-zinc-600 dark:text-zinc-400 mt-2 leading-relaxed">
+      Major feature announcements, UI improvements, and low-level technical Git commit records.
+    </p>
+  </div>
+
+  <!-- Thematic User-Friendly Release Timeline -->
+  <div class="space-y-12">
+    
+    <!-- Release v1.2.0 -->
+    <section class="relative pl-6 sm:pl-8 border-l-2 border-blue-500/40 space-y-4">
+      <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-[#F6F5F4] dark:border-[#0C0C0E] shadow-sm shadow-blue-500/50"></div>
+      
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-xl sm:text-2xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
+          v1.2.0 — Obsidian Parity & Performance Hyper-Optimization
+        </span>
+        <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-200/60 dark:bg-[#18181C] px-2.5 py-0.5 rounded-full border border-zinc-300/60 dark:border-zinc-700/60">
+          August 15, 2026
+        </span>
+      </div>
+
+      <p class="text-[15.5px] text-zinc-700 dark:text-zinc-300 leading-relaxed">
+        A major release bringing full visual and architectural parity with Obsidian, zero-latency local bundling, interactive Mermaid controls, and a collapsible folder hierarchy.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+        <div class="p-4 rounded-xl border border-[#E6E6E6] dark:border-[#26262B] bg-white dark:bg-[#141417] shadow-sm">
+          <div class="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-[14.5px] mb-1.5">
+            <Network class="w-4 h-4 text-blue-500" />
+            <span>100% Obsidian Knowledge Graph</span>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Rendered with proportional circular nodes, directional arrow links with active particle flow, dynamic text Level-of-Detail, and neighbor hover focus dimming.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-[#E6E6E6] dark:border-[#26262B] bg-white dark:bg-[#141417] shadow-sm">
+          <div class="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-[14.5px] mb-1.5">
+            <Zap class="w-4 h-4 text-amber-500" />
+            <span>47x Faster Serving & Previews</span>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Eliminated remote CDN chunk downloads via local npm bundling and dynamic Mermaid code-splitting. Pages switch in under 15ms.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-[#E6E6E6] dark:border-[#26262B] bg-white dark:bg-[#141417] shadow-sm">
+          <div class="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-[14.5px] mb-1.5">
+            <FolderTree class="w-4 h-4 text-emerald-500" />
+            <span>Collapsible Folders & Notion Properties</span>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Emoji-free minimal sidebar tree and database property grid with persistent <code class="text-[11px]">localStorage</code> memory and zero layout shift.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl border border-[#E6E6E6] dark:border-[#26262B] bg-white dark:bg-[#141417] shadow-sm">
+          <div class="font-bold text-zinc-900 dark:text-white flex items-center gap-2 text-[14.5px] mb-1.5">
+            <Layers class="w-4 h-4 text-purple-500" />
+            <span>Interactive Mermaid Zoom & Pan</span>
+          </div>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+            Built-in <code class="text-[11px]">[+]</code>, <code class="text-[11px]">[-]</code>, and <code class="text-[11px]">[Fit]</code> controls with mouse drag panning and automatic dark/light theme palette synchronization.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Release v1.1.0 -->
+    <section class="relative pl-6 sm:pl-8 border-l-2 border-zinc-300 dark:border-zinc-800 space-y-4">
+      <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-zinc-400 dark:bg-zinc-700 border-4 border-[#F6F5F4] dark:border-[#0C0C0E]"></div>
+      
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-xl sm:text-2xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
+          v1.1.0 — Gramax-Inspired Multi-Syntax & Zero-Hallucination Grounding
+        </span>
+        <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-200/60 dark:bg-[#18181C] px-2.5 py-0.5 rounded-full border border-zinc-300/60 dark:border-zinc-700/60">
+          August 14, 2026
+        </span>
+      </div>
+
+      <p class="text-[15.5px] text-zinc-700 dark:text-zinc-300 leading-relaxed">
+        Enhanced authoring expressiveness with interactive multi-language code tabs (<code class="text-xs">:::tabs</code>), expandable accordions (<code class="text-xs">:::details</code>), and a zero-hallucination CategoryRAG retrieval engine.
+      </p>
+
+      <ul class="space-y-2 text-sm text-zinc-600 dark:text-zinc-300 pl-4 list-disc">
+        <li><strong>Multi-Code Tabs:</strong> Switch between npm, pnpm, and cURL commands with zero reload latency.</li>
+        <li><strong>Expandable Accordions:</strong> Deep dive architectural notes packed into neat collapsible blocks.</li>
+        <li><strong>Vault Sanitizer:</strong> Cleanly import Obsidian & Notion vaults by stripping trailing UUID hashes.</li>
+      </ul>
+    </section>
+
+    <!-- Release v1.0.0 -->
+    <section class="relative pl-6 sm:pl-8 border-l-2 border-zinc-300 dark:border-zinc-800 space-y-4">
+      <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-zinc-400 dark:bg-zinc-700 border-4 border-[#F6F5F4] dark:border-[#0C0C0E]"></div>
+      
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-xl sm:text-2xl font-extrabold text-zinc-950 dark:text-white tracking-tight">
+          v1.0.0 — Initial Launch of Open-Source AI-Wiki Platform
+        </span>
+        <span class="text-xs font-mono text-zinc-500 dark:text-zinc-400 bg-zinc-200/60 dark:bg-[#18181C] px-2.5 py-0.5 rounded-full border border-zinc-300/60 dark:border-zinc-700/60">
+          August 14, 2026
+        </span>
+      </div>
+
+      <p class="text-[15.5px] text-zinc-700 dark:text-zinc-300 leading-relaxed">
+        The genesis release of AI-Wiki: a Git-native documentation engine with 3-column Notion/GitBook aesthetics, Pagefind client-side Wasm search, Serverless MCP API endpoint (<code class="text-xs">/api/mcp</code>), and AI crawler discovery suite (<code class="text-xs">llms.txt</code>).
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Technical Git Commit Ledger (Collapsible Accordion for Engineers) -->
+  <div class="mt-14 pt-8 border-t border-[#E6E6E6] dark:border-[#202024]">
+    <details class="rounded-2xl border border-[#E6E6E6] dark:border-[#26262B] bg-white dark:bg-[#141417] overflow-hidden group shadow-sm">
+      <summary class="flex items-center justify-between p-4 sm:p-5 font-bold text-zinc-900 dark:text-zinc-100 cursor-pointer select-none hover:bg-zinc-50 dark:hover:bg-[#1C1C21] transition-colors text-[15px]">
+        <div class="flex items-center gap-2.5">
+          <GitCommit class="w-4 h-4 text-blue-500" />
+          <span>Technical Git Commit Ledger (Raw Log)</span>
+        </div>
+        <span class="text-zinc-400 group-open:rotate-180 transition-transform duration-200 text-xs">▼</span>
+      </summary>
+      <div class="p-5 border-t border-[#E6E6E6] dark:border-[#202024] bg-zinc-950 text-zinc-200 font-mono text-xs overflow-x-auto leading-relaxed">
+        <pre class="bg-transparent p-0 m-0 border-0 text-zinc-300"><code>{rawLogContent}</code></pre>
+      </div>
+    </details>
+  </div>
+</DocsLayout>

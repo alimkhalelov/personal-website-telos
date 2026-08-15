@@ -1,0 +1,493 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { 
+  Sparkles, Search, Sun, Moon, Network, Share2, ExternalLink, 
+  ChevronRight, ChevronDown, BookOpen, Layers, Database, 
+  GitCommit, Home, FileCode, History, Folder, FileText, Check, Copy
+} from 'lucide-astro';
+import SearchModal from '../components/SearchModal.astro';
+import type { WikiPage } from '../lib/wiki-loader';
+
+interface Props {
+  title: string;
+  summary?: string;
+  category?: string;
+  lastUpdated?: string;
+  currentSlug?: string;
+  tags?: string[];
+  headings?: { depth: number; text: string; slug: string }[];
+  allPages?: WikiPage[];
+}
+
+const {
+  title,
+  summary = 'Deterministic AST Documentation & Knowledge Graph Engine',
+  category = 'Concepts',
+  lastUpdated = new Date().toISOString().split('T')[0],
+  currentSlug = '',
+  tags = ['zero-hallucination', 'ast-graph'],
+  headings = [],
+  allPages = []
+} = Astro.props;
+
+const conceptPages = allPages.filter((p) => p.category === 'concept' && p.visibility === 'public');
+const entityPages = allPages.filter((p) => p.category === 'entity' && p.visibility === 'public');
+
+// Compute clickable link for category breadcrumb
+let categoryHref = '/';
+const catLower = (category || '').toLowerCase();
+if (catLower.includes('concept')) categoryHref = '/#core-concepts';
+else if (catLower.includes('entit')) categoryHref = '/#entities';
+else if (catLower.includes('visual') || catLower.includes('graph')) categoryHref = '/graph';
+else if (catLower.includes('log') || catLower.includes('change')) categoryHref = '/log';
+else if (catLower.includes('getting')) categoryHref = '/';
+---
+
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — AI-Wiki Docs</title>
+    <meta name="description" content={summary} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Instant SPA Navigation & View Transitions Router -->
+    <ClientRouter />
+
+    <style is:inline>
+      html.props-collapsed #properties-grid-container {
+        display: none !important;
+      }
+      html.props-collapsed #prop-chevron {
+        transform: rotate(-90deg) !important;
+      }
+      .folder-collapsed .folder-chevron {
+        transform: rotate(-90deg) !important;
+      }
+      .folder-collapsed + nav {
+        display: none !important;
+      }
+    </style>
+
+    <!-- Theme, Properties & Folder Persistent State Script (Zero-Flicker) -->
+    <script is:inline>
+      function applyEarlyState() {
+        // 1. Theme State
+        const theme = (() => {
+          if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+            return localStorage.getItem('theme');
+          }
+          if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+            return 'light';
+          }
+          return 'dark';
+        })();
+        if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+
+        // 2. Properties Collapsed State
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('wiki_properties_collapsed') === 'true') {
+          document.documentElement.classList.add('props-collapsed');
+        } else {
+          document.documentElement.classList.remove('props-collapsed');
+        }
+      }
+      applyEarlyState();
+      document.addEventListener('astro:after-swap', applyEarlyState);
+    </script>
+  </head>
+  <body class="bg-[#F6F5F4] dark:bg-[#0C0C0E] text-[#31302E] dark:text-[#E4E4E7] min-h-screen flex flex-col antialiased selection:bg-blue-500/20 selection:text-blue-600 dark:selection:text-blue-300">
+    
+    <!-- Top Sticky Header: Full-Width & Clean Minimalist -->
+    <header class="sticky top-0 z-30 flex items-center justify-between h-14 px-4 sm:px-6 lg:px-8 bg-[#F6F5F4]/90 dark:bg-[#0C0C0E]/90 backdrop-blur border-b border-[#E6E6E6] dark:border-[#202024] transition-colors">
+      
+      <!-- Left: Breadcrumbs / Title -->
+      <div class="flex items-center gap-2 sm:gap-3 text-[14px]">
+        <a href="/" data-astro-prefetch="hover" class="flex items-center gap-2 font-bold text-zinc-950 dark:text-white hover:text-[#0075DE] transition-colors">
+          <div class="w-5 h-5 rounded bg-[#0075DE] flex items-center justify-center text-white text-[11px] font-black">W</div>
+          <span class="tracking-tight text-base font-extrabold">AI-Wiki</span>
+        </a>
+        <ChevronRight class="w-3.5 h-3.5 text-zinc-400" />
+        <a href={categoryHref} data-astro-prefetch="hover" class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors font-medium">
+          {category}
+        </a>
+        <ChevronRight class="w-3.5 h-3.5 text-zinc-400 hidden sm:inline" />
+        <span class="text-zinc-900 dark:text-zinc-200 font-semibold truncate max-w-[200px] sm:max-w-[320px] hidden sm:inline">
+          {title}
+        </span>
+      </div>
+
+      <!-- Right: Search, Graph, Share & Actions -->
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        
+        <!-- Search Trigger Button -->
+        <button
+          id="search-trigger"
+          class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#E0E0E0] dark:border-[#26262B] bg-white dark:bg-[#141417] hover:bg-zinc-100 dark:hover:bg-[#1C1C21] text-zinc-500 dark:text-zinc-400 text-[13px] transition-all active:scale-[0.98] cursor-pointer shadow-sm"
+        >
+          <Search class="w-3.5 h-3.5" />
+          <span class="hidden sm:inline">Search docs...</span>
+          <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded border border-zinc-200 dark:border-zinc-700">Ctrl K</kbd>
+        </button>
+
+        <!-- Graph View Button -->
+        <a href="/graph" data-astro-prefetch="hover" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E0E0E0] dark:border-[#26262B] bg-white dark:bg-[#141417] hover:bg-zinc-100 dark:hover:bg-[#1C1C21] text-zinc-700 dark:text-zinc-300 text-[13px] font-medium transition-all active:scale-[0.98]">
+          <Network class="w-4 h-4 text-blue-500" />
+          <span class="hidden md:inline">Graph</span>
+        </a>
+
+        <!-- Share / Copy Link Button -->
+        <button id="header-copy-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E0E0E0] dark:border-[#26262B] bg-white dark:bg-[#141417] hover:bg-zinc-100 dark:hover:bg-[#1C1C21] text-zinc-700 dark:text-zinc-300 text-[13px] font-medium transition-all active:scale-[0.98] cursor-pointer">
+          <Share2 class="w-4 h-4 text-zinc-400" />
+          <span class="hidden md:inline">Share</span>
+        </button>
+
+        <!-- Dark / Light Theme Toggle -->
+        <button
+          id="theme-toggle"
+          class="p-1.5 rounded-lg border border-[#E0E0E0] dark:border-[#26262B] bg-white dark:bg-[#141417] hover:bg-zinc-100 dark:hover:bg-[#1C1C21] text-zinc-600 dark:text-zinc-300 transition-all active:scale-[0.98] cursor-pointer"
+          title="Toggle Theme"
+        >
+          <Sun class="w-4 h-4 hidden dark:block text-amber-400" />
+          <Moon class="w-4 h-4 block dark:hidden text-zinc-600" />
+        </button>
+
+      </div>
+    </header>
+
+    <!-- Main Outer Container: Wide Screen Optimized -->
+    <div class="max-w-[1720px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-8 flex-1">
+      
+      <!-- 1. LEFT SIDEBAR: Obsidian-Style Hierarchical Tree (Emoji-Free & Collapsible Folders) -->
+      <aside class="w-64 xl:w-72 shrink-0 hidden md:block border-r border-[#E6E6E6] dark:border-[#202024] pr-3 select-none">
+        <div class="sticky top-20 space-y-5">
+          
+          <!-- Folder: Getting Started -->
+          <div class="folder-group" data-folder-id="getting-started">
+            <button
+              type="button"
+              class="folder-toggle flex items-center justify-between w-full text-left py-1.5 px-2 rounded-lg text-[12px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer group"
+            >
+              <div class="flex items-center gap-2">
+                <BookOpen class="w-3.5 h-3.5 text-zinc-400" />
+                <span>Getting Started</span>
+              </div>
+              <ChevronDown class="folder-chevron w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" />
+            </button>
+            <nav class="space-y-0.5 text-[13.5px] mt-1 pl-2 border-l border-zinc-200 dark:border-zinc-800 ml-3.5">
+              <a
+                href="/"
+                data-astro-prefetch="hover"
+                class={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg font-medium transition-all ${
+                  currentSlug === ''
+                    ? 'bg-[#EAEAE8] dark:bg-[#1C1C21] text-zinc-950 dark:text-white font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-[#EFEFED] dark:hover:bg-[#141417] hover:text-zinc-950 dark:hover:text-zinc-200'
+                }`}
+              >
+                <Home class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                <span>Overview & Intro</span>
+              </a>
+              <a
+                href="/graph"
+                data-astro-prefetch="hover"
+                class={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg font-medium transition-all ${
+                  currentSlug === 'graph'
+                    ? 'bg-[#EAEAE8] dark:bg-[#1C1C21] text-zinc-950 dark:text-white font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-[#EFEFED] dark:hover:bg-[#141417] hover:text-zinc-950 dark:hover:text-zinc-200'
+                }`}
+              >
+                <Network class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                <span>Knowledge Graph</span>
+              </a>
+              <a
+                href="/api-reference"
+                data-astro-prefetch="hover"
+                class={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg font-medium transition-all ${
+                  currentSlug === 'api-reference'
+                    ? 'bg-[#EAEAE8] dark:bg-[#1C1C21] text-zinc-950 dark:text-white font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-[#EFEFED] dark:hover:bg-[#141417] hover:text-zinc-950 dark:hover:text-zinc-200'
+                }`}
+              >
+                <FileCode class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                <span>API Reference</span>
+              </a>
+              <a
+                href="/log"
+                data-astro-prefetch="hover"
+                class={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg font-medium transition-all ${
+                  currentSlug === 'log'
+                    ? 'bg-[#EAEAE8] dark:bg-[#1C1C21] text-zinc-950 dark:text-white font-semibold'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:bg-[#EFEFED] dark:hover:bg-[#141417] hover:text-zinc-950 dark:hover:text-zinc-200'
+                }`}
+              >
+                <History class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                <span>Changelog</span>
+              </a>
+            </nav>
+          </div>
+
+          <!-- Folder: Core Concepts -->
+          <div class="folder-group" data-folder-id="core-concepts">
+            <button
+              type="button"
+              class="folder-toggle flex items-center justify-between w-full text-left py-1.5 px-2 rounded-lg text-[12px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer group"
+            >
+              <div class="flex items-center gap-2">
+                <Layers class="w-3.5 h-3.5 text-zinc-400" />
+                <span>Core Concepts ({conceptPages.length})</span>
+              </div>
+              <ChevronDown class="folder-chevron w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" />
+            </button>
+            <nav class="space-y-0.5 text-[13.5px] mt-1 pl-2 border-l border-zinc-200 dark:border-zinc-800 ml-3.5">
+              {conceptPages.map((page) => (
+                <a
+                  href={`/${page.slug}`}
+                  data-astro-prefetch="hover"
+                  class={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg font-medium transition-all ${
+                    currentSlug === page.slug
+                      ? 'bg-[#EAEAE8] dark:bg-[#1C1C21] text-zinc-950 dark:text-white font-semibold'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:bg-[#EFEFED] dark:hover:bg-[#141417] hover:text-zinc-950 dark:hover:text-zinc-200'
+                  }`}
+                >
+                  <FileText class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                  <span class="truncate">{page.title}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+
+          <!-- Folder: Entities & Components -->
+          <div class="folder-group" data-folder-id="entities-components">
+            <button
+              type="button"
+              class="folder-toggle flex items-center justify-between w-full text-left py-1.5 px-2 rounded-lg text-[12px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer group"
+            >
+              <div class="flex items-center gap-2">
+                <Database class="w-3.5 h-3.5 text-zinc-400" />
+                <span>Entities & Components ({entityPages.length})</span>
+              </div>
+              <ChevronDown class="folder-chevron w-3.5 h-3.5 text-zinc-400 transition-transform duration-200" />
+            </button>
+            <nav class="space-y-0.5 text-[13.5px] mt-1 pl-2 border-l border-zinc-200 dark:border-zinc-800 ml-3.5">
+              {entityPages.map((page) => (
+                <a
+                  href={`/${page.slug}`}
+                  data-astro-prefetch="hover"
+                  class={`flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg font-medium transition-all ${
+                    currentSlug === page.slug
+                      ? 'bg-[#EAEAE8] dark:bg-[#1C1C21] text-zinc-950 dark:text-white font-semibold'
+                      : 'text-zinc-600 dark:text-zinc-400 hover:bg-[#EFEFED] dark:hover:bg-[#141417] hover:text-zinc-950 dark:hover:text-zinc-200'
+                  }`}
+                >
+                  <FileText class="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                  <span class="truncate">{page.title}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- 2. MAIN READING ARENA: Wide & Comfortable Reading Column -->
+      <main class="flex-1 min-w-0 max-w-4xl pb-16">
+        <slot />
+      </main>
+
+      <!-- 3. RIGHT SIDEBAR: Notion-Style Clean Table of Contents -->
+      {headings && headings.length > 0 && (
+        <aside class="w-60 shrink-0 hidden xl:block sticky top-20 h-[calc(100vh-6rem)] overflow-y-auto pl-4 border-l border-[#E6E6E6] dark:border-[#202024]">
+          <div class="text-[12px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider mb-3">
+            On this page
+          </div>
+          <ul class="space-y-2 text-[13px]">
+            {headings.map((h) => (
+              <li class={h.depth === 3 ? 'pl-3' : ''}>
+                <a
+                  href={`#${h.slug}`}
+                  class="text-zinc-500 hover:text-zinc-950 dark:hover:text-zinc-100 transition-colors block py-0.5 truncate"
+                >
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+    </div>
+
+    <!-- 2-Tab Search Modal -->
+    <SearchModal allPages={allPages} />
+
+    <!-- Interactive Event Listeners (Theme Toggle, Share, Folders, Copy Code, Collapsible Props) -->
+    <script is:inline>
+      function initInteractiveLayout() {
+        // 1. Theme Toggle Handler
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn && !themeBtn.dataset.bound) {
+          themeBtn.dataset.bound = 'true';
+          themeBtn.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+          });
+        }
+
+        // 2. Share Link Button Handler
+        const copyBtn = document.getElementById('header-copy-btn');
+        if (copyBtn && !copyBtn.dataset.bound) {
+          copyBtn.dataset.bound = 'true';
+          copyBtn.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(window.location.href);
+              const label = copyBtn.querySelector('span');
+              if (label) {
+                const prev = label.textContent;
+                label.textContent = 'Copied!';
+                setTimeout(() => { label.textContent = prev; }, 2000);
+              }
+            } catch (e) {
+              console.error('Failed to copy link', e);
+            }
+          });
+        }
+
+        // 3. Collapsible Sidebar Folders (Obsidian-Style with Persistence)
+        const storedCollapsed = (() => {
+          try {
+            return JSON.parse(localStorage.getItem('wiki_collapsed_folders') || '[]');
+          } catch {
+            return [];
+          }
+        })();
+
+        document.querySelectorAll('.folder-group').forEach(group => {
+          const folderId = group.getAttribute('data-folder-id');
+          const toggle = group.querySelector('.folder-toggle');
+          if (!folderId || !toggle) return;
+
+          // Restore initial state
+          if (storedCollapsed.includes(folderId)) {
+            toggle.classList.add('folder-collapsed');
+          }
+
+          if (!toggle.dataset.bound) {
+            toggle.dataset.bound = 'true';
+            toggle.addEventListener('click', () => {
+              const isCollapsed = toggle.classList.toggle('folder-collapsed');
+              let currentList = [];
+              try {
+                currentList = JSON.parse(localStorage.getItem('wiki_collapsed_folders') || '[]');
+              } catch {}
+
+              if (isCollapsed) {
+                if (!currentList.includes(folderId)) currentList.push(folderId);
+              } else {
+                currentList = currentList.filter(id => id !== folderId);
+              }
+              localStorage.setItem('wiki_collapsed_folders', JSON.stringify(currentList));
+            });
+          }
+        });
+
+        // 4. Code Block Copy Button Injector (For all <pre> and .tab-pane code blocks)
+        document.querySelectorAll('pre').forEach(pre => {
+          if (pre.classList.contains('mermaid') || pre.dataset.copyBound) return;
+          pre.dataset.copyBound = 'true';
+
+          // Wrap pre if not already wrapped
+          let wrapper = pre.closest('.code-block-wrapper');
+          if (!wrapper) {
+            wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper relative group my-5';
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+          }
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'copy-code-btn absolute top-2.5 right-2.5 z-10 flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-mono text-zinc-400 bg-zinc-800/90 hover:bg-zinc-700 hover:text-white border border-zinc-700/60 opacity-0 group-hover:opacity-100 transition-all cursor-pointer shadow-md';
+          btn.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>`;
+
+          btn.addEventListener('click', async () => {
+            const codeText = pre.innerText || pre.textContent || '';
+            try {
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(codeText.trim());
+              } else {
+                throw new Error('Fallback needed');
+              }
+            } catch (err) {
+              try {
+                const ta = document.createElement('textarea');
+                ta.value = codeText.trim();
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+              } catch (e) {}
+            }
+            btn.innerHTML = `<svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="text-emerald-400">Copied!</span>`;
+            setTimeout(() => {
+              btn.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>`;
+            }, 2000);
+          });
+
+          wrapper.appendChild(btn);
+        });
+
+        // 5. Collapsible Notion Properties Handler
+        const propBtn = document.getElementById('toggle-properties-btn');
+        if (propBtn && !propBtn.dataset.bound) {
+          propBtn.dataset.bound = 'true';
+          
+          function updateLabels(collapsed) {
+            const btnText = document.getElementById('prop-btn-text');
+            const chevron = document.getElementById('prop-chevron');
+            if (btnText) {
+              btnText.textContent = collapsed ? 'Show properties' : 'Hide properties';
+            }
+            if (chevron) {
+              if (collapsed) {
+                chevron.classList.add('-rotate-90');
+              } else {
+                chevron.classList.remove('-rotate-90');
+              }
+            }
+          }
+
+          const isCollapsed = document.documentElement.classList.contains('props-collapsed');
+          updateLabels(isCollapsed);
+
+          propBtn.addEventListener('click', () => {
+            const currentlyCollapsed = document.documentElement.classList.contains('props-collapsed');
+            const nextState = !currentlyCollapsed;
+            if (nextState) {
+              document.documentElement.classList.add('props-collapsed');
+              localStorage.setItem('wiki_properties_collapsed', 'true');
+            } else {
+              document.documentElement.classList.remove('props-collapsed');
+              localStorage.setItem('wiki_properties_collapsed', 'false');
+            }
+            updateLabels(nextState);
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', initInteractiveLayout);
+      document.addEventListener('astro:page-load', initInteractiveLayout);
+    </script>
+  </body>
+</html>

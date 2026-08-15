@@ -1,0 +1,298 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+import { extractGraph } from '../lib/graph-extractor';
+import { getAllWikiPages } from '../lib/wiki-loader';
+import path from 'node:path';
+import { Network, Sparkles, ArrowLeft, ZoomIn, ZoomOut, RotateCcw } from 'lucide-astro';
+
+const allPages = getAllWikiPages();
+const graphData = extractGraph(path.join(process.cwd(), 'wiki'));
+const graphDataJson = JSON.stringify(graphData);
+---
+
+<DocsLayout
+  title="Interactive Knowledge Graph"
+  summary="Obsidian-Parity Deterministic 2D Knowledge Graph"
+  currentSlug="graph"
+  category="Visualization"
+  allPages={allPages}
+>
+  <!-- Embedded Raw Graph JSON Data -->
+  <script id="graph-data-payload" type="application/json" set:html={graphDataJson} />
+
+  <!-- Obsidian-Grade Graph Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E6E6E6] dark:border-[#202024] pb-5 mb-5">
+    <div class="flex items-center gap-3.5">
+      <a href="/" data-astro-prefetch="hover" class="p-2 rounded-lg border border-[#E0E0E0] dark:border-[#26262B] bg-white dark:bg-[#141417] hover:bg-zinc-100 dark:hover:bg-[#1C1C21] text-zinc-600 dark:text-zinc-300 transition-colors">
+        <ArrowLeft class="w-4 h-4" />
+      </a>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-950 dark:text-[#F4F4F5] flex items-center gap-2.5 tracking-tight">
+          <Network class="w-6 h-6 text-blue-500" />
+          <span>Interactive Knowledge Graph</span>
+        </h1>
+        <p class="text-xs sm:text-[13px] text-zinc-500 mt-0.5">Obsidian-parity cosmic force graph — AST links & zero hallucinations</p>
+      </div>
+    </div>
+
+    <!-- Category Legend Pills & Counts -->
+    <div class="flex items-center gap-2.5 text-xs font-mono select-none">
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-semibold">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#38BDF8] shadow-sm shadow-blue-500/50"></span>
+        <span>Concepts ({graphData.nodes.filter(n=>n.category==='concept').length})</span>
+      </div>
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-semibold">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#34D399] shadow-sm shadow-emerald-500/50"></span>
+        <span>Entities ({graphData.nodes.filter(n=>n.category==='entity').length})</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Obsidian Graph Canvas Arena -->
+  <div class="relative w-full h-[680px] sm:h-[750px] rounded-2xl border border-[#E6E6E6] dark:border-[#202024] bg-[#F6F5F4] dark:bg-[#121215] overflow-hidden shadow-2xl">
+    <div id="graph-container" class="w-full h-full"></div>
+
+    <!-- Floating Obsidian Controls (Top Right) -->
+    <div class="absolute top-4 right-4 z-10 flex flex-col gap-1.5 bg-white/90 dark:bg-[#16161C]/90 backdrop-blur border border-[#E0E0E0] dark:border-[#26262B] rounded-xl p-1.5 shadow-lg">
+      <button id="btn-zoom-in" type="button" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-[#22222B] text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer" title="Zoom In">
+        <ZoomIn class="w-4 h-4" />
+      </button>
+      <button id="btn-zoom-out" type="button" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-[#22222B] text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer" title="Zoom Out">
+        <ZoomOut class="w-4 h-4" />
+      </button>
+      <button id="btn-recenter" type="button" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-[#22222B] text-blue-500 transition-colors cursor-pointer" title="Fit to Center">
+        <RotateCcw class="w-4 h-4" />
+      </button>
+    </div>
+
+    <!-- Obsidian Graph Helper & Status Card (Bottom Left) -->
+    <div class="absolute bottom-4 left-4 z-10 bg-white/90 dark:bg-[#16161C]/90 backdrop-blur border border-[#E0E0E0] dark:border-[#26262B] rounded-xl p-3.5 text-xs text-zinc-600 dark:text-zinc-300 pointer-events-none shadow-lg max-w-xs">
+      <div class="font-bold text-zinc-900 dark:text-white mb-1.5 flex items-center gap-1.5 text-[13px]">
+        <Sparkles class="w-3.5 h-3.5 text-amber-500" />
+        <span>Obsidian-Parity View:</span>
+      </div>
+      <div class="space-y-1 text-[12px] text-zinc-500 dark:text-zinc-400">
+        <div>• <strong>Wheel / Buttons:</strong> Zoom in & out smoothly</div>
+        <div>• <strong>Hover:</strong> Highlights connected cluster & edges</div>
+        <div>• <strong>Click:</strong> Opens the document card</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Obsidian Graph Engine Module Script -->
+  <script>
+    import ForceGraph from 'force-graph';
+
+    function initGraphCanvas() {
+      const container = document.getElementById('graph-container');
+      const payloadEl = document.getElementById('graph-data-payload');
+      if (!container || !payloadEl) return;
+
+      let rawData;
+      try {
+        rawData = JSON.parse(payloadEl.textContent || '{}');
+      } catch (e) {
+        console.error('Failed to parse graph payload', e);
+        return;
+      }
+
+      if (!rawData.nodes || rawData.nodes.length === 0) return;
+
+      // Deep clone graph data so force-graph mutator doesn't corrupt raw object
+      const graphData = {
+        nodes: rawData.nodes.map((n: any) => ({ ...n })),
+        links: rawData.links.map((l: any) => ({ ...l })),
+      };
+
+      container.innerHTML = '';
+
+      const isDark = document.documentElement.classList.contains('dark');
+      const bgColor = isDark ? '#121215' : '#F6F5F4';
+
+      // Pre-compute neighbor relations
+      const neighbors = new Map<string, Set<string>>();
+      graphData.links.forEach((link: any) => {
+        const src = link.source;
+        const tgt = link.target;
+        if (!neighbors.has(src)) neighbors.set(src, new Set());
+        if (!neighbors.has(tgt)) neighbors.set(tgt, new Set());
+        neighbors.get(src)!.add(tgt);
+        neighbors.get(tgt)!.add(src);
+      });
+
+      let hoverNode: any = null;
+      const highlightNodes = new Set<string>();
+
+      const Graph = ForceGraph()(container)
+        .graphData(graphData)
+        .nodeId('id')
+        .nodeVal((node: any) => node.val || 2)
+        .backgroundColor(bgColor)
+        .enableZoomInteraction(true)
+        .enablePanInteraction(true)
+        .enableNodeDrag(true)
+        .cooldownTicks(200)
+        .d3AlphaDecay(0.015)
+        // Obsidian Link Styling with Directional Arrows
+        .linkDirectionalArrowLength(4)
+        .linkDirectionalArrowRelPos(1)
+        .linkDirectionalArrowColor((link: any) => {
+          if (!hoverNode) {
+            return isDark ? 'rgba(161, 161, 170, 0.4)' : 'rgba(113, 113, 122, 0.5)';
+          }
+          const srcId = typeof link.source === 'object' ? link.source.id : link.source;
+          const tgtId = typeof link.target === 'object' ? link.target.id : link.target;
+          const isHighlight = srcId === hoverNode.id || tgtId === hoverNode.id;
+          return isHighlight
+            ? (isDark ? '#60A5FA' : '#2563EB')
+            : (isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)');
+        })
+        .linkColor((link: any) => {
+          if (!hoverNode) {
+            return isDark ? 'rgba(161, 161, 170, 0.25)' : 'rgba(113, 113, 122, 0.35)';
+          }
+          const srcId = typeof link.source === 'object' ? link.source.id : link.source;
+          const tgtId = typeof link.target === 'object' ? link.target.id : link.target;
+          const isHighlight = srcId === hoverNode.id || tgtId === hoverNode.id;
+          return isHighlight
+            ? (isDark ? '#60A5FA' : '#2563EB')
+            : (isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)');
+        })
+        .linkWidth((link: any) => {
+          if (!hoverNode) return 1.2;
+          const srcId = typeof link.source === 'object' ? link.source.id : link.source;
+          const tgtId = typeof link.target === 'object' ? link.target.id : link.target;
+          return (srcId === hoverNode.id || tgtId === hoverNode.id) ? 2.2 : 0.8;
+        })
+        // Obsidian Canvas Node Renderer (Circles + Proportional Radius + Dynamic Text LOD)
+        .nodeCanvasObject((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
+          if (node.x === undefined || node.y === undefined) return;
+
+          const isHovered = hoverNode === node;
+          const isNeighbor = highlightNodes.has(node.id);
+          const isDimmed = hoverNode && !isHovered && !isNeighbor;
+
+          // Compute Obsidian Circle Radius based on connection weight
+          const baseRadius = Math.max(4, Math.min(12, 3.2 + Math.sqrt(node.val || 2) * 1.3));
+          const r = isHovered ? baseRadius * 1.25 : baseRadius;
+
+          // Determine Colors
+          const isConcept = node.category === 'concept';
+          const nodeColor = isConcept
+            ? (isDark ? '#38BDF8' : '#0075DE')
+            : (isDark ? '#34D399' : '#10B981');
+
+          ctx.save();
+
+          if (isDimmed) {
+            ctx.globalAlpha = 0.12;
+          }
+
+          // 1. Draw Glowing Halo for Hovered / Active Node
+          if (isHovered || isNeighbor) {
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, r + 4, 0, 2 * Math.PI, false);
+            ctx.fillStyle = isConcept
+              ? (isDark ? 'rgba(56, 189, 248, 0.3)' : 'rgba(0, 117, 222, 0.3)')
+              : (isDark ? 'rgba(52, 211, 153, 0.3)' : 'rgba(16, 185, 129, 0.3)');
+            ctx.fill();
+          }
+
+          // 2. Draw Obsidian Solid Circle Node
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, r, 0, 2 * Math.PI, false);
+          ctx.fillStyle = nodeColor;
+          ctx.fill();
+
+          // Subtle clean border
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)';
+          ctx.stroke();
+
+          // 3. Draw Crisp Text Label (Obsidian LOD: Only show when zoomed in OR on hover/neighbor)
+          const shouldShowLabel = globalScale >= 0.6 || isHovered || isNeighbor;
+          if (shouldShowLabel && !isDimmed) {
+            const label = node.name || node.id;
+            const fontSize = Math.max(11 / globalScale, 3.2);
+            ctx.font = `${isHovered ? '600' : '500'} ${fontSize}px 'Google Sans Flex', 'Plus Jakarta Sans', Inter, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+
+            const textY = node.y + r + 4;
+            ctx.fillStyle = isDark ? '#E4E4E7' : '#27272A';
+            ctx.fillText(label, node.x, textY);
+          }
+
+          ctx.restore();
+        })
+        .nodePointerAreaPaint((node: any, color: string, ctx: CanvasRenderingContext2D) => {
+          if (node.x === undefined || node.y === undefined) return;
+          const baseRadius = Math.max(4, Math.min(12, 3.2 + Math.sqrt(node.val || 2) * 1.3));
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, baseRadius + 8, 0, 2 * Math.PI, false);
+          ctx.fill();
+        })
+        .onNodeHover((node: any) => {
+          container.style.cursor = node ? 'pointer' : 'default';
+          if (node === hoverNode) return;
+
+          highlightNodes.clear();
+          if (node) {
+            hoverNode = node;
+            highlightNodes.add(node.id);
+            const nbrs = neighbors.get(node.id);
+            if (nbrs) {
+              nbrs.forEach((nbrId) => highlightNodes.add(nbrId));
+            }
+          } else {
+            hoverNode = null;
+          }
+        })
+        .onNodeClick((node: any) => {
+          if (node.url) {
+            window.location.href = node.url;
+          }
+        });
+
+      // Obsidian D3 Physics Forces
+      Graph.d3Force('charge').strength(-320);
+      Graph.d3Force('link').distance(105);
+
+      function fitCenter() {
+        if (!container) return;
+        Graph.width(container.clientWidth);
+        Graph.height(container.clientHeight);
+        Graph.zoomToFit(400, 70);
+      }
+
+      setTimeout(fitCenter, 200);
+      setTimeout(fitCenter, 600);
+      window.addEventListener('resize', fitCenter);
+
+      // Button handlers with direct reliable zoom methods
+      document.getElementById('btn-zoom-in')?.addEventListener('click', () => {
+        try {
+          const currentZoom = Graph.zoom();
+          Graph.zoom(currentZoom * 1.4, 250);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+      
+      document.getElementById('btn-zoom-out')?.addEventListener('click', () => {
+        try {
+          const currentZoom = Graph.zoom();
+          Graph.zoom(currentZoom / 1.4, 250);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+
+      document.getElementById('btn-recenter')?.addEventListener('click', fitCenter);
+    }
+
+    document.addEventListener('DOMContentLoaded', initGraphCanvas);
+    document.addEventListener('astro:page-load', initGraphCanvas);
+  </script>
+</DocsLayout>
