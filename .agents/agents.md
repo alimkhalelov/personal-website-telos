@@ -30,7 +30,7 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - [ ] Add i18n auto-translation flows.
 - [x] Refine landing UI typography and rename blog section.
 - [x] Add Pet-Projects Labs gallery UI and prepare pixel hamster placeholder.
-- [ ] Build and integrate Avant-Garde AI-Wiki knowledge base (/wiki, graph, Notion properties, MCP API, GEO).
+- [x] Build and integrate Avant-Garde AI-Wiki knowledge base (/wiki, graph, Notion properties, MCP API, GEO).
 
 ## Known Issues & Fixes
 - **Vercel AI Streaming**: When streaming raw text back to the client, `result.textStream` (an `AsyncIterable`) MUST be explicitly wrapped in a standard `ReadableStream` on the server before passing to `new Response()`. Passing `AsyncIterable` directly causes Vercel serverless functions to either throw a 500 error or buffer the response and timeout after 10-15s.
