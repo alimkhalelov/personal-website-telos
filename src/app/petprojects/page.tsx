@@ -4,10 +4,15 @@ import { Sparkles, ArrowLeft } from "lucide-react";
 export default function PetProjectsPage() {
   return (
     <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-16 w-full">
-      <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors w-fit">
-        <ArrowLeft className="w-4 h-4" />
-        Back to Headquarters
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors w-fit">
+          <ArrowLeft className="w-4 h-4" />
+          Back to Headquarters
+        </Link>
+        <Link href="/wiki" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors">
+          Wiki & Knowledge Base
+        </Link>
+      </div>
 
       {/* Pet-Projects Labs Section */}
       <section className="flex flex-col gap-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
