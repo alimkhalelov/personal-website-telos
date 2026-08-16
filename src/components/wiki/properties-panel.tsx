@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronDown, Calendar, Eye, EyeOff, Tag, Layers, Hash } from "lucide-react";
+import { ChevronDown, Calendar, Layers, Tag, Hash } from "lucide-react";
 import { WikiPage } from "@/lib/wiki-loader";
 
 interface PropertiesPanelProps {
@@ -35,7 +35,7 @@ export function PropertiesPanel({ page }: PropertiesPanelProps) {
           type="button"
           onClick={toggleCollapsed}
           className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors py-1 px-2 -ml-2 rounded-md hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 cursor-pointer"
-          title="Свернуть / развернуть свойства"
+          title="Toggle properties"
         >
           <ChevronDown
             className={`w-3.5 h-3.5 transition-transform duration-200 ${
@@ -43,7 +43,7 @@ export function PropertiesPanel({ page }: PropertiesPanelProps) {
             }`}
           />
           <span className="font-mono uppercase tracking-wider text-[11px]">
-            {isCollapsed ? "Показать свойства" : "Свойства документа"}
+            {isCollapsed ? "Show Properties" : "Document Properties"}
           </span>
         </button>
       </div>
@@ -54,9 +54,9 @@ export function PropertiesPanel({ page }: PropertiesPanelProps) {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 w-28 shrink-0">
               <Layers className="w-3.5 h-3.5" />
-              <span>Категория</span>
+              <span>Category</span>
             </div>
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400">
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold bg-black/5 dark:bg-white/5 text-zinc-800 dark:text-zinc-200 font-mono">
               {page.category}
             </span>
           </div>
@@ -65,25 +65,10 @@ export function PropertiesPanel({ page }: PropertiesPanelProps) {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 w-28 shrink-0">
               <Calendar className="w-3.5 h-3.5" />
-              <span>Обновлено</span>
+              <span>Updated</span>
             </div>
             <span className="text-xs font-mono text-zinc-700 dark:text-zinc-300">
               {page.last_updated}
-            </span>
-          </div>
-
-          {/* Visibility Property */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 w-28 shrink-0">
-              {page.visibility === "public" ? (
-                <Eye className="w-3.5 h-3.5" />
-              ) : (
-                <EyeOff className="w-3.5 h-3.5" />
-              )}
-              <span>Доступ</span>
-            </div>
-            <span className="inline-flex items-center gap-1 text-xs font-mono capitalize px-2 py-0.5 rounded bg-black/5 dark:bg-white/5 text-zinc-800 dark:text-zinc-200">
-              {page.visibility} Tier
             </span>
           </div>
 
@@ -92,7 +77,7 @@ export function PropertiesPanel({ page }: PropertiesPanelProps) {
             <div className="flex items-center gap-3 sm:col-span-2">
               <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 w-28 shrink-0">
                 <Tag className="w-3.5 h-3.5" />
-                <span>Теги</span>
+                <span>Tags</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {page.tags.map((t) => (

@@ -17,7 +17,7 @@ export function MarkdownView({ content }: MarkdownViewProps) {
       const cleanTarget = target.trim();
       const displayLabel = label ? label.trim() : cleanTarget.split("/").pop() || cleanTarget;
       const href = `/wiki/${cleanTarget}${anchor ? `#${anchor}` : ""}`;
-      return `<a href="${href}" class="inline-flex items-center gap-1 text-accent hover:underline font-mono text-[14px] bg-accent/10 px-2 py-0.5 rounded-md">[[${displayLabel}]]</a>`;
+      return `<a href="${href}" class="inline-flex items-center gap-1 !text-zinc-900 dark:!text-zinc-100 hover:underline font-mono text-[14px] bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded-md !no-underline">[[${displayLabel}]]</a>`;
     }
   );
 
@@ -34,11 +34,11 @@ export function MarkdownView({ content }: MarkdownViewProps) {
       .replace(/\s+/g, "-");
     
     if (depth === 2) {
-      return `<h2 id="${slug}" class="text-2xl sm:text-3xl font-bold tracking-tight mt-12 mb-5 scroll-mt-24 text-foreground">${text}</h2>`;
+      return `<h2 id="${slug}" class="text-2xl sm:text-3xl font-bold tracking-tight mt-12 mb-5 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${text}</h2>`;
     } else if (depth === 3) {
-      return `<h3 id="${slug}" class="text-xl sm:text-2xl font-bold tracking-tight mt-8 mb-4 scroll-mt-24 text-foreground">${text}</h3>`;
+      return `<h3 id="${slug}" class="text-xl sm:text-2xl font-bold tracking-tight mt-8 mb-4 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${text}</h3>`;
     }
-    return `<h${depth} id="${slug}" class="font-bold tracking-tight mt-6 mb-3 scroll-mt-24 text-foreground">${text}</h${depth}>`;
+    return `<h${depth} id="${slug}" class="font-bold tracking-tight mt-6 mb-3 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${text}</h${depth}>`;
   };
 
   renderer.paragraph = ({ text }: { text: string }) => {
@@ -50,7 +50,7 @@ export function MarkdownView({ content }: MarkdownViewProps) {
   };
 
   renderer.blockquote = ({ text }: { text: string }) => {
-    return `<blockquote class="border-l-4 border-accent/40 pl-5 py-2 my-6 italic bg-[#EBEBE8]/50 dark:bg-[#252525]/50 rounded-r-xl text-zinc-700 dark:text-zinc-300 text-[17px] leading-relaxed">${text}</blockquote>`;
+    return `<blockquote class="border-l-4 border-zinc-400 dark:border-zinc-600 pl-5 py-2 my-6 italic bg-[#EBEBE8]/50 dark:bg-[#252525]/50 rounded-r-xl text-zinc-700 dark:text-zinc-300 text-[17px] leading-relaxed">${text}</blockquote>`;
   };
 
   marked.use({ gfm: true, breaks: false, renderer });

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { Search, X, Eye, EyeOff } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { WikiPage } from "@/lib/wiki-loader";
 
 interface SearchModalProps {
@@ -13,7 +13,6 @@ interface SearchModalProps {
 
 export function SearchModal({ isOpen, onClose, allPages }: SearchModalProps) {
   const [query, setQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"all" | "public" | "private">("all");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ export function SearchModal({ isOpen, onClose, allPages }: SearchModalProps) {
   if (!isOpen) return null;
 
   const filteredPages = allPages.filter((page) => {
-    if (activeTab !== "all" && page.visibility !== activeTab) return false;
     if (!query.trim()) return true;
 
     const q = query.toLowerCase().trim();
@@ -65,14 +63,14 @@ export function SearchModal({ isOpen, onClose, allPages }: SearchModalProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Поиск по вики и документам (⌘K)..."
+            placeholder="Search wiki documents (⌘K)..."
             className="w-full bg-transparent border-0 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none placeholder:text-zinc-500 font-sans"
           />
           {query && (
             <button
               onClick={() => setQuery("")}
               className="p-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-white cursor-pointer"
-              title="Очистить"
+              title="Clear search"
             >
               <X className="w-4 h-4" />
             </button>
@@ -80,45 +78,9 @@ export function SearchModal({ isOpen, onClose, allPages }: SearchModalProps) {
           <button
             onClick={onClose}
             className="p-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-white cursor-pointer"
-            title="Закрыть"
+            title="Close"
           >
             <X className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Tab Filters */}
-        <div className="flex items-center gap-2 px-3 pb-2 text-xs">
-          <button
-            onClick={() => setActiveTab("all")}
-            className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
-              activeTab === "all"
-                ? "bg-foreground text-background"
-                : "text-zinc-500 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
-            }`}
-          >
-            Все ({allPages.length})
-          </button>
-          <button
-            onClick={() => setActiveTab("public")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
-              activeTab === "public"
-                ? "bg-foreground text-background"
-                : "text-zinc-500 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
-            }`}
-          >
-            <Eye className="w-3.5 h-3.5" />
-            Public ({allPages.filter((p) => p.visibility === "public").length})
-          </button>
-          <button
-            onClick={() => setActiveTab("private")}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
-              activeTab === "private"
-                ? "bg-foreground text-background"
-                : "text-zinc-500 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
-            }`}
-          >
-            <EyeOff className="w-3.5 h-3.5" />
-            Private ({allPages.filter((p) => p.visibility === "private").length})
           </button>
         </div>
 
@@ -133,15 +95,8 @@ export function SearchModal({ isOpen, onClose, allPages }: SearchModalProps) {
                 className="flex items-center justify-between p-3 rounded-xl hover:bg-[#EBEBE8] dark:hover:bg-[#252525] transition-colors group !no-underline"
               >
                 <div className="min-w-0 pr-4">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-zinc-900 dark:text-zinc-100 transition-colors truncate text-sm">
-                      {page.title}
-                    </span>
-                    {page.visibility === "private" && (
-                      <span className="px-1.5 py-0.5 text-[10px] font-mono bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded">
-                        private
-                      </span>
-                    )}
+                  <div className="font-semibold text-zinc-900 dark:text-zinc-100 transition-colors truncate text-sm">
+                    {page.title}
                   </div>
                   {page.summary && (
                     <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
@@ -154,15 +109,15 @@ export function SearchModal({ isOpen, onClose, allPages }: SearchModalProps) {
             ))
           ) : (
             <div className="text-center py-8 text-zinc-500 text-xs">
-              Ничего не найдено по запросу &quot;{query}&quot;.
+              No matching documents found for &quot;{query}&quot;.
             </div>
           )}
         </div>
 
         {/* Modal Footer */}
         <div className="px-4 py-2.5 bg-[#FBFBFA] dark:bg-[#1c1c1c] flex items-center justify-between text-xs text-zinc-500 font-mono border-t border-black/5 dark:border-white/5">
-          <span>ESC для выхода</span>
-          <span>{filteredPages.length} найдено</span>
+          <span>ESC to exit</span>
+          <span>{filteredPages.length} documents</span>
         </div>
       </div>
     </div>

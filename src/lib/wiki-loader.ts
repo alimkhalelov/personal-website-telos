@@ -14,7 +14,7 @@ export interface WikiPage {
   category: string;
   tags: string[];
   summary: string;
-  visibility: "public" | "private";
+  visibility: "public";
   last_updated: string;
   content: string;
   headings: WikiHeading[];
@@ -40,8 +40,7 @@ export function extractHeadings(content: string): WikiHeading[] {
 export function parseMarkdownDoc(
   fullPath: string,
   slug: string,
-  defaultVis: "public" | "private",
-  defaultCategory?: string
+  defaultCategory: string = "Methodology & Frameworks"
 ): WikiPage | null {
   if (!fs.existsSync(fullPath)) return null;
   const raw = fs.readFileSync(fullPath, "utf-8");
@@ -53,7 +52,7 @@ export function parseMarkdownDoc(
     title = h1Match[1].trim().replace(/[*_`]/g, "");
   }
 
-  const category = data.category || defaultCategory || (defaultVis === "public" ? "Public Guide" : "Private Harness");
+  const category = data.category || defaultCategory;
   const tags = Array.isArray(data.tags)
     ? data.tags
     : typeof data.tags === "string"
@@ -61,7 +60,6 @@ export function parseMarkdownDoc(
     : [];
   
   const summary = data.description || data.summary || "";
-  const visibility = data.visibility === "private" ? "private" : defaultVis;
   const last_updated = data.date || data.last_updated || new Date().toISOString().split("T")[0];
   const headings = extractHeadings(content);
 
@@ -71,7 +69,7 @@ export function parseMarkdownDoc(
     category,
     tags,
     summary,
-    visibility,
+    visibility: "public",
     last_updated,
     content,
     headings,
@@ -82,7 +80,7 @@ export function getAllWikiPages(): WikiPage[] {
   const rootDir = process.cwd();
   const pages: WikiPage[] = [];
 
-  // 1. Scan Public Articles / Posts (src/content/posts)
+  // Scan Public Articles / Posts (src/content/posts)
   const postsDir = path.join(rootDir, "src/content/posts");
   if (fs.existsSync(postsDir)) {
     const files = fs.readdirSync(postsDir);
@@ -90,48 +88,8 @@ export function getAllWikiPages(): WikiPage[] {
       if (file.endsWith(".mdx") || file.endsWith(".md")) {
         const fullPath = path.join(postsDir, file);
         const slug = file.replace(/\.mdx?$/, "");
-        const page = parseMarkdownDoc(fullPath, slug, "public", "Methodology & Research");
+        const page = parseMarkdownDoc(fullPath, slug, "Methodology & Research");
         if (page) pages.push(page);
-      }
-    }
-  }
-
-  // 2. Scan Private Agent Memory (.agents/agents.md, .agents/wiki/*.md)
-  const agentsMd = path.join(rootDir, ".agents/agents.md");
-  if (fs.existsSync(agentsMd)) {
-    const page = parseMarkdownDoc(agentsMd, "agents-manifest", "private", "Agent Harness");
-    if (page) {
-      page.title = "Agent Harness Manifest";
-      page.summary = "Central harness router, invariants, and feedback loops.";
-      page.tags = ["Agent", "Harness", "Router"];
-      pages.push(page);
-    }
-  }
-
-  const agentsWikiDir = path.join(rootDir, ".agents/wiki");
-  if (fs.existsSync(agentsWikiDir)) {
-    const files = fs.readdirSync(agentsWikiDir);
-    for (const file of files) {
-      if (file.endsWith(".md")) {
-        const fullPath = path.join(agentsWikiDir, file);
-        const slug = `agent-${file.replace(/\.md$/, "")}`;
-        const page = parseMarkdownDoc(fullPath, slug, "private", "Living Memory");
-        if (page) {
-          if (file === "user_intent.md") {
-            page.title = "Living User Intent Matrix";
-            page.summary = "Cumulative buffer of user requirements, goals, and constraints.";
-            page.tags = ["Intent", "Anti-Drift", "Memory"];
-          } else if (file === "architecture.md") {
-            page.title = "System Architecture";
-            page.summary = "Living system architecture, tech stack, and module topology.";
-            page.tags = ["Architecture", "Next.js", "CMS"];
-          } else if (file === "artifacts.md") {
-            page.title = "Artifacts Router";
-            page.summary = "Registry of generated plans, specs, and walkthroughs.";
-            page.tags = ["Artifacts", "Router"];
-          }
-          pages.push(page);
-        }
       }
     }
   }
