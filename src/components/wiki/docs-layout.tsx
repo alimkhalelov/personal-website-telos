@@ -39,9 +39,16 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
     try {
       const stored = localStorage.getItem("wiki_collapsed_folders");
       if (stored) {
-        setCollapsedFolders(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setCollapsedFolders(parsed);
+        } else {
+          setCollapsedFolders([]);
+        }
       }
-    } catch {}
+    } catch {
+      setCollapsedFolders([]);
+    }
   }, []);
 
   // Keyboard shortcut ⌘K for search
@@ -57,9 +64,10 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
   }, []);
 
   const toggleFolder = (folderId: string) => {
-    const next = collapsedFolders.includes(folderId)
-      ? collapsedFolders.filter((id) => id !== folderId)
-      : [...collapsedFolders, folderId];
+    const list = Array.isArray(collapsedFolders) ? collapsedFolders : [];
+    const next = list.includes(folderId)
+      ? list.filter((id) => id !== folderId)
+      : [...list, folderId];
     setCollapsedFolders(next);
     try {
       localStorage.setItem("wiki_collapsed_folders", JSON.stringify(next));
@@ -74,8 +82,8 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
     } catch {}
   };
 
-  const isPublicCollapsed = collapsedFolders.includes("public-docs");
-  const isPrivateCollapsed = collapsedFolders.includes("private-docs");
+  const isPublicCollapsed = Array.isArray(collapsedFolders) && collapsedFolders.includes("public-docs");
+  const isPrivateCollapsed = Array.isArray(collapsedFolders) && collapsedFolders.includes("private-docs");
 
   return (
     <div className="min-h-screen bg-[#FBFBFA] dark:bg-[#1c1c1c] text-[#18181B] dark:text-[#E4E4E7] flex flex-col antialiased selection:bg-zinc-300 dark:selection:bg-zinc-800 w-full overflow-x-hidden">
