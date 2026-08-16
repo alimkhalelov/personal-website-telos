@@ -8,7 +8,8 @@
 - **Admin**: `/admin` (dashboard) and `/admin/draft` (AI writing studio)
 - **Social Connectors**: Telegram Bot API, Twitter API v2 (`twitter-api-v2`), LinkedIn ugcPosts API
 
-## Data Flow
-- **Drafting**: User prompts Gemini models via `/api/chat` (streaming response).
-- **Publishing**: Content saved to `src/content/posts/<slug>.mdx` directly or committed to GitHub repo via GitHub API.
-- **Broadcasting**: `social-publisher.ts` triggers webhooks/API requests to Telegram/Twitter/LinkedIn.
+## Public Routes & Knowledge
+- **Landing / Headquarters**: `/` (Alim Khalelov overview, posts listing, network links)
+- **Public Wiki Hub**: `/wiki` (Interactive knowledge matrix for methodologies, architectures, systems, and guides)
+- **Pet-Projects Labs**: `/petprojects` (Incubator gallery of prototypes and agents)
+- **Blog Reader**: `/blog/[slug]` (MDX reader with Bionic reading support and Copy-to-Agent features)

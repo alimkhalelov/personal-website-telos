@@ -19,9 +19,12 @@ export default function Home() {
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative">
-      {/* Top Header / Hamster Area */}
+      {/* Top Header / Navigation Area */}
       <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-50">
-        <div className="relative group flex items-center gap-4">
+        <div className="relative group flex items-center gap-6">
+          <Link href="/wiki" className="text-lg font-medium !text-white/50 hover:!text-white transition-colors !no-underline">
+            Wiki
+          </Link>
           <Link href="/petprojects" className="text-lg font-medium !text-white/50 hover:!text-white transition-colors !no-underline">
             Pet-Projects Labs
           </Link>
@@ -87,8 +90,12 @@ export default function Home() {
 
       {/* Terminal Links */}
       <section className="flex flex-col gap-8 pt-8">
-        <h2 className="text-lg font-medium text-muted-foreground uppercase tracking-wider text-center sm:text-left">Network</h2>
+        <h2 className="text-lg font-medium text-muted-foreground uppercase tracking-wider text-center sm:text-left">Network & Index</h2>
         <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-start">
+          <Link href="/wiki" className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium !no-underline text-foreground">
+            Knowledge Wiki
+            <ArrowUpRight className="w-3 h-3" />
+          </Link>
           <a href="#" className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium">
             Telegram
             <ArrowUpRight className="w-3 h-3" />

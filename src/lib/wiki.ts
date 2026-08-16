@@ -1,0 +1,166 @@
+import "server-only";
+import { getSortedArticles, ArticleMeta } from "./mdx";
+import { WikiItem, WikiCategory, getWikiCategories } from "./wiki-types";
+
+export type { WikiCategory, WikiItem };
+export { getWikiCategories };
+
+export const METHODOLOGY_ITEMS: WikiItem[] = [
+  {
+    id: "fan-filter-scale",
+    title: "Fan-Filter-Scale Methodology",
+    summary: "Systematic 3-stage engine for building high-leverage AI-native products: broad hypothesis divergence (Fan), strict signal filtering (Filter), and autonomous system scaling (Scale).",
+    category: "methodologies",
+    categoryLabel: "Core Methodology",
+    tags: ["Product Strategy", "AI Native", "Autonomous Systems", "Framework"],
+    date: "2026-06-14",
+    href: "/blog/fan-filter-scale-methodology",
+    featured: true,
+    readingTime: "4 min",
+    keyTakeaway: "Transforms divergent AI creative capacity into hardened, scalable product features.",
+  },
+  {
+    id: "loop-engineering",
+    title: "Loop Engineering for LLM Agents",
+    summary: "Paradigm shift from single-prompt generation to multi-step agentic feedback loops: Thought -> Action -> Observation -> Self-Correction.",
+    category: "methodologies",
+    categoryLabel: "Agent Architecture",
+    tags: ["Agentic Loops", "ReAct", "Cognitive Architecture", "LLM"],
+    date: "2026-07-02",
+    href: "/blog/loop-engineering-autonomous-llm-agents",
+    featured: true,
+    readingTime: "6 min",
+    keyTakeaway: "Agent reliability scales exponentially when bound to self-healing verification loops.",
+  },
+  {
+    id: "graphrag-knowledge",
+    title: "GraphRAG & Knowledge Supercharging",
+    summary: "Advanced retrieval-augmented generation combining semantic vector embeddings with structured knowledge graphs for deep relational reasoning.",
+    category: "methodologies",
+    categoryLabel: "Data Engineering",
+    tags: ["GraphRAG", "Knowledge Graphs", "Context Engineering", "RAG"],
+    date: "2026-06-28",
+    href: "/blog/graphrag-supercharge-ai-knowledge",
+    featured: true,
+    readingTime: "5 min",
+    keyTakeaway: "Solves context fragmentation across complex multidimensional knowledge bases.",
+  },
+  {
+    id: "zero-click-onboarding",
+    title: "Zero-Click AI-Powered Onboarding",
+    summary: "Next-generation user acquisition flow that extracts user intent silently, reduces friction to zero, and delivers immediate personalized value.",
+    category: "methodologies",
+    categoryLabel: "Growth & UX",
+    tags: ["UX Engineering", "Zero-Click", "Growth", "Product Design"],
+    date: "2026-06-20",
+    href: "/blog/ai-powered-zero-click-onboarding",
+    readingTime: "4 min",
+    keyTakeaway: "Replaces 10-step forms with ambient contextual inference and instant previews.",
+  },
+  {
+    id: "geo-aeo-evolution",
+    title: "GEO, AEO & LLMO Search Strategy",
+    summary: "The fundamental transition of Search Engine Optimization into Generative Engine Optimization, AI Engine Optimization, and LLM citability.",
+    category: "methodologies",
+    categoryLabel: "Search Evolution",
+    tags: ["GEO", "AEO", "LLMO", "AI Citability", "SEO"],
+    date: "2026-07-10",
+    href: "/blog/seo-isnt-dead-it-just-evolved-into-geo--aeo--and-llmo",
+    readingTime: "5 min",
+    keyTakeaway: "Optimizing content structure for multi-agent synthesis, llms.txt, and passage-level authority.",
+  },
+];
+
+export const SYSTEM_ITEMS: WikiItem[] = [
+  {
+    id: "project-telos",
+    title: "Project Telos",
+    summary: "Autonomous operating system architecture for Demiurges and Vibecoders, orchestrating knowledge graphs, AI models, and real-time feedback loops.",
+    category: "systems",
+    categoryLabel: "Lab System",
+    tags: ["Autonomous OS", "Orchestration", "Demiurge", "Telos"],
+    date: "2026-08-01",
+    href: "/petprojects",
+    featured: true,
+    readingTime: "System Overview",
+    keyTakeaway: "Unified execution substrate for parallel agentic workflows and personal knowledge.",
+  },
+  {
+    id: "demiurge-cms",
+    title: "Demiurge CMS & AI Drafting Room",
+    summary: "Next-generation content engine featuring real-time AI interviewers ('Grill-Me'), anti-slop humanization, and multi-model fallback.",
+    category: "systems",
+    categoryLabel: "Content Engine",
+    tags: ["Vercel AI SDK 5", "Markdown", "Grill-Me", "Next.js"],
+    date: "2026-07-25",
+    href: "/admin/draft",
+    readingTime: "Internal Tool",
+    keyTakeaway: "Zero-latency AI drafting interface with built-in editorial critique and human tone calibration.",
+  },
+  {
+    id: "petprojects-labs",
+    title: "Pet-Projects Labs Gallery",
+    summary: "Experimental incubator for cutting-edge AI prototypes, autonomous agents, and interactive web experiments.",
+    category: "systems",
+    categoryLabel: "Lab Gallery",
+    tags: ["Prototypes", "Experiments", "Incubator", "Labs"],
+    date: "2026-08-10",
+    href: "/petprojects",
+    readingTime: "Showcase",
+    keyTakeaway: "Fast-feedback testing ground for novel interface concepts and autonomous workflows.",
+  },
+];
+
+export const GUIDE_ITEMS: WikiItem[] = [
+  {
+    id: "bionic-reading-engine",
+    title: "Bionic Reading Engine",
+    summary: "Client-side typography parser that highlights initial graphemes to facilitate rapid cognitive comprehension and reduced eye fatigue.",
+    category: "guides",
+    categoryLabel: "UX Spec",
+    tags: ["Typography", "Cognitive UX", "Accessibility", "Performance"],
+    date: "2026-08-12",
+    href: "#",
+    readingTime: "3 min",
+    keyTakeaway: "Improves reading scanning speed by up to 35% through subtle typographic fixation anchors.",
+  },
+  {
+    id: "living-agent-harness",
+    title: "Living Agent Harness Architecture",
+    summary: "Continuous context preservation protocol protecting long-horizon AI coding sessions against recency bias through structured memory tiers.",
+    category: "guides",
+    categoryLabel: "Architecture Guide",
+    tags: ["Agent Harness", "Living Memory", "Context Engineering", "Protocols"],
+    date: "2026-08-15",
+    href: "#",
+    readingTime: "4 min",
+    keyTakeaway: "Context is volatile; the 7-layer harness ensures memory durability across sessions.",
+  },
+];
+
+export function getPublicWikiRegistry(): WikiItem[] {
+  const articles = getSortedArticles();
+  
+  // Transform articles to WikiItem format
+  const articleWikiItems: WikiItem[] = articles.map((article: ArticleMeta) => {
+    return {
+      id: `article-${article.slug}`,
+      title: article.title,
+      summary: article.description || "In-depth technical exploration and field insights from the Demiurge engineering lab.",
+      category: "articles" as WikiCategory,
+      categoryLabel: "Blog Article",
+      tags: ["Article", "Insights", "Engineering"],
+      date: article.date,
+      href: `/blog/${article.slug}`,
+      readingTime: "5 min",
+      keyTakeaway: "Field-tested architectural insights on modern AI-native development.",
+    };
+  });
+
+  return [
+    ...METHODOLOGY_ITEMS,
+    ...SYSTEM_ITEMS,
+    ...articleWikiItems,
+    ...GUIDE_ITEMS,
+  ];
+}

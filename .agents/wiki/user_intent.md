@@ -42,4 +42,9 @@
   Status: Completed
   Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трогай, которое на https://alim.dest.page/ отображается. все папки и файлы которые создает /wiki кажется /docs и другие . Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
 
+- [INTENT-014] [2026-08-16 10:22] [Category: Feature|Wiki|UI]
+  Summary: Implement native hyper-minimalist Public Wiki page (/wiki) for https://alim.dest.page/ personal website, cataloging portfolio systems, research methodologies, and articles using the 2-Tier /wiki skill standard with solid pod styling, instant search, and zero bloat.
+  Status: Completed
+  Origin: "используя /wiki создай wiki public page для https://alim.dest.page/ персонального сайта портфолио и блогов"
+
 
