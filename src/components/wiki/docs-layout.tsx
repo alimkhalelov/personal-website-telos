@@ -10,7 +10,9 @@ import {
   Check, 
   Home,
   BookOpen,
-  FileText
+  FileText,
+  Sparkles,
+  Layers
 } from "lucide-react";
 import { WikiPage } from "@/lib/wiki-loader";
 import { SearchModal } from "./search-modal";
@@ -26,6 +28,9 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+
+  const projectPages = allPages.filter((p) => p.section === "projects");
+  const articlePages = allPages.filter((p) => p.section !== "projects");
 
   // Keyboard shortcut ⌘K for search
   useEffect(() => {
@@ -74,7 +79,7 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
           </Link>
         </div>
 
-        {/* Header Action Controls: Offset with pr-36 to leave space for global fixed toggles */}
+        {/* Header Action Controls */}
         <div className="flex items-center gap-2 shrink-0 pr-36 sm:pr-44">
           <Link
             href="/"
@@ -115,30 +120,64 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
       <div className="max-w-[1720px] w-full mx-auto px-4 sm:px-8 pt-4 sm:pt-6 pb-12 flex gap-8 lg:gap-12 flex-1 min-w-0 overflow-x-hidden items-start">
         {/* Left Desktop Sidebar: Zero Top Offset, Aligned with Content Top */}
         <aside className="w-72 shrink-0 hidden md:block select-none text-left sticky top-0 self-start">
-          <div className="space-y-4">
-            <div className="px-3 py-1 text-xs font-mono uppercase tracking-widest text-zinc-400">
-              Articles & Guides
-            </div>
+          <div className="space-y-6">
+            {/* 1. Projects Section (Above Articles & Guides) */}
+            {projectPages.length > 0 && (
+              <div className="space-y-2">
+                <div className="px-3 py-1 text-xs font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Projects</span>
+                </div>
 
-            <nav className="space-y-1">
-              {allPages.map((page) => {
-                const isActive = currentPage.slug === page.slug;
-                return (
-                  <Link
-                    key={page.slug}
-                    href={`/wiki/${page.slug}`}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
-                      isActive
-                        ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
-                        : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525] hover:!text-zinc-950 dark:hover:!text-zinc-100 font-normal"
-                    }`}
-                  >
-                    <FileText className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
-                    <span className="truncate">{page.title}</span>
-                  </Link>
-                );
-              })}
-            </nav>
+                <nav className="space-y-1">
+                  {projectPages.map((page) => {
+                    const isActive = currentPage.slug === page.slug;
+                    return (
+                      <Link
+                        key={page.slug}
+                        href={`/wiki/${page.slug}`}
+                        className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
+                          isActive
+                            ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
+                            : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525] hover:!text-zinc-950 dark:hover:!text-zinc-100 font-normal"
+                        }`}
+                      >
+                        <Sparkles className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
+                        <span className="truncate">{page.title}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+            )}
+
+            {/* 2. Articles & Guides Section */}
+            <div className="space-y-2">
+              <div className="px-3 py-1 text-xs font-mono uppercase tracking-widest text-zinc-400 flex items-center gap-1.5">
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Articles & Guides</span>
+              </div>
+
+              <nav className="space-y-1">
+                {articlePages.map((page) => {
+                  const isActive = currentPage.slug === page.slug;
+                  return (
+                    <Link
+                      key={page.slug}
+                      href={`/wiki/${page.slug}`}
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
+                        isActive
+                          ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
+                          : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525] hover:!text-zinc-950 dark:hover:!text-zinc-100 font-normal"
+                      }`}
+                    >
+                      <FileText className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
+                      <span className="truncate">{page.title}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
           </div>
         </aside>
 
@@ -215,26 +254,57 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
                 </button>
               </div>
 
-              <div className="space-y-4 text-left">
-                <div className="text-xs font-mono uppercase tracking-widest text-zinc-400 px-2">
-                  Articles & Guides
-                </div>
-                <div className="space-y-1 pl-2">
-                  {allPages.map((page) => (
-                    <Link
-                      key={page.slug}
-                      href={`/wiki/${page.slug}`}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
-                        currentPage.slug === page.slug
-                          ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
-                          : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
-                      }`}
-                    >
-                      <FileText className="w-4 h-4 shrink-0 text-zinc-400" />
-                      <span className="truncate">{page.title}</span>
-                    </Link>
-                  ))}
+              <div className="space-y-6 text-left">
+                {/* Mobile Projects Section */}
+                {projectPages.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="text-xs font-mono uppercase tracking-widest text-zinc-400 px-2 flex items-center gap-1.5">
+                      <Layers className="w-3.5 h-3.5" />
+                      <span>Projects</span>
+                    </div>
+                    <div className="space-y-1 pl-2">
+                      {projectPages.map((page) => (
+                        <Link
+                          key={page.slug}
+                          href={`/wiki/${page.slug}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
+                            currentPage.slug === page.slug
+                              ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
+                              : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
+                          }`}
+                        >
+                          <Sparkles className="w-4 h-4 shrink-0 text-zinc-400" />
+                          <span className="truncate">{page.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Mobile Articles Section */}
+                <div className="space-y-2">
+                  <div className="text-xs font-mono uppercase tracking-widest text-zinc-400 px-2 flex items-center gap-1.5">
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>Articles & Guides</span>
+                  </div>
+                  <div className="space-y-1 pl-2">
+                    {articlePages.map((page) => (
+                      <Link
+                        key={page.slug}
+                        href={`/wiki/${page.slug}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
+                          currentPage.slug === page.slug
+                            ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
+                            : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
+                        }`}
+                      >
+                        <FileText className="w-4 h-4 shrink-0 text-zinc-400" />
+                        <span className="truncate">{page.title}</span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

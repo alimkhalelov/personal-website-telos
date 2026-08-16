@@ -12,6 +12,7 @@ export interface WikiPage {
   slug: string;
   title: string;
   category: string;
+  section: "projects" | "articles";
   tags: string[];
   summary: string;
   visibility: "public";
@@ -40,6 +41,7 @@ export function extractHeadings(content: string): WikiHeading[] {
 export function parseMarkdownDoc(
   fullPath: string,
   slug: string,
+  section: "projects" | "articles",
   defaultCategory: string = "Methodology & Frameworks"
 ): WikiPage | null {
   if (!fs.existsSync(fullPath)) return null;
@@ -48,7 +50,7 @@ export function parseMarkdownDoc(
 
   let title = data.title || path.basename(fullPath).replace(/\.(mdx?|md)$/, "");
   const h1Match = content.match(/^#\s+(.+)$/m);
-  if (h1Match && !data.title) {
+  if (h1Match && (!data.title || data.title.toLowerCase() === title.toLowerCase())) {
     title = h1Match[1].trim().replace(/[*_`]/g, "");
   }
 
@@ -67,6 +69,7 @@ export function parseMarkdownDoc(
     slug,
     title,
     category,
+    section,
     tags,
     summary,
     visibility: "public",
@@ -80,7 +83,21 @@ export function getAllWikiPages(): WikiPage[] {
   const rootDir = process.cwd();
   const pages: WikiPage[] = [];
 
-  // Scan Public Articles / Posts (src/content/posts)
+  // 1. Scan Projects (src/content/projects)
+  const projectsDir = path.join(rootDir, "src/content/projects");
+  if (fs.existsSync(projectsDir)) {
+    const files = fs.readdirSync(projectsDir);
+    for (const file of files) {
+      if (file.endsWith(".mdx") || file.endsWith(".md")) {
+        const fullPath = path.join(projectsDir, file);
+        const slug = file.replace(/\.mdx?$/, "");
+        const page = parseMarkdownDoc(fullPath, slug, "projects", "Project");
+        if (page) pages.push(page);
+      }
+    }
+  }
+
+  // 2. Scan Articles / Posts (src/content/posts)
   const postsDir = path.join(rootDir, "src/content/posts");
   if (fs.existsSync(postsDir)) {
     const files = fs.readdirSync(postsDir);
@@ -88,7 +105,7 @@ export function getAllWikiPages(): WikiPage[] {
       if (file.endsWith(".mdx") || file.endsWith(".md")) {
         const fullPath = path.join(postsDir, file);
         const slug = file.replace(/\.mdx?$/, "");
-        const page = parseMarkdownDoc(fullPath, slug, "Methodology & Research");
+        const page = parseMarkdownDoc(fullPath, slug, "articles", "Methodology & Research");
         if (page) pages.push(page);
       }
     }
