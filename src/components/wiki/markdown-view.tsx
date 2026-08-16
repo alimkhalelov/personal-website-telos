@@ -24,8 +24,9 @@ export function MarkdownView({ content }: MarkdownViewProps) {
   // Strip leading H1 if it was already rendered in page header
   processedContent = processedContent.replace(/^#\s+.+$/m, "").trim();
 
-  // Create marked renderer
+  // Create marked renderer with custom headings for TOC anchor support
   const renderer = new marked.Renderer();
+  
   renderer.heading = ({ text, depth }: { text: string; depth: number }) => {
     const cleanText = text.replace(/[*_`]/g, "");
     const slug = cleanText
@@ -33,27 +34,23 @@ export function MarkdownView({ content }: MarkdownViewProps) {
       .replace(/[^\w\u0400-\u04FF\s-]/g, "")
       .replace(/\s+/g, "-");
     
+    // Parse inline formatting inside heading (e.g. bold or code)
+    const formattedText = marked.parseInline(text);
+
     if (depth === 2) {
-      return `<h2 id="${slug}" class="text-2xl sm:text-3xl font-bold tracking-tight mt-12 mb-5 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${text}</h2>`;
+      return `<h2 id="${slug}" class="text-2xl sm:text-3xl font-bold tracking-tight mt-12 mb-5 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${formattedText}</h2>`;
     } else if (depth === 3) {
-      return `<h3 id="${slug}" class="text-xl sm:text-2xl font-bold tracking-tight mt-8 mb-4 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${text}</h3>`;
+      return `<h3 id="${slug}" class="text-xl sm:text-2xl font-bold tracking-tight mt-8 mb-4 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${formattedText}</h3>`;
     }
-    return `<h${depth} id="${slug}" class="font-bold tracking-tight mt-6 mb-3 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${text}</h${depth}>`;
+    return `<h${depth} id="${slug}" class="font-bold tracking-tight mt-6 mb-3 scroll-mt-24 text-zinc-900 dark:text-zinc-100">${formattedText}</h${depth}>`;
   };
 
-  renderer.paragraph = ({ text }: { text: string }) => {
-    return `<p class="mb-6 text-[17.5px] leading-[1.85] text-zinc-800 dark:text-zinc-200 font-normal">${text}</p>`;
-  };
-
-  renderer.codespan = ({ text }: { text: string }) => {
-    return `<code class="px-1.5 py-0.5 rounded-md text-[0.88em] font-mono bg-[#EBEBE8] dark:bg-[#252525] text-zinc-900 dark:text-zinc-100">${text}</code>`;
-  };
-
-  renderer.blockquote = ({ text }: { text: string }) => {
-    return `<blockquote class="border-l-4 border-zinc-400 dark:border-zinc-600 pl-5 py-2 my-6 italic bg-[#EBEBE8]/50 dark:bg-[#252525]/50 rounded-r-xl text-zinc-700 dark:text-zinc-300 text-[17px] leading-relaxed">${text}</blockquote>`;
-  };
-
-  marked.use({ gfm: true, breaks: false, renderer });
+  marked.use({ 
+    gfm: true, 
+    breaks: false, 
+    renderer 
+  });
+  
   const rawHtml = marked.parse(processedContent);
   const html = typeof rawHtml === "string" ? rawHtml : "";
 
@@ -99,7 +96,14 @@ export function MarkdownView({ content }: MarkdownViewProps) {
   return (
     <div
       ref={containerRef}
-      className="wiki-prose prose prose-neutral dark:prose-invert max-w-none text-left [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2 [&_ul]:text-[17.5px] [&_ul]:leading-[1.85] [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2 [&_ol]:text-[17.5px] [&_ol]:leading-[1.85]"
+      className="wiki-prose prose prose-neutral dark:prose-invert max-w-none text-left 
+        [&_p]:mb-6 [&_p]:text-[17.5px] [&_p]:leading-[1.85] [&_p]:text-zinc-800 dark:[&_p]:text-zinc-200 [&_p]:font-normal
+        [&_strong]:font-bold [&_strong]:text-zinc-950 dark:[&_strong]:text-white
+        [&_em]:italic
+        [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded-md [&_code]:text-[0.88em] [&_code]:font-mono [&_code]:bg-[#EBEBE8] dark:[&_code]:bg-[#252525] [&_code]:text-zinc-900 dark:[&_code]:text-zinc-100
+        [&_blockquote]:border-l-4 [&_blockquote]:border-zinc-400 dark:[&_blockquote]:border-zinc-600 [&_blockquote]:pl-5 [&_blockquote]:py-2 [&_blockquote]:my-6 [&_blockquote]:italic [&_blockquote]:bg-[#EBEBE8]/50 dark:[&_blockquote]:bg-[#252525]/50 [&_blockquote]:rounded-r-xl [&_blockquote]:text-zinc-700 dark:[&_blockquote]:text-zinc-300 [&_blockquote]:text-[17px] [&_blockquote]:leading-relaxed
+        [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2 [&_ul]:text-[17.5px] [&_ul]:leading-[1.85] 
+        [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2 [&_ol]:text-[17.5px] [&_ol]:leading-[1.85]"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
