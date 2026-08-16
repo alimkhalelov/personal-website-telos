@@ -34,7 +34,12 @@
 
 - [INTENT-012] [2026-08-15 12:40] [Category: Feature|Wiki|UI]
   Summary: Build and launch native Avant-Garde AI-Wiki knowledge portal (/wiki) for https://alim.dest.page/ personal website featuring 3-column DocsLayout, Notion database properties, 2-tab search modal, interactive Knowledge Graph (/wiki/graph), product changelog (/wiki/log), MCP endpoint (/api/mcp), GEO discoverability (llms.txt, sitemap), and verified domain entries (Fan-Filter-Scale, Loop Engineering, GraphRAG, GEO/AEO, Demiurge.OS).
-  Status: Completed
+  Status: Reverted per user request (INTENT-013)
   Origin: "используя /wiki создай wiki page для https://alim.dest.page/ персонального сайта портфолио и блогов"
+
+- [INTENT-013] [2026-08-16 09:36] [Category: Refactor|Cleanup|Wiki]
+  Summary: Completely remove the generated /wiki UI pages, graph components, and skill folders, keeping all original sources and content intact (displaying on https://alim.dest.page/), waiting to build a fresh wiki page from scratch upon user prompt.
+  Status: Completed
+  Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трогай, которое на https://alim.dest.page/ отображается. все папки и файлы которые создает /wiki кажется /docs и другие . Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
 
 
