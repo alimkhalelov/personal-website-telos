@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { CopyToAgentButton } from "@/components/copy-to-agent-button";
 import { Bionify } from "@/components/bionify";
 import remarkGfm from "remark-gfm";
+import { JsonLd, getArticleJsonLd, getBreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export async function generateStaticParams() {
   const articles = getSortedArticles();
@@ -19,9 +20,38 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const article = getArticleBySlug(resolvedParams.slug);
   if (!article) return {};
 
+  const title = article.meta.title;
+  const description = article.meta.description || `${title} — Essay by Alim Khalelov on AI-native product architecture and autonomous systems.`;
+  const url = `https://alim.dest.page/blog/${article.slug}`;
+
   return {
-    title: `${article.meta.title} | Alimzhan`,
-    description: article.meta.title,
+    title: title,
+    description: description,
+    alternates: {
+      canonical: `/blog/${article.slug}`,
+    },
+    openGraph: {
+      type: "article",
+      title: `${title} | Alim Khalelov`,
+      description: description,
+      url: url,
+      publishedTime: article.meta.date,
+      authors: ["Alim Khalelov"],
+      images: [
+        {
+          url: "/thumbnails/wiki.jpg",
+          width: 1200,
+          height: 675,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Alim Khalelov`,
+      description: description,
+      images: ["/thumbnails/wiki.jpg"],
+    },
   };
 }
 
@@ -69,48 +99,36 @@ const components = {
         if (Array.isArray(child)) {
            let done = false;
            return child.map(c => {
-             if (done) return c;
-             const text = extractText(c);
-             if (/^\s*TL;?DR:\s*/i.test(text)) {
-               done = true;
-               return stripTldr(c);
-             } else if (text.trim().toUpperCase() === 'TL;DR' || text.trim().toUpperCase() === 'TL;DR:') {
-               done = true;
-               return null; 
+             if (!done && typeof c === 'string') {
+               const res = c.replace(/^\s*TL;?DR:\s*/i, '');
+               if (res !== c) done = true;
+               return res;
              }
              return c;
            });
         }
-        if (child && child.props && child.props.children) {
-           const text = extractText(child);
-           if (/^\s*TL;?DR:\s*/i.test(text) || text.trim().toUpperCase() === 'TL;DR:') {
-             const newChildren = stripTldr(child.props.children);
-             if (!newChildren || (typeof newChildren === 'string' && newChildren.trim() === '')) return null;
-             return { ...child, props: { ...child.props, children: newChildren } };
-           }
-        }
         return child;
       };
-
       modifiedChildren = stripTldr(props.children);
     }
 
     if (isTldr) {
       return (
-        <div className="my-10 p-6 sm:p-8 bg-accent/5 rounded-2xl">
-          <div className="mb-3">
-            <span className="font-bold text-accent tracking-wide uppercase text-sm">TL;DR</span>
+        <div className="relative my-8 p-6 rounded-2xl bg-muted/40 dark:bg-card border border-border/80 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]">
+          <div className="flex items-center gap-2 mb-2 text-accent text-xs font-mono font-bold tracking-wider uppercase">
+            <span>TL;DR</span>
           </div>
-          <p className="text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6] m-0">
-            <Bionify>{modifiedChildren}</Bionify>
-          </p>
+          <div><Bionify>{modifiedChildren}</Bionify></div>
         </div>
       );
     }
 
-    return <p className="mb-8 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props}><Bionify>{props.children}</Bionify></p>;
+    return (
+      <p className="mb-6 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]">
+        <Bionify>{props.children}</Bionify>
+      </p>
+    );
   },
-  a: (props: any) => <a className="text-accent hover:text-accent-hover hover:underline transition-colors" {...props}><Bionify>{props.children}</Bionify></a>,
   ul: (props: any) => <ul className="list-disc pl-6 mb-8 space-y-3 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props} />,
   ol: (props: any) => <ol className="list-decimal pl-6 mb-8 space-y-3 text-[18px] sm:text-[20px] text-[#222222] dark:text-foreground/90 leading-[1.6]" {...props} />,
   li: (props: any) => <li className="pl-2" {...props}><Bionify>{props.children}</Bionify></li>,
@@ -128,11 +146,28 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     notFound();
   }
 
+  const articleSchema = getArticleJsonLd({
+    title: article.meta.title,
+    description: article.meta.description || article.meta.title,
+    url: `https://alim.dest.page/blog/${article.slug}`,
+    datePublished: article.meta.date,
+    authorName: "Alim Khalelov",
+  });
+
+  const breadcrumbsSchema = getBreadcrumbJsonLd([
+    { name: "Home", url: "https://alim.dest.page" },
+    { name: "Blog", url: "https://alim.dest.page" },
+    { name: article.meta.title, url: `https://alim.dest.page/blog/${article.slug}` },
+  ]);
+
   return (
     <div className="min-h-screen bg-[#FAFAFA] dark:bg-background">
+      <JsonLd data={articleSchema} />
+      <JsonLd data={breadcrumbsSchema} />
+
       <main className="max-w-[65ch] mx-auto px-6 py-16 sm:py-24 w-full">
         <div className="flex items-center justify-between mb-12">
-          <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-muted hover:text-foreground transition-colors !no-underline">
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-medium">Home</span>
           </Link>

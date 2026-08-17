@@ -13,6 +13,7 @@ import { SkillVisualizerCanvas } from "@/components/projects/skill-visualizer-ca
 import { PresentationDemo } from "@/components/projects/presentation-demo";
 import { StyleRefGalleryView } from "@/app/projects/styleref/gallery-view";
 import { InteractiveChecklist } from "@/components/projects/interactive-checklist";
+import { JsonLd, getProjectJsonLd, getBreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -31,9 +32,36 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     return { title: "Project Not Found" };
   }
 
+  const title = `${project.title} | Alim Khalelov`;
+  const description = project.tldr;
+  const ogImageUrl = `/thumbnails/${project.slug}.jpg`;
+
   return {
-    title: `${project.title} | Alimzhan`,
-    description: project.tldr,
+    title: project.title,
+    description: description,
+    alternates: {
+      canonical: `/projects/${project.slug}`,
+    },
+    openGraph: {
+      type: "article",
+      title: title,
+      description: description,
+      url: `https://alim.dest.page/projects/${project.slug}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 675,
+          alt: project.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: description,
+      images: [ogImageUrl],
+    },
   };
 }
 
@@ -45,8 +73,26 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  const projectSchema = getProjectJsonLd({
+    title: project.title,
+    headline: project.headline,
+    url: `https://alim.dest.page/projects/${project.slug}`,
+    image: `/thumbnails/${project.slug}.jpg`,
+    datePublished: project.initiationDate,
+    keywords: project.badges,
+  });
+
+  const breadcrumbsSchema = getBreadcrumbJsonLd([
+    { name: "Home", url: "https://alim.dest.page" },
+    { name: "Projects", url: "https://alim.dest.page/projects" },
+    { name: project.title, url: `https://alim.dest.page/projects/${project.slug}` },
+  ]);
+
   return (
     <main className="max-w-3xl mx-auto px-6 pt-6 pb-16 sm:pt-8 sm:pb-20 flex flex-col gap-8 w-full relative">
+      <JsonLd data={projectSchema} />
+      <JsonLd data={breadcrumbsSchema} />
+
       {/* 1. Hero Group: Metadata Row with Outside Back Arrow -> 16:9 Thumbnail -> Title/Subtitle */}
       <div className="flex flex-col gap-3 w-full">
         {/* Top Metadata Row: Back Arrow + Date (Initiation Date) + Time Ago + Command Badge */}

@@ -4,8 +4,17 @@ import { getAllWikiPages, getWikiPageBySlug } from "@/lib/wiki-loader";
 import { DocsLayout } from "@/components/wiki/docs-layout";
 
 export const metadata: Metadata = {
-  title: "Wiki & Knowledge Base | Alimzhan",
-  description: "AI-Native Product Management methodologies, autonomous systems, and research by Alimzhan Khalelov.",
+  title: "Wiki & Knowledge Base | Alim Khalelov",
+  description: "AI-Native Product Management methodologies, autonomous systems, and research by Alim Khalelov.",
+  alternates: {
+    canonical: "/wiki",
+  },
+  openGraph: {
+    title: "Wiki & Knowledge Base | Alim Khalelov",
+    description: "AI-Native Product Management methodologies, autonomous systems, and research by Alim Khalelov.",
+    url: "https://alim.dest.page/wiki",
+    images: [{ url: "/thumbnails/wiki.jpg", width: 1200, height: 675, alt: "Wiki & Knowledge Base" }],
+  },
 };
 
 export default function WikiIndexPage() {

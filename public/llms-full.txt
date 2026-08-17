@@ -1,0 +1,109 @@
+# Alim Khalelov — Complete Linearized Knowledge Base & Architecture Manual
+
+> Author: Alim Khalelov — Architect of Autonomous Systems & AI-Native Product Manager
+> Website: https://alim.dest.page
+> Focus: Fan-Filter-Scale Methodology, Autonomous Agent Loops, Living Harness Architecture, 16:9 Vector Visualizers
+
+---
+
+# CHAPTER 1: Core Methodologies
+
+## 1.1 Fan-Filter-Scale Methodology
+URL: https://alim.dest.page/blog/fan-filter-scale-methodology
+
+The Fan-Filter-Scale framework is a systematic 3-stage engine for building high-leverage AI-native products:
+1. **Fan (Divergence)**: Expand hypotheses rapidly using AI generative capacity across multiple vectors without premature optimization.
+2. **Filter (Validation & Selection)**: Subject all raw signals to brutal friction filters, customer problem validation (The Mom Test), ICE scoring, and architectural feasibility checks.
+3. **Scale (Autonomous Systematization)**: Convert approved concepts into repeatable agent skills, self-healing code loops, and automated deployment pipelines.
+
+## 1.2 Loop Engineering for LLM Agents
+URL: https://alim.dest.page/blog/loop-engineering-autonomous-llm-agents
+
+Single-prompt generation fails in complex production workflows. Loop Engineering structures AI behavior into discrete feedback loops:
+- **Thought**: Formulate reasoning, plan steps, and define acceptance criteria before taking action.
+- **Action**: Execute focused tool calls (code edits, file reads, test runs).
+- **Observation**: Read environment output, lint feedback, and test execution results.
+- **Self-Correction**: Iteratively resolve discrepancies until the Definition of Done is fully met.
+
+## 1.3 Living Agent Harness & Project Memory Engine
+URL: https://alim.dest.page/wiki/end
+
+Context is volatile during extended coding sessions. The Living Agent Harness solves recency bias and context loss via structured tiers:
+- `.agents/agents.md`: Master manifest, agent roles, and active routing table.
+- `.agents/wiki/user_intent.md`: Cumulative living user intent matrix permanently recording all user decisions.
+- `.agents/wiki/architecture.md`: Project architecture and structural invariants.
+- `.agents/facts/`: Immutable domain facts and environmental constraints.
+
+---
+
+# CHAPTER 2: Showcase Projects & Agent Skills
+
+## 2.1 /wiki — AI-Wiki Knowledge Compiler
+URL: https://alim.dest.page/projects/wiki
+Command: `/wiki`
+
+### Overview
+Automatically discovers real project files, categorizes knowledge into Public & Private 2-Tier meta-layers, and renders hyper-minimalist documentation portals with zero boilerplate.
+
+### Workflow Lifecycle
+1. **Scan Project Files**: Reads markdown docs from all folders, extracts headings, summaries, and tags while keeping document hierarchy intact.
+2. **Smart Categorization**: Splits public articles from private memory, removes redundant boilerplate, and calculates reading times.
+3. **Minimalist Portal**: Renders clean, distraction-free cards with high-contrast typography and instant category navigation.
+4. **Instant Search**: Sub-millisecond keyword matching with direct anchor links and quick sharing.
+
+---
+
+## 2.2 /presentation — Strategic Deck & Motion Storytelling Studio
+URL: https://alim.dest.page/projects/presentation
+Command: `/presentation`
+
+### Overview
+Creates high-impact, motion-driven HTML presentation decks based on the 10 Communication Vectors, with Jakub/Emil micro-animations, keyboard navigation, and speaker script teleprompter.
+
+### Core Principles
+- Strict 'One Idea = One Slide' rule across all presentations.
+- Zero wall-of-text bullets: maximum 3 concise points per card.
+- Standalone code: runs directly in any browser without external software.
+- Built-in presenter notes accessible with the [S] hotkey.
+
+---
+
+## 2.3 /skill-visualizer — 16:9 Vector Flowchart & Architecture Engine
+URL: https://alim.dest.page/projects/skill-visualizer
+Command: `/skill-visualizer`
+
+### Overview
+Creates crystal-clear, full-screen 16:9 vector flowcharts tailored specifically to any agent workflow.
+
+### Architectural Invariants
+- Strict 16:9 aspect ratio across all screen sizes (1600x900 coordinate system).
+- Solid pod containers (`rx="24"`) with calibrated dark tinted backgrounds (`#131d2e`, `#201533`, `#2a1d0d`, `#0d2b1d`).
+- Unified single-line headers sharing exact font size (`23px bold`).
+- Zero void space: card heights wrap text tightly without giant empty boxes.
+
+---
+
+## 2.4 /styleref — Generative Visual Styles & Prompt DB
+URL: https://alim.dest.page/projects/styleref
+Command: `/styleref`
+
+### Overview
+A curated gallery of 19 unique visual art styles (Jakub Różalski, Simon Stålenhag, Beksiński, Blue Eye Samurai, and more) with one-click prompt copying and lighting parameters.
+
+---
+
+## 2.5 /design-md-generator — DESIGN.md Architecture Generator
+URL: https://alim.dest.page/projects/design-md-generator
+Command: `/design-md-generator`
+
+### Overview
+Creates standardized DESIGN.md specification files. Defines your color palettes in OKLCH, typography scales, spacing tokens, and component guidelines for both humans and AI agents. Fully conforms to the google-labs-code/design.md standard.
+
+---
+
+## 2.6 /end — End-of-Session Ritual & Memory Keeper
+URL: https://alim.dest.page/projects/end
+Command: `/end`
+
+### Overview
+A comprehensive end-of-session ritual for AI coding assistants. Audits completed tasks, saves memory into .agents/, stops dangling dev servers, and commits code safely with verified author email.

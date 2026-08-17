@@ -3,17 +3,34 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getAllProjects } from "@/lib/projects-data";
 import { GenerativeThumbnail } from "@/components/projects/generative-thumbnail";
+import { JsonLd, getBreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Projects & Skills | Alimzhan",
-  description: "Curated collection of agent skills, 16:9 architecture engines, and creative intelligence tools.",
+  title: "Projects & Agent Skills | Alim Khalelov",
+  description: "Curated collection of autonomous agent skills, 16:9 vector architecture engines, and creative intelligence tools by Alim Khalelov.",
+  alternates: {
+    canonical: "/projects",
+  },
+  openGraph: {
+    title: "Projects & Agent Skills | Alim Khalelov",
+    description: "Curated collection of autonomous agent skills, 16:9 vector architecture engines, and creative intelligence tools by Alim Khalelov.",
+    url: "https://alim.dest.page/projects",
+    images: [{ url: "/thumbnails/wiki.jpg", width: 1200, height: 675, alt: "Projects & Skills" }],
+  },
 };
 
 export default function ProjectsPage() {
   const projects = getAllProjects();
 
+  const breadcrumbData = getBreadcrumbJsonLd([
+    { name: "Home", url: "https://alim.dest.page" },
+    { name: "Projects", url: "https://alim.dest.page/projects" },
+  ]);
+
   return (
     <main className="max-w-3xl mx-auto px-6 pt-8 pb-20 flex flex-col gap-12 w-full">
+      <JsonLd data={breadcrumbData} />
+
       {/* Top Header Navigation */}
       <div className="flex items-center justify-between border-b border-border pb-4">
         <Link

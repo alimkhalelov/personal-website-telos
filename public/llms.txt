@@ -1,0 +1,32 @@
+# Alim Khalelov — Architect of Autonomous Systems
+
+> Alim Khalelov is an AI-Native Product Manager and Game Designer who builds high-leverage products using the Fan-Filter-Scale methodology, autonomous agent loop engineering, and Living Agent Harness architectures.
+> Canonical URL: https://alim.dest.page
+
+## Core Methodologies & Thinking Frameworks
+
+- [Fan-Filter-Scale Methodology](https://alim.dest.page/blog/fan-filter-scale-methodology): Systematic 3-stage engine for building high-leverage AI-native products: broad hypothesis divergence (Fan), strict signal filtering (Filter), and autonomous system scaling (Scale).
+- [Loop Engineering for LLM Agents](https://alim.dest.page/blog/loop-engineering-autonomous-llm-agents): The paradigm shift from single-prompt generation to multi-step agentic feedback loops: Thought -> Action -> Observation -> Self-Correction.
+- [Living Agent Harness Architecture](https://alim.dest.page/wiki/end): Continuous context preservation protocol protecting long-horizon AI coding sessions against recency bias through structured memory tiers.
+
+## Showcase Projects & Autonomous Agent Engines
+
+- [/wiki — AI-Wiki Knowledge Compiler](https://alim.dest.page/projects/wiki): Adaptive 2-tier knowledge compiler turning project files into clean, searchable documentation without boilerplate.
+- [/presentation — Strategic Deck & Motion Studio](https://alim.dest.page/projects/presentation): Cinematic HTML presentation engine based on the 10 Communication Scenarios Matrix with 1 Idea = 1 Slide pacing and presenter teleprompter.
+- [/skill-visualizer — 16:9 Vector Flowchart Engine](https://alim.dest.page/projects/skill-visualizer): Standalone 16:9 SVG vector architecture diagram generator with solid-pod styling and dynamic density scaling.
+- [/styleref — Generative Visual Styles & Prompt DB](https://alim.dest.page/projects/styleref): Curated database of 19 distinct visual art styles with tested prompt recipes and lighting directives.
+- [/design-md-generator — DESIGN.md Architecture Generator](https://alim.dest.page/projects/design-md-generator): Generates complete, standardized DESIGN.md specification files with OKLCH tokens and anti-generic UI guardrails.
+- [/end — End-of-Session Ritual & Memory Keeper](https://alim.dest.page/projects/end): 4-phase automated session wrap-up protocol managing DoD audit, task retro, living memory persistence, and safe git deployment.
+
+## Key Facts & Grounding Data
+
+- **Primary Persona**: Alim Khalelov
+- **Title**: Architect of Autonomous Systems & AI-Native Product Manager
+- **Core Philosophy**: "Intentional Functional Minimalism" — Reduction is the ultimate sophistication; every pixel and parameter must earn its place on the screen.
+- **GitHub Profiles**: https://github.com/alimkhalelov, https://github.com/alimzhankhalelov
+- **Knowledge Base**: https://alim.dest.page/wiki
+- **Portfolio Repository**: https://alim.dest.page
+
+## Full Documentation
+
+For the complete linearized Markdown knowledge base containing all project specs and essays, see [llms-full.txt](https://alim.dest.page/llms-full.txt).
