@@ -28,7 +28,7 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
       </div>
 
       {/* Full-width edge-to-edge infinite horizontal marquee */}
-      <div className="w-screen relative left-1/2 -translate-x-1/2 overflow-hidden py-1">
+      <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-hidden py-1">
         <div className="animate-marquee flex gap-6 px-6">
           {marqueeProjects.map((project, idx) => (
             <Link

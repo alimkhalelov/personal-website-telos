@@ -19,116 +19,113 @@ export function GenerativeThumbnail({
 }: GenerativeThumbnailProps) {
   const uniqueId = useId().replace(/:/g, "");
 
-  // 1. NEON-CYAN — /wiki (AI-Wiki Knowledge Compiler & Cosmic AST Graph)
+  // 1. NEON-CYAN: /wiki — Lottie Cosmic Knowledge Graph (Calm Harmonic Orbit & AST Links)
   if (theme === "neon-cyan") {
     return (
-      <div className={`relative overflow-hidden bg-[#070c16] flex items-center justify-center select-none group ${className}`}>
-        {/* Ambient Plasma Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-500/20 via-blue-950/15 to-transparent animate-pulse" style={{ animationDuration: "4s" }} />
+      <div className={`relative overflow-hidden bg-[#090D14] flex items-center justify-center select-none group ${className}`}>
+        {/* Ambient Layer: Deep Oceanic Radial Gradient */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-sky-500/12 via-blue-950/20 to-transparent" />
         
-        {/* Infinite Rotating Radar Grid */}
+        {/* Subtle Static Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#38bdf808_1px,transparent_1px),linear-gradient(to_bottom,#38bdf808_1px,transparent_1px)] bg-[size:28px_28px]" />
+
         <svg
-          className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full absolute inset-0"
           viewBox="0 0 400 240"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id={`grad-cyan-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id={`grad-wiki-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#38bdf8" />
-              <stop offset="50%" stopColor="#818cf8" />
-              <stop offset="100%" stopColor="#34d399" />
+              <stop offset="50%" stopColor="#6366f1" />
+              <stop offset="100%" stopColor="#a855f7" />
             </linearGradient>
-            <filter id={`glow-cyan-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
+            <filter id={`glow-wiki-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3.5" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
             <style>{`
-              @keyframes rotateCw_${uniqueId} {
+              @keyframes orbitSpin1_${uniqueId} {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
               }
-              @keyframes rotateCcw_${uniqueId} {
+              @keyframes orbitSpin2_${uniqueId} {
                 from { transform: rotate(360deg); }
                 to { transform: rotate(0deg); }
               }
-              @keyframes laserPulse_${uniqueId} {
-                0% { stroke-dashoffset: 40; }
+              @keyframes breatheCore_${uniqueId} {
+                0%, 100% { transform: scale(1); opacity: 0.85; }
+                50% { transform: scale(1.12); opacity: 1; }
+              }
+              @keyframes dashStream_${uniqueId} {
+                0% { stroke-dashoffset: 48; }
                 100% { stroke-dashoffset: 0; }
               }
-              @keyframes corePulse_${uniqueId} {
-                0%, 100% { transform: scale(1); opacity: 0.9; }
-                50% { transform: scale(1.18); opacity: 1; }
+              @keyframes nodeDrift_${uniqueId} {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-4px); }
               }
             `}</style>
           </defs>
 
-          {/* Background Matrix Grid */}
-          <g opacity="0.15">
-            <line x1="40" y1="0" x2="40" y2="240" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="120" y1="0" x2="120" y2="240" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="200" y1="0" x2="200" y2="240" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="280" y1="0" x2="280" y2="240" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="360" y1="0" x2="360" y2="240" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="0" y1="60" x2="400" y2="60" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="0" y1="120" x2="400" y2="120" stroke="#38bdf8" strokeWidth="0.5" />
-            <line x1="0" y1="180" x2="400" y2="180" stroke="#38bdf8" strokeWidth="0.5" />
+          {/* Secondary Layer: Smooth Orbital Concentric Circles */}
+          <g style={{ transformOrigin: "200px 120px", animation: `orbitSpin1_${uniqueId} 32s linear infinite` }}>
+            <circle cx="200" cy="120" r="75" stroke="#38bdf8" strokeWidth="1" strokeDasharray="4 8" opacity="0.25" />
+            <circle cx="275" cy="120" r="2.5" fill="#38bdf8" opacity="0.8" />
+            <circle cx="125" cy="120" r="2" fill="#818cf8" opacity="0.6" />
           </g>
 
-          {/* Outer Orbit Rings */}
-          <g style={{ transformOrigin: "200px 120px", animation: `rotateCw_${uniqueId} 24s linear infinite` }}>
-            <circle cx="200" cy="120" r="70" stroke="#38bdf8" strokeWidth="1" strokeDasharray="6 8" opacity="0.35" />
-            <circle cx="270" cy="120" r="3" fill="#38bdf8" />
-            <circle cx="130" cy="120" r="2.5" fill="#818cf8" />
+          <g style={{ transformOrigin: "200px 120px", animation: `orbitSpin2_${uniqueId} 24s linear infinite` }}>
+            <circle cx="200" cy="120" r="50" stroke="#818cf8" strokeWidth="1" strokeDasharray="6 10" opacity="0.35" />
+            <circle cx="200" cy="70" r="3" fill="#a855f7" opacity="0.9" />
+            <circle cx="200" cy="170" r="2.5" fill="#38bdf8" opacity="0.7" />
           </g>
 
-          <g style={{ transformOrigin: "200px 120px", animation: `rotateCcw_${uniqueId} 18s linear infinite` }}>
-            <circle cx="200" cy="120" r="48" stroke={`url(#grad-cyan-${uniqueId})`} strokeWidth="1.5" strokeDasharray="12 16" opacity="0.6" />
-            <circle cx="200" cy="72" r="3.5" fill="#34d399" />
-            <circle cx="200" cy="168" r="3.5" fill="#38bdf8" />
+          {/* Primary Layer: Animated AST Relational Graph Links */}
+          <g opacity="0.6" style={{ strokeDasharray: "4 6", animation: `dashStream_${uniqueId} 3s linear infinite` }}>
+            <line x1="200" y1="120" x2="95" y2="60" stroke="#38bdf8" strokeWidth="1.2" />
+            <line x1="200" y1="120" x2="305" y2="60" stroke="#818cf8" strokeWidth="1.2" />
+            <line x1="200" y1="120" x2="110" y2="180" stroke="#6366f1" strokeWidth="1.2" />
+            <line x1="200" y1="120" x2="290" y2="180" stroke="#a855f7" strokeWidth="1.2" />
           </g>
 
-          {/* Active Data Laser Streams to Peripheral Nodes */}
-          <g style={{ strokeDasharray: "6 8", animation: `laserPulse_${uniqueId} 2s linear infinite` }}>
-            <line x1="200" y1="120" x2="100" y2="55" stroke="#38bdf8" strokeWidth="1.5" opacity="0.8" />
-            <line x1="200" y1="120" x2="300" y2="55" stroke="#818cf8" strokeWidth="1.5" opacity="0.8" />
-            <line x1="200" y1="120" x2="110" y2="185" stroke="#34d399" strokeWidth="1.5" opacity="0.8" />
-            <line x1="200" y1="120" x2="290" y2="185" stroke="#c084fc" strokeWidth="1.5" opacity="0.8" />
+          {/* Graph Nodes */}
+          <g style={{ animation: `nodeDrift_${uniqueId} 4s ease-in-out infinite` }}>
+            {/* Node 1 */}
+            <circle cx="95" cy="60" r="12" fill="#0c1524" stroke="#38bdf8" strokeWidth="1.2" />
+            <circle cx="95" cy="60" r="3.5" fill="#38bdf8" />
+
+            {/* Node 2 */}
+            <circle cx="305" cy="60" r="12" fill="#0c1524" stroke="#818cf8" strokeWidth="1.2" />
+            <circle cx="305" cy="60" r="3.5" fill="#818cf8" />
+
+            {/* Node 3 */}
+            <circle cx="110" cy="180" r="12" fill="#0c1524" stroke="#6366f1" strokeWidth="1.2" />
+            <circle cx="110" cy="180" r="3.5" fill="#6366f1" />
+
+            {/* Node 4 */}
+            <circle cx="290" cy="180" r="12" fill="#0c1524" stroke="#a855f7" strokeWidth="1.2" />
+            <circle cx="290" cy="180" r="3.5" fill="#a855f7" />
           </g>
 
-          {/* Peripheral Nodes with Glow */}
-          <circle cx="100" cy="55" r="14" fill="#0b172a" stroke="#38bdf8" strokeWidth="1.5" />
-          <circle cx="100" cy="55" r="4" fill="#38bdf8" filter={`url(#glow-cyan-${uniqueId})`} />
-
-          <circle cx="300" cy="55" r="14" fill="#0b172a" stroke="#818cf8" strokeWidth="1.5" />
-          <circle cx="300" cy="55" r="4" fill="#818cf8" filter={`url(#glow-cyan-${uniqueId})`} />
-
-          <circle cx="110" cy="185" r="14" fill="#0b172a" stroke="#34d399" strokeWidth="1.5" />
-          <circle cx="110" cy="185" r="4" fill="#34d399" filter={`url(#glow-cyan-${uniqueId})`} />
-
-          <circle cx="290" cy="185" r="14" fill="#0b172a" stroke="#c084fc" strokeWidth="1.5" />
-          <circle cx="290" cy="185" r="4" fill="#c084fc" filter={`url(#glow-cyan-${uniqueId})`} />
-
-          {/* Central Knowledge Core (Pulsing Heart) */}
-          <g style={{ transformOrigin: "200px 120px", animation: `corePulse_${uniqueId} 3s ease-in-out infinite` }}>
-            <circle cx="200" cy="120" r="24" fill="#070c16" stroke={`url(#grad-cyan-${uniqueId})`} strokeWidth="2.5" filter={`url(#glow-cyan-${uniqueId})`} />
-            <circle cx="200" cy="120" r="9" fill="#38bdf8" filter={`url(#glow-cyan-${uniqueId})`} />
+          {/* Primary Focal Hero: Central Living Knowledge Core */}
+          <g style={{ transformOrigin: "200px 120px", animation: `breatheCore_${uniqueId} 3.5s ease-in-out infinite` }}>
+            <circle cx="200" cy="120" r="22" fill="#090D14" stroke={`url(#grad-wiki-${uniqueId})`} strokeWidth="2" filter={`url(#glow-wiki-${uniqueId})`} />
+            <circle cx="200" cy="120" r="7" fill="#38bdf8" filter={`url(#glow-wiki-${uniqueId})`} />
           </g>
 
-          {/* Telemetry Labels */}
-          <text x="32" y="32" fill="#38bdf8" fontSize="10" fontFamily="monospace" fontWeight="bold" letterSpacing="1.5">
-            2-TIER AST KNOWLEDGE
+          {/* Minimalist Micro-Typography */}
+          <text x="32" y="32" fill="#38bdf8" fontSize="9" fontFamily="monospace" fontWeight="600" letterSpacing="1.5">
+            AST KNOWLEDGE GRAPH
           </text>
-          <text x="368" y="32" textAnchor="end" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="monospace">
-            LATENCY: 0.2ms
-          </text>
-          <text x="200" y="224" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace" fontWeight="600" letterSpacing="2">
-            ● LIVE ORBIT ENGINE
+          <text x="368" y="32" textAnchor="end" fill="rgba(255,255,255,0.35)" fontSize="9" fontFamily="monospace">
+            2-TIER
           </text>
         </svg>
 
         {command && (
-          <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-sky-500/20 border border-sky-500/40 backdrop-blur-sm text-sky-300 font-mono text-[11px] font-bold">
+          <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-300 font-mono text-[10px] font-medium tracking-wide">
             {command}
           </div>
         )}
@@ -136,95 +133,84 @@ export function GenerativeThumbnail({
     );
   }
 
-  // 2. LIME-CYBER — /presentation (Strategic Deck & Motion Storytelling Studio)
+  // 2. LIME-CYBER: /presentation — Lottie Motion Studio (Fluid Morphing Ribbon Wave & Slide Pacing)
   if (theme === "lime-cyber") {
     return (
-      <div className={`relative overflow-hidden bg-[#090b0d] flex items-center justify-center select-none group ${className}`}>
-        {/* Ambient Dark Neon Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-lime-400/20 via-emerald-950/15 to-transparent animate-pulse" style={{ animationDuration: "5s" }} />
+      <div className={`relative overflow-hidden bg-[#0A0D0E] flex items-center justify-center select-none group ${className}`}>
+        {/* Ambient Layer */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-lime-500/10 via-emerald-950/15 to-transparent" />
 
         <svg
-          className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full absolute inset-0"
           viewBox="0 0 400 240"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id={`grad-lime-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id={`grad-pres-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#d1fe17" />
               <stop offset="50%" stopColor="#22c55e" />
-              <stop offset="100%" stopColor="#38bdf8" />
+              <stop offset="100%" stopColor="#06b6d4" />
             </linearGradient>
-            <filter id={`glow-lime-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
+            <filter id={`glow-pres-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="4" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
             <style>{`
-              @keyframes waveFlow_${uniqueId} {
-                0% { stroke-dashoffset: 160; }
-                100% { stroke-dashoffset: 0; }
+              @keyframes morphWave1_${uniqueId} {
+                0%, 100% {
+                  d: path("M 60 120 C 110 70, 150 170, 200 120 C 250 70, 290 170, 340 120");
+                }
+                50% {
+                  d: path("M 60 120 C 110 160, 150 80, 200 120 C 250 160, 290 80, 340 120");
+                }
               }
-              @keyframes slideBlink_${uniqueId} {
-                0%, 100% { opacity: 0.3; }
+              @keyframes stepSequence_${uniqueId} {
+                0%, 100% { opacity: 0.3; transform: scale(1); }
                 50% { opacity: 1; transform: scale(1.3); }
-              }
-              @keyframes beamSweep_${uniqueId} {
-                0% { transform: translateX(-100%); }
-                100% { transform: translateX(100%); }
               }
             `}</style>
           </defs>
 
-          {/* Diagonal Ambient Lines */}
-          <g opacity="0.08">
-            <line x1="0" y1="0" x2="400" y2="240" stroke="#d1fe17" strokeWidth="1" />
-            <line x1="80" y1="0" x2="480" y2="240" stroke="#d1fe17" strokeWidth="1" />
-            <line x1="-80" y1="0" x2="320" y2="240" stroke="#d1fe17" strokeWidth="1" />
-          </g>
+          {/* Slide Viewport Canvas Frame */}
+          <rect x="45" y="42" width="310" height="156" rx="14" fill="#0E1316" stroke="rgba(209,254,23,0.3)" strokeWidth="1" />
+          <rect x="52" y="49" width="296" height="142" rx="10" fill="#070A0B" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
 
-          {/* 16:9 Viewport Slide Frame */}
-          <rect x="45" y="40" width="310" height="160" rx="14" fill="#0f1317" stroke="#d1fe17" strokeWidth="1.5" strokeOpacity="0.8" />
-          <rect x="53" y="48" width="294" height="144" rx="10" fill="#07090b" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-
-          {/* Living Sine Wave Oscilloscope Motion */}
+          {/* Primary Focal Hero: Fluid Morphing Ribbon Wave */}
           <path
-            d="M 65 125 C 110 50, 150 190, 200 120 C 250 50, 290 190, 335 120"
-            stroke={`url(#grad-lime-${uniqueId})`}
-            strokeWidth="3.5"
+            d="M 60 120 C 110 70, 150 170, 200 120 C 250 70, 290 170, 340 120"
+            stroke={`url(#grad-pres-${uniqueId})`}
+            strokeWidth="3"
             fill="none"
             strokeLinecap="round"
-            filter={`url(#glow-lime-${uniqueId})`}
+            filter={`url(#glow-pres-${uniqueId})`}
             style={{
-              strokeDasharray: "160",
-              animation: `waveFlow_${uniqueId} 4s ease-in-out infinite alternate`,
+              animation: `morphWave1_${uniqueId} 5s cubic-bezier(0.4, 0, 0.2, 1) infinite`,
             }}
           />
 
-          {/* 4 Interactive Slide Steps */}
-          <g transform="translate(0, 0)">
-            <circle cx="80" cy="120" r="5" fill="#d1fe17" filter={`url(#glow-lime-${uniqueId})`} style={{ animation: `slideBlink_${uniqueId} 2s infinite 0s`, transformOrigin: "80px 120px" }} />
-            <circle cx="160" cy="120" r="5" fill="#22c55e" filter={`url(#glow-lime-${uniqueId})`} style={{ animation: `slideBlink_${uniqueId} 2s infinite 0.5s`, transformOrigin: "160px 120px" }} />
-            <circle cx="240" cy="120" r="5" fill="#38bdf8" filter={`url(#glow-lime-${uniqueId})`} style={{ animation: `slideBlink_${uniqueId} 2s infinite 1s`, transformOrigin: "240px 120px" }} />
-            <circle cx="320" cy="120" r="5" fill="#a855f7" filter={`url(#glow-lime-${uniqueId})`} style={{ animation: `slideBlink_${uniqueId} 2s infinite 1.5s`, transformOrigin: "320px 120px" }} />
+          {/* Secondary Layer: 4 Synchronized Narrative Beats */}
+          <g>
+            <circle cx="85" cy="120" r="4.5" fill="#d1fe17" filter={`url(#glow-pres-${uniqueId})`} style={{ transformOrigin: "85px 120px", animation: `stepSequence_${uniqueId} 3s ease-in-out infinite 0s` }} />
+            <circle cx="160" cy="120" r="4.5" fill="#22c55e" filter={`url(#glow-pres-${uniqueId})`} style={{ transformOrigin: "160px 120px", animation: `stepSequence_${uniqueId} 3s ease-in-out infinite 0.75s` }} />
+            <circle cx="240" cy="120" r="4.5" fill="#14b8a6" filter={`url(#glow-pres-${uniqueId})`} style={{ transformOrigin: "240px 120px", animation: `stepSequence_${uniqueId} 3s ease-in-out infinite 1.5s` }} />
+            <circle cx="315" cy="120" r="4.5" fill="#06b6d4" filter={`url(#glow-pres-${uniqueId})`} style={{ transformOrigin: "315px 120px", animation: `stepSequence_${uniqueId} 3s ease-in-out infinite 2.25s` }} />
           </g>
 
-          {/* Slide Deck Decals & Teleprompter Hotkey */}
-          <text x="68" y="70" fill="rgba(255,255,255,0.85)" fontSize="11" fontWeight="bold" letterSpacing="1">
+          {/* Minimalist Editorial Decals */}
+          <text x="68" y="70" fill="rgba(255,255,255,0.7)" fontSize="10" fontWeight="600" letterSpacing="0.8">
             1 IDEA = 1 SLIDE
           </text>
-          <text x="330" y="70" textAnchor="end" fill="#d1fe17" fontSize="10" fontFamily="monospace" fontWeight="bold">
+          <text x="332" y="70" textAnchor="end" fill="#d1fe17" fontSize="9" fontFamily="monospace" fontWeight="600">
             10-VECTORS
           </text>
-
-          {/* Hotkey Tag */}
-          <rect x="68" y="156" width="105" height="22" rx="6" fill="#141a1f" stroke="#d1fe17" strokeWidth="1" strokeOpacity="0.6" />
-          <text x="120" y="171" textAnchor="middle" fill="#d1fe17" fontSize="9" fontFamily="monospace" fontWeight="bold">
+          <text x="68" y="172" fill="#d1fe17" fontSize="8.5" fontFamily="monospace" opacity="0.9">
             HOTKEY: [S] NOTES
           </text>
         </svg>
 
         {command && (
-          <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-lime-400/20 border border-lime-400/50 backdrop-blur-sm text-lime-300 font-mono text-[11px] font-bold">
+          <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full bg-lime-400/10 border border-lime-400/30 text-lime-300 font-mono text-[10px] font-medium tracking-wide">
             {command}
           </div>
         )}
@@ -232,85 +218,85 @@ export function GenerativeThumbnail({
     );
   }
 
-  // 3. PURPLE-MATRIX — /skill-visualizer (16:9 Vector Flowchart & Architecture Engine)
+  // 3. PURPLE-MATRIX: /skill-visualizer — Lottie Vector Architecture Blueprint (Harmonic Node Pulse)
   if (theme === "purple-matrix") {
     return (
-      <div className={`relative overflow-hidden bg-[#0c0816] flex items-center justify-center select-none group ${className}`}>
-        {/* Ambient Purple Ray */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-600/20 via-indigo-950/20 to-transparent" />
+      <div className={`relative overflow-hidden bg-[#0B0813] flex items-center justify-center select-none group ${className}`}>
+        {/* Ambient Layer */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 via-indigo-950/15 to-transparent" />
 
         <svg
-          className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full absolute inset-0"
           viewBox="0 0 400 240"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id={`grad-purple-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id={`grad-vis-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#c084fc" />
-              <stop offset="50%" stopColor="#a855f7" />
+              <stop offset="50%" stopColor="#818cf8" />
               <stop offset="100%" stopColor="#38bdf8" />
             </linearGradient>
-            <filter id={`glow-purple-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
+            <filter id={`glow-vis-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>
             <style>{`
-              @keyframes arrowDash_${uniqueId} {
-                0% { stroke-dashoffset: 24; }
-                100% { stroke-dashoffset: 0; }
+              @keyframes borderPulse_${uniqueId} {
+                0%, 100% { stroke-opacity: 0.35; }
+                50% { stroke-opacity: 0.85; }
               }
-              @keyframes nodeGlow_${uniqueId} {
-                0%, 100% { stroke-opacity: 0.6; }
-                50% { stroke-opacity: 1; filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.7)); }
+              @keyframes lineFlow_${uniqueId} {
+                0% { stroke-dashoffset: 16; }
+                100% { stroke-dashoffset: 0; }
               }
             `}</style>
           </defs>
 
-          {/* 3 Architecture Milestone Nodes */}
+          {/* 3 Architecture Blueprint Milestone Cards */}
           <g>
-            {/* Node 1: Input */}
-            <rect x="35" y="80" width="95" height="85" rx="10" fill="#171126" stroke="#c084fc" strokeWidth="1.5" style={{ animation: `nodeGlow_${uniqueId} 3s infinite 0s` }} />
-            <text x="48" y="105" fill="#c084fc" fontSize="11" fontWeight="bold" fontFamily="monospace">01 INPUT</text>
-            <rect x="48" y="118" width="70" height="4" rx="2" fill="rgba(255,255,255,0.25)" />
-            <rect x="48" y="128" width="55" height="4" rx="2" fill="rgba(255,255,255,0.15)" />
-            <rect x="48" y="138" width="62" height="4" rx="2" fill="rgba(255,255,255,0.15)" />
+            {/* Card 01 */}
+            <rect x="38" y="82" width="94" height="82" rx="10" fill="#130E20" stroke="#c084fc" strokeWidth="1" style={{ animation: `borderPulse_${uniqueId} 3.5s ease-in-out infinite 0s` }} />
+            <text x="50" y="104" fill="#c084fc" fontSize="10" fontWeight="bold" fontFamily="monospace">01 INPUT</text>
+            <rect x="50" y="116" width="68" height="3.5" rx="1.5" fill="rgba(255,255,255,0.2)" />
+            <rect x="50" y="125" width="52" height="3.5" rx="1.5" fill="rgba(255,255,255,0.12)" />
+            <rect x="50" y="134" width="60" height="3.5" rx="1.5" fill="rgba(255,255,255,0.12)" />
 
-            {/* Vector Connector 1 */}
-            <line x1="130" y1="122" x2="155" y2="122" stroke="#c084fc" strokeWidth="2" strokeDasharray="4 4" style={{ animation: `arrowDash_${uniqueId} 1s linear infinite` }} />
-            <polygon points="155,118 162,122 155,126" fill="#c084fc" />
+            {/* Connecting Vector Arrow 1 */}
+            <line x1="132" y1="123" x2="158" y2="123" stroke="#c084fc" strokeWidth="1.5" strokeDasharray="4 4" style={{ animation: `lineFlow_${uniqueId} 1.5s linear infinite` }} />
+            <polygon points="158,119 164,123 158,127" fill="#c084fc" />
 
-            {/* Node 2: Compile Engine */}
-            <rect x="162" y="70" width="105" height="105" rx="12" fill="#1f1633" stroke={`url(#grad-purple-${uniqueId})`} strokeWidth="2" filter={`url(#glow-purple-${uniqueId})`} style={{ animation: `nodeGlow_${uniqueId} 3s infinite 1s` }} />
-            <text x="176" y="98" fill="#38bdf8" fontSize="12" fontWeight="bold" fontFamily="monospace">02 COMPILE</text>
-            <rect x="176" y="112" width="76" height="5" rx="2.5" fill="#38bdf8" opacity="0.7" />
-            <rect x="176" y="124" width="60" height="5" rx="2.5" fill="rgba(255,255,255,0.3)" />
-            <rect x="176" y="136" width="68" height="5" rx="2.5" fill="rgba(255,255,255,0.2)" />
-            <rect x="176" y="148" width="50" height="5" rx="2.5" fill="rgba(255,255,255,0.2)" />
+            {/* Card 02: Central Engine */}
+            <rect x="164" y="72" width="102" height="102" rx="12" fill="#181129" stroke={`url(#grad-vis-${uniqueId})`} strokeWidth="1.5" filter={`url(#glow-vis-${uniqueId})`} style={{ animation: `borderPulse_${uniqueId} 3.5s ease-in-out infinite 1s` }} />
+            <text x="178" y="98" fill="#38bdf8" fontSize="11" fontWeight="bold" fontFamily="monospace">02 COMPILE</text>
+            <rect x="178" y="111" width="74" height="4.5" rx="2" fill="#38bdf8" opacity="0.6" />
+            <rect x="178" y="122" width="58" height="4.5" rx="2" fill="rgba(255,255,255,0.25)" />
+            <rect x="178" y="133" width="66" height="4.5" rx="2" fill="rgba(255,255,255,0.15)" />
+            <rect x="178" y="144" width="48" height="4.5" rx="2" fill="rgba(255,255,255,0.15)" />
 
-            {/* Vector Connector 2 */}
-            <line x1="267" y1="122" x2="292" y2="122" stroke="#38bdf8" strokeWidth="2" strokeDasharray="4 4" style={{ animation: `arrowDash_${uniqueId} 1s linear infinite` }} />
-            <polygon points="292,118 299,122 292,126" fill="#38bdf8" />
+            {/* Connecting Vector Arrow 2 */}
+            <line x1="266" y1="123" x2="292" y2="123" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="4 4" style={{ animation: `lineFlow_${uniqueId} 1.5s linear infinite` }} />
+            <polygon points="292,119 298,123 292,127" fill="#38bdf8" />
 
-            {/* Node 3: 16:9 Output */}
-            <rect x="299" y="80" width="85" height="85" rx="10" fill="#171126" stroke="#34d399" strokeWidth="1.5" style={{ animation: `nodeGlow_${uniqueId} 3s infinite 2s` }} />
-            <text x="311" y="105" fill="#34d399" fontSize="11" fontWeight="bold" fontFamily="monospace">03 16:9 SVG</text>
-            <rect x="311" y="118" width="60" height="4" rx="2" fill="rgba(255,255,255,0.25)" />
-            <rect x="311" y="128" width="48" height="4" rx="2" fill="rgba(255,255,255,0.15)" />
-            <rect x="311" y="138" width="55" height="4" rx="2" fill="rgba(255,255,255,0.15)" />
+            {/* Card 03 */}
+            <rect x="298" y="82" width="86" height="82" rx="10" fill="#130E20" stroke="#38bdf8" strokeWidth="1" style={{ animation: `borderPulse_${uniqueId} 3.5s ease-in-out infinite 2s` }} />
+            <text x="310" y="104" fill="#38bdf8" fontSize="10" fontWeight="bold" fontFamily="monospace">03 16:9 SVG</text>
+            <rect x="310" y="116" width="60" height="3.5" rx="1.5" fill="rgba(255,255,255,0.2)" />
+            <rect x="310" y="125" width="46" height="3.5" rx="1.5" fill="rgba(255,255,255,0.12)" />
+            <rect x="310" y="134" width="54" height="3.5" rx="1.5" fill="rgba(255,255,255,0.12)" />
           </g>
 
-          {/* Canvas Decals */}
-          <text x="200" y="38" textAnchor="middle" fill="#c084fc" fontSize="11" fontFamily="monospace" fontWeight="bold" letterSpacing="2">
+          {/* Blueprint Coordinates */}
+          <text x="200" y="40" textAnchor="middle" fill="#c084fc" fontSize="9.5" fontFamily="monospace" fontWeight="600" letterSpacing="1.5">
             VIEWBOX: 0 0 1600 900
           </text>
-          <text x="200" y="214" textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize="9" fontFamily="monospace">
+          <text x="200" y="210" textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize="8.5" fontFamily="monospace">
             DYNAMIC DENSITY SCALING MATRIX
           </text>
         </svg>
 
         {command && (
-          <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/50 backdrop-blur-sm text-purple-300 font-mono text-[11px] font-bold">
+          <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 font-mono text-[10px] font-medium tracking-wide">
             {command}
           </div>
         )}
@@ -318,52 +304,52 @@ export function GenerativeThumbnail({
     );
   }
 
-  // 4. AMBER-BRUTALISM — StyleRef (Generative Visual Styles & Prompt DB)
+  // 4. AMBER-BRUTALISM: StyleRef — Editorial Master Art Gallery (Calm Parallax Aura & Precision Seal)
   if (theme === "amber-brutalism") {
     return (
-      <div className={`relative overflow-hidden bg-[#110c08] flex items-center justify-center select-none group ${className}`}>
-        {/* 4 Art Frame Tiles with Subtle Ken-Burns Drift */}
-        <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-1 p-1.5 opacity-80 group-hover:opacity-95 transition-opacity">
+      <div className={`relative overflow-hidden bg-[#0D0906] flex items-center justify-center select-none group ${className}`}>
+        {/* 4 Art Frames with Smooth Calm Contrast */}
+        <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-1 p-1.5 opacity-75 group-hover:opacity-90 transition-opacity">
           <div 
-            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5 transition-transform duration-1000 ease-out group-hover:scale-105"
+            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
             style={{ backgroundImage: "url('/styleref/img_01.jpeg')" }}
           >
-            <div className="absolute inset-0 bg-black/40" />
-            <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            <div className="absolute inset-0 bg-black/45" />
+            <span className="absolute bottom-1 left-1.5 text-[8.5px] font-mono text-white/80 font-semibold bg-black/60 px-1 rounded">
               Różalski
             </span>
           </div>
           <div 
-            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5 transition-transform duration-1000 ease-out group-hover:scale-105"
+            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
             style={{ backgroundImage: "url('/styleref/img_02.jpeg')" }}
           >
-            <div className="absolute inset-0 bg-black/40" />
-            <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            <div className="absolute inset-0 bg-black/45" />
+            <span className="absolute bottom-1 left-1.5 text-[8.5px] font-mono text-white/80 font-semibold bg-black/60 px-1 rounded">
               Stålenhag
             </span>
           </div>
           <div 
-            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5 transition-transform duration-1000 ease-out group-hover:scale-105"
+            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
             style={{ backgroundImage: "url('/styleref/img_04.jpeg')" }}
           >
-            <div className="absolute inset-0 bg-black/40" />
-            <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            <div className="absolute inset-0 bg-black/45" />
+            <span className="absolute bottom-1 left-1.5 text-[8.5px] font-mono text-white/80 font-semibold bg-black/60 px-1 rounded">
               Beksiński
             </span>
           </div>
           <div 
-            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5 transition-transform duration-1000 ease-out group-hover:scale-105"
+            className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
             style={{ backgroundImage: "url('/styleref/img_13.jpeg')" }}
           >
-            <div className="absolute inset-0 bg-black/40" />
-            <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            <div className="absolute inset-0 bg-black/45" />
+            <span className="absolute bottom-1 left-1.5 text-[8.5px] font-mono text-white/80 font-semibold bg-black/60 px-1 rounded">
               Blue Eye Samurai
             </span>
           </div>
         </div>
 
-        {/* Amber Center Glow Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/25 via-black/40 to-black/85 pointer-events-none" />
+        {/* Ambient Amber Glow Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-amber-500/20 via-black/40 to-black/85 pointer-events-none" />
 
         <svg
           className="w-full h-full absolute inset-0 pointer-events-none"
@@ -372,17 +358,12 @@ export function GenerativeThumbnail({
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id={`grad-amber-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#f97316" />
-              <stop offset="50%" stopColor="#fbbf24" />
-              <stop offset="100%" stopColor="#ef4444" />
+            <linearGradient id={`grad-amb-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#f59e0b" />
+              <stop offset="100%" stopColor="#d97706" />
             </linearGradient>
-            <filter id={`glow-amber-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
             <style>{`
-              @keyframes rotateSun_${uniqueId} {
+              @keyframes slowCompass_${uniqueId} {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
               }
@@ -390,22 +371,22 @@ export function GenerativeThumbnail({
           </defs>
 
           {/* Rotating Compass Ring */}
-          <g style={{ transformOrigin: "200px 120px", animation: `rotateSun_${uniqueId} 30s linear infinite` }}>
-            <circle cx="200" cy="120" r="38" stroke="#fbbf24" strokeWidth="1" strokeDasharray="4 6" opacity="0.5" />
+          <g style={{ transformOrigin: "200px 120px", animation: `slowCompass_${uniqueId} 40s linear infinite` }}>
+            <circle cx="200" cy="120" r="36" stroke="#f59e0b" strokeWidth="0.8" strokeDasharray="3 5" opacity="0.4" />
           </g>
 
-          {/* Center Stamp Badge */}
-          <rect x="135" y="98" width="130" height="44" rx="12" fill="#140e0a" fillOpacity="0.95" stroke={`url(#grad-amber-${uniqueId})`} strokeWidth="1.5" filter={`url(#glow-amber-${uniqueId})`} />
-          <text x="200" y="117" textAnchor="middle" fill="#fbbf24" fontSize="12" fontFamily="monospace" fontWeight="bold" letterSpacing="1">
+          {/* Center Precision Seal */}
+          <rect x="138" y="100" width="124" height="40" rx="10" fill="#120D08" fillOpacity="0.95" stroke="#f59e0b" strokeWidth="1" strokeOpacity="0.6" />
+          <text x="200" y="117" textAnchor="middle" fill="#f59e0b" fontSize="11" fontFamily="monospace" fontWeight="bold" letterSpacing="0.8">
             19 STYLES DB
           </text>
-          <text x="200" y="132" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="9" fontFamily="monospace">
+          <text x="200" y="131" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="8.5" fontFamily="monospace">
             PROMPT MATRIX
           </text>
         </svg>
 
         {command && (
-          <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-orange-500/30 border border-orange-500/60 backdrop-blur-md text-orange-300 font-mono text-[11px] font-bold">
+          <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-[10px] font-medium tracking-wide">
             {command}
           </div>
         )}
@@ -413,75 +394,61 @@ export function GenerativeThumbnail({
     );
   }
 
-  // 5. PRISM-SPECTRUM — /design-md-generator (DESIGN.md Token Architecture & OKLCH)
+  // 5. PRISM-SPECTRUM: /design-md-generator — Lottie Design System Tokens (Harmonic Scale & Swatches)
   if (theme === "prism-spectrum") {
     return (
-      <div className={`relative overflow-hidden bg-[#0a0e14] flex items-center justify-center select-none group ${className}`}>
-        {/* Shifting Prism Spectrum Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/15 via-purple-900/15 to-transparent animate-pulse" style={{ animationDuration: "6s" }} />
+      <div className={`relative overflow-hidden bg-[#080B10] flex items-center justify-center select-none group ${className}`}>
+        {/* Ambient Layer */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/10 via-purple-950/15 to-transparent" />
 
         <svg
-          className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
+          className="w-full h-full absolute inset-0"
           viewBox="0 0 400 240"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id={`grad-prism-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#38bdf8" />
-              <stop offset="25%" stopColor="#818cf8" />
-              <stop offset="50%" stopColor="#c084fc" />
-              <stop offset="75%" stopColor="#f43f5e" />
-              <stop offset="100%" stopColor="#10b981" />
-            </linearGradient>
-            <filter id={`glow-prism-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
             <style>{`
-              @keyframes barShift_${uniqueId} {
+              @keyframes barHarmonic_${uniqueId} {
                 0%, 100% { width: 140px; }
-                50% { width: 180px; }
+                50% { width: 175px; }
               }
-              @keyframes swatchPulse_${uniqueId} {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.15); }
+              @keyframes swatchFloat_${uniqueId} {
+                0%, 100% { transform: translateY(0px); opacity: 0.85; }
+                50% { transform: translateY(-3px); opacity: 1; }
               }
             `}</style>
           </defs>
 
-          {/* Living Typography Hierarchy Equalizer Bars */}
-          <g transform="translate(60, 60)">
-            {/* H1 Token Bar */}
-            <text x="0" y="16" fill="#38bdf8" fontSize="11" fontFamily="monospace" fontWeight="bold">H1: 3.5rem</text>
-            <rect x="90" y="6" width="160" height="12" rx="4" fill="#38bdf8" opacity="0.8" style={{ animation: `barShift_${uniqueId} 3s ease-in-out infinite alternate` }} />
+          {/* Typography Scale Bars */}
+          <g transform="translate(65, 62)">
+            <text x="0" y="15" fill="#38bdf8" fontSize="10" fontFamily="monospace" fontWeight="600">H1: 3.5rem</text>
+            <rect x="85" y="6" width="150" height="10" rx="3.5" fill="#38bdf8" opacity="0.75" style={{ animation: `barHarmonic_${uniqueId} 4s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate` }} />
 
-            {/* H2 Token Bar */}
-            <text x="0" y="42" fill="#818cf8" fontSize="10" fontFamily="monospace" fontWeight="bold">H2: 2.2rem</text>
-            <rect x="90" y="32" width="130" height="10" rx="4" fill="#818cf8" opacity="0.7" style={{ animation: `barShift_${uniqueId} 3.5s ease-in-out infinite alternate` }} />
+            <text x="0" y="38" fill="#818cf8" fontSize="9.5" fontFamily="monospace" fontWeight="600">H2: 2.2rem</text>
+            <rect x="85" y="30" width="125" height="8.5" rx="3" fill="#818cf8" opacity="0.65" style={{ animation: `barHarmonic_${uniqueId} 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate 0.5s` }} />
 
-            {/* Body Token Bar */}
-            <text x="0" y="66" fill="#c084fc" fontSize="10" fontFamily="monospace" fontWeight="bold">Body: 1rem</text>
-            <rect x="90" y="58" width="105" height="8" rx="4" fill="#c084fc" opacity="0.6" style={{ animation: `barShift_${uniqueId} 4s ease-in-out infinite alternate` }} />
+            <text x="0" y="60" fill="#c084fc" fontSize="9" fontFamily="monospace" fontWeight="600">Body: 1rem</text>
+            <rect x="85" y="53" width="100" height="7.5" rx="2.5" fill="#c084fc" opacity="0.55" style={{ animation: `barHarmonic_${uniqueId} 5s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate 1s` }} />
           </g>
 
-          {/* Color Token Swatches (Living Palette) */}
-          <g transform="translate(60, 150)">
-            <rect x="0" y="0" width="48" height="32" rx="8" fill="#38bdf8" filter={`url(#glow-prism-${uniqueId})`} style={{ transformOrigin: "24px 16px", animation: `swatchPulse_${uniqueId} 2.5s infinite 0s` }} />
-            <rect x="58" y="0" width="48" height="32" rx="8" fill="#818cf8" filter={`url(#glow-prism-${uniqueId})`} style={{ transformOrigin: "82px 16px", animation: `swatchPulse_${uniqueId} 2.5s infinite 0.5s` }} />
-            <rect x="116" y="0" width="48" height="32" rx="8" fill="#c084fc" filter={`url(#glow-prism-${uniqueId})`} style={{ transformOrigin: "140px 16px", animation: `swatchPulse_${uniqueId} 2.5s infinite 1s` }} />
-            <rect x="174" y="0" width="48" height="32" rx="8" fill="#f43f5e" filter={`url(#glow-prism-${uniqueId})`} style={{ transformOrigin: "198px 16px", animation: `swatchPulse_${uniqueId} 2.5s infinite 1.5s` }} />
-            <rect x="232" y="0" width="48" height="32" rx="8" fill="#10b981" filter={`url(#glow-prism-${uniqueId})`} style={{ transformOrigin: "256px 16px", animation: `swatchPulse_${uniqueId} 2.5s infinite 2s` }} />
+          {/* Color Token Swatches */}
+          <g transform="translate(65, 148)">
+            <rect x="0" y="0" width="46" height="28" rx="7" fill="#38bdf8" style={{ animation: `swatchFloat_${uniqueId} 3s ease-in-out infinite 0s` }} />
+            <rect x="56" y="0" width="46" height="28" rx="7" fill="#818cf8" style={{ animation: `swatchFloat_${uniqueId} 3s ease-in-out infinite 0.6s` }} />
+            <rect x="112" y="0" width="46" height="28" rx="7" fill="#c084fc" style={{ animation: `swatchFloat_${uniqueId} 3s ease-in-out infinite 1.2s` }} />
+            <rect x="168" y="0" width="46" height="28" rx="7" fill="#f43f5e" style={{ animation: `swatchFloat_${uniqueId} 3s ease-in-out infinite 1.8s` }} />
+            <rect x="224" y="0" width="46" height="28" rx="7" fill="#10b981" style={{ animation: `swatchFloat_${uniqueId} 3s ease-in-out infinite 2.4s` }} />
           </g>
 
-          {/* Decal */}
-          <text x="200" y="216" textAnchor="middle" fill="#38bdf8" fontSize="10" fontFamily="monospace" fontWeight="bold" letterSpacing="1.5">
-            YAML TOKENS + DESIGN RATIONALE
+          {/* Decals */}
+          <text x="200" y="214" textAnchor="middle" fill="#38bdf8" fontSize="9" fontFamily="monospace" fontWeight="600" letterSpacing="1.2">
+            YAML TOKENS &amp; DESIGN SYSTEM SPEC
           </text>
         </svg>
 
         {command && (
-          <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-cyan-500/20 border border-cyan-500/50 backdrop-blur-sm text-cyan-300 font-mono text-[11px] font-bold">
+          <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono text-[10px] font-medium tracking-wide">
             {command}
           </div>
         )}
@@ -489,87 +456,79 @@ export function GenerativeThumbnail({
     );
   }
 
-  // 6. EMERALD-TERMINAL — /end (End-of-Session Ritual & Living Memory Keeper)
+  // 6. EMERALD-TERMINAL: /end — Lottie Session Lifecycle Terminal (Harmonic Status Pulse & Scan Line)
   return (
-    <div className={`relative overflow-hidden bg-[#07120a] flex items-center justify-center select-none group ${className}`}>
-      {/* Terminal Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#22c55e10_1px,transparent_1px),linear-gradient(to_bottom,#22c55e10_1px,transparent_1px)] bg-[size:20px_20px]" />
+    <div className={`relative overflow-hidden bg-[#060E08] flex items-center justify-center select-none group ${className}`}>
+      {/* Subtle Terminal Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#22c55e08_1px,transparent_1px),linear-gradient(to_bottom,#22c55e08_1px,transparent_1px)] bg-[size:24px_24px]" />
 
       <svg
-        className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
+        className="w-full h-full absolute inset-0"
         viewBox="0 0 400 240"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <linearGradient id={`grad-emerald-${uniqueId}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#22c55e" />
-            <stop offset="100%" stopColor="#10b981" />
-          </linearGradient>
-          <filter id={`glow-emerald-${uniqueId}`} x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
           <style>{`
-            @keyframes scanLine_${uniqueId} {
-              0% { transform: translateY(35px); opacity: 0.2; }
-              50% { opacity: 0.9; }
-              100% { transform: translateY(195px); opacity: 0.2; }
+            @keyframes scanSlow_${uniqueId} {
+              0% { transform: translateY(40px); opacity: 0.15; }
+              50% { opacity: 0.7; }
+              100% { transform: translateY(185px); opacity: 0.15; }
             }
-            @keyframes stepCheck_${uniqueId} {
-              0%, 100% { fill: #10b981; }
-              50% { fill: #22c55e; filter: drop-shadow(0 0 6px #22c55e); }
+            @keyframes checkPulse_${uniqueId} {
+              0%, 100% { opacity: 0.5; }
+              50% { opacity: 1; }
             }
           `}</style>
         </defs>
 
         {/* Terminal Frame Window */}
-        <rect x="40" y="35" width="320" height="165" rx="12" fill="#0b1c10" stroke="#22c55e" strokeWidth="1.5" strokeOpacity="0.8" />
-        <rect x="48" y="43" width="304" height="149" rx="8" fill="#040c06" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+        <rect x="42" y="38" width="316" height="160" rx="12" fill="#0A160D" stroke="#22c55e" strokeWidth="1" strokeOpacity="0.4" />
+        <rect x="49" y="45" width="302" height="146" rx="8" fill="#040905" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
 
         {/* Terminal Header */}
-        <circle cx="62" cy="55" r="3.5" fill="#ef4444" />
-        <circle cx="74" cy="55" r="3.5" fill="#fbbf24" />
-        <circle cx="86" cy="55" r="3.5" fill="#22c55e" />
-        <text x="110" y="59" fill="#22c55e" fontSize="10" fontFamily="monospace" fontWeight="bold">
+        <circle cx="62" cy="56" r="3" fill="#ef4444" opacity="0.8" />
+        <circle cx="72" cy="56" r="3" fill="#fbbf24" opacity="0.8" />
+        <circle cx="82" cy="56" r="3" fill="#22c55e" opacity="0.8" />
+        <text x="102" y="60" fill="#22c55e" fontSize="9.5" fontFamily="monospace" fontWeight="600">
           SESSION_RITUAL // HARNESS
         </text>
 
-        {/* 4 Execution Checkpoints */}
-        <g transform="translate(65, 80)">
-          <circle cx="6" cy="6" r="4.5" fill="#22c55e" style={{ animation: `stepCheck_${uniqueId} 2s infinite 0s` }} />
-          <text x="20" y="10" fill="#e5e5e5" fontSize="11" fontFamily="monospace">PHASE 0: COMPLETION GATE</text>
+        {/* 4 Checkpoint Stages */}
+        <g transform="translate(62, 80)">
+          <circle cx="6" cy="6" r="3.5" fill="#22c55e" style={{ animation: `checkPulse_${uniqueId} 2.5s infinite 0s` }} />
+          <text x="18" y="9.5" fill="#e5e5e5" fontSize="10" fontFamily="monospace" opacity="0.85">PHASE 0: COMPLETION GATE</text>
 
-          <circle cx="6" cy="30" r="4.5" fill="#22c55e" style={{ animation: `stepCheck_${uniqueId} 2s infinite 0.5s` }} />
-          <text x="20" y="34" fill="#e5e5e5" fontSize="11" fontFamily="monospace">PHASE 1: AUDIT &amp; RETRO</text>
+          <circle cx="6" cy="28" r="3.5" fill="#22c55e" style={{ animation: `checkPulse_${uniqueId} 2.5s infinite 0.6s` }} />
+          <text x="18" y="31.5" fill="#e5e5e5" fontSize="10" fontFamily="monospace" opacity="0.85">PHASE 1: AUDIT &amp; RETRO</text>
 
-          <circle cx="6" cy="54" r="4.5" fill="#22c55e" style={{ animation: `stepCheck_${uniqueId} 2s infinite 1s` }} />
-          <text x="20" y="58" fill="#e5e5e5" fontSize="11" fontFamily="monospace">PHASE 2: MEMORY PERSIST</text>
+          <circle cx="6" cy="50" r="3.5" fill="#22c55e" style={{ animation: `checkPulse_${uniqueId} 2.5s infinite 1.2s` }} />
+          <text x="18" y="53.5" fill="#e5e5e5" fontSize="10" fontFamily="monospace" opacity="0.85">PHASE 2: MEMORY PERSIST</text>
 
-          <circle cx="6" cy="78" r="4.5" fill="#22c55e" style={{ animation: `stepCheck_${uniqueId} 2s infinite 1.5s` }} />
-          <text x="20" y="82" fill="#22c55e" fontSize="11" fontFamily="monospace" fontWeight="bold">PHASE 3: GIT PUSH [SAFE]</text>
+          <circle cx="6" cy="72" r="3.5" fill="#22c55e" style={{ animation: `checkPulse_${uniqueId} 2.5s infinite 1.8s` }} />
+          <text x="18" y="75.5" fill="#22c55e" fontSize="10" fontFamily="monospace" fontWeight="bold">PHASE 3: GIT PUSH [SAFE]</text>
         </g>
 
-        {/* Scanning Laser Beam Motion */}
+        {/* Scanning Laser Beam */}
         <line
-          x1="48"
+          x1="49"
           y1="0"
-          x2="352"
+          x2="351"
           y2="0"
           stroke="#22c55e"
-          strokeWidth="2"
-          filter={`url(#glow-emerald-${uniqueId})`}
-          style={{ animation: `scanLine_${uniqueId} 3.5s ease-in-out infinite alternate` }}
+          strokeWidth="1.5"
+          opacity="0.8"
+          style={{ animation: `scanSlow_${uniqueId} 4s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate` }}
         />
 
         {/* Status Decal */}
-        <text x="330" y="178" textAnchor="end" fill="#22c55e" fontSize="9" fontFamily="monospace" fontWeight="bold">
+        <text x="328" y="174" textAnchor="end" fill="#22c55e" fontSize="8.5" fontFamily="monospace" fontWeight="bold">
           READY TO COMMIT ●
         </text>
       </svg>
 
       {command && (
-        <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/50 backdrop-blur-sm text-emerald-300 font-mono text-[11px] font-bold">
+        <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-mono text-[10px] font-medium tracking-wide">
           {command}
         </div>
       )}
