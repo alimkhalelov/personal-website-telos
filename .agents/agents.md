@@ -14,8 +14,10 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 ## Catalog / Index
 - `src/app/admin/draft`: AI Drafting room.
 - `src/app/blog/[slug]`: MDX renderer.
+- `src/app/projects/[slug]`: Showcase project & skill engine with 16:9 visualizer, SDD specs, and live demos.
 - `content/articles`: Local Markdown files (until Outstatic fully configured).
 - **AI-Wiki Master Hook:** When capturing user intent/requirements (`raw/`), compiling project documentation (`wiki/`), recording architectural invariants, or managing the wiki portal — read `.agents/skills/wiki/SKILL.md` and follow its master router.
+- **Showcase Project Builder Hook:** When adding, formatting, or updating new flagship projects, agent skills, visual tools, or generative databases on the personal website — read `.agents/skills/showcase-project-builder/SKILL.md` and follow its 5-step protocol (Generative Thumbnail, Initiation Date/timeAgo, Title, Live Demo runner, 16:9 Skill Visualizer SVG, SDD Architecture, Build & TDD Checklists, and multi-channel auto-wiring in `projects-data.ts` and `wiki.ts`).
 
 
 

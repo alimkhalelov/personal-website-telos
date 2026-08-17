@@ -42,9 +42,9 @@
   Status: Completed
   Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трогай, которое на https://alim.dest.page/ отображается. все папки и файлы которые создает /wiki кажется /docs и другие . Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
 
-- [INTENT-015] [2026-08-17 09:15] [Category: Feature|Showcase|Skills|UI]
-  Summary: Design and format showcase pages and components for 4 flagship projects/skills (/wiki, /presentation, /skill-visualizer, StyleRef gallery) with generative code thumbnails, initiation dates, demo links, TL;DR, 16:9 vector visualizers, SDD architecture specs, Build/TDD checklists, horizontal showcase strip on home page, and wiki showcase hub.
+- [INTENT-016] [2026-08-17 09:22] [Category: Feature|Skill|Arch]
+  Summary: Create local skill .agents/skills/showcase-project-builder/ via /skill-creator for standardizing the addition of future projects/skills with 8 pillars (generative thumbnail, initiation date/timeAgo, title, demo link, TL;DR, 16:9 visualizer SVG, SDD architecture spec, build/TDD checklists) and wire master hook in agents.md.
   Status: Completed
-  Origin: "оформить проекты скиллы /wiki /presentation /skill-visualizer страничка галерея картинок 'D:\Study&Work\2025\Antigravity Vibecoding Projects\AutoSMM\StyleRef' - каждая страница на главной странице https://alim.dest.page/ над блог постами уходят вправую часть страницы + есть раздел в вики над блогпостами - для каждого красочный кликбейтный генеративный кодом thumbnail, дата (инициации проекта), title, ссылка на демо, tl;dr, skill visulaizer, spec (sdd) архитектура + как чеклисты plan как это build и как test (tdd)"
+  Origin: "создай локально скилл через /skill-creator для добавления в будущем новых проектов подобно четырем выше и пропиши инструкцию и роутинг на этот новый скилл в agents.md"
 
 
