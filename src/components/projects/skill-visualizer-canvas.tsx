@@ -10,6 +10,15 @@ interface SkillVisualizerCanvasProps {
   className?: string;
 }
 
+const SOLID_CARD_THEMES = [
+  { bg: "#131d2e", titleColor: "#38bdf8", textColor: "#cbd5e1" }, // Cyan
+  { bg: "#201533", titleColor: "#c084fc", textColor: "#cbd5e1" }, // Purple
+  { bg: "#2a1d0d", titleColor: "#fbbf24", textColor: "#fde68a" }, // Amber
+  { bg: "#0d2b1d", titleColor: "#34d399", textColor: "#a7f3d0" }, // Emerald
+  { bg: "#1e1329", titleColor: "#f43f5e", textColor: "#fecdd3" }, // Rose
+  { bg: "#101e2b", titleColor: "#38bdf8", textColor: "#bae6fd" }, // Blue
+];
+
 export function SkillVisualizerCanvas({
   heroTitle,
   subNamespace,
@@ -19,51 +28,54 @@ export function SkillVisualizerCanvas({
   const uniqueId = useId().replace(/:/g, "");
   const count = nodes.length;
 
-  // Dynamic Density Scaling Matrix (Large Readable Typography)
-  let cardWidth = 320;
-  let cardHeight = 275;
-  let titleFontSize = 24;
-  let bodyFontSize = 18.5;
-  let lineDy = 30;
+  // Extract clean slug name for header e.g. "skill/flowchart-viz" or "skill/wiki"
+  const cleanNamespace = subNamespace.replace(/^skill\//, "");
+
+  // Dynamic Density Scaling Matrix (as in official skill-visualizer reference)
+  let cardWidth = 310;
+  let cardHeight = 265;
+  let titleFontSize = 23;
+  let bodyFontSize = 17.5;
+  let lineDy = 28;
+  const cardY = 310;
+  const centerY = cardY + cardHeight / 2; // 442.5px
 
   if (count === 3) {
     cardWidth = 420;
-    cardHeight = 290;
-    titleFontSize = 28;
-    bodyFontSize = 21;
-    lineDy = 34;
-  } else if (count === 4) {
-    cardWidth = 320;
-    cardHeight = 275;
-    titleFontSize = 24;
-    bodyFontSize = 18.5;
+    cardHeight = 280;
+    titleFontSize = 26;
+    bodyFontSize = 19;
     lineDy = 30;
+  } else if (count === 4) {
+    cardWidth = 310;
+    cardHeight = 265;
+    titleFontSize = 23;
+    bodyFontSize = 17.5;
+    lineDy = 28;
   } else if (count === 5) {
-    cardWidth = 260;
-    cardHeight = 260;
-    titleFontSize = 21;
-    bodyFontSize = 16.5;
-    lineDy = 27;
+    cardWidth = 250;
+    cardHeight = 255;
+    titleFontSize = 20;
+    bodyFontSize = 16;
+    lineDy = 26;
   } else if (count >= 6) {
-    cardWidth = 220;
-    cardHeight = 250;
-    titleFontSize = 19;
-    bodyFontSize = 15;
-    lineDy = 25;
+    cardWidth = 210;
+    cardHeight = 240;
+    titleFontSize = 18;
+    bodyFontSize = 14.5;
+    lineDy = 23;
   }
 
-  // Calculate layout geometry
+  // Calculate layout geometry (1600x900 canvas)
   const canvasWidth = 1600;
-  const canvasHeight = 900;
   const totalCardsWidth = count * cardWidth;
-  const totalGapWidth = canvasWidth - 140 - totalCardsWidth; // balanced margins
-  const gap = Math.max(28, totalGapWidth / (count - 1));
+  const availableSpace = canvasWidth - totalCardsWidth;
+  const gap = count > 1 ? Math.min(80, Math.max(32, availableSpace / (count + 1))) : 0;
   const startX = (canvasWidth - (totalCardsWidth + (count - 1) * gap)) / 2;
-  const cardY = 370;
 
   return (
     <div
-      className={`relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-[#0a0a0c] border border-white/10 shadow-2xl ${className}`}
+      className={`relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-[#08090d] border border-white/10 shadow-2xl ${className}`}
     >
       <svg
         viewBox="0 0 1600 900"
@@ -72,182 +84,119 @@ export function SkillVisualizerCanvas({
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Crisp Geometric Vector Arrowhead Marker */}
+          {/* Crisp Vector Arrow Markers */}
           <marker
-            id={`arrow-${uniqueId}`}
+            id={`arr-${uniqueId}`}
             viewBox="0 0 10 10"
             refX="7"
             refY="5"
-            markerWidth="8"
-            markerHeight="8"
-            orient="auto-start-reverse"
+            markerWidth="7"
+            markerHeight="7"
+            orient="auto"
           >
-            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="rgba(255, 255, 255, 0.4)" />
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b" />
           </marker>
-
-          {nodes.map((node, i) => (
-            <marker
-              key={node.id}
-              id={`arrow-accent-${i}-${uniqueId}`}
-              viewBox="0 0 10 10"
-              refX="7"
-              refY="5"
-              markerWidth="8"
-              markerHeight="8"
-              orient="auto-start-reverse"
-            >
-              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill={node.accent} />
-            </marker>
-          ))}
-
-          {/* Canvas Ambient Glow */}
-          <radialGradient id={`bg-radial-${uniqueId}`} cx="50%" cy="30%" r="70%">
-            <stop offset="0%" stopColor="#1e1830" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#0a0a0c" stopOpacity="0" />
-          </radialGradient>
+          <marker
+            id={`arr-green-${uniqueId}`}
+            viewBox="0 0 10 10"
+            refX="7"
+            refY="5"
+            markerWidth="7"
+            markerHeight="7"
+            orient="auto"
+          >
+            <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981" />
+          </marker>
         </defs>
 
-        {/* Ambient Glow & Matrix Dots */}
-        <rect width="1600" height="900" fill="#0a0a0c" />
-        <rect width="1600" height="900" fill={`url(#bg-radial-${uniqueId})`} />
+        {/* 16:9 Canvas Background */}
+        <rect width="1600" height="900" fill="#08090d" />
 
-        {/* Subtle 16:9 Grid Lines */}
-        <g stroke="rgba(255, 255, 255, 0.03)" strokeWidth="1">
-          <line x1="100" y1="180" x2="1500" y2="180" />
-          <line x1="100" y1="760" x2="1500" y2="760" />
-          <line x1="100" y1="180" x2="100" y2="760" />
-          <line x1="1500" y1="180" x2="1500" y2="760" />
-        </g>
+        {/* Large Centered Title (68px) with Translucent "skill/" and White Name */}
+        <text
+          x="800"
+          y="190"
+          fontSize="68"
+          fontFamily="'Plus Jakarta Sans', -apple-system, sans-serif"
+          fontWeight="800"
+          textAnchor="middle"
+          letterSpacing="-1.5"
+        >
+          <tspan fill="rgba(255, 255, 255, 0.35)">skill/</tspan>
+          <tspan fill="#ffffff">{cleanNamespace}</tspan>
+        </text>
 
-        {/* Hero Title Section */}
-        <g textAnchor="middle">
-          <text x="800" y="195" fontSize="22" fontFamily="monospace" fontWeight="600" letterSpacing="4">
-            <tspan fill="rgba(255, 255, 255, 0.4)">{subNamespace.toUpperCase()} // </tspan>
-            <tspan fill="#38bdf8">ARCHITECTURE MAP</tspan>
-          </text>
-          <text
-            x="800"
-            y="265"
-            fontSize="54"
-            fontFamily="'Outfit', 'Plus Jakarta Sans', sans-serif"
-            fontWeight="800"
-            letterSpacing="-1.5"
-            fill="#ffffff"
-          >
-            {heroTitle}
-          </text>
-        </g>
-
-        {/* Flowchart Arrow Connections */}
-        {nodes.map((node, i) => {
-          if (i === nodes.length - 1) return null;
+        {/* Connecting Vector Arrows */}
+        {nodes.map((_, i) => {
+          if (i === count - 1) return null;
           const currentX = startX + i * (cardWidth + gap);
           const nextX = startX + (i + 1) * (cardWidth + gap);
           const x1 = currentX + cardWidth;
           const x2 = nextX;
-          const y = cardY + cardHeight / 2;
+          const isLastConnector = i === count - 2;
 
           return (
-            <g key={`line-${i}`}>
-              <line
-                x1={x1 + 6}
-                y1={y}
-                x2={x2 - 6}
-                y2={y}
-                stroke="rgba(255, 255, 255, 0.25)"
-                strokeWidth="2.5"
-                strokeDasharray="5 5"
-                markerEnd={`url(#arrow-accent-${i}-${uniqueId})`}
-              />
-            </g>
+            <path
+              key={`connector-${i}`}
+              d={`M ${x1} ${centerY} L ${x2} ${centerY}`}
+              stroke={isLastConnector ? "#10b981" : "#475569"}
+              strokeWidth="3.5"
+              fill="none"
+              markerEnd={isLastConnector ? `url(#arr-green-${uniqueId})` : `url(#arr-${uniqueId})`}
+            />
           );
         })}
 
-        {/* Flowchart Nodes */}
+        {/* Solid Pod Flowchart Cards */}
         {nodes.map((node, i) => {
           const x = startX + i * (cardWidth + gap);
-          const y = cardY;
+          const theme = SOLID_CARD_THEMES[i % SOLID_CARD_THEMES.length];
 
           return (
-            <g key={node.id} className="transition-all duration-300">
-              {/* Card Container */}
+            <g key={node.id} transform={`translate(${x}, ${cardY})`}>
+              {/* Solid Pod Container */}
               <rect
-                x={x}
-                y={y}
                 width={cardWidth}
                 height={cardHeight}
-                rx="16"
-                fill="#121216"
-                stroke="rgba(255, 255, 255, 0.08)"
-                strokeWidth="1.5"
+                rx="24"
+                fill={theme.bg}
               />
 
-              {/* Accent Top Border Highlight */}
-              <rect
-                x={x}
-                y={y}
-                width={cardWidth}
-                height="4"
-                rx="2"
-                fill={node.accent}
-                opacity="0.85"
-              />
-
-              {/* Unified Single-Line Header (Step + Title share same font size & color) */}
+              {/* Title Header (e.g. "01 Анализ сценария" or "01 Discovery") */}
               <text
-                x={x + 22}
-                y={y + 44}
-                fill={node.accent}
+                x="26"
+                y="52"
+                fill={theme.titleColor}
                 fontSize={titleFontSize}
-                fontFamily="'Outfit', 'Plus Jakarta Sans', sans-serif"
+                fontFamily="'Plus Jakarta Sans', -apple-system, sans-serif"
                 fontWeight="800"
                 letterSpacing="-0.3"
               >
-                <tspan fill="rgba(255, 255, 255, 0.45)" fontFamily="monospace" fontWeight="bold">
-                  {node.step}
-                </tspan>
-                <tspan dx="8">{node.title}</tspan>
+                {node.step} {node.title}
               </text>
 
-              {/* Separator */}
-              <line
-                x1={x + 22}
-                y1={y + 60}
-                x2={x + cardWidth - 22}
-                y2={y + 60}
-                stroke="rgba(255, 255, 255, 0.06)"
-                strokeWidth="1"
-              />
-
-              {/* Description Lines (Bullet-free, high density) */}
+              {/* Body Text (Readable Paragraph Format) */}
               <text
-                x={x + 22}
-                y={y + 92}
-                fill="rgba(255, 255, 255, 0.72)"
+                x="26"
+                y="100"
+                fill={theme.textColor}
                 fontSize={bodyFontSize}
                 fontFamily="'Plus Jakarta Sans', -apple-system, sans-serif"
                 fontWeight="400"
               >
-                {node.description.map((line, lineIndex) => (
+                {node.description.map((line, lineIdx) => (
                   <tspan
-                    key={lineIndex}
-                    x={x + 22}
-                    dy={lineIndex === 0 ? 0 : lineDy}
+                    key={lineIdx}
+                    x="26"
+                    dy={lineIdx === 0 ? 0 : lineDy}
                   >
-                    • {line}
+                    {line}
                   </tspan>
                 ))}
               </text>
             </g>
           );
         })}
-
-        {/* Bottom Specs Decal */}
-        <g textAnchor="middle">
-          <text x="800" y="730" fill="rgba(255, 255, 255, 0.35)" fontSize="13" fontFamily="monospace" letterSpacing="3">
-            STATIC 16:9 VECTOR CANVAS • VIEWBOX 0 0 1600 900 • ZERO VOID SPACE
-          </text>
-        </g>
       </svg>
     </div>
   );

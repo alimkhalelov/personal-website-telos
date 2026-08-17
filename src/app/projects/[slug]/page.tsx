@@ -102,11 +102,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </header>
       </div>
 
-      {/* 2. The Big Idea (TL;DR) */}
+      {/* 2. TL;DR */}
       <section className="flex flex-col gap-3 p-6 sm:p-7 rounded-2xl bg-muted/20 border border-border/70 shadow-sm">
         <div className="flex items-center gap-2 text-accent text-xs font-mono font-bold uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
-          <span>The Big Idea</span>
+          <span>TL;DR</span>
         </div>
         <p className="text-lg sm:text-xl text-foreground font-light leading-relaxed">
           {project.tldr}
@@ -142,14 +142,14 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </section>
       )}
 
-      {/* 3. Visual Architecture Map (16:9 Vector Canvas) */}
+      {/* 3. Схема работы (16:9 Vector Canvas) */}
       <section className="flex flex-col gap-4 pt-4 border-t border-border">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-            Visual Architecture Map
+            Схема работы
           </h2>
           <p className="text-base text-muted-foreground font-light">
-            End-to-end procedural workflow and node execution graph.
+            Пошаговый процесс и ключевые этапы архитектуры.
           </p>
         </div>
 
