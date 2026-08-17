@@ -4,16 +4,9 @@ import Link from "next/link";
 import { 
   ArrowLeft, 
   ArrowUpRight, 
-  Sparkles, 
   CheckCircle2, 
-  Terminal, 
-  Layers, 
-  Cpu, 
-  Code, 
-  CheckSquare, 
   Play, 
-  BookOpen,
-  Eye
+  BookOpen
 } from "lucide-react";
 import { getProjectBySlug, getAllProjects } from "@/lib/projects-data";
 import { GenerativeThumbnail } from "@/components/projects/generative-thumbnail";
@@ -39,7 +32,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   }
 
   return {
-    title: `${project.title} — Spec, Visualizer & Architecture | Alimzhan`,
+    title: `${project.title} | Alimzhan`,
     description: project.tldr,
   };
 }
@@ -53,39 +46,71 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16 sm:py-24 flex flex-col gap-16 w-full">
+    <main className="max-w-3xl mx-auto px-6 py-16 sm:py-24 flex flex-col gap-16 w-full">
       {/* Navigation Top Bar */}
       <div className="flex items-center justify-between border-b border-border pb-6">
         <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors !no-underline"
+          href="/projects"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors !no-underline"
+          style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Headquarters</span>
+          <span>Back to Projects</span>
         </Link>
 
-        <div className="flex items-center gap-4 text-sm font-mono">
+        <div className="flex items-center gap-5 text-sm">
           <Link
             href="/wiki"
-            className="text-muted-foreground hover:text-accent transition-colors !no-underline flex items-center gap-1"
+            className="text-muted-foreground hover:text-accent transition-colors !no-underline"
+            style={{ fontFamily: "'Google Sans', sans-serif" }}
           >
-            <BookOpen className="w-4 h-4" />
-            <span>Public Wiki</span>
+            Wiki Hub →
           </Link>
-          <Link
-            href={project.demoUrl}
-            className="px-3 py-1.5 rounded-xl bg-accent text-white hover:opacity-90 transition-opacity font-semibold flex items-center gap-1.5 !no-underline"
-          >
-            <Play className="w-3.5 h-3.5 fill-current" />
-            <span>{project.demoLabel}</span>
-          </Link>
+          {project.demoUrl && project.slug !== "presentation" && project.slug !== "styleref" && (
+            <Link
+              href={project.demoUrl}
+              className="font-semibold text-accent hover:underline !no-underline"
+              style={{ fontFamily: "'Google Sans', sans-serif" }}
+            >
+              {project.demoLabel} ↗
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Hero Section with Generative Thumbnail & Metadata */}
-      <section className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        {/* Generative Banner Thumbnail */}
-        <div className="w-full aspect-[21/9] sm:aspect-[2.4/1] rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative">
+      {/* Hero Header (Intentional Functional Minimalism) */}
+      <section className="flex flex-col gap-6">
+        {/* Date, Time Ago, Command */}
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <time style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              {project.dateDisplay}
+            </time>
+            <span>·</span>
+            <span className="text-xs font-mono opacity-80">
+              {project.timeAgo}
+            </span>
+          </div>
+          <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-2.5 py-0.5 rounded-full border border-accent/20">
+            {project.command}
+          </span>
+        </div>
+
+        {/* Main Title & Headline */}
+        <div className="flex flex-col gap-2">
+          <h1 
+            className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground leading-[1.15]"
+            style={{ fontFamily: "'Google Sans', sans-serif" }}
+          >
+            {project.title}
+          </h1>
+          <p className="text-lg sm:text-xl text-muted-foreground font-light leading-relaxed">
+            {project.headline}
+          </p>
+        </div>
+
+        {/* Visual Banner */}
+        <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border/80 bg-card shadow-sm">
           <GenerativeThumbnail
             theme={project.generativeTheme}
             command={project.command}
@@ -93,78 +118,49 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           />
         </div>
 
-        {/* Title, Initiation Date, and Badges */}
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-accent/10 border border-accent/30 text-accent font-bold">
-                {project.command}
-              </span>
-              <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 text-foreground">
-                {project.tag}
-              </span>
-            </div>
-            <div className="text-muted-foreground">
-              INITIATION DATE: <strong className="text-foreground">{project.initiationDate}</strong> ({project.dateDisplay})
-            </div>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-foreground leading-[1.1]">
-            {project.title}
-          </h1>
-
-          <p className="text-xl sm:text-2xl text-muted-foreground font-light leading-relaxed">
-            {project.headline}
-          </p>
-        </div>
-
-        {/* TL;DR Callout Box */}
-        <div className="p-6 rounded-2xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/5 dark:border-white/5 flex flex-col gap-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-accent uppercase tracking-widest font-bold">
-            <Sparkles className="w-4 h-4" />
-            <span>Core Epiphany & TL;DR</span>
-          </div>
-          <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-medium">
+        {/* TL;DR Narrative Block */}
+        <div className="p-6 rounded-2xl bg-muted/20 border border-border/60 flex flex-col gap-2">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent">
+            TL;DR & Value Proposition
+          </span>
+          <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-light">
             {project.tldr}
           </p>
         </div>
       </section>
 
-      {/* Interactive Demo Player / Gallery View (If applicable) */}
+      {/* Embedded Live Demos (If Applicable) */}
       {project.slug === "presentation" && (
-        <section className="flex flex-col gap-6 pt-4">
+        <section id="demo" className="flex flex-col gap-6 pt-4">
           <div className="flex items-center justify-between border-b border-border pb-4">
-            <div className="flex items-center gap-2 text-sm font-mono text-foreground font-bold uppercase tracking-wider">
-              <Play className="w-4 h-4 text-accent fill-current" />
-              <span>Interactive Live Demo // Deck Runner</span>
-            </div>
-            <span className="text-xs font-mono text-muted-foreground">Hotkeys: [←] [→] [S] [F]</span>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              Interactive Deck Demo
+            </h2>
+            <span className="text-xs font-mono text-muted-foreground">Keys: [←] [→] [S] [F]</span>
           </div>
           <PresentationDemo />
         </section>
       )}
 
       {project.slug === "styleref" && (
-        <section className="flex flex-col gap-6 pt-4">
+        <section id="demo" className="flex flex-col gap-6 pt-4">
           <div className="flex items-center justify-between border-b border-border pb-4">
-            <div className="flex items-center gap-2 text-sm font-mono text-foreground font-bold uppercase tracking-wider">
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              <span>Interactive Visual Styles Gallery & Prompt Matrix</span>
-            </div>
-            <span className="text-xs font-mono text-muted-foreground">19 Curated Master Styles</span>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              Visual Styles Gallery
+            </h2>
+            <span className="text-xs font-mono text-muted-foreground">19 Curated Styles</span>
           </div>
           <StyleRefGalleryView />
         </section>
       )}
 
-      {/* 16:9 Skill Visualizer Vector Architecture Diagram */}
-      <section className="flex flex-col gap-6 pt-6">
+      {/* 16:9 Skill Visualizer Vector Architecture */}
+      <section className="flex flex-col gap-6 pt-4">
         <div className="flex items-center justify-between border-b border-border pb-4">
-          <div className="flex items-center gap-2 text-sm font-mono text-foreground font-bold uppercase tracking-wider">
-            <Cpu className="w-4 h-4 text-accent" />
-            <span>Skill Visualizer // 16:9 Vector Architecture Map</span>
-          </div>
-          <span className="text-xs font-mono text-muted-foreground">Standard 1600x900 Canvas</span>
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            16:9 Vector Architecture Map
+          </h2>
+          <span className="text-xs font-mono text-muted-foreground">1600x900 Canvas</span>
         </div>
 
         <SkillVisualizerCanvas
@@ -174,153 +170,158 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         />
       </section>
 
-      {/* Spec (SDD) Architecture Section */}
-      <section className="flex flex-col gap-6 pt-6">
+      {/* Spec-Driven Development (SDD) Architectural Invariants */}
+      <section className="flex flex-col gap-6 pt-4">
         <div className="flex items-center justify-between border-b border-border pb-4">
-          <div className="flex items-center gap-2 text-sm font-mono text-foreground font-bold uppercase tracking-wider">
-            <Terminal className="w-4 h-4 text-accent" />
-            <span>Spec-Driven Development (SDD) // Architectural Invariants</span>
-          </div>
-          <span className="text-xs font-mono text-muted-foreground">Formal Spec Kit</span>
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            Spec (SDD) Architecture
+          </h2>
+          <span className="text-xs font-mono text-muted-foreground">Invariants & Core Engine</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Inputs & Outputs */}
-          <div className="p-6 rounded-2xl bg-[#F4F4F2] dark:bg-[#16161a] border border-black/5 dark:border-white/5 flex flex-col gap-4">
-            <h3 className="text-base font-bold text-foreground font-mono flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-sky-500" />
+        <div className="flex flex-col gap-8 text-sm">
+          {/* Inputs & Outputs Contract */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
               Inputs & Outputs Contract
             </h3>
-            <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-              <strong className="text-xs font-mono uppercase text-foreground">Inputs:</strong>
-              <ul className="list-disc list-inside space-y-1">
-                {project.specSDD.inputs.map((inp, i) => (
-                  <li key={i}>{inp}</li>
-                ))}
-              </ul>
-              <strong className="text-xs font-mono uppercase text-foreground mt-2">Outputs:</strong>
-              <ul className="list-disc list-inside space-y-1">
-                {project.specSDD.outputs.map((out, i) => (
-                  <li key={i}>{out}</li>
-                ))}
-              </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-muted/20 border border-border/60 flex flex-col gap-2">
+                <span className="text-xs font-mono font-bold uppercase text-accent">Inputs:</span>
+                <ul className="list-disc list-inside space-y-1 text-muted-foreground text-xs leading-relaxed">
+                  {project.specSDD.inputs.map((inp, i) => (
+                    <li key={i}>{inp}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="p-4 rounded-xl bg-muted/20 border border-border/60 flex flex-col gap-2">
+                <span className="text-xs font-mono font-bold uppercase text-accent">Outputs:</span>
+                <ul className="list-disc list-inside space-y-1 text-muted-foreground text-xs leading-relaxed">
+                  {project.specSDD.outputs.map((out, i) => (
+                    <li key={i}>{out}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
 
           {/* System Invariants */}
-          <div className="p-6 rounded-2xl bg-[#F4F4F2] dark:bg-[#16161a] border border-black/5 dark:border-white/5 flex flex-col gap-4">
-            <h3 className="text-base font-bold text-foreground font-mono flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-purple-500" />
-              System Invariants & Principles
+          <div className="flex flex-col gap-3">
+            <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              System Invariants & Boundary Rules
             </h3>
-            <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-2 text-foreground/90 leading-relaxed font-light">
               {project.specSDD.invariants.map((inv, i) => (
-                <li key={i} className="leading-relaxed">
-                  {inv}
+                <li key={i} className="flex items-start gap-2.5">
+                  <span className="text-accent font-bold mt-0.5">•</span>
+                  <span>{inv}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Core Engine & Data Structures */}
-          <div className="p-6 rounded-2xl bg-[#F4F4F2] dark:bg-[#16161a] border border-black/5 dark:border-white/5 flex flex-col gap-4 md:col-span-2">
-            <h3 className="text-base font-bold text-foreground font-mono flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+          {/* Core Engine & State Machine */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
               Core Engine & State Machine
             </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed font-light">
               {project.specSDD.coreEngine}
             </p>
-            <div className="p-4 rounded-xl bg-black/40 text-xs font-mono text-emerald-400 overflow-x-auto">
+            <div className="p-3.5 rounded-xl bg-card border border-border/70 text-xs font-mono text-accent overflow-x-auto">
               <code>{project.specSDD.stateMachine.join(" \n")}</code>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Plan Checklist (Build) & Test Checklist (TDD) */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
-        {/* Build Checklist */}
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-2 text-sm font-mono text-foreground font-bold uppercase tracking-wider border-b border-border pb-4">
-            <CheckSquare className="w-4 h-4 text-accent" />
-            <span>Build Plan Checklist</span>
-          </div>
-
-          <div className="flex flex-col gap-5">
-            {project.buildChecklist.map((phase, pIdx) => (
-              <div
-                key={pIdx}
-                className="p-5 rounded-2xl bg-[#F4F4F2] dark:bg-[#16161a] border border-black/5 dark:border-white/5 flex flex-col gap-3"
-              >
-                <h4 className="text-xs font-mono uppercase tracking-wider text-accent font-bold">
-                  {phase.phase}
-                </h4>
-                <div className="flex flex-col gap-2">
-                  {phase.tasks.map((task, tIdx) => (
-                    <div key={tIdx} className="flex items-start gap-2.5 text-sm text-foreground/90">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="leading-snug">{task.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Build & Test (TDD) Checklists */}
+      <section className="flex flex-col gap-8 pt-4">
+        <div className="flex items-center justify-between border-b border-border pb-4">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground">
+            Build & Test Plan
+          </h2>
+          <span className="text-xs font-mono text-muted-foreground">TDD Verification</span>
         </div>
 
-        {/* Test Checklist (TDD) */}
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-2 text-sm font-mono text-foreground font-bold uppercase tracking-wider border-b border-border pb-4">
-            <Code className="w-4 h-4 text-accent" />
-            <span>Test Plan (TDD Verification)</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {/* Build Phases */}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              Build Checklist
+            </h3>
+            <div className="flex flex-col gap-4">
+              {project.buildChecklist.map((phase, pIdx) => (
+                <div key={pIdx} className="flex flex-col gap-2">
+                  <h4 className="text-xs font-mono uppercase text-accent font-bold">
+                    {phase.phase}
+                  </h4>
+                  <div className="flex flex-col gap-1.5">
+                    {phase.tasks.map((task, tIdx) => (
+                      <div key={tIdx} className="flex items-start gap-2 text-xs text-muted-foreground">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                        <span className="leading-snug">{task.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-col gap-5">
-            {project.testChecklist.map((suite, sIdx) => (
-              <div
-                key={sIdx}
-                className="p-5 rounded-2xl bg-[#F4F4F2] dark:bg-[#16161a] border border-black/5 dark:border-white/5 flex flex-col gap-3"
-              >
-                <h4 className="text-xs font-mono uppercase tracking-wider text-purple-400 font-bold">
-                  {suite.suite}
-                </h4>
-                <div className="flex flex-col gap-3">
-                  {suite.tests.map((t, tIdx) => (
-                    <div key={tIdx} className="flex flex-col gap-1 text-sm">
-                      <div className="flex items-start gap-2 text-foreground/90">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                        <span className="leading-snug font-medium">{t.label}</span>
+          {/* Test Suites */}
+          <div className="flex flex-col gap-4">
+            <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              Test Plan (TDD)
+            </h3>
+            <div className="flex flex-col gap-4">
+              {project.testChecklist.map((suite, sIdx) => (
+                <div key={sIdx} className="flex flex-col gap-2">
+                  <h4 className="text-xs font-mono uppercase text-purple-400 font-bold">
+                    {suite.suite}
+                  </h4>
+                  <div className="flex flex-col gap-2">
+                    {suite.tests.map((t, tIdx) => (
+                      <div key={tIdx} className="flex flex-col gap-0.5 text-xs">
+                        <div className="flex items-start gap-2 text-foreground/90">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                          <span className="leading-snug font-medium">{t.label}</span>
+                        </div>
+                        <code className="text-[11px] font-mono text-muted-foreground ml-5 truncate">
+                          {t.assertion}
+                        </code>
                       </div>
-                      <code className="text-xs font-mono text-muted-foreground ml-6 p-1.5 rounded bg-black/20 overflow-x-auto">
-                        {t.assertion}
-                      </code>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer Navigation Back to Other Projects */}
-      <section className="pt-12 border-t border-border flex flex-col gap-6">
-        <h3 className="text-lg font-bold text-foreground">Explore Other Autonomous Projects</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      {/* Footer Navigation */}
+      <section className="pt-10 border-t border-border flex flex-col gap-4">
+        <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+          More Projects
+        </h3>
+        <div className="flex flex-col divide-y divide-border">
           {getAllProjects()
             .filter((p) => p.slug !== project.slug)
+            .slice(0, 3)
             .map((other) => (
               <Link
                 key={other.slug}
                 href={`/projects/${other.slug}`}
-                className="p-4 rounded-2xl bg-[#F4F4F2] dark:bg-[#16161a] hover:bg-[#EAEAE7] dark:hover:bg-[#202026] border border-black/5 dark:border-white/5 flex flex-col gap-2 transition-all !no-underline group"
+                className="py-3 flex items-center justify-between !no-underline group"
               >
-                <span className="text-xs font-mono text-accent font-bold">{other.command}</span>
-                <h4 className="text-base font-bold text-foreground group-hover:text-accent transition-colors">
-                  {other.title}
-                </h4>
-                <span className="text-xs text-muted-foreground font-mono">INIT: {other.dateDisplay}</span>
+                <div className="flex items-center gap-3 text-sm">
+                  <span className="font-mono text-xs text-accent font-bold w-32 shrink-0">{other.command}</span>
+                  <span className="font-medium text-foreground group-hover:underline transition-colors" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+                    {other.title}
+                  </span>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             ))}
         </div>
