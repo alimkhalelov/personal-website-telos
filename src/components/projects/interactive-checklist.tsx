@@ -13,8 +13,7 @@ export function InteractiveChecklist({
   buildChecklist,
   testChecklist,
 }: InteractiveChecklistProps) {
-  // Store checked state by unique key: "build-pIdx-tIdx" or "test-sIdx-tIdx"
-  // Default is empty (false) as requested by user
+  // Interactive checked state (empty by default)
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
   const toggleItem = (key: string) => {
@@ -25,21 +24,21 @@ export function InteractiveChecklist({
   };
 
   return (
-    <section className="flex flex-col gap-10 pt-4 border-t border-border">
+    <section className="flex flex-col gap-8 pt-4 border-t border-border">
       <div className="flex flex-col gap-2">
         <h2 
           className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground"
           style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
-          Implementation &amp; Quality Verification
+          Execution &amp; Quality Check
         </h2>
-        <p className="text-base text-muted-foreground leading-relaxed font-light">
-          Interactive execution playbook. Click any milestone or test suite to track progress.
+        <p className="text-base sm:text-lg text-muted-foreground leading-relaxed font-light">
+          Interactive playbook. Click any milestone or test suite to track your build progress.
         </p>
       </div>
 
       {/* 1. Build Phases */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-5">
         <h3 
           className="text-xl font-bold text-foreground flex items-center gap-2"
           style={{ fontFamily: "'Google Sans', sans-serif" }}
@@ -48,9 +47,9 @@ export function InteractiveChecklist({
           <span>Build Phases</span>
         </h3>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           {buildChecklist.map((phase, pIdx) => (
-            <div key={pIdx} className="p-5 sm:p-6 rounded-2xl bg-card border border-border/70 flex flex-col gap-4 shadow-sm">
+            <div key={pIdx} className="p-5 sm:p-6 rounded-2xl bg-card border border-border/70 flex flex-col gap-3.5 shadow-sm">
               <h4 className="text-sm font-mono font-bold uppercase tracking-wider text-accent">
                 {phase.phase}
               </h4>
@@ -64,11 +63,11 @@ export function InteractiveChecklist({
                       key={tIdx}
                       type="button"
                       onClick={() => toggleItem(itemKey)}
-                      className="group flex items-start gap-3.5 text-left text-base text-foreground/90 leading-relaxed font-light hover:text-foreground transition-colors cursor-pointer select-none"
+                      className="group flex items-start gap-3.5 text-left text-base sm:text-lg text-foreground/90 leading-relaxed font-light hover:text-foreground transition-colors cursor-pointer select-none"
                     >
                       {/* Square Checkbox (Empty by default, checked on click) */}
                       <div 
-                        className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                        className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-1 transition-all duration-200 ${
                           isChecked 
                             ? "bg-emerald-500 border-emerald-500 text-white shadow-sm" 
                             : "border-border/80 bg-muted/20 group-hover:border-accent/60"
@@ -89,22 +88,22 @@ export function InteractiveChecklist({
       </div>
 
       {/* 2. Automated Test Verification Suites */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-5">
         <h3 
           className="text-xl font-bold text-foreground flex items-center gap-2"
           style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
           <ShieldCheck className="w-5 h-5 text-purple-400" />
-          <span>Test-Driven Verification Suites</span>
+          <span>Test Verification</span>
         </h3>
 
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           {testChecklist.map((suite, sIdx) => (
-            <div key={sIdx} className="p-5 sm:p-6 rounded-2xl bg-card border border-border/70 flex flex-col gap-4 shadow-sm">
+            <div key={sIdx} className="p-5 sm:p-6 rounded-2xl bg-card border border-border/70 flex flex-col gap-3.5 shadow-sm">
               <h4 className="text-sm font-mono font-bold uppercase tracking-wider text-purple-400">
                 {suite.suite}
               </h4>
-              <div className="flex flex-col gap-3.5">
+              <div className="flex flex-col gap-3">
                 {suite.tests.map((t, tIdx) => {
                   const itemKey = `test-${sIdx}-${tIdx}`;
                   const isChecked = !!checkedItems[itemKey];
@@ -114,12 +113,12 @@ export function InteractiveChecklist({
                       key={tIdx}
                       type="button"
                       onClick={() => toggleItem(itemKey)}
-                      className="group flex flex-col gap-1 text-left text-base cursor-pointer select-none"
+                      className="group flex flex-col gap-1 text-left text-base sm:text-lg cursor-pointer select-none"
                     >
                       <div className="flex items-start gap-3.5 text-foreground/90 font-medium hover:text-foreground transition-colors">
                         {/* Square Checkbox */}
                         <div 
-                          className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${
+                          className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-1 transition-all duration-200 ${
                             isChecked 
                               ? "bg-emerald-500 border-emerald-500 text-white shadow-sm" 
                               : "border-border/80 bg-muted/20 group-hover:border-purple-400/60"
@@ -131,7 +130,7 @@ export function InteractiveChecklist({
                           {t.label}
                         </span>
                       </div>
-                      <code className="text-xs font-mono text-muted-foreground ml-8 pl-0.5 opacity-80">
+                      <code className="text-sm font-mono text-muted-foreground ml-8 pl-0.5 opacity-80">
                         {t.assertion}
                       </code>
                     </button>

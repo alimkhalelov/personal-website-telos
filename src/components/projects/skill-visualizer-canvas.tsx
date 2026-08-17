@@ -19,47 +19,47 @@ export function SkillVisualizerCanvas({
   const uniqueId = useId().replace(/:/g, "");
   const count = nodes.length;
 
-  // Dynamic Density Scaling Matrix (as specified in /skill-visualizer SKILL.md)
-  let cardWidth = 310;
-  let cardHeight = 265;
-  let titleFontSize = 22;
-  let bodyFontSize = 17;
-  let lineDy = 26;
+  // Dynamic Density Scaling Matrix (Large Readable Typography)
+  let cardWidth = 320;
+  let cardHeight = 275;
+  let titleFontSize = 24;
+  let bodyFontSize = 18.5;
+  let lineDy = 30;
 
   if (count === 3) {
-    cardWidth = 410;
-    cardHeight = 280;
-    titleFontSize = 26;
-    bodyFontSize = 19;
-    lineDy = 30;
+    cardWidth = 420;
+    cardHeight = 290;
+    titleFontSize = 28;
+    bodyFontSize = 21;
+    lineDy = 34;
   } else if (count === 4) {
-    cardWidth = 315;
-    cardHeight = 265;
-    titleFontSize = 22;
+    cardWidth = 320;
+    cardHeight = 275;
+    titleFontSize = 24;
+    bodyFontSize = 18.5;
+    lineDy = 30;
+  } else if (count === 5) {
+    cardWidth = 260;
+    cardHeight = 260;
+    titleFontSize = 21;
     bodyFontSize = 16.5;
     lineDy = 27;
-  } else if (count === 5) {
-    cardWidth = 255;
-    cardHeight = 255;
-    titleFontSize = 20;
+  } else if (count >= 6) {
+    cardWidth = 220;
+    cardHeight = 250;
+    titleFontSize = 19;
     bodyFontSize = 15;
     lineDy = 25;
-  } else if (count >= 6) {
-    cardWidth = 210;
-    cardHeight = 240;
-    titleFontSize = 18;
-    bodyFontSize = 14;
-    lineDy = 23;
   }
 
   // Calculate layout geometry
   const canvasWidth = 1600;
   const canvasHeight = 900;
   const totalCardsWidth = count * cardWidth;
-  const totalGapWidth = canvasWidth - 160 - totalCardsWidth; // 80px margin left/right
+  const totalGapWidth = canvasWidth - 140 - totalCardsWidth; // balanced margins
   const gap = Math.max(28, totalGapWidth / (count - 1));
   const startX = (canvasWidth - (totalCardsWidth + (count - 1) * gap)) / 2;
-  const cardY = 380; // Centered below the hero title area
+  const cardY = 370;
 
   return (
     <div

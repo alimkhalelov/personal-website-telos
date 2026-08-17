@@ -55,11 +55,12 @@ export interface ProjectDetail {
 }
 
 export const SHOWCASE_PROJECTS: ProjectDetail[] = [
+  // 1. /wiki
   {
     slug: "wiki",
     command: "/wiki",
     title: "AI-Wiki Knowledge Compiler",
-    headline: "Adaptive 2-Tier Knowledge Architecture & Zero-Bloat Documentation Engine",
+    headline: "Turns raw project files into clean, searchable documentation without clutter",
     category: "agent-skill",
     tag: "Knowledge Engine",
     accentColor: "#38bdf8",
@@ -67,12 +68,12 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     initiationDate: "2026-06-12",
     dateDisplay: "Jun 2026",
     timeAgo: "2 months ago",
-    tldr: "Automatically discovers real project files, categorizes knowledge into Public & Private 2-Tier meta-layers, and renders hyper-minimalist documentation portals with zero boilerplate.",
+    tldr: "Automatically indexes all your project markdown files, separates public articles from private agent memory, and gives you a lightning-fast documentation portal.",
     demoUrl: "/wiki",
     demoType: "wiki",
-    demoLabel: "Launch Live Wiki Portal",
-    badges: ["2-Tier Meta Layer", "Icon-First Minimalist", "Solid Pod UI", "Fast Search", "Obsidian Ready"],
-    overview: "The /wiki master protocol scans project files (.agents, content, docs, specs) dynamically without forcing synthetic categories. It enforces icon-first hyper-minimalism, solid pod groupings, and seamless inheritance of the host project's visual identity.",
+    demoLabel: "Open Live Wiki Hub",
+    badges: ["Fast Search", "Clean Documentation", "Public & Private", "Zero Bloat", "Obsidian Ready"],
+    overview: "Most project wikis get messy and out of date quickly. This engine automatically scans your real project folders, extracts key takeaways, and renders a minimalist, distraction-free reading portal.",
     generativeTheme: "neon-cyan",
     visualizer: {
       heroTitle: "AI-Wiki Knowledge Compiler",
@@ -81,126 +82,127 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         {
           id: "01",
           step: "01",
-          title: "Adaptive Discovery",
+          title: "Scan Project Files",
           accent: "#38bdf8",
           description: [
-            "Scan root .md, content/, .agents/",
-            "Extract frontmatter & gray-matter",
-            "Index heading hierarchy without AST loss"
+            "Reads markdown docs from all folders",
+            "Extracts headings, summaries, and tags",
+            "Keeps document hierarchy intact"
           ]
         },
         {
           id: "02",
           step: "02",
-          title: "2-Tier Classification",
+          title: "Smart Categorization",
           accent: "#818cf8",
           description: [
-            "Partition: Public vs Private Harness",
-            "Strip internal boilerplate & synthetic tags",
-            "Calculate reading time & takeaways"
+            "Splits public articles from private memory",
+            "Removes redundant boilerplate text",
+            "Calculates reading time and key takeaways"
           ]
         },
         {
           id: "03",
           step: "03",
-          title: "Solid-Pod Shell UI",
+          title: "Minimalist Portal",
           accent: "#c084fc",
           description: [
-            "Render left-aligned monochrome cards",
-            "Icon-first single action controls",
-            "Zero border outlines & solid pod backgrounds"
+            "Renders clean, distraction-free cards",
+            "Applies dark mode and reading typography",
+            "Provides instant category navigation"
           ]
         },
         {
           id: "04",
           step: "04",
-          title: "Interactive Synthesis",
+          title: "Instant Search",
           accent: "#34d399",
           description: [
-            "Sub-millisecond fuzzy search modal",
-            "Deep link anchor parsing with ⌘K hotkey",
-            "Live copy-to-clipboard & agent handoff"
+            "Sub-millisecond keyword matching",
+            "Direct anchor links to headings",
+            "One-click copy and quick sharing"
           ]
         }
       ]
     },
     specSDD: {
       inputs: [
-        "Project root markdown files (*.md, *.mdx)",
-        ".agents/ memory tree (agents.md, user_intent.md, architecture.md)",
-        "User search queries and category filters"
+        "All project markdown files (.md, .mdx) in the repository",
+        "Agent memory and architectural notes",
+        "Search queries and category selections from the user"
       ],
       outputs: [
-        "Typed WikiItem / WikiPage registry with metadata",
-        "Reactive 3-column & 2-column DocsLayout views",
-        "Sub-millisecond filtered search indices"
+        "A structured, fully searchable Wiki portal",
+        "Responsive article reader with automatic table of contents",
+        "Instant search index with zero lag"
       ],
       invariants: [
-        "Strict 2-Tier Meta Classification: Public vs Private",
-        "Never invent synthetic taxonomies or dummy folders",
-        "Icon-First hyper-minimalism (no wordy label clutter)",
-        "Zero-outline design system: use solid pods instead of borders"
+        "Public articles and private notes are strictly kept separate",
+        "Never creates artificial or empty categories",
+        "Simple, borderless card design with comfortable spacing",
+        "Blazing fast page loads with pre-rendered static content"
       ],
-      coreEngine: "Fast server-side gray-matter parser with client-side useTransition search filter and hash-aware deep scroll spy.",
+      coreEngine: "Fast server-side markdown parsing combined with client-side instant filtering and scroll tracking.",
       dataStructures: [
-        "interface WikiPage { slug, title, category, section, tags, summary, content, headings[] }",
-        "interface WikiHeading { depth, slug, text }",
-        "interface WikiItem { id, title, summary, category, date, href, keyTakeaway }"
+        "WikiPage: slug, title, category, tags, summary, content, headings",
+        "WikiHeading: depth, slug, text",
+        "WikiItem: id, title, summary, category, date, href"
       ],
       stateMachine: [
-        "Idle -> File Scanning -> Frontmatter Extraction -> 2-Tier Partitioning -> Render Layout -> Search/Filter State"
+        "Scan Files -> Parse Headings -> Split Public/Private -> Render Portal -> Interactive Search"
       ]
     },
     buildChecklist: [
       {
-        phase: "Phase 1: Discovery & Parser",
+        phase: "Phase 1: File Discovery & Parser",
         tasks: [
-          { label: "Implement getAllWikiPages() with node:fs & gray-matter", done: true },
-          { label: "Add extractHeadings() for dynamic Table of Contents", done: true },
-          { label: "Ensure server-only safety boundary for file-system reads", done: true }
+          { label: "Build fast file scanner for all markdown documents", done: false },
+          { label: "Generate dynamic table of contents from headings", done: false },
+          { label: "Set up secure server-side file reading", done: false }
         ]
       },
       {
-        phase: "Phase 2: UI & Component Shell",
+        phase: "Phase 2: User Interface & Search",
         tasks: [
-          { label: "Build DocsLayout with responsive mobile drawer & search modal", done: true },
-          { label: "Implement solid pod cards in WikiHub with category tabs", done: true },
-          { label: "Add ⌘K hotkey listener and clipboard link copy triggers", done: true }
+          { label: "Create responsive reading layout with search bar", done: false },
+          { label: "Add instant keyboard shortcut (Cmd+K) for quick search", done: false },
+          { label: "Style article cards with high-contrast typography", done: false }
         ]
       },
       {
-        phase: "Phase 3: Route Integration & Markdown View",
+        phase: "Phase 3: Static Generation",
         tasks: [
-          { label: "Configure /wiki and /wiki/[slug] App Router static generation", done: true },
-          { label: "Add MarkdownView with prose styling and code syntax blocks", done: true },
-          { label: "Connect Bionic reading toggle and agent copy buttons", done: true }
+          { label: "Pre-render all wiki pages statically for instant loading", done: false },
+          { label: "Add Bionic reading mode and code highlighting", done: false },
+          { label: "Integrate quick one-click link sharing", done: false }
         ]
       }
     ],
     testChecklist: [
       {
-        suite: "Parser & Data Contracts",
+        suite: "Document Parsing",
         tests: [
-          { label: "extractHeadings() parses h2 and h3 markdown slugs correctly", passed: true, assertion: "assert.deepEqual(headings.length > 0, true)" },
-          { label: "parseMarkdownDoc() extracts valid metadata without throw", passed: true, assertion: "assert.strictEqual(doc.visibility, 'public')" },
-          { label: "2-Tier partition routes .agents to internal and posts to public", passed: true, assertion: "assert.strictEqual(page.section, 'projects' || 'articles')" }
+          { label: "Correctly extracts h2 and h3 headings for the table of contents", passed: false, assertion: "assert(headings.length > 0)" },
+          { label: "Safely reads document frontmatter without errors", passed: false, assertion: "assert(doc.title !== undefined)" },
+          { label: "Properly marks public and private articles", passed: false, assertion: "assert(doc.visibility === 'public')" }
         ]
       },
       {
-        suite: "UI & State Verification",
+        suite: "Search & Navigation",
         tests: [
-          { label: "Search query filters by title, tags, and summary simultaneously", passed: true, assertion: "filterItems(items, 'loop').length >= 1" },
-          { label: "Keyboard shortcut ⌘K toggles search modal state", passed: true, assertion: "fireEvent.keyDown(window, { metaKey: true, key: 'k' })" },
-          { label: "Copy link puts full URL into navigator.clipboard", passed: true, assertion: "expect(navigator.clipboard.writeText).toHaveBeenCalled()" }
+          { label: "Search finds relevant results across title, summary, and tags", passed: false, assertion: "assert(search('wiki').length >= 1)" },
+          { label: "Keyboard navigation allows opening articles seamlessly", passed: false, assertion: "assert(modal.isOpen === true)" }
         ]
       }
     ]
   },
+
+  // 2. /presentation
   {
     slug: "presentation",
     command: "/presentation",
     title: "Strategic Deck & Motion Storytelling Studio",
-    headline: "Cinematic HTML Presentations Powered by the 10 Communication Scenarios Matrix",
+    headline: "Create high-impact, animated HTML slide decks for pitches and strategy meetings",
     category: "agent-skill",
     tag: "Motion Deck Engine",
     accentColor: "#d1fe17",
@@ -208,12 +210,12 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     initiationDate: "2026-07-04",
     dateDisplay: "Jul 2026",
     timeAgo: "1.5 months ago",
-    tldr: "Creates high-impact, motion-driven HTML presentation decks based on the 10 Communication Vectors, with Jakub/Emil micro-animations, keyboard navigation, and speaker script teleprompter.",
+    tldr: "Replaces boring, text-heavy slides with cinematic HTML presentations. Uses the 10 Communication Scenarios Matrix with built-in presenter notes and keyboard control.",
     demoUrl: "/projects/presentation#demo",
     demoType: "presentation",
     demoLabel: "Play Interactive Deck Demo",
-    badges: ["10 Vector Matrix", "Teleprompter Mode (S)", "Emil/Jakub Motion", "1 Slide = 1 Idea", "Dark Cyber Aesthetic"],
-    overview: "Presentation Studio replaces static, bullet-ridden PowerPoint decks with cinematic, interactive HTML slide engines. Enforces the strict law of 'One Idea = One Slide', calibrated slide pacing (20-30s), teleprompter speaker notes in Russian, and sleek keyboard control.",
+    badges: ["1 Idea = 1 Slide", "Presenter Mode (S)", "Smooth Animations", "Zero PowerPoint", "Full Screen"],
+    overview: "Traditional slides are usually cluttered with too many bullet points and lose the audience's attention. Presentation Studio enforces a strict 'One Idea per Slide' principle with calibrated 25-second pacing, presenter notes, and smooth keyboard navigation.",
     generativeTheme: "lime-cyber",
     visualizer: {
       heroTitle: "Strategic Deck & Motion Engine",
@@ -222,137 +224,138 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         {
           id: "01",
           step: "01",
-          title: "Discovery & 10 Vectors",
+          title: "Audience & Goal",
           accent: "#d1fe17",
           description: [
-            "Select vector: Upward, VC Pitch, B2B, DevRel",
-            "Define single punchline epiphany & target duration",
-            "Establish Higgsfield Dark or Linear palette"
+            "Pick communication goal: Investor pitch, strategy, team briefing",
+            "Identify the single core takeaway for the audience",
+            "Set optimal deck length and presentation time"
           ]
         },
         {
           id: "02",
           step: "02",
-          title: "Slide Blueprint Map",
+          title: "Slide Blueprint",
           accent: "#fbbf24",
           description: [
-            "Apply '1 Idea = 1 Slide' pacing formula",
-            "Structure: Hook -> Status Quo -> Shift -> Tech -> Ask",
-            "Eliminate dense bullets in favor of split-cards"
+            "Enforce strictly 1 key idea per slide",
+            "Structure narrative: Hook -> Challenge -> Breakthrough -> Proof",
+            "Replace bullet lists with visual focus cards"
           ]
         },
         {
           id: "03",
           step: "03",
-          title: "Motion Deck Engine",
+          title: "Motion & Timing",
           accent: "#38bdf8",
           description: [
-            "HTML5/CSS3 standalone zero-dependency engine",
-            "Emil-grade motion-reveal & SVG stroke drawing",
-            "Keyboard shortcuts (←, →, Space, F, #/N)"
+            "Add smooth 60fps card transitions",
+            "Calibrate slide timing to 20-30 seconds each",
+            "Highlight focal points with animated accents"
           ]
         },
         {
           id: "04",
           step: "04",
-          title: "Teleprompter Overlay",
-          accent: "#ff005b",
+          title: "Presenter Mode",
+          accent: "#a855f7",
           description: [
-            "Toggle speaker notes with 'S' key",
-            "Conversational Russian script with bold anchors",
-            "Seamless transitional bridges between slides"
+            "Press [S] to open synchronized speaker notes",
+            "Navigate with keyboard arrows [←] [→]",
+            "Fullscreen presentation mode with [F]"
           ]
         }
       ]
     },
     specSDD: {
       inputs: [
-        "Topic & core punchline epiphany",
-        "Communication Vector (from 10 Scenarios Matrix)",
-        "Target presentation duration & speaker script notes"
+        "Presentation topic, audience type, and time constraint",
+        "Core message and key supporting arguments",
+        "Speaker notes and talking points"
       ],
       outputs: [
-        "Self-contained interactive HTML5/CSS3/JS deck engine",
-        "Keyboard event handler (←/→ navigation, S notes, F fullscreen)",
-        "Deep-link slide hash routing (#/1..#/N)"
+        "Interactive HTML slide deck with smooth animations",
+        "Synchronized dual-language presenter teleprompter mode",
+        "Clean keyboard navigation with full-screen support"
       ],
       invariants: [
-        "Strict law: 'One Idea = One Slide' (no crowded bullet walls)",
-        "Every slide MUST contain speaker notes (<aside class=\"notes\">)",
-        "Zero broken external fonts or layout shift within 100vh viewport",
-        "Smooth hardware-accelerated CSS transforms (no jank)"
+        "Strict 'One Idea = One Slide' rule across all presentations",
+        "Zero wall-of-text bullets: maximum 3 concise points per card",
+        "Standalone code: runs directly in any browser without external software",
+        "Built-in presenter notes accessible with the [S] hotkey"
       ],
-      coreEngine: "Client-side lightweight slide state machine with CSS transforms, hashchange listener, and teleprompter overlay modal.",
+      coreEngine: "Lightweight HTML5 and CSS3 presentation engine with hardware-accelerated slide transitions and key listener hooks.",
       dataStructures: [
-        "interface SlideData { id, title, subtitle, kicker, content, notes, accent, splitLayout? }",
-        "type CommunicationVector = 'upward' | 'downward' | 'pitch' | 'b2b' | 'b2c' | 'devrel' | 'advisory'"
+        "Slide: id, title, subtitle, points[], presenterNotes, layout",
+        "Deck: meta, slides[], theme, activeSlideIndex"
       ],
       stateMachine: [
-        "Init (Hash/Slide 0) -> NextSlide -> PrevSlide -> ToggleNotes (S) -> ToggleFullscreen (F) -> TransitionComplete"
+        "Select Goal -> Outline Narrative -> Generate Slides -> Add Animations -> Presenter Teleprompter"
       ]
     },
     buildChecklist: [
       {
-        phase: "Phase 1: Architecture & Vector Matrix",
+        phase: "Phase 1: Deck Structure & Pacing",
         tasks: [
-          { label: "Formalize 10 Communication Scenarios Matrix", done: true },
-          { label: "Implement slide-count calculator formula: Count = (Mins * 60) / 25s", done: true },
-          { label: "Define visual palettes: Higgsfield Dark Cyber, Linear Midnight, Swiss Brutalism", done: true }
+          { label: "Build slide state manager with arrow key navigation", done: false },
+          { label: "Enforce 1-idea per slide layout constraints", done: false },
+          { label: "Add visual progress bar tracking current slide", done: false }
         ]
       },
       {
-        phase: "Phase 2: Motion Deck Engine",
+        phase: "Phase 2: Presenter Teleprompter",
         tasks: [
-          { label: "Build keyboard navigation engine (ArrowLeft, ArrowRight, Space)", done: true },
-          { label: "Add Emil-grade .motion-reveal and staggered delays", done: true },
-          { label: "Build interactive Presenter Mode overlay (S hotkey)", done: true }
+          { label: "Build toggleable speaker notes drawer with [S] key", done: false },
+          { label: "Support dual-language presenter talking points", done: false },
+          { label: "Add fullscreen toggle with [F] hotkey", done: false }
         ]
       },
       {
-        phase: "Phase 3: React Showcase Integration",
+        phase: "Phase 3: Animation Polish",
         tasks: [
-          { label: "Create PresentationDemo interactive player component", done: true },
-          { label: "Implement full slide set for personal demo deck", done: true },
-          { label: "Add slide indicator dots and progress bar", done: true }
+          { label: "Implement smooth hardware-accelerated transitions", done: false },
+          { label: "Style high-contrast dark cyberpunk theme", done: false },
+          { label: "Test seamless mobile and desktop touch controls", done: false }
         ]
       }
     ],
     testChecklist: [
       {
-        suite: "Slide Navigation Engine",
+        suite: "Slide Navigation",
         tests: [
-          { label: "ArrowRight increments active slide index until last slide", passed: true, assertion: "nextSlide(0) === 1 && nextSlide(last) === last" },
-          { label: "ArrowLeft decrements active slide index until first slide", passed: true, assertion: "prevSlide(1) === 0 && prevSlide(0) === 0" },
-          { label: "Pressing 'S' toggles teleprompter notes state", passed: true, assertion: "toggleNotes(false) === true" }
+          { label: "Arrow keys correctly transition between slides forward and back", passed: false, assertion: "assert(currentSlide === 1)" },
+          { label: "Presenter mode toggles visible speaker notes on [S] key", passed: false, assertion: "assert(notesVisible === true)" }
         ]
       },
       {
-        suite: "Layout & Viewport Contracts",
+        suite: "Pacing Verification",
         tests: [
-          { label: "Slide container adheres strictly to 100vh without overflow scrollbars", passed: true, assertion: "container.scrollHeight <= container.clientHeight" },
-          { label: "Presenter notes contain highlighted bold anchor words", passed: true, assertion: "notesElement.querySelectorAll('strong').length > 0" }
+          { label: "No slide contains more than 3 bullet items", passed: false, assertion: "assert(slide.points.length <= 3)" },
+          { label: "Deck runs standalone without external dependencies", passed: false, assertion: "assert(bundleSize < 50kb)" }
         ]
       }
     ]
   },
+
+  // 3. /skill-visualizer
   {
     slug: "skill-visualizer",
     command: "/skill-visualizer",
     title: "16:9 Vector Flowchart & Architecture Engine",
-    headline: "Ultra-Hyper-Minimalist Standalone Vector Architecture Visualizer",
-    category: "agent-skill",
+    headline: "Generate ultra-clean, full-screen 16:9 architecture diagrams for any workflow",
+    category: "engine",
     tag: "Vector Architecture",
     accentColor: "#c084fc",
-    accentGradient: "from-purple-500/20 via-indigo-500/10 to-transparent",
+    accentGradient: "from-purple-500/20 via-indigo-600/10 to-transparent",
     initiationDate: "2026-07-28",
     dateDisplay: "Jul 2026",
     timeAgo: "3 weeks ago",
-    tldr: "Generates ultra-hyper-minimalist, static, fullscreen 16:9 vector flowcharts (HTML/SVG) tailored bespoke to skill architectures with dynamic density scaling and crisp geometric markers.",
+    tldr: "Creates crystal-clear, full-screen 16:9 vector flowcharts tailored specifically to your workflow. No messy lines, no awkward boxes — just crisp, readable architecture maps.",
     demoUrl: "/projects/skill-visualizer#demo",
     demoType: "skill-visualizer",
-    demoLabel: "Inspect 16:9 Canvas Engine",
-    badges: ["1600x900 ViewBox", "Single-Line Headers", "Zero Void Space", "Geometric Arrowheads", "Dynamic Density"],
-    overview: "Skill Visualizer rejects generic 5-box linear conveyor templates in favor of bespoke architectural topology. It mathematically calibrates card heights to eliminate empty void space, scales typography dynamically per node count, and outputs pure SVG vector graphics.",
+    demoLabel: "View Live Architecture Canvas",
+    badges: ["16:9 Fullscreen", "Crisp Vector SVG", "Auto Card Sizing", "Zero Clutter", "Copy Embed Code"],
+    overview: "Most architecture diagrams look either cluttered or awkwardly formatted. This engine generates clean, standalone 16:9 SVG diagrams that automatically scale card sizes, header fonts, and text density to fit the exact complexity of your project.",
     generativeTheme: "purple-matrix",
     visualizer: {
       heroTitle: "16:9 Vector Architecture Engine",
@@ -361,521 +364,541 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         {
           id: "01",
           step: "01",
-          title: "Topology Analysis",
+          title: "Analyze Workflow",
           accent: "#c084fc",
           description: [
-            "Determine graph type: Linear, Multi-Tier, Branching",
-            "Extract 3 to 6 key architectural milestone nodes",
-            "Calculate node dimensions via Dynamic Density Matrix"
+            "Identifies the key milestones in your process",
+            "Determines optimal step count (3 to 6 nodes)",
+            "Sets matching color accents for each step"
           ]
         },
         {
           id: "02",
           step: "02",
-          title: "Single-Line Headers",
+          title: "Auto-Fit Layout",
           accent: "#38bdf8",
           description: [
-            "Step badge (01) & title share identical font-size (23px)",
-            "Solid accent colors per card with zero line wrap",
-            "Precise horizontal alignment across 1600px canvas"
+            "Calculates exact card widths and spacing",
+            "Adjusts font size automatically to fit text",
+            "Centers the entire diagram on a 16:9 canvas"
           ]
         },
         {
           id: "03",
           step: "03",
-          title: "Calibrated Geometry",
+          title: "Draw Vectors",
           accent: "#34d399",
           description: [
-            "Mathematical height wrap: ~24px top, ~26px bottom padding",
-            "Zero empty black void space below body text",
-            "Clean stroke borders (1px) with rounded corners (16px)"
+            "Connects steps with sharp geometric arrows",
+            "Applies high-contrast dark theme styling",
+            "Removes all unnecessary background clutter"
           ]
         },
         {
           id: "04",
           step: "04",
-          title: "Vector Vector Markers",
+          title: "Export & Embed",
           accent: "#fbbf24",
           description: [
-            "Geometric sharp arrowheads (<path d='M 0 1.5 L 8 5 L 0 8.5 z' />)",
-            "Centered connection lines aligned to card midpoints",
-            "Exportable embeddable HTML iframe / responsive SVG"
+            "Outputs pure, lightweight SVG code",
+            "Provides responsive embed snippet for websites",
+            "Ensures crystal-clear scaling on any display"
           ]
         }
       ]
     },
     specSDD: {
       inputs: [
-        "Skill manifest or architecture topology",
-        "Array of nodes: { step, title, accent, description[] }",
-        "Namespace title (e.g., 'skill/wiki', 'skill/presentation')"
+        "Workflow steps, titles, and descriptions",
+        "Desired color accents per milestone",
+        "Project namespace and main title"
       ],
       outputs: [
-        "Pure standalone SVG element with viewBox='0 0 1600 900'",
-        "Responsive wrapper container with aspect-ratio: 16/9",
-        "Crisp geometric connection markers and single-line headers"
+        "Standalone 16:9 SVG vector diagram (1600x900 coordinate system)",
+        "Responsive embed code for websites and documentation",
+        "Clean, high-contrast readable visual map"
       ],
       invariants: [
-        "Fixed 1600x900 coordinate system wrapped in responsive container",
-        "Unified single-line headers (step badge + title same font size)",
-        "Zero void space: card heights must fit text tightly",
-        "No dark nested podlozhkas or generic icon clutter"
+        "Strict 16:9 aspect ratio across all screen sizes",
+        "Step number and title share the exact same font size on one line",
+        "Zero wasted space: card heights wrap text tightly without giant empty boxes",
+        "No complex dependencies: pure lightweight SVG"
       ],
-      coreEngine: "SVG Mathematical Layout Compiler calculating node coordinates (X, Y, W, H) based on column count and dynamic density matrix.",
+      coreEngine: "Mathematical layout calculator that places cards, adjusts typography scales, and connects steps with vector arrows.",
       dataStructures: [
-        "interface NodeConfig { id, step, title, accent, description[], x, y, width, height }",
-        "interface DensityScale { nodeCount, cardWidth, cardHeight, titleFontSize, bodyFontSize, dy }"
+        "VisualizerNode: id, step, title, accent, description[]",
+        "CanvasSpec: width (1600), height (900), cardWidth, cardHeight, gap, startX"
       ],
       stateMachine: [
-        "Parse Topology -> Select Density Scale -> Compute SVG Bounding Boxes -> Render SVG Cards -> Render Arrows -> Export Canvas"
+        "Read Steps -> Calculate Density Scale -> Position Cards -> Draw Vector Arrows -> Export SVG"
       ]
     },
     buildChecklist: [
       {
-        phase: "Phase 1: Dynamic Density Scaling",
+        phase: "Phase 1: Dynamic Layout Calculator",
         tasks: [
-          { label: "Implement scaling formulas for 3, 4, 5, and 6 node layouts", done: true },
-          { label: "Configure exact font sizes, card widths, and line heights", done: true },
-          { label: "Calibrate vertical centering within 900px canvas height", done: true }
+          { label: "Build density scaling formula for 3, 4, 5, and 6 nodes", done: false },
+          { label: "Configure automatic font size adjustments based on step count", done: false },
+          { label: "Center cards vertically and horizontally on 16:9 canvas", done: false }
         ]
       },
       {
-        phase: "Phase 2: SVG Vector Pipeline",
+        phase: "Phase 2: SVG Vector Rendering",
         tasks: [
-          { label: "Define sharp vector marker <marker id='arrow'> with path data", done: true },
-          { label: "Implement single-line header rendering with matching font-size", done: true },
-          { label: "Build zero-void-space multiline <tspan> text renderer", done: true }
+          { label: "Create sharp vector arrowheads for step connectors", done: false },
+          { label: "Render single-line step headers with accent colors", done: false },
+          { label: "Build high-contrast dark theme canvas background", done: false }
         ]
       },
       {
-        phase: "Phase 3: Interactive Component & Embeds",
+        phase: "Phase 3: Interactive Component",
         tasks: [
-          { label: "Build SkillVisualizerCanvas React component with SVG export", done: true },
-          { label: "Support interactive hover states on cards and nodes", done: true },
-          { label: "Add iframe embed generator code snippet", done: true }
+          { label: "Build React SkillVisualizerCanvas component", done: false },
+          { label: "Add smooth hover states on cards and links", done: false },
+          { label: "Provide one-click embed code generator", done: false }
         ]
       }
     ],
     testChecklist: [
       {
-        suite: "Coordinate & Bounding Box Math",
+        suite: "Layout & Spacing",
         tests: [
-          { label: "Total width of nodes + gaps fits within 1600px width", passed: true, assertion: "nodes.reduce((acc, n) => acc + n.width, 0) + gaps < 1600" },
-          { label: "All cards are vertically centered around Y=450px line", passed: true, assertion: "Math.abs((card.y + card.height / 2) - 490) < 50" },
-          { label: "Single-line header step badge and title share identical font size", passed: true, assertion: "stepBadgeFontSize === titleFontSize" }
+          { label: "All cards fit within 1600px width with balanced margins", passed: false, assertion: "assert(totalWidth <= 1600)" },
+          { label: "Step number and title fit on a single line without wrapping", passed: false, assertion: "assert(headerWrap === false)" }
         ]
       },
       {
-        suite: "SVG Vector Compliance",
+        suite: "SVG Export",
         tests: [
-          { label: "SVG root has viewBox='0 0 1600 900' and preserveAspectRatio", passed: true, assertion: "svg.getAttribute('viewBox') === '0 0 1600 900'" },
-          { label: "Vector marker has sharp geometric triangle definition", passed: true, assertion: "markerPath.getAttribute('d') === 'M 0 1.5 L 8 5 L 0 8.5 z'" }
+          { label: "SVG root has fixed viewBox='0 0 1600 900'", passed: false, assertion: "assert(svg.viewBox === '0 0 1600 900')" },
+          { label: "Vector arrows connect correctly between card edges", passed: false, assertion: "assert(arrowLength > 0)" }
         ]
       }
     ]
   },
+
+  // 4. styleref
   {
     slug: "styleref",
     command: "/styleref",
     title: "Generative Visual Styles & Prompt DB",
-    headline: "Curated Reference Matrix & Prompt Engineering Database for Generative Art",
+    headline: "Curated database of 19 distinct AI art styles with instant prompt recipes",
     category: "gallery",
     tag: "Visual Intelligence",
-    accentColor: "#f97316",
-    accentGradient: "from-orange-500/20 via-amber-500/10 to-transparent",
+    accentColor: "#fbbf24",
+    accentGradient: "from-amber-500/20 via-orange-600/10 to-transparent",
     initiationDate: "2026-08-10",
     dateDisplay: "Aug 2026",
     timeAgo: "1 week ago",
-    tldr: "Comprehensive database of 19 curated generative art styles (Jakub Różalski, Stålenhag, Beksiński, Blue Eye Samurai, Castlevania, Arcane) with prompt formulas, lighting, and medium parameters.",
-    demoUrl: "/projects/styleref",
+    tldr: "A curated gallery of 19 unique visual art styles (Jakub Różalski, Simon Stålenhag, Beksiński, Blue Eye Samurai, and more) with one-click prompt copying and lighting parameters.",
+    demoUrl: "/projects/styleref#demo",
     demoType: "styleref",
-    demoLabel: "Explore Visual Styles Gallery",
-    badges: ["19 Curated Styles", "Prompt Matrices", "Interactive Modal", "1-Click Copy Formula", "High-Res References"],
-    overview: "StyleRef bridges the gap between artistic vision and generative AI. It deconstructs the signature aesthetic of master artists and prestige animation studios into structured prompts: Medium, Core Concept, Composition, Characters & Tech, Lighting, and Color Palette.",
+    demoLabel: "Browse All 19 Styles",
+    badges: ["19 Curated Styles", "Copy Prompt Formula", "High-Res Gallery", "Lighting Guides", "Zero Generic AI"],
+    overview: "Finding the right aesthetic for AI image generation usually takes dozens of failed attempts. StyleRef gives you 19 battle-tested art style formulas with high-resolution visual examples, lighting recipes, and instant copy buttons.",
     generativeTheme: "amber-brutalism",
     visualizer: {
-      heroTitle: "Generative Style Deconstruction",
-      subNamespace: "gallery/styleref",
+      heroTitle: "Visual Styles & Prompt Matrix",
+      subNamespace: "skill/styleref",
       nodes: [
         {
           id: "01",
           step: "01",
-          title: "Artistic Ingestion",
-          accent: "#f97316",
+          title: "Select Style",
+          accent: "#fbbf24",
           description: [
-            "Catalog 19 visual master styles",
-            "Extract signature mediums (oil, cel, gouache)",
-            "Ingest high-resolution visual references"
+            "Choose from 19 master visual aesthetics",
+            "Preview high-res artist and cinematographic references",
+            "Filter by mood: Sci-fi, dieselpunk, anime, dark surreal"
           ]
         },
         {
           id: "02",
           step: "02",
-          title: "6-Axis Deconstruction",
-          accent: "#fbbf24",
+          title: "Inspect Recipe",
+          accent: "#f97316",
           description: [
-            "Medium & classical rendering technique",
-            "Composition & camera perspective",
-            "Chiaroscuro lighting & calibrated palette"
+            "View exact prompt formula and keyword weighting",
+            "Examine lighting, camera angles, and color palettes",
+            "See negative prompt rules for clean results"
           ]
         },
         {
           id: "03",
           step: "03",
-          title: "Prompt Synthesis",
-          accent: "#38bdf8",
+          title: "Copy & Adapt",
+          accent: "#eab308",
           description: [
-            "Generate weighted Midjourney/Flux formulas",
-            "Inject negative prompt safety filters",
-            "1-click copy for immediate AI generation"
+            "One-click copy of tested prompt templates",
+            "Swap subject and environment placeholders easily",
+            "Works directly with Midjourney, Flux, and SDXL"
           ]
         },
         {
           id: "04",
           step: "04",
-          title: "Interactive Gallery",
-          accent: "#34d399",
+          title: "Generate Art",
+          accent: "#84cc16",
           description: [
-            "Fluid responsive grid with instant search",
-            "Full-screen high-res inspection modal",
-            "Filter by artistic medium and mood vectors"
+            "Produce consistent, distinctive visual assets",
+            "Avoid generic, plastic-looking AI aesthetics",
+            "Maintain cohesive art direction across projects"
           ]
         }
       ]
     },
     specSDD: {
       inputs: [
-        "19 high-resolution style reference images (public/styleref/img_01..19.jpeg)",
-        "Structured styles_database.json with 6-axis attributes",
-        "User search query and medium filter selections"
+        "Desired artistic mood or reference artist",
+        "Target subject and environment description",
+        "Image aspect ratio and lighting preferences"
       ],
       outputs: [
-        "Interactive responsive visual style gallery",
-        "Detailed inspection modal with prompt copy action",
-        "Calculated prompt template strings for Midjourney/Flux"
+        "Tested prompt formulas ready for AI image generators",
+        "High-resolution visual reference previews",
+        "Lighting and camera angle directives"
       ],
       invariants: [
-        "All 19 reference images served locally without external CDN failure",
-        "Complete 6-axis prompt formula breakdown for every style",
-        "1-click clipboard copy of synthesized prompt string",
-        "Fluid dark/light mode surface compatibility"
+        "All 19 styles include verified, working prompt recipes",
+        "Zero generic, plastic-looking AI stock aesthetics",
+        "Instant one-click prompt copying to clipboard",
+        "Optimized image loading with high-res caching"
       ],
-      coreEngine: "Client-side style filter engine with clipboard synthesis, image preloading, and accessible keyboard modal dialog.",
+      coreEngine: "Curated aesthetic dataset indexed by style category, artist lineage, and lighting setup.",
       dataStructures: [
-        "interface StyleRefEntry { id, image, style, shortName, tag, medium, core_concept, composition, lighting, color_palette, mood, negative_prompts }"
+        "StyleCard: id, name, author, image, prompt, tags, lighting",
+        "GalleryFilter: activeMood, activeCategory"
       ],
       stateMachine: [
-        "Gallery Load -> Filter/Search -> Select Style -> Open Modal -> Copy Formula -> Close Modal"
+        "Browse Gallery -> Select Aesthetic -> Inspect Recipe -> Copy Prompt -> Generate"
       ]
     },
     buildChecklist: [
       {
-        phase: "Phase 1: Asset Migration & Data Layer",
+        phase: "Phase 1: Gallery & Asset Pipeline",
         tasks: [
-          { label: "Copy 19 reference images into public/styleref/", done: true },
-          { label: "Create src/lib/styles-data.ts with full typed schema", done: true },
-          { label: "Add style lookup and category helper functions", done: true }
+          { label: "Curate 19 high-resolution style reference images", done: false },
+          { label: "Structure prompt formula templates with keyword tags", done: false },
+          { label: "Configure responsive masonry gallery layout", done: false }
         ]
       },
       {
-        phase: "Phase 2: Gallery UI & Modal Inspection",
+        phase: "Phase 2: Interactive Prompt Copying",
         tasks: [
-          { label: "Build StyleRefGalleryView with responsive grid", done: true },
-          { label: "Add style search bar and category pills", done: true },
-          { label: "Build full-featured StyleRefDetailModal with prompt formula copy", done: true }
+          { label: "Build one-click prompt clipboard copy component", done: false },
+          { label: "Add visual feedback and toast confirmation on copy", done: false },
+          { label: "Implement category and mood filter pills", done: false }
         ]
       },
       {
-        phase: "Phase 3: Showcase Integration",
+        phase: "Phase 3: Integration & Optimization",
         tasks: [
-          { label: "Mount gallery at /projects/styleref", done: true },
-          { label: "Connect thumbnail and card to home page strip", done: true },
-          { label: "Add Wiki markdown page in src/content/projects/styleref-gallery.md", done: true }
+          { label: "Embed live gallery view into project detail page", done: false },
+          { label: "Optimize image delivery with next/image", done: false },
+          { label: "Add subtle hover zoom effects for artwork inspection", done: false }
         ]
       }
     ],
     testChecklist: [
       {
-        suite: "Gallery Data Integrity",
+        suite: "Image & Recipe Integrity",
         tests: [
-          { label: "All 19 style entries have valid image paths in public/styleref/", passed: true, assertion: "STYLES_DATABASE.every(s => s.image.startsWith('/styleref/'))" },
-          { label: "Every entry contains non-empty core_concept, lighting, and palette", passed: true, assertion: "STYLES_DATABASE.every(s => s.core_concept && s.lighting)" }
+          { label: "All 19 reference image files exist and load without 404 errors", passed: false, assertion: "assert(images.length === 19)" },
+          { label: "Every style card contains a non-empty prompt recipe", passed: false, assertion: "assert(style.prompt.length > 20)" }
         ]
       },
       {
-        suite: "Interactive Actions",
+        suite: "Clipboard Interaction",
         tests: [
-          { label: "Filter by style name returns matching subset", passed: true, assertion: "filterStyles('Beksiński').length === 1" },
-          { label: "Copy prompt button copies full structured prompt text", passed: true, assertion: "expect(navigator.clipboard.writeText).toHaveBeenCalledWith(expect.stringContaining('oil painting'))" }
+          { label: "Clicking copy button writes the prompt directly to clipboard", passed: false, assertion: "assert(clipboardText.length > 0)" }
         ]
       }
     ]
   },
+
+  // 5. design-md-generator
   {
     slug: "design-md-generator",
     command: "/design-md-generator",
     title: "DESIGN.md Architecture Generator",
-    headline: "Standardized Design Token Compiler & Aesthetic Rationale Synthesizer",
+    headline: "Generate comprehensive, production-ready design systems from natural language",
     category: "agent-skill",
-    tag: "Design Systems",
+    tag: "Design System",
     accentColor: "#38bdf8",
-    accentGradient: "from-cyan-500/20 via-blue-600/10 to-transparent",
-    initiationDate: "2026-07-18",
+    accentGradient: "from-cyan-500/20 via-indigo-600/10 to-transparent",
+    initiationDate: "2026-07-15",
     dateDisplay: "Jul 2026",
     timeAgo: "1 month ago",
-    tldr: "Generates standardized DESIGN.md files combining machine-readable YAML frontmatter tokens (colors, typography, geometry) with human-readable architectural rationale.",
-    demoUrl: "/projects/design-md-generator#demo",
-    demoType: "skill-visualizer",
-    demoLabel: "Inspect Design Token Engine",
-    badges: ["google-labs spec", "YAML Frontmatter", "Design Tokens", "Aesthetic Rationale", "OKLCH / HEX"],
-    overview: "DESIGN.md Generator bridges the gap between machine-readable design tokens and human aesthetic intent. Following the google-labs-code/design.md standard, it produces a single sovereign file defining colors, typography, border radius, and component tokens with in-depth rationale.",
+    tldr: "Creates standardized DESIGN.md specification files. Defines your color palettes in OKLCH, typography scales, spacing tokens, and component guidelines for both humans and AI agents.",
+    demoUrl: "/wiki/design-md-generator",
+    demoType: "wiki",
+    demoLabel: "Read DESIGN.md Documentation",
+    badges: ["Google Labs Standard", "OKLCH Color Palette", "Typography Scale", "YAML Tokens", "Anti-Generic"],
+    overview: "AI coding assistants build much better UI when they have clear design guidelines to follow. This tool generates a complete DESIGN.md file that defines exact colors, font pairings, spacing rules, and layout principles for your project.",
     generativeTheme: "prism-spectrum",
     visualizer: {
-      heroTitle: "DESIGN.md Token Architecture",
-      subNamespace: "skill/design-md-generator",
+      heroTitle: "DESIGN.md Architecture Generator",
+      subNamespace: "skill/design-md",
       nodes: [
         {
           id: "01",
           step: "01",
-          title: "Requirements Discovery",
+          title: "Define Brand Vibe",
           accent: "#38bdf8",
           description: [
-            "Analyze brand constraints & identity",
-            "Select color vectors & OKLCH/HEX palettes",
-            "Establish typographic hierarchy & font pairings"
+            "Select aesthetic direction: Minimalist, cyber, luxury, brutalist",
+            "Establish emotional tone and target audience",
+            "Identify distinctive typography pairings"
           ]
         },
         {
           id: "02",
           step: "02",
-          title: "YAML Token Matrix",
+          title: "Generate Tokens",
           accent: "#818cf8",
           description: [
-            "Compile frontmatter: colors, spacing, rounded",
-            "Map component tokens (button, card, header)",
-            "Validate syntax against google-labs schema"
+            "Calculates harmonious OKLCH color palettes",
+            "Defines font scales from H1 to small body text",
+            "Sets mathematical spacing and border radii"
           ]
         },
         {
           id: "03",
           step: "03",
-          title: "Rationale Synthesis",
+          title: "Write Rules",
           accent: "#c084fc",
           description: [
-            "Author deep Markdown prose (## Colors, ## Typography)",
-            "Articulate the 'Why' behind every aesthetic choice",
-            "Define geometry and layout density rules"
+            "Defines anti-generic design guardrails",
+            "Specifies button, card, and navigation patterns",
+            "Sets animation easing curves and transitions"
           ]
         },
         {
           id: "04",
           step: "04",
-          title: "Root File Output",
-          accent: "#34d399",
+          title: "Export DESIGN.md",
+          accent: "#10b981",
           description: [
-            "Write sovereign DESIGN.md in project root",
-            "Zero drift between code and documentation",
-            "Ready for consumption by AI agents and UI teams"
+            "Combines machine-readable YAML and human prose",
+            "Places file in project root for AI agent alignment",
+            "Enforces consistent UI design across all pages"
           ]
         }
       ]
     },
     specSDD: {
       inputs: [
-        "Brand constraints, target aesthetics, and UI library specs",
-        "Color preferences (primary, secondary, background, accent)",
-        "Typography pairings and layout scales"
+        "Project description, brand identity, or reference website",
+        "Target color scheme preferences (Dark / Light)",
+        "Desired font pairings and layout style"
       ],
       outputs: [
-        "Sovereign DESIGN.md in project root",
-        "Machine-readable YAML frontmatter with tokens",
-        "Human-readable Markdown design rationale"
+        "A complete, standardized DESIGN.md specification file",
+        "Machine-readable YAML tokens for colors, typography, and spacing",
+        "Clear architectural rules preventing generic AI styling"
       ],
       invariants: [
-        "Strict compliance with google-labs-code/design.md specification",
-        "Both YAML tokens and Markdown prose must be present and aligned",
-        "Tokens must use explicit units (px, rem, hex/oklch)",
-        "Zero hallucinated token keys outside the design system schema"
+        "Fully conforms to the google-labs-code/design.md specification",
+        "Color values calibrated using modern OKLCH color spaces",
+        "Includes strict rules banning overused AI design tropes",
+        "Directly readable by AI coding assistants"
       ],
-      coreEngine: "Two-stage Design Compiler: Stage 1 compiles structured YAML token tree; Stage 2 expands aesthetic justification prose.",
+      coreEngine: "Token compiler and design rule generator that translates brand guidelines into formal design tokens.",
       dataStructures: [
-        "interface DesignTokens { name: string; colors: Record<string, string>; typography: Record<string, any>; rounded: Record<string, string>; spacing: Record<string, string>; components: Record<string, any> }",
-        "interface DesignDoc { tokens: DesignTokens; rationale: { overview: string; colors: string; typography: string; spacing: string } }"
+        "DesignTokens: colors, typography, spacing, shadows, radius",
+        "DesignRules: antiTropes[], componentPatterns[], motionCurves[]"
       ],
       stateMachine: [
-        "Discover Constraints -> Token Compilation -> Schema Validation -> Markdown Prose Generation -> Atomic Write -> Complete"
+        "Analyze Brand -> Compute Color Palette -> Scale Typography -> Format YAML -> Generate DESIGN.md"
       ]
     },
     buildChecklist: [
       {
-        phase: "Phase 1: Token Engine & Specification",
+        phase: "Phase 1: Token Engine & Color Math",
         tasks: [
-          { label: "Define YAML frontmatter schema according to google-labs specification", done: true },
-          { label: "Implement OKLCH/HEX color validator and contrast checker", done: true },
-          { label: "Configure typography scale mapping (h1..h4, body, mono)", done: true }
+          { label: "Build OKLCH color palette generator with light and dark variants", done: false },
+          { label: "Configure typographic scale formulas from H1 to micro-copy", done: false },
+          { label: "Define concentric border radius rules (outer = inner + padding)", done: false }
         ]
       },
       {
-        phase: "Phase 2: Rationale & Markdown Generator",
+        phase: "Phase 2: Template & Rules Compiler",
         tasks: [
-          { label: "Build structured prose template for aesthetic explanation", done: true },
-          { label: "Add spacing scale and border radius geometric calculator", done: true },
-          { label: "Implement single-command root file persistence", done: true }
+          { label: "Structure YAML token header adhering to DESIGN.md spec", done: false },
+          { label: "Embed anti-generic AI design guardrails into prompt template", done: false },
+          { label: "Add component guidance for buttons, cards, and inputs", done: false }
+        ]
+      },
+      {
+        phase: "Phase 3: Integration & Testing",
+        tasks: [
+          { label: "Build CLI trigger command and agent hook", done: false },
+          { label: "Verify AI models follow the generated DESIGN.md rules", done: false },
+          { label: "Publish full documentation in the public Wiki Hub", done: false }
         ]
       }
     ],
     testChecklist: [
       {
-        suite: "YAML Schema Validation",
+        suite: "Token Validation",
         tests: [
-          { label: "Generated YAML frontmatter parses cleanly without syntax errors", passed: true, assertion: "assert.doesNotThrow(() => yaml.parse(frontmatter))" },
-          { label: "All mandatory token keys (colors, typography, rounded, spacing) exist", passed: true, assertion: "['colors', 'typography', 'rounded', 'spacing'].every(k => k in tokens)" }
+          { label: "Generated YAML contains all required tokens without syntax errors", passed: false, assertion: "assert(yaml.tokens.colors !== undefined)" },
+          { label: "Color values have adequate contrast ratio for accessibility", passed: false, assertion: "assert(contrastRatio >= 4.5)" }
         ]
       },
       {
-        suite: "Markdown Integrity",
+        suite: "Format Compliance",
         tests: [
-          { label: "Markdown body contains all mandatory ## sections (Overview, Colors, Typography)", passed: true, assertion: "content.includes('## Overview') && content.includes('## Colors')" }
+          { label: "Output file matches the official Google Labs DESIGN.md standard", passed: false, assertion: "assert(specValid === true)" }
         ]
       }
     ]
   },
+
+  // 6. end
   {
     slug: "end",
     command: "/end",
     title: "End-of-Session Ritual & Memory Keeper",
-    headline: "Autonomous Task Audit, Retrospective, Living Memory Persistence, and Workspace Cleaner",
+    headline: "Automated session wrap-up, task retro, memory sync, and safe git commits",
     category: "agent-skill",
-    tag: "Session Lifecycle",
+    tag: "Agent Memory Engine",
     accentColor: "#22c55e",
     accentGradient: "from-emerald-500/20 via-teal-600/10 to-transparent",
-    initiationDate: "2026-08-05",
+    initiationDate: "2026-08-16",
     dateDisplay: "Aug 2026",
-    timeAgo: "2 weeks ago",
-    tldr: "Comprehensive end-of-session ritual that audits completed tasks, evaluates mistakes, saves persistent state to .agents/agents.md, and executes atomic git commits to prevent context loss.",
-    demoUrl: "/projects/end#demo",
-    demoType: "skill-visualizer",
-    demoLabel: "Inspect Session Wrap Protocol",
-    badges: ["Completion Gate", "Task Audit", "Retrospective", "Living Memory Sync", "Atomic Git Push"],
-    overview: "The /end protocol standardizes the shutdown ritual for long-running agent coding sessions. It evaluates completion gates, audits requested vs completed work, extracts actionable mistakes, proactively persists project memory (.agents/agents.md), terminates dangling tasks, and executes atomic Git pushes with proper author attribution.",
+    timeAgo: "2 days ago",
+    tldr: "A comprehensive end-of-session ritual for AI coding assistants. Audits completed tasks, saves memory into .agents/, stops dangling dev servers, and commits code safely.",
+    demoUrl: "/wiki/end",
+    demoType: "wiki",
+    demoLabel: "Read /end Ritual Guide",
+    badges: ["Living Memory", "Automated Retro", "Safe Git Commits", "Server Cleanup", "Zero Context Loss"],
+    overview: "When long coding sessions end without a structured wrap-up, AI assistants lose context and leave dangling processes. The /end protocol executes a 4-phase shutdown ritual that updates project memory, verifies task completion, and pushes clean git commits.",
     generativeTheme: "emerald-terminal",
     visualizer: {
-      heroTitle: "End-of-Session Wrap Protocol",
+      heroTitle: "Session Ritual & Memory Engine",
       subNamespace: "skill/end",
       nodes: [
         {
           id: "01",
           step: "01",
-          title: "Completion Gate",
-          accent: "#fbbf24",
+          title: "Verify Completion",
+          accent: "#22c55e",
           description: [
-            "Check for unresolved WIP & failing tests",
-            "Verify main goals reached coherent stop point",
-            "Halt and warn if critical blockers exist"
+            "Audits all planned tasks against the Definition of Done",
+            "Verifies automated tests and production build status",
+            "Confirms user requirements are fully satisfied"
           ]
         },
         {
           id: "02",
           step: "02",
-          title: "Task Audit & Retro",
-          accent: "#38bdf8",
+          title: "Session Retro",
+          accent: "#34d399",
           description: [
-            "Audit tasks: ✅ Done, 🔄 Partial, ❌ Failed",
-            "Analyze mistakes & inefficient judgment calls",
-            "Extract reusable patterns for future skills"
+            "Summarizes key accomplishments and architectural decisions",
+            "Documents any unexpected bugs and their fixes",
+            "Identifies logical next steps for the next session"
           ]
         },
         {
           id: "03",
           step: "03",
-          title: "Proactive Memory",
-          accent: "#c084fc",
+          title: "Persist Memory",
+          accent: "#38bdf8",
           description: [
-            "Locate and read .agents/agents.md harness",
-            "Record session accomplishments & invariants",
-            "Formulate crystal-clear immediate Next Steps"
+            "Updates .agents/agents.md master harness",
+            "Appends new intent to user_intent.md living memory",
+            "Preserves long-term project context across sessions"
           ]
         },
         {
           id: "04",
           step: "04",
-          title: "Clean & Git Push",
-          accent: "#22c55e",
+          title: "Safe Commit & Push",
+          accent: "#a855f7",
           description: [
-            "Terminate background tasks & dev servers",
-            "Stage files with .gitignore verification",
-            "Commit with alimzhan.khalelov@gmail.com and push"
+            "Stops lingering dev servers and background tasks",
+            "Creates clear, structured atomic git commits",
+            "Pushes cleanly to main using verified email"
           ]
         }
       ]
     },
     specSDD: {
       inputs: [
-        "Session conversation history and task list",
-        "Git working tree status and diffs",
-        "Existing .agents/agents.md and living memory buffers"
+        "Session task history and completed file diffs",
+        "User intent and feedback received during the session",
+        "Current git repository status and branch state"
       ],
       outputs: [
-        "Updated .agents/agents.md with state and Next Steps",
-        "Clean atomic Git commit with verified author email",
-        "Single clean session wrap markdown report"
+        "Updated .agents/ memory files (agents.md, user_intent.md)",
+        "Clean, atomic git commits pushed to remote repository",
+        "Comprehensive session summary report for the user"
       ],
       invariants: [
-        "Never delegate cleanup tasks to the user (proactive execution)",
-        "Always verify .gitignore before staging files",
-        "Git author email must strictly match alimzhan.khalelov@gmail.com",
-        "Next Steps must be concrete and actionable without user re-explaining"
+        "Never finishes without running automated build verification first",
+        "Always uses verified user email for all git commits",
+        "Living user intent is permanently appended, never overwritten or lost",
+        "All temporary background servers and watchers are safely stopped"
       ],
-      coreEngine: "4-Phase Session Lifecycle Pipeline: Phase 0 (Completion Gate) -> Phase 1 (Audit & Retro) -> Phase 2 (Memory Persistence) -> Phase 3 (Process Cleanup & Git).",
+      coreEngine: "Four-phase state machine that executes verification, retrospect, memory persistence, and git deployment.",
       dataStructures: [
-        "interface SessionAudit { tasks: { title: string; status: 'done' | 'partial' | 'failed' }[]; mistakes: string[]; reusableWorkflows: string[] }",
-        "interface MemoryUpdate { accomplishments: string[]; decisions: string[]; nextSteps: string[] }"
+        "SessionAudit: completedTasks[], pendingTasks[], testStatus",
+        "MemoryState: intentSummary, harnessVersion, commitSha"
       ],
       stateMachine: [
-        "Trigger -> Completion Gate Check -> Task Audit -> Mistake Retrospective -> Memory Update -> Process Kill -> Git Add -> Git Commit -> Report Output"
+        "Phase 0: Completion Gate -> Phase 1: Retro -> Phase 2: Persist Memory -> Phase 3: Git Deploy"
       ]
     },
     buildChecklist: [
       {
-        phase: "Phase 1: Protocol & Ritual Definition",
+        phase: "Phase 1: Verification & Gate Check",
         tasks: [
-          { label: "Formalize Phase 0 Completion Gate criteria and blocker warnings", done: true },
-          { label: "Implement Phase 1 Task Audit and Mistakes-focused retrospective", done: true },
-          { label: "Design Phase 2 Living Memory persistence format for agents.md", done: true }
+          { label: "Build automated test runner and build status verifier", done: false },
+          { label: "Check git working tree for uncommitted changes", done: false },
+          { label: "Scan for dangling dev servers or background ports", done: false }
         ]
       },
       {
-        phase: "Phase 2: Cleanup Automation & Git Hook",
+        phase: "Phase 2: Living Memory Sync",
         tasks: [
-          { label: "Build background process termination routines", done: true },
-          { label: "Configure .gitignore safety checks before staging", done: true },
-          { label: "Implement atomic commit generation with verified author email", done: true }
+          { label: "Update .agents/agents.md manifest with latest milestones", done: false },
+          { label: "Append cumulative decisions to .agents/wiki/user_intent.md", done: false },
+          { label: "Synchronize artifact router and project documentation", done: false }
+        ]
+      },
+      {
+        phase: "Phase 3: Safe Git Push",
+        tasks: [
+          { label: "Format descriptive semantic git commit message", done: false },
+          { label: "Enforce verified author email (alimzhan.khalelov@gmail.com)", done: false },
+          { label: "Push to origin/main and confirm deployment status", done: false }
         ]
       }
     ],
     testChecklist: [
       {
-        suite: "Completion & Safety Gates",
+        suite: "Memory Persistence",
         tests: [
-          { label: "Completion gate catches failing tests and warns before commit", passed: true, assertion: "assert.strictEqual(gateCheck({ hasFailingTests: true }), 'warn')" },
-          { label: "Proactive memory update writes non-empty Next Steps array", passed: true, assertion: "assert.ok(agentsMdContent.includes('Next Steps'))" }
+          { label: ".agents/agents.md contains updated project status after wrap-up", passed: false, assertion: "assert(fileContent.includes('INTENT'))" },
+          { label: "user_intent.md preserves all historical user decisions without truncation", passed: false, assertion: "assert(intentList.length >= 1)" }
         ]
       },
       {
-        suite: "Git Attribution & Process Cleanup",
+        suite: "Git Safety",
         tests: [
-          { label: "Git commit author matches alimzhan.khalelov@gmail.com exactly", passed: true, assertion: "assert.strictEqual(commitAuthorEmail, 'alimzhan.khalelov@gmail.com')" },
-          { label: "Background tasks list is empty after Phase 3 cleanup", passed: true, assertion: "assert.strictEqual(activeProcesses.length, 0)" }
+          { label: "Git commit author matches verified user email", passed: false, assertion: "assert(commit.author.email === 'alimzhan.khalelov@gmail.com')" }
         ]
       }
     ]
   }
 ];
 
-export function getProjectBySlug(slug: string): ProjectDetail | undefined {
-  return SHOWCASE_PROJECTS.find((p) => p.slug === slug);
-}
-
 export function getAllProjects(): ProjectDetail[] {
   return SHOWCASE_PROJECTS;
+}
+
+export function getProjectBySlug(slug: string): ProjectDetail | undefined {
+  return SHOWCASE_PROJECTS.find((p) => p.slug === slug);
 }
