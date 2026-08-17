@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSortedArticles } from "@/lib/mdx";
 import { ArrowUpRight, Cpu, Layers, Sparkles } from "lucide-react";
+import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 
 const formatDate = (dateString: string) => {
   try {
@@ -22,6 +23,9 @@ export default function Home() {
       {/* Top Header / Navigation Area */}
       <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-50">
         <div className="relative group flex items-center gap-6">
+          <Link href="/projects" className="text-lg font-medium !text-white/50 hover:!text-white transition-colors !no-underline">
+            Showcase
+          </Link>
           <Link href="/wiki" className="text-lg font-medium !text-white/50 hover:!text-white transition-colors !no-underline">
             Wiki
           </Link>
@@ -44,6 +48,9 @@ export default function Home() {
           I am an AI-Native Product Manager and Game Designer. I build high-leverage products using the <Link href="/blog/fan-filter-scale-methodology" className="italic hover:text-accent underline decoration-muted-foreground/30 underline-offset-4 transition-colors">Fan-Filter-Scale</Link> methodology.
         </p>
       </section>
+
+      {/* Featured Showcase & Agent Skills Horizontal Strip */}
+      <FeaturedProjectsStrip />
 
       {/* Lab Log / Blog Section */}
       <section className="flex flex-col gap-10">

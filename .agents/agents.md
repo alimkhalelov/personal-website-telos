@@ -31,6 +31,7 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - [x] Refine landing UI typography and rename blog section.
 - [x] Add Pet-Projects Labs gallery UI and prepare pixel hamster placeholder.
 - [x] Build personal website public wiki page (/wiki) adhering to /wiki standard.
+- [x] Implement showcase strip on home page & dedicated pages for 4 skills/projects (/wiki, /presentation, /skill-visualizer, StyleRef).
 
 ## Known Issues & Fixes
 - **Vercel AI Streaming**: When streaming raw text back to the client, `result.textStream` (an `AsyncIterable`) MUST be explicitly wrapped in a standard `ReadableStream` on the server before passing to `new Response()`. Passing `AsyncIterable` directly causes Vercel serverless functions to either throw a 500 error or buffer the response and timeout after 10-15s.

@@ -42,9 +42,9 @@
   Status: Completed
   Origin: "нет удали эту страницу UI и графы которые ты сделал используя скилл /wiki - но оригинальные источники и содержимое не трогай, которое на https://alim.dest.page/ отображается. все папки и файлы которые создает /wiki кажется /docs и другие . Я потом после удаления с нуля попрошу сделать wiki страницу для персонального сайта"
 
-- [INTENT-014] [2026-08-16 10:22] [Category: Feature|Wiki|UI]
-  Summary: Implement native hyper-minimalist Public Wiki page (/wiki) for https://alim.dest.page/ personal website, cataloging portfolio systems, research methodologies, and articles using the 2-Tier /wiki skill standard with solid pod styling, instant search, and zero bloat.
+- [INTENT-015] [2026-08-17 09:15] [Category: Feature|Showcase|Skills|UI]
+  Summary: Design and format showcase pages and components for 4 flagship projects/skills (/wiki, /presentation, /skill-visualizer, StyleRef gallery) with generative code thumbnails, initiation dates, demo links, TL;DR, 16:9 vector visualizers, SDD architecture specs, Build/TDD checklists, horizontal showcase strip on home page, and wiki showcase hub.
   Status: Completed
-  Origin: "используя /wiki создай wiki public page для https://alim.dest.page/ персонального сайта портфолио и блогов"
+  Origin: "оформить проекты скиллы /wiki /presentation /skill-visualizer страничка галерея картинок 'D:\Study&Work\2025\Antigravity Vibecoding Projects\AutoSMM\StyleRef' - каждая страница на главной странице https://alim.dest.page/ над блог постами уходят вправую часть страницы + есть раздел в вики над блогпостами - для каждого красочный кликбейтный генеративный кодом thumbnail, дата (инициации проекта), title, ссылка на демо, tl;dr, skill visulaizer, spec (sdd) архитектура + как чеклисты plan как это build и как test (tdd)"
 
 

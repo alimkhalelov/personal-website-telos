@@ -156,6 +156,95 @@ export function WikiHub({ initialItems }: WikiHubProps) {
         </div>
       </div>
 
+      {/* Featured Showcase & Agent Skills Section in Wiki */}
+      {selectedCategory === "all" && !searchQuery && !selectedTag && (
+        <section className="flex flex-col gap-6 p-6 sm:p-8 rounded-3xl bg-[#F4F4F2] dark:bg-[#1C1C20] border border-black/5 dark:border-white/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-xs font-mono text-accent uppercase tracking-widest font-bold">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Showcase Skills & Visual Engines</span>
+            </div>
+            <Link
+              href="/projects"
+              className="text-xs font-mono text-muted-foreground hover:text-foreground transition-colors !no-underline flex items-center gap-1"
+            >
+              <span>View All Specs</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              {
+                title: "/wiki",
+                name: "AI-Wiki Compiler",
+                href: "/projects/wiki",
+                demo: "/wiki",
+                date: "Jun 2026",
+                tag: "2-Tier Architecture",
+                accent: "text-sky-400 border-sky-500/30 bg-sky-500/10",
+                tldr: "Adaptive discovery, 2-tier meta layer & solid-pod UI.",
+              },
+              {
+                title: "/presentation",
+                name: "Motion Deck Studio",
+                href: "/projects/presentation",
+                demo: "/projects/presentation#demo",
+                date: "Jul 2026",
+                tag: "10 Vector Matrix",
+                accent: "text-[#d1fe17] border-[#d1fe17]/30 bg-[#d1fe17]/10",
+                tldr: "1 Idea = 1 Slide with teleprompter & micro-motion.",
+              },
+              {
+                title: "/skill-visualizer",
+                name: "16:9 Vector Engine",
+                href: "/projects/skill-visualizer",
+                demo: "/projects/skill-visualizer#demo",
+                date: "Jul 2026",
+                tag: "1600x900 SVG",
+                accent: "text-purple-400 border-purple-500/30 bg-purple-500/10",
+                tldr: "Dynamic density scaling & zero void space vector diagrams.",
+              },
+              {
+                title: "StyleRef",
+                name: "Generative Art DB",
+                href: "/projects/styleref",
+                demo: "/projects/styleref",
+                date: "Aug 2026",
+                tag: "19 Master Styles",
+                accent: "text-orange-400 border-orange-500/30 bg-orange-500/10",
+                tldr: "6-axis style matrix with 1-click prompt copying.",
+              },
+            ].map((p) => (
+              <Link
+                key={p.title}
+                href={p.href}
+                className="group/item flex flex-col justify-between p-4 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-transparent hover:border-black/10 dark:hover:border-white/10 transition-all !no-underline"
+              >
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className={`px-2 py-0.5 rounded border font-bold ${p.accent}`}>
+                      {p.title}
+                    </span>
+                    <span className="text-muted-foreground">{p.date}</span>
+                  </div>
+                  <h4 className="text-base font-bold text-foreground group-hover/item:text-accent transition-colors">
+                    {p.name}
+                  </h4>
+                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                    {p.tldr}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between pt-3 mt-2 border-t border-black/5 dark:border-white/5 text-xs font-mono text-muted-foreground">
+                  <span className="truncate">{p.tag}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 group-hover/item:translate-x-0.5 group-hover/item:-translate-y-0.5 transition-transform text-foreground" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Grid of Solid Pod Cards */}
       {filteredItems.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
