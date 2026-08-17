@@ -610,6 +610,265 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         ]
       }
     ]
+  },
+  {
+    slug: "design-md-generator",
+    command: "/design-md-generator",
+    title: "DESIGN.md Architecture Generator",
+    headline: "Standardized Design Token Compiler & Aesthetic Rationale Synthesizer",
+    category: "agent-skill",
+    tag: "Design Systems",
+    accentColor: "#38bdf8",
+    accentGradient: "from-cyan-500/20 via-blue-600/10 to-transparent",
+    initiationDate: "2026-07-18",
+    dateDisplay: "Jul 2026",
+    timeAgo: "1 month ago",
+    tldr: "Generates standardized DESIGN.md files combining machine-readable YAML frontmatter tokens (colors, typography, geometry) with human-readable architectural rationale.",
+    demoUrl: "/projects/design-md-generator#demo",
+    demoType: "skill-visualizer",
+    demoLabel: "Inspect Design Token Engine",
+    badges: ["google-labs spec", "YAML Frontmatter", "Design Tokens", "Aesthetic Rationale", "OKLCH / HEX"],
+    overview: "DESIGN.md Generator bridges the gap between machine-readable design tokens and human aesthetic intent. Following the google-labs-code/design.md standard, it produces a single sovereign file defining colors, typography, border radius, and component tokens with in-depth rationale.",
+    generativeTheme: "neon-cyan",
+    visualizer: {
+      heroTitle: "DESIGN.md Token Architecture",
+      subNamespace: "skill/design-md-generator",
+      nodes: [
+        {
+          id: "01",
+          step: "01",
+          title: "Requirements Discovery",
+          accent: "#38bdf8",
+          description: [
+            "Analyze brand constraints & identity",
+            "Select color vectors & OKLCH/HEX palettes",
+            "Establish typographic hierarchy & font pairings"
+          ]
+        },
+        {
+          id: "02",
+          step: "02",
+          title: "YAML Token Matrix",
+          accent: "#818cf8",
+          description: [
+            "Compile frontmatter: colors, spacing, rounded",
+            "Map component tokens (button, card, header)",
+            "Validate syntax against google-labs schema"
+          ]
+        },
+        {
+          id: "03",
+          step: "03",
+          title: "Rationale Synthesis",
+          accent: "#c084fc",
+          description: [
+            "Author deep Markdown prose (## Colors, ## Typography)",
+            "Articulate the 'Why' behind every aesthetic choice",
+            "Define geometry and layout density rules"
+          ]
+        },
+        {
+          id: "04",
+          step: "04",
+          title: "Root File Output",
+          accent: "#34d399",
+          description: [
+            "Write sovereign DESIGN.md in project root",
+            "Zero drift between code and documentation",
+            "Ready for consumption by AI agents and UI teams"
+          ]
+        }
+      ]
+    },
+    specSDD: {
+      inputs: [
+        "Brand constraints, target aesthetics, and UI library specs",
+        "Color preferences (primary, secondary, background, accent)",
+        "Typography pairings and layout scales"
+      ],
+      outputs: [
+        "Sovereign DESIGN.md in project root",
+        "Machine-readable YAML frontmatter with tokens",
+        "Human-readable Markdown design rationale"
+      ],
+      invariants: [
+        "Strict compliance with google-labs-code/design.md specification",
+        "Both YAML tokens and Markdown prose must be present and aligned",
+        "Tokens must use explicit units (px, rem, hex/oklch)",
+        "Zero hallucinated token keys outside the design system schema"
+      ],
+      coreEngine: "Two-stage Design Compiler: Stage 1 compiles structured YAML token tree; Stage 2 expands aesthetic justification prose.",
+      dataStructures: [
+        "interface DesignTokens { name: string; colors: Record<string, string>; typography: Record<string, any>; rounded: Record<string, string>; spacing: Record<string, string>; components: Record<string, any> }",
+        "interface DesignDoc { tokens: DesignTokens; rationale: { overview: string; colors: string; typography: string; spacing: string } }"
+      ],
+      stateMachine: [
+        "Discover Constraints -> Token Compilation -> Schema Validation -> Markdown Prose Generation -> Atomic Write -> Complete"
+      ]
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Token Engine & Specification",
+        tasks: [
+          { label: "Define YAML frontmatter schema according to google-labs specification", done: true },
+          { label: "Implement OKLCH/HEX color validator and contrast checker", done: true },
+          { label: "Configure typography scale mapping (h1..h4, body, mono)", done: true }
+        ]
+      },
+      {
+        phase: "Phase 2: Rationale & Markdown Generator",
+        tasks: [
+          { label: "Build structured prose template for aesthetic explanation", done: true },
+          { label: "Add spacing scale and border radius geometric calculator", done: true },
+          { label: "Implement single-command root file persistence", done: true }
+        ]
+      }
+    ],
+    testChecklist: [
+      {
+        suite: "YAML Schema Validation",
+        tests: [
+          { label: "Generated YAML frontmatter parses cleanly without syntax errors", passed: true, assertion: "assert.doesNotThrow(() => yaml.parse(frontmatter))" },
+          { label: "All mandatory token keys (colors, typography, rounded, spacing) exist", passed: true, assertion: "['colors', 'typography', 'rounded', 'spacing'].every(k => k in tokens)" }
+        ]
+      },
+      {
+        suite: "Markdown Integrity",
+        tests: [
+          { label: "Markdown body contains all mandatory ## sections (Overview, Colors, Typography)", passed: true, assertion: "content.includes('## Overview') && content.includes('## Colors')" }
+        ]
+      }
+    ]
+  },
+  {
+    slug: "end",
+    command: "/end",
+    title: "End-of-Session Ritual & Memory Keeper",
+    headline: "Autonomous Task Audit, Retrospective, Living Memory Persistence, and Workspace Cleaner",
+    category: "agent-skill",
+    tag: "Session Lifecycle",
+    accentColor: "#22c55e",
+    accentGradient: "from-emerald-500/20 via-teal-600/10 to-transparent",
+    initiationDate: "2026-08-05",
+    dateDisplay: "Aug 2026",
+    timeAgo: "2 weeks ago",
+    tldr: "Comprehensive end-of-session ritual that audits completed tasks, evaluates mistakes, saves persistent state to .agents/agents.md, and executes atomic git commits to prevent context loss.",
+    demoUrl: "/projects/end#demo",
+    demoType: "skill-visualizer",
+    demoLabel: "Inspect Session Wrap Protocol",
+    badges: ["Completion Gate", "Task Audit", "Retrospective", "Living Memory Sync", "Atomic Git Push"],
+    overview: "The /end protocol standardizes the shutdown ritual for long-running agent coding sessions. It evaluates completion gates, audits requested vs completed work, extracts actionable mistakes, proactively persists project memory (.agents/agents.md), terminates dangling tasks, and executes atomic Git pushes with proper author attribution.",
+    generativeTheme: "lime-cyber",
+    visualizer: {
+      heroTitle: "End-of-Session Wrap Protocol",
+      subNamespace: "skill/end",
+      nodes: [
+        {
+          id: "01",
+          step: "01",
+          title: "Completion Gate",
+          accent: "#fbbf24",
+          description: [
+            "Check for unresolved WIP & failing tests",
+            "Verify main goals reached coherent stop point",
+            "Halt and warn if critical blockers exist"
+          ]
+        },
+        {
+          id: "02",
+          step: "02",
+          title: "Task Audit & Retro",
+          accent: "#38bdf8",
+          description: [
+            "Audit tasks: ✅ Done, 🔄 Partial, ❌ Failed",
+            "Analyze mistakes & inefficient judgment calls",
+            "Extract reusable patterns for future skills"
+          ]
+        },
+        {
+          id: "03",
+          step: "03",
+          title: "Proactive Memory",
+          accent: "#c084fc",
+          description: [
+            "Locate and read .agents/agents.md harness",
+            "Record session accomplishments & invariants",
+            "Formulate crystal-clear immediate Next Steps"
+          ]
+        },
+        {
+          id: "04",
+          step: "04",
+          title: "Clean & Git Push",
+          accent: "#22c55e",
+          description: [
+            "Terminate background tasks & dev servers",
+            "Stage files with .gitignore verification",
+            "Commit with alimzhan.khalelov@gmail.com and push"
+          ]
+        }
+      ]
+    },
+    specSDD: {
+      inputs: [
+        "Session conversation history and task list",
+        "Git working tree status and diffs",
+        "Existing .agents/agents.md and living memory buffers"
+      ],
+      outputs: [
+        "Updated .agents/agents.md with state and Next Steps",
+        "Clean atomic Git commit with verified author email",
+        "Single clean session wrap markdown report"
+      ],
+      invariants: [
+        "Never delegate cleanup tasks to the user (proactive execution)",
+        "Always verify .gitignore before staging files",
+        "Git author email must strictly match alimzhan.khalelov@gmail.com",
+        "Next Steps must be concrete and actionable without user re-explaining"
+      ],
+      coreEngine: "4-Phase Session Lifecycle Pipeline: Phase 0 (Completion Gate) -> Phase 1 (Audit & Retro) -> Phase 2 (Memory Persistence) -> Phase 3 (Process Cleanup & Git).",
+      dataStructures: [
+        "interface SessionAudit { tasks: { title: string; status: 'done' | 'partial' | 'failed' }[]; mistakes: string[]; reusableWorkflows: string[] }",
+        "interface MemoryUpdate { accomplishments: string[]; decisions: string[]; nextSteps: string[] }"
+      ],
+      stateMachine: [
+        "Trigger -> Completion Gate Check -> Task Audit -> Mistake Retrospective -> Memory Update -> Process Kill -> Git Add -> Git Commit -> Report Output"
+      ]
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Protocol & Ritual Definition",
+        tasks: [
+          { label: "Formalize Phase 0 Completion Gate criteria and blocker warnings", done: true },
+          { label: "Implement Phase 1 Task Audit and Mistakes-focused retrospective", done: true },
+          { label: "Design Phase 2 Living Memory persistence format for agents.md", done: true }
+        ]
+      },
+      {
+        phase: "Phase 2: Cleanup Automation & Git Hook",
+        tasks: [
+          { label: "Build background process termination routines", done: true },
+          { label: "Configure .gitignore safety checks before staging", done: true },
+          { label: "Implement atomic commit generation with verified author email", done: true }
+        ]
+      }
+    ],
+    testChecklist: [
+      {
+        suite: "Completion & Safety Gates",
+        tests: [
+          { label: "Completion gate catches failing tests and warns before commit", passed: true, assertion: "assert.strictEqual(gateCheck({ hasFailingTests: true }), 'warn')" },
+          { label: "Proactive memory update writes non-empty Next Steps array", passed: true, assertion: "assert.ok(agentsMdContent.includes('Next Steps'))" }
+        ]
+      },
+      {
+        suite: "Git Attribution & Process Cleanup",
+        tests: [
+          { label: "Git commit author matches alimzhan.khalelov@gmail.com exactly", passed: true, assertion: "assert.strictEqual(commitAuthorEmail, 'alimzhan.khalelov@gmail.com')" },
+          { label: "Background tasks list is empty after Phase 3 cleanup", passed: true, assertion: "assert.strictEqual(activeProcesses.length, 0)" }
+        ]
+      }
+    ]
   }
 ];
 
