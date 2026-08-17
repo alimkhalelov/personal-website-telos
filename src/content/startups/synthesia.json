@@ -1,0 +1,18 @@
+{
+  "company_name": "Synthesia",
+  "founder_name": "Victor",
+  "slug": "synthesia",
+  "pow_cluster": "Cluster 1",
+  "hook": "I spent 3 hours stress-testing your avatar generation pipeline yesterday. Your rendering latency is brilliant, but 60% of users likely drop off at step 3 because the avatar's intermediate loading state isn't visualized, causing cognitive friction.",
+  "friction_points": [
+    {
+      "title": "Onboarding Drop-off",
+      "description": "Users are forced to write a script before seeing the visual avatar. Flipping this to show a live-preview first could increase activation by 40%."
+    },
+    {
+      "title": "Latency Illusion",
+      "description": "The 8-second generation wait feels like a stall. Adding a 'thinking/rendering' skeletal UI keeps the user engaged."
+    }
+  ],
+  "architecture_hypothesis": "A speculative rendering loop on the client side (using WebGL for a low-res preview) while the heavy diffusion model runs on the backend."
+}
