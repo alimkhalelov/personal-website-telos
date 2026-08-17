@@ -46,31 +46,39 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-6 pt-6 pb-16 sm:pt-8 sm:pb-20 flex flex-col gap-10 w-full">
-      {/* 1. Compact Top Bar Navigation */}
-      <nav className="flex items-center justify-between border-b border-border pb-3">
-        <Link
-          href="/projects"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors !no-underline"
-          style={{ fontFamily: "'Google Sans', sans-serif" }}
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Projects</span>
-        </Link>
+    <main className="max-w-3xl mx-auto px-6 pt-6 pb-16 sm:pt-8 sm:pb-20 flex flex-col gap-8 w-full relative">
+      {/* 1. Hero Group: Metadata Row with Outside Back Arrow -> 16:9 Thumbnail -> Title/Subtitle */}
+      <div className="flex flex-col gap-3 w-full">
+        {/* Top Metadata Row: Back Arrow + Date (Initiation Date) + Time Ago + Command Badge */}
+        <div className="relative flex items-center justify-between text-sm text-muted-foreground w-full">
+          {/* Back Arrow button (positioned outside on desktop, inline on mobile) */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/projects"
+              aria-label="Back to projects"
+              className="group inline-flex items-center justify-center w-8 h-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/20 transition-all !no-underline sm:absolute sm:-left-12 sm:top-1/2 sm:-translate-y-1/2"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            </Link>
 
-        <div className="flex items-center gap-4 text-sm">
-          <Link
-            href="/wiki"
-            className="text-muted-foreground hover:text-accent transition-colors !no-underline"
-            style={{ fontFamily: "'Google Sans', sans-serif" }}
-          >
-            Wiki Hub →
-          </Link>
+            {/* Date & Time Ago */}
+            <div className="flex items-center gap-2">
+              <time className="font-medium text-foreground/90" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+                {project.dateDisplay}
+              </time>
+              <span>·</span>
+              <span className="font-mono text-xs opacity-80">
+                {project.timeAgo}
+              </span>
+            </div>
+          </div>
+
+          {/* Command Chip */}
+          <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-3 py-0.5 rounded-full border border-accent/20">
+            {project.command}
+          </span>
         </div>
-      </nav>
 
-      {/* 2. Hero Visual Group (Thumbnail + Meta + Title tightly composed) */}
-      <div className="flex flex-col gap-3 -mt-2">
         {/* 16:9 YouTube-Style Thumbnail */}
         <figure className="relative aspect-video w-full rounded-2xl overflow-hidden border border-border/80 bg-card shadow-sm">
           <GenerativeThumbnail
@@ -79,22 +87,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             title={project.title}
           />
         </figure>
-
-        {/* Metadata: Date, Time Ago, Command */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground pt-1">
-          <div className="flex items-center gap-2">
-            <time className="font-medium text-foreground/90" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-              {project.dateDisplay}
-            </time>
-            <span>·</span>
-            <span className="font-mono text-xs opacity-80">
-              {project.timeAgo}
-            </span>
-          </div>
-          <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-3 py-0.5 rounded-full border border-accent/20">
-            {project.command}
-          </span>
-        </div>
 
         {/* Title & Editorial Subtitle */}
         <header className="flex flex-col gap-2 pt-1">
@@ -110,29 +102,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </header>
       </div>
 
-      {/* 3. Interactive Demo Link (If Applicable) */}
-      {project.demoUrl && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-card border border-border/80 shadow-sm -mt-2">
-          <div className="flex flex-col gap-1">
-            <span className="text-lg font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-              Interactive Experience
-            </span>
-            <span className="text-sm text-muted-foreground font-light">
-              Run this engine live in your browser or explore the interactive demo.
-            </span>
-          </div>
-          <Link
-            href={project.demoUrl}
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-accent text-white font-medium text-base hover:opacity-90 transition-opacity !no-underline shrink-0 shadow-sm"
-            style={{ fontFamily: "'Google Sans', sans-serif" }}
-          >
-            <span>{project.demoLabel}</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-      )}
-
-      {/* 4. The Big Idea (TL;DR) */}
+      {/* 2. The Big Idea (TL;DR) */}
       <section className="flex flex-col gap-3 p-6 sm:p-7 rounded-2xl bg-muted/20 border border-border/70 shadow-sm">
         <div className="flex items-center gap-2 text-accent text-xs font-mono font-bold uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
@@ -172,7 +142,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </section>
       )}
 
-      {/* 5. Visual Architecture Map (16:9 Vector Canvas) */}
+      {/* 3. Visual Architecture Map (16:9 Vector Canvas) */}
       <section className="flex flex-col gap-4 pt-4 border-t border-border">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
@@ -190,7 +160,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         />
       </section>
 
-      {/* 6. How It Works (Readable Single-Column Section) */}
+      {/* 4. How It Works (Readable Single-Column Section) */}
       <section className="flex flex-col gap-8 pt-4 border-t border-border">
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
@@ -257,7 +227,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
         </div>
 
-        {/* Workflow Steps */}
+        {/* Workflow Lifecycle */}
         <div className="flex flex-col gap-3">
           <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
             Workflow Lifecycle
@@ -276,13 +246,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </div>
       </section>
 
-      {/* 7. Interactive Checklists (Execution & Quality Check) */}
+      {/* 5. Interactive Checklists (Execution & Quality Check) */}
       <InteractiveChecklist
         buildChecklist={project.buildChecklist}
         testChecklist={project.testChecklist}
       />
 
-      {/* 8. More Projects */}
+      {/* 6. More Projects */}
       <footer className="pt-8 border-t border-border flex flex-col gap-4">
         <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
           More Projects &amp; Tools
