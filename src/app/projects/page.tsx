@@ -1,59 +1,91 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Sparkles, ArrowUpRight, Play, BookOpen } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Play, Sparkles } from "lucide-react";
 import { getAllProjects } from "@/lib/projects-data";
 import { GenerativeThumbnail } from "@/components/projects/generative-thumbnail";
 
 export const metadata: Metadata = {
-  title: "Showcase Projects & Skills | Alimzhan",
-  description: "Explore autonomous agent skills, 16:9 vector architecture engines, and generative style databases.",
+  title: "Projects & Skills | Alimzhan",
+  description: "Autonomous agent skills, 16:9 vector architecture engines, and generative style databases.",
 };
 
 export default function ProjectsIndexPage() {
   const projects = getAllProjects();
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-16 sm:py-24 flex flex-col gap-16 w-full">
-      {/* Top Header */}
+    <main className="max-w-3xl mx-auto px-6 py-16 sm:py-24 flex flex-col gap-16 w-full">
+      {/* Top Header Navigation */}
       <div className="flex items-center justify-between border-b border-border pb-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors !no-underline"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors !no-underline"
+          style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Headquarters</span>
+          <span>Back to Home</span>
         </Link>
         <Link
           href="/wiki"
-          className="text-sm font-mono text-muted-foreground hover:text-accent transition-colors !no-underline flex items-center gap-1"
+          className="text-sm text-muted-foreground hover:text-accent transition-colors !no-underline"
+          style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
-          <BookOpen className="w-4 h-4" />
-          <span>Public Wiki</span>
+          Wiki Hub →
         </Link>
       </div>
 
-      {/* Hero */}
-      <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <div className="flex items-center gap-2 text-xs font-mono text-accent uppercase tracking-widest font-semibold">
-          <Sparkles className="w-4 h-4" />
-          <span>Autonomous Systems & Creative Intelligence</span>
-        </div>
-        <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-foreground">
-          Showcase Projects & Skills
+      {/* Page Title */}
+      <section className="flex flex-col gap-3">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+          Projects & Skills
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl font-light leading-relaxed">
-          Interactive tools, 16:9 vector architectural diagrams, and curated generative design matrices.
+        <p className="text-lg sm:text-xl text-muted-foreground font-light leading-relaxed">
+          Engineered agent tools, 16:9 vector architecture engines, and generative design matrices.
         </p>
       </section>
 
-      {/* Grid of Projects */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Single-Column Editorial Feed (Intentional Functional Minimalism) */}
+      <section className="flex flex-col divide-y divide-border">
         {projects.map((project) => (
-          <div
+          <article 
             key={project.slug}
-            className="flex flex-col rounded-3xl overflow-hidden bg-[#F4F4F2] dark:bg-[#16161a] border border-black/5 dark:border-white/5 hover:border-accent/50 transition-all duration-300 group shadow-sm hover:shadow-2xl"
+            className="py-14 first:pt-0 last:pb-0 flex flex-col gap-6 group"
           >
-            <div className="relative aspect-[16/10] w-full p-4 pb-0">
+            {/* Meta Row: Date, Time Ago, Command */}
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <time style={{ fontFamily: "'Google Sans', sans-serif" }}>
+                  {project.dateDisplay}
+                </time>
+                <span>·</span>
+                <span className="text-xs font-mono opacity-80">
+                  {project.timeAgo}
+                </span>
+              </div>
+              <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-2.5 py-0.5 rounded-full border border-accent/20">
+                {project.command}
+              </span>
+            </div>
+
+            {/* Title & Subtitle */}
+            <div className="flex flex-col gap-1.5">
+              <Link 
+                href={`/projects/${project.slug}`} 
+                className="!no-underline group-hover:text-accent transition-colors"
+              >
+                <h2 
+                  className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground group-hover:underline"
+                  style={{ fontFamily: "'Google Sans', sans-serif" }}
+                >
+                  {project.title}
+                </h2>
+              </Link>
+              <p className="text-base text-muted-foreground font-light">
+                {project.headline}
+              </p>
+            </div>
+
+            {/* Visual Thumbnail */}
+            <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden border border-border/80 group-hover:border-border transition-colors bg-card shadow-sm">
               <Link href={`/projects/${project.slug}`} className="block w-full h-full">
                 <GenerativeThumbnail
                   theme={project.generativeTheme}
@@ -63,45 +95,45 @@ export default function ProjectsIndexPage() {
               </Link>
             </div>
 
-            <div className="p-6 flex flex-col justify-between flex-1 gap-5">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="px-2.5 py-1 rounded-md bg-black/5 dark:bg-white/5 text-foreground font-semibold">
-                    {project.tag}
+            {/* TL;DR Narrative */}
+            <p className="text-base text-foreground/90 leading-relaxed font-light">
+              {project.tldr}
+            </p>
+
+            {/* Badges & Direct Clean Action Links */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+              <div className="flex flex-wrap gap-2">
+                {project.badges.slice(0, 3).map((badge) => (
+                  <span
+                    key={badge}
+                    className="text-xs px-2.5 py-1 rounded-md bg-muted/30 text-muted-foreground font-mono"
+                  >
+                    {badge}
                   </span>
-                  <span className="text-muted-foreground">INIT: {project.dateDisplay}</span>
-                </div>
-
-                <Link href={`/projects/${project.slug}`} className="!no-underline group-hover:text-accent transition-colors">
-                  <h3 className="text-2xl font-bold tracking-tight text-foreground">
-                    {project.title}
-                  </h3>
-                </Link>
-
-                <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                  {project.tldr}
-                </p>
+                ))}
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-black/5 dark:border-white/5">
+              <div className="flex items-center gap-5 shrink-0">
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="inline-flex items-center gap-1 text-xs font-mono font-bold text-foreground hover:text-accent transition-colors !no-underline"
+                  className="inline-flex items-center gap-1 text-sm font-medium text-foreground hover:text-accent transition-colors !no-underline"
+                  style={{ fontFamily: "'Google Sans', sans-serif" }}
                 >
-                  <span>Spec & Architecture</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                  <span>Spec & 16:9 Canvas</span>
+                  <ArrowUpRight className="w-4 h-4" />
                 </Link>
 
                 <Link
                   href={project.demoUrl}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-accent text-white hover:opacity-90 transition-opacity text-xs font-mono font-semibold !no-underline shadow-sm"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline !no-underline"
+                  style={{ fontFamily: "'Google Sans', sans-serif" }}
                 >
-                  <Play className="w-3 h-3 fill-current" />
+                  <Play className="w-3.5 h-3.5 fill-current" />
                   <span>Demo</span>
                 </Link>
               </div>
             </div>
-          </div>
+          </article>
         ))}
       </section>
     </main>
