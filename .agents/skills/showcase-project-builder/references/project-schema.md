@@ -48,7 +48,7 @@ export interface ProjectDetail {
   demoLabel: string;                                     // "Launch Demo"
   badges: string[];                                      // 3-5 keywords
   overview: string;                                      // Paragraph explanation
-  generativeTheme: "neon-cyan" | "lime-cyber" | "purple-matrix" | "amber-brutalism";
+  generativeTheme: "neon-cyan" | "lime-cyber" | "purple-matrix" | "amber-brutalism" | "prism-spectrum" | "emerald-terminal";
   visualizer: {
     heroTitle: string;
     subNamespace: string;

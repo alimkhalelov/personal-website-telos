@@ -36,8 +36,8 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
               href={`/projects/${project.slug}`}
               className="group flex-none w-[300px] sm:w-[360px] flex flex-col gap-3 !no-underline select-none"
             >
-              {/* 1. Crisp Generative / Art Thumbnail */}
-              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-border/80 group-hover:border-border transition-colors bg-card shadow-sm">
+              {/* 1. Crisp 16:9 YouTube-Style Thumbnail */}
+              <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-border/80 group-hover:border-border transition-colors bg-card shadow-sm">
                 <GenerativeThumbnail
                   theme={project.generativeTheme}
                   command={project.command}

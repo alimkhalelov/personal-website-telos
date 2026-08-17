@@ -59,13 +59,6 @@ export function GenerativeThumbnail({
 
       {/* 2. Subtle Dark Vignette Border */}
       <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none" />
-
-      {/* 3. Command Badge Pill */}
-      {command && (
-        <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full bg-black/60 border border-white/20 backdrop-blur-md text-white font-mono text-[11px] font-bold shadow-md">
-          {command}
-        </div>
-      )}
     </div>
   );
 }

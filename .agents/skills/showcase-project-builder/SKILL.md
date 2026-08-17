@@ -13,10 +13,13 @@ The **Showcase Project Builder** protocol standardizes the creation, formatting,
 
 Every newly added project or skill **MUST** contain all 8 standardized pillars:
 
-1. **🎨 Generative Code Thumbnail**:
-   - Pure code (SVG / CSS / Canvas) visual thumbnail without fragile external dependencies.
-   - Distinctive cyber/modern color theme (`neon-cyan`, `lime-cyber`, `purple-matrix`, `amber-brutalism`, or bespoke SVG geometry).
-   - High visual contrast, command pill badge, and subtle ambient glow.
+1. **🎨 High-Impact 16:9 YouTube-Style Thumbnail**:
+   - High-contrast, click-worthy visual art generated via AI (`generate_image` tool with `AspectRatio: '16:9'`) or bespoke assets following the [YouTube Thumbnail Skill](https://github.com/charlie947/social-media-skills/blob/main/skills/youtube-thumbnail/SKILL.md) standards.
+   - Saved to `public/thumbnails/<slug>.jpg` (e.g. `public/thumbnails/wiki.jpg`).
+   - Container **MUST STRICTLY** use `aspect-video` (`aspect-[16/9]`) on both the Home Page marquee and the `/projects` directory to guarantee zero vertical or horizontal clipping.
+   - Distinctive theme pairing (`neon-cyan`, `lime-cyber`, `purple-matrix`, `amber-brutalism`, `prism-spectrum`, `emerald-terminal`).
+   - Smooth cinematic hover zoom (`group-hover:scale-105 transition-transform duration-700`).
+   - Clean framing without redundant overlay badges obscuring headline artwork.
 
 2. **⏱️ Initiation Date & Relative Elapsed Time ("как давно")**:
    - ISO Date: `initiationDate` (e.g. `2026-08-10`).
