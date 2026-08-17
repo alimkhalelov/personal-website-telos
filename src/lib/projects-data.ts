@@ -43,7 +43,7 @@ export interface ProjectDetail {
   demoLabel: string;
   badges: string[];
   overview: string;
-  generativeTheme: "neon-cyan" | "lime-cyber" | "purple-matrix" | "amber-brutalism";
+  generativeTheme: "neon-cyan" | "lime-cyber" | "purple-matrix" | "amber-brutalism" | "prism-spectrum" | "emerald-terminal";
   visualizer: {
     heroTitle: string;
     subNamespace: string;
@@ -629,7 +629,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     demoLabel: "Inspect Design Token Engine",
     badges: ["google-labs spec", "YAML Frontmatter", "Design Tokens", "Aesthetic Rationale", "OKLCH / HEX"],
     overview: "DESIGN.md Generator bridges the gap between machine-readable design tokens and human aesthetic intent. Following the google-labs-code/design.md standard, it produces a single sovereign file defining colors, typography, border radius, and component tokens with in-depth rationale.",
-    generativeTheme: "neon-cyan",
+    generativeTheme: "prism-spectrum",
     visualizer: {
       heroTitle: "DESIGN.md Token Architecture",
       subNamespace: "skill/design-md-generator",
@@ -758,7 +758,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     demoLabel: "Inspect Session Wrap Protocol",
     badges: ["Completion Gate", "Task Audit", "Retrospective", "Living Memory Sync", "Atomic Git Push"],
     overview: "The /end protocol standardizes the shutdown ritual for long-running agent coding sessions. It evaluates completion gates, audits requested vs completed work, extracts actionable mistakes, proactively persists project memory (.agents/agents.md), terminates dangling tasks, and executes atomic Git pushes with proper author attribution.",
-    generativeTheme: "lime-cyber",
+    generativeTheme: "emerald-terminal",
     visualizer: {
       heroTitle: "End-of-Session Wrap Protocol",
       subNamespace: "skill/end",
