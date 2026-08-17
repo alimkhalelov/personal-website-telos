@@ -256,14 +256,51 @@ export function GenerativeThumbnail({
     <div
       className={`relative overflow-hidden bg-[#140e0a] rounded-2xl flex items-center justify-center select-none group ${className}`}
     >
+      {/* 4 Real Image Collage Behind Subtle Amber Vignette */}
+      <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-1 p-1.5 opacity-75 group-hover:opacity-90 transition-opacity">
+        <div 
+          className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
+          style={{ backgroundImage: "url('/styleref/img_01.jpeg')" }}
+        >
+          <div className="absolute inset-0 bg-black/40" />
+          <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            Różalski
+          </span>
+        </div>
+        <div 
+          className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
+          style={{ backgroundImage: "url('/styleref/img_02.jpeg')" }}
+        >
+          <div className="absolute inset-0 bg-black/40" />
+          <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            Stålenhag
+          </span>
+        </div>
+        <div 
+          className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
+          style={{ backgroundImage: "url('/styleref/img_04.jpeg')" }}
+        >
+          <div className="absolute inset-0 bg-black/40" />
+          <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            Beksiński
+          </span>
+        </div>
+        <div 
+          className="relative rounded-lg overflow-hidden bg-cover bg-center border border-white/5"
+          style={{ backgroundImage: "url('/styleref/img_13.jpeg')" }}
+        >
+          <div className="absolute inset-0 bg-black/40" />
+          <span className="absolute bottom-1 left-1.5 text-[9px] font-mono text-white/90 font-bold bg-black/70 px-1 rounded">
+            Blue Eye Samurai
+          </span>
+        </div>
+      </div>
+
       {/* Warm Golden Flare & Ambient Flame */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-orange-500/25 via-amber-950/20 to-transparent" />
-      
-      {/* Film Grain Texture Simulation */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#f973160a_1px,transparent_1px),linear-gradient(to_bottom,#f973160a_1px,transparent_1px)] bg-[size:16px_16px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-500/20 via-black/40 to-black/80 pointer-events-none" />
 
       <svg
-        className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105"
+        className="w-full h-full absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
         viewBox="0 0 400 240"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -280,40 +317,18 @@ export function GenerativeThumbnail({
           </filter>
         </defs>
 
-        {/* 4 Art Frame Tiles Mosaic */}
-        <rect x="50" y="50" width="140" height="75" rx="8" fill="#241710" stroke="#f97316" strokeWidth="1.5" />
-        <text x="62" y="74" fill="#fbbf24" fontSize="11" fontWeight="bold">Jakub Różalski</text>
-        <text x="62" y="92" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="monospace">OIL • 1920+ MECHS</text>
-        <rect x="62" y="104" width="70" height="3" rx="1.5" fill="#f97316" opacity="0.6" />
-
-        <rect x="210" y="50" width="140" height="75" rx="8" fill="#241710" stroke="#fbbf24" strokeWidth="1.5" />
-        <text x="222" y="74" fill="#f97316" fontSize="11" fontWeight="bold">Simon Stålenhag</text>
-        <text x="222" y="92" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="monospace">RETRO-FUTURISM</text>
-        <rect x="222" y="104" width="60" height="3" rx="1.5" fill="#fbbf24" opacity="0.6" />
-
-        <rect x="50" y="135" width="140" height="75" rx="8" fill="#241710" stroke="#ef4444" strokeWidth="1.5" />
-        <text x="62" y="159" fill="#ef4444" fontSize="11" fontWeight="bold">Zdzisław Beksiński</text>
-        <text x="62" y="177" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="monospace">COSMIC SURREALISM</text>
-        <rect x="62" y="189" width="80" height="3" rx="1.5" fill="#ef4444" opacity="0.6" />
-
-        <rect x="210" y="135" width="140" height="75" rx="8" fill="#241710" stroke="#38bdf8" strokeWidth="1.5" />
-        <text x="222" y="159" fill="#38bdf8" fontSize="11" fontWeight="bold">Blue Eye Samurai</text>
-        <text x="222" y="177" fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="monospace">EDO DRAMA • 2D/3D</text>
-        <rect x="222" y="189" width="65" height="3" rx="1.5" fill="#38bdf8" opacity="0.6" />
-
-        {/* Center Prompt Formula Stamp */}
-        <circle cx="200" cy="130" r="22" fill="#140e0a" stroke={`url(#grad-amber-${uniqueId})`} strokeWidth="2" filter={`url(#glow-amber-${uniqueId})`} />
-        <text x="200" y="134" textAnchor="middle" fill="#fbbf24" fontSize="10" fontFamily="monospace" fontWeight="bold">
-          19 STYLES
+        {/* Center Stamp Badge */}
+        <rect x="135" y="98" width="130" height="44" rx="12" fill="#140e0a" fillOpacity="0.9" stroke={`url(#grad-amber-${uniqueId})`} strokeWidth="1.5" filter={`url(#glow-amber-${uniqueId})`} />
+        <text x="200" y="117" textAnchor="middle" fill="#fbbf24" fontSize="12" fontFamily="monospace" fontWeight="bold" letterSpacing="1">
+          19 STYLES DB
         </text>
-
-        <text x="200" y="32" textAnchor="middle" fill="#f97316" fontSize="11" fontFamily="monospace" fontWeight="bold" letterSpacing="2">
-          VISUAL PROMPT MATRIX
+        <text x="200" y="132" textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize="9" fontFamily="monospace">
+          PROMPT MATRIX
         </text>
       </svg>
 
       {command && (
-        <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-orange-500/20 border border-orange-500/50 backdrop-blur text-orange-300 font-mono text-xs font-bold tracking-wider shadow-lg shadow-orange-500/10">
+        <div className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-orange-500/30 border border-orange-500/60 backdrop-blur-md text-orange-300 font-mono text-xs font-bold tracking-wider shadow-lg shadow-orange-500/20">
           {command}
         </div>
       )}

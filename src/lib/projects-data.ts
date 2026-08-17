@@ -35,6 +35,7 @@ export interface ProjectDetail {
   accentGradient: string;
   initiationDate: string;
   dateDisplay: string;
+  timeAgo: string;
   tldr: string;
   headline: string;
   demoUrl: string;
@@ -65,6 +66,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     accentGradient: "from-sky-500/20 via-blue-600/10 to-transparent",
     initiationDate: "2026-06-12",
     dateDisplay: "Jun 2026",
+    timeAgo: "2 months ago",
     tldr: "Automatically discovers real project files, categorizes knowledge into Public & Private 2-Tier meta-layers, and renders hyper-minimalist documentation portals with zero boilerplate.",
     demoUrl: "/wiki",
     demoType: "wiki",
@@ -205,6 +207,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     accentGradient: "from-lime-400/20 via-emerald-500/10 to-transparent",
     initiationDate: "2026-07-04",
     dateDisplay: "Jul 2026",
+    timeAgo: "1.5 months ago",
     tldr: "Creates high-impact, motion-driven HTML presentation decks based on the 10 Communication Vectors, with Jakub/Emil micro-animations, keyboard navigation, and speaker script teleprompter.",
     demoUrl: "/projects/presentation#demo",
     demoType: "presentation",
@@ -343,6 +346,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     accentGradient: "from-purple-500/20 via-indigo-500/10 to-transparent",
     initiationDate: "2026-07-28",
     dateDisplay: "Jul 2026",
+    timeAgo: "3 weeks ago",
     tldr: "Generates ultra-hyper-minimalist, static, fullscreen 16:9 vector flowcharts (HTML/SVG) tailored bespoke to skill architectures with dynamic density scaling and crisp geometric markers.",
     demoUrl: "/projects/skill-visualizer#demo",
     demoType: "skill-visualizer",
@@ -481,6 +485,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     accentGradient: "from-orange-500/20 via-amber-500/10 to-transparent",
     initiationDate: "2026-08-10",
     dateDisplay: "Aug 2026",
+    timeAgo: "1 week ago",
     tldr: "Comprehensive database of 19 curated generative art styles (Jakub Różalski, Stålenhag, Beksiński, Blue Eye Samurai, Castlevania, Arcane) with prompt formulas, lighting, and medium parameters.",
     demoUrl: "/projects/styleref",
     demoType: "styleref",
