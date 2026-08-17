@@ -5,17 +5,14 @@ import {
   ArrowLeft, 
   ArrowUpRight, 
   Check, 
-  Play, 
-  Sparkles,
-  Layers,
-  ShieldCheck,
-  Cpu
+  Sparkles
 } from "lucide-react";
 import { getProjectBySlug, getAllProjects } from "@/lib/projects-data";
 import { GenerativeThumbnail } from "@/components/projects/generative-thumbnail";
 import { SkillVisualizerCanvas } from "@/components/projects/skill-visualizer-canvas";
 import { PresentationDemo } from "@/components/projects/presentation-demo";
 import { StyleRefGalleryView } from "@/app/projects/styleref/gallery-view";
+import { InteractiveChecklist } from "@/components/projects/interactive-checklist";
 
 interface ProjectPageProps {
   params: Promise<{ slug: string }>;
@@ -49,8 +46,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12 sm:py-20 flex flex-col gap-16 w-full">
-      {/* 1. Breadcrumb Top Bar */}
+    <main className="max-w-3xl mx-auto px-6 py-12 sm:py-20 flex flex-col gap-14 w-full">
+      {/* Top Navigation */}
       <nav className="flex items-center justify-between border-b border-border pb-6">
         <Link
           href="/projects"
@@ -72,39 +69,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </div>
       </nav>
 
-      {/* 2. Article Header */}
-      <header className="flex flex-col gap-5">
-        {/* Date & Command Badge */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <time style={{ fontFamily: "'Google Sans', sans-serif" }}>
-              {project.dateDisplay}
-            </time>
-            <span>·</span>
-            <span className="text-xs font-mono opacity-80">
-              {project.timeAgo}
-            </span>
-          </div>
-          <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-3 py-1 rounded-full border border-accent/20">
-            {project.command}
-          </span>
-        </div>
-
-        {/* Title & Editorial Subtitle */}
-        <div className="flex flex-col gap-3">
-          <h1 
-            className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground leading-[1.15]"
-            style={{ fontFamily: "'Google Sans', sans-serif" }}
-          >
-            {project.title}
-          </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground font-light leading-relaxed">
-            {project.headline}
-          </p>
-        </div>
-      </header>
-
-      {/* 3. High-Impact 16:9 YouTube-Style Thumbnail */}
+      {/* 1. Красочный 16:9 Thumbnail (Без перекрывающих бейджей) */}
       <figure className="relative aspect-video w-full rounded-2xl overflow-hidden border border-border/80 bg-card shadow-sm">
         <GenerativeThumbnail
           theme={project.generativeTheme}
@@ -113,9 +78,38 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         />
       </figure>
 
-      {/* 4. Live Demo Launch Action (If Applicable) */}
+      {/* 2. Метаданные: Дата инициации, время назад и бейдж команды */}
+      <div className="flex items-center justify-between text-sm text-muted-foreground -mt-4">
+        <div className="flex items-center gap-2">
+          <time style={{ fontFamily: "'Google Sans', sans-serif" }}>
+            {project.dateDisplay}
+          </time>
+          <span>·</span>
+          <span className="text-xs font-mono opacity-80">
+            {project.timeAgo}
+          </span>
+        </div>
+        <span className="text-xs font-mono font-bold text-accent bg-accent/10 px-3 py-1 rounded-full border border-accent/20">
+          {project.command}
+        </span>
+      </div>
+
+      {/* 3. Заголовок и подзаголовок: Крупный заголовок с естественным описанием */}
+      <header className="flex flex-col gap-3 -mt-2">
+        <h1 
+          className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground leading-[1.15]"
+          style={{ fontFamily: "'Google Sans', sans-serif" }}
+        >
+          {project.title}
+        </h1>
+        <p className="text-lg sm:text-xl text-muted-foreground font-light leading-relaxed">
+          {project.headline}
+        </p>
+      </header>
+
+      {/* 4. Кнопка интерактивного демо: Заметная кнопка запуска / перехода в демо */}
       {project.demoUrl && (
-        <div className="flex items-center justify-between p-5 rounded-2xl bg-card border border-border/80 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-card border border-border/80 shadow-sm">
           <div className="flex flex-col gap-1">
             <span className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
               Interactive Experience
@@ -126,7 +120,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
           <Link
             href={project.demoUrl}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-medium text-sm hover:opacity-90 transition-opacity !no-underline shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-medium text-sm hover:opacity-90 transition-opacity !no-underline shrink-0 shadow-sm"
             style={{ fontFamily: "'Google Sans', sans-serif" }}
           >
             <span>{project.demoLabel}</span>
@@ -135,8 +129,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </div>
       )}
 
-      {/* 5. TL;DR & Core Proposition */}
-      <section className="flex flex-col gap-4 p-6 sm:p-8 rounded-2xl bg-muted/20 border border-border/70">
+      {/* 5. TL;DR: Выделенный блок с сутью и главной ценностью проекта */}
+      <section className="flex flex-col gap-4 p-6 sm:p-8 rounded-2xl bg-muted/20 border border-border/70 shadow-sm">
         <div className="flex items-center gap-2 text-accent text-xs font-mono font-bold uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>Executive Summary &amp; Breakthrough</span>
@@ -146,7 +140,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </p>
       </section>
 
-      {/* 6. Embedded Interactive Canvas (If Applicable) */}
+      {/* Embedded Live Demo (Presentation / StyleRef) */}
       {project.slug === "presentation" && (
         <section id="demo" className="flex flex-col gap-6 pt-4 border-t border-border">
           <div className="flex flex-col gap-1">
@@ -175,7 +169,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </section>
       )}
 
-      {/* 7. Visual Architecture Map (16:9 Vector Canvas) */}
+      {/* 6. Skill Visualizer: Встроенная 16:9 векторная схема архитектуры */}
       <section className="flex flex-col gap-6 pt-4 border-t border-border">
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
@@ -193,7 +187,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         />
       </section>
 
-      {/* 8. System Architecture & Design Guarantees (Single-Column Article Section) */}
+      {/* 7. Архитектурные гарантии (SDD): Читаемый раздел с потоком данных и этапами */}
       <section className="flex flex-col gap-10 pt-4 border-t border-border">
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
@@ -204,19 +198,19 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </p>
         </div>
 
-        {/* Interface Contract (Inputs & Outputs in 1 Clean Column) */}
-        <div className="flex flex-col gap-6">
+        {/* Data Flow & Interface Contract (Single Column) */}
+        <div className="flex flex-col gap-4">
           <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
             Data Flow &amp; Interface Contract
           </h3>
 
           <div className="flex flex-col gap-4">
             {/* Inputs */}
-            <div className="p-5 rounded-2xl bg-card border border-border/70 flex flex-col gap-2">
+            <div className="p-5 rounded-2xl bg-card border border-border/70 flex flex-col gap-2 shadow-sm">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent">
                 What Goes In (Inputs):
               </span>
-              <ul className="space-y-1.5 text-base text-foreground/90 leading-relaxed font-light">
+              <ul className="space-y-2 text-base text-foreground/90 leading-relaxed font-light">
                 {project.specSDD.inputs.map((inp, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="text-accent font-bold mt-0.5">→</span>
@@ -227,11 +221,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </div>
 
             {/* Outputs */}
-            <div className="p-5 rounded-2xl bg-card border border-border/70 flex flex-col gap-2">
+            <div className="p-5 rounded-2xl bg-card border border-border/70 flex flex-col gap-2 shadow-sm">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
                 What Comes Out (Guaranteed Outputs):
               </span>
-              <ul className="space-y-1.5 text-base text-foreground/90 leading-relaxed font-light">
+              <ul className="space-y-2 text-base text-foreground/90 leading-relaxed font-light">
                 {project.specSDD.outputs.map((out, i) => (
                   <li key={i} className="flex items-start gap-2.5">
                     <span className="text-emerald-400 font-bold mt-0.5">✓</span>
@@ -260,7 +254,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
         </div>
 
-        {/* Pipeline Lifecycle Narrative */}
+        {/* Execution Engine Narrative */}
         <div className="flex flex-col gap-4">
           <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
             Execution Engine &amp; State Machine
@@ -279,80 +273,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </div>
       </section>
 
-      {/* 9. Implementation & Verification Playbook (Single-Column Checklist with Square Checkboxes) */}
-      <section className="flex flex-col gap-10 pt-4 border-t border-border">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-            Implementation &amp; Quality Verification
-          </h2>
-          <p className="text-base text-muted-foreground leading-relaxed font-light">
-            Step-by-step build milestones and automated test suites verifying production readiness.
-          </p>
-        </div>
+      {/* 8. Чеклисты сборки и тестирования: Интерактивные квадратные чекбоксы (пустые по умолчанию) */}
+      <InteractiveChecklist
+        buildChecklist={project.buildChecklist}
+        testChecklist={project.testChecklist}
+      />
 
-        {/* Build Milestones */}
-        <div className="flex flex-col gap-6">
-          <h3 className="text-xl font-bold text-foreground flex items-center gap-2" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-            <Layers className="w-5 h-5 text-accent" />
-            <span>Build Phases</span>
-          </h3>
-
-          <div className="flex flex-col gap-5">
-            {project.buildChecklist.map((phase, pIdx) => (
-              <div key={pIdx} className="p-5 rounded-2xl bg-card border border-border/70 flex flex-col gap-3">
-                <h4 className="text-sm font-mono font-bold uppercase tracking-wider text-accent">
-                  {phase.phase}
-                </h4>
-                <div className="flex flex-col gap-2.5">
-                  {phase.tasks.map((task, tIdx) => (
-                    <div key={tIdx} className="flex items-start gap-3 text-base text-foreground/90 leading-relaxed font-light">
-                      <div className="w-5 h-5 rounded-md border border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                      </div>
-                      <span>{task.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Automated Test Verification */}
-        <div className="flex flex-col gap-6">
-          <h3 className="text-xl font-bold text-foreground flex items-center gap-2" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-            <ShieldCheck className="w-5 h-5 text-purple-400" />
-            <span>Test-Driven Verification Suites</span>
-          </h3>
-
-          <div className="flex flex-col gap-5">
-            {project.testChecklist.map((suite, sIdx) => (
-              <div key={sIdx} className="p-5 rounded-2xl bg-card border border-border/70 flex flex-col gap-3">
-                <h4 className="text-sm font-mono font-bold uppercase tracking-wider text-purple-400">
-                  {suite.suite}
-                </h4>
-                <div className="flex flex-col gap-3">
-                  {suite.tests.map((t, tIdx) => (
-                    <div key={tIdx} className="flex flex-col gap-1 text-base">
-                      <div className="flex items-start gap-3 text-foreground/90 font-medium">
-                        <div className="w-5 h-5 rounded-md border border-emerald-500/40 bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
-                          <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                        </div>
-                        <span>{t.label}</span>
-                      </div>
-                      <code className="text-xs font-mono text-muted-foreground ml-8 pl-0.5">
-                        {t.assertion}
-                      </code>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 10. Footer Navigation: Explore More Projects */}
+      {/* 9. Другие проекты: Лаконичный список */}
       <footer className="pt-10 border-t border-border flex flex-col gap-4">
         <h3 className="text-base font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
           More Projects &amp; Tools
