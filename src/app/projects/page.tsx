@@ -100,19 +100,19 @@ export default function ProjectsPage() {
                 className="!no-underline group-hover:text-accent transition-colors"
               >
                 <h2 
-                  className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground group-hover:underline"
+                  className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground group-hover:underline"
                   style={{ fontFamily: "'Google Sans', sans-serif" }}
                 >
                   {project.title}
                 </h2>
               </Link>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed">
+              <p className="text-xl text-muted-foreground font-light leading-relaxed">
                 {project.headline}
               </p>
             </div>
 
             {/* TL;DR Narrative */}
-            <p className="text-base sm:text-lg text-foreground/90 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl text-foreground/90 leading-relaxed font-light">
               {project.tldr}
             </p>
 

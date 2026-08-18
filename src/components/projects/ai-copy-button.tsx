@@ -5,15 +5,13 @@ import { Copy, Check } from "lucide-react";
 
 interface AICopyButtonProps {
   textToCopy: string;
-  label?: string;
-  copiedLabel?: string;
+  title?: string;
   className?: string;
 }
 
 export function AICopyButton({
   textToCopy,
-  label = "Copy for AI Agent",
-  copiedLabel = "Copied to clipboard!",
+  title = "Copy for AI Agent",
   className = "",
 }: AICopyButtonProps) {
   const [copied, setCopied] = useState(false);
@@ -26,7 +24,6 @@ export function AICopyButton({
       if (navigator?.clipboard?.writeText) {
         await navigator.clipboard.writeText(textToCopy);
       } else {
-        // Fallback for older contexts
         const textArea = document.createElement("textarea");
         textArea.value = textToCopy;
         textArea.style.position = "fixed";
@@ -41,9 +38,9 @@ export function AICopyButton({
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
-      }, 2500);
+      }, 2000);
     } catch (err) {
-      console.error("Failed to copy AI prompt:", err);
+      console.error("Failed to copy:", err);
     }
   };
 
@@ -51,19 +48,15 @@ export function AICopyButton({
     <button
       type="button"
       onClick={handleCopy}
-      aria-label={copied ? copiedLabel : label}
-      className={`group relative inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-mono font-medium transition-all duration-200 cursor-pointer select-none ${
-        copied
-          ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
-          : "bg-muted/10 hover:bg-accent/10 border-border/80 hover:border-accent/40 text-muted-foreground hover:text-accent"
-      } ${className}`}
+      title={copied ? "Copied!" : title}
+      aria-label={copied ? "Copied to clipboard" : title}
+      className={`inline-flex items-center justify-center p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/20 transition-all duration-200 cursor-pointer select-none ${className}`}
     >
       {copied ? (
-        <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[2.5]" />
+        <Check className="w-4 h-4 text-emerald-400 stroke-[2.5]" />
       ) : (
-        <Copy className="w-3.5 h-3.5 text-muted-foreground group-hover:text-accent transition-colors" />
+        <Copy className="w-4 h-4" />
       )}
-      <span className="tracking-tight">{copied ? copiedLabel : label}</span>
     </button>
   );
 }
