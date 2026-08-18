@@ -40,7 +40,6 @@ const THUMBNAIL_IMAGES: Record<GenerativeThumbnailProps["theme"], { src: string;
 export function GenerativeThumbnail({
   theme,
   title,
-  command,
   className = "w-full h-full",
 }: GenerativeThumbnailProps) {
   const thumbnail = THUMBNAIL_IMAGES[theme] || THUMBNAIL_IMAGES["neon-cyan"];

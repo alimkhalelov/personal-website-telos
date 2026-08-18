@@ -47,4 +47,7 @@
   Status: Completed
   Origin: "создай локально скилл через /skill-creator для добавления в будущем новых проектов подобно четырем выше и пропиши инструкцию и роутинг на этот новый скилл в agents.md"
 
-
+- [INTENT-017] [2026-08-18 09:30] [Category: Refactor|UI|Showcase]
+  Summary: Refactor /projects and /projects/[slug] into strict monochromatic style with brand blue accents, 2 font families (Google Sans + Geist Mono), 3 font sizes. Enlarge TL;DR without icon, remove inline presentation slide deck, translate and upgrade Architecture Workflow to English with full-screen popup modal (without podlozhka backdrop), and divide each project into 4 global sections (Specs, Plan, Build, Tests) with 1-click AI copy buttons.
+  Status: Completed
+  Origin: "Доработать https://alim.dest.page/projects/ 'TL;DR' надпись горадо крупнее и без иконки сделай. 'Interactive Presentation Deck' - удали блок. 'Схема работы Пошаговый процесс и ключевые этапы архитектуры.' - почему то на русском написано + верстка съехала + сделай этот блок что можно ее увеличить во весь экран как попап и закрыть на крестик без подложки или клик вне окна попапа. https://alim.dest.page/projects/ страницы сделать монохромными и 2-3 размера шрифта и максимум 2 вида шрифта, на акцентных местах можно фирменным синим. И каждую страницу раздели на 4 глобальных секции Specs Plan Build Tests - должна быть часть для человека, и для ИИ агента, где быстро можно скопировать по одной кнопки каждую глобальную секцию (Specs Plan Build Tests )"
