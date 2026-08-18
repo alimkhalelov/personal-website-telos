@@ -26,12 +26,13 @@ async function getTeardownData(slug: string): Promise<TeardownData | { error: st
   }
 }
 
-export default async function StartupTeardownPage({ params }: { params: { slug: string } }) {
-  const data = await getTeardownData(params.slug);
+export default async function StartupTeardownPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const data = await getTeardownData(resolvedParams.slug);
 
   if ('error' in data) {
     return <main className="min-h-screen bg-black text-white p-10">
-      <h1>Failed to load data for slug: {params.slug}</h1>
+      <h1>Failed to load data for slug: {resolvedParams.slug}</h1>
       <pre className="text-red-500 mt-4">{data.error}</pre>
     </main>;
   }
