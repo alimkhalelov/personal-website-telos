@@ -17,12 +17,12 @@ interface TeardownData {
   architecture_hypothesis: string;
 }
 
-async function getTeardownData(slug: string): Promise<TeardownData | { error: string }> {
+async function getTeardownData(slug: string): Promise<TeardownData | null> {
   try {
     const data = await import(`@/content/startups/${slug}.json`);
     return data.default || data;
   } catch (error: any) {
-    return { error: error.message || String(error) };
+    return null;
   }
 }
 
@@ -30,11 +30,8 @@ export default async function StartupTeardownPage({ params }: { params: Promise<
   const resolvedParams = await params;
   const data = await getTeardownData(resolvedParams.slug);
 
-  if ('error' in data) {
-    return <main className="min-h-screen bg-black text-white p-10">
-      <h1>Failed to load data for slug: {resolvedParams.slug}</h1>
-      <pre className="text-red-500 mt-4">{data.error}</pre>
-    </main>;
+  if (!data) {
+    notFound();
   }
 
   return (
