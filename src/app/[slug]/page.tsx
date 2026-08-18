@@ -19,10 +19,10 @@ interface TeardownData {
 
 async function getTeardownData(slug: string): Promise<TeardownData | null> {
   try {
-    const filePath = path.join(process.cwd(), 'src', 'content', 'startups', `${slug}.json`);
-    const fileContents = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContents);
+    const data = await import(`@/content/startups/${slug}.json`);
+    return data.default || data;
   } catch (error) {
+    console.error(`Failed to load teardown data for ${slug}:`, error);
     return null;
   }
 }
