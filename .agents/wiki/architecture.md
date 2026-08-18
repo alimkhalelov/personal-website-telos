@@ -10,6 +10,6 @@
 
 ## Public Routes & Knowledge
 - **Landing / Headquarters**: `/` (Alim Khalelov overview, posts listing, network links)
+- **Projects & Agent Skills**: `/projects` (Showcase of autonomous skills, 16:9 vector engines, SDD specs, and execution checklists)
 - **Public Wiki Hub**: `/wiki` (Interactive knowledge matrix for methodologies, architectures, systems, and guides)
-- **Pet-Projects Labs**: `/petprojects` (Incubator gallery of prototypes and agents)
 - **Blog Reader**: `/blog/[slug]` (MDX reader with Bionic reading support and Copy-to-Agent features)

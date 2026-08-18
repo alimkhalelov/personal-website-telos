@@ -158,7 +158,7 @@ export const SYSTEM_ITEMS: WikiItem[] = [
     categoryLabel: "Lab System",
     tags: ["Autonomous OS", "Orchestration", "Demiurge", "Telos"],
     date: "2026-08-01",
-    href: "/petprojects",
+    href: "/wiki/project-telos",
     featured: true,
     readingTime: "System Overview",
     keyTakeaway: "Unified execution substrate for parallel agentic workflows and personal knowledge.",
@@ -174,18 +174,6 @@ export const SYSTEM_ITEMS: WikiItem[] = [
     href: "/admin/draft",
     readingTime: "Internal Tool",
     keyTakeaway: "Zero-latency AI drafting interface with built-in editorial critique and human tone calibration.",
-  },
-  {
-    id: "petprojects-labs",
-    title: "Pet-Projects Labs Gallery",
-    summary: "Experimental incubator for cutting-edge AI prototypes, autonomous agents, and interactive web experiments.",
-    category: "systems",
-    categoryLabel: "Lab Gallery",
-    tags: ["Prototypes", "Experiments", "Incubator", "Labs"],
-    date: "2026-08-10",
-    href: "/petprojects",
-    readingTime: "Showcase",
-    keyTakeaway: "Fast-feedback testing ground for novel interface concepts and autonomous workflows.",
   },
 ];
 

@@ -90,10 +90,10 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-accent/30 transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="fixed top-3.5 right-4 sm:right-6 z-50 flex items-center gap-2">
-            <LanguageToggle />
-            <ThemeToggle />
+          <div className="fixed top-3.5 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2">
             <BionicToggle />
+            <ThemeToggle />
+            <LanguageToggle />
           </div>
           {children}
           <Analytics />

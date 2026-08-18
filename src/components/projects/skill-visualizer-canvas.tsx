@@ -41,50 +41,37 @@ export function SkillVisualizerCanvas({
     };
   }, [isFullscreen]);
 
-  // Extract clean slug name for header e.g. "skill/flowchart-viz" or "skill/wiki"
+  // Extract clean slug name for header e.g. "skill/wiki"
   const cleanNamespace = subNamespace.replace(/^skill\//, "");
 
-  // Dynamic Density Scaling Matrix
-  let cardWidth = 310;
-  let cardHeight = 275;
-  let titleFontSize = 22;
-  let bodyFontSize = 16.5;
-  let lineDy = 26;
-  const cardY = 310;
-  const centerY = cardY + cardHeight / 2;
+  // Dynamic Density Scaling Matrix (1600x900 coordinate system)
+  let cardWidth = 320;
+  let cardHeight = 320;
+  let gap = 50;
 
   if (count === 3) {
-    cardWidth = 420;
-    cardHeight = 290;
-    titleFontSize = 25;
-    bodyFontSize = 18;
-    lineDy = 28;
+    cardWidth = 430;
+    cardHeight = 330;
+    gap = 65;
   } else if (count === 4) {
-    cardWidth = 310;
-    cardHeight = 275;
-    titleFontSize = 22;
-    bodyFontSize = 16.5;
-    lineDy = 26;
+    cardWidth = 320;
+    cardHeight = 320;
+    gap = 50;
   } else if (count === 5) {
-    cardWidth = 255;
-    cardHeight = 265;
-    titleFontSize = 19;
-    bodyFontSize = 15;
-    lineDy = 24;
+    cardWidth = 265;
+    cardHeight = 310;
+    gap = 35;
   } else if (count >= 6) {
-    cardWidth = 215;
-    cardHeight = 250;
-    titleFontSize = 17;
-    bodyFontSize = 14;
-    lineDy = 22;
+    cardWidth = 220;
+    cardHeight = 300;
+    gap = 25;
   }
 
-  // Calculate layout geometry (1600x900 canvas)
   const canvasWidth = 1600;
-  const totalCardsWidth = count * cardWidth;
-  const availableSpace = canvasWidth - totalCardsWidth;
-  const gap = count > 1 ? Math.min(70, Math.max(28, availableSpace / (count + 1))) : 0;
-  const startX = (canvasWidth - (totalCardsWidth + (count - 1) * gap)) / 2;
+  const totalCardsWidth = count * cardWidth + (count - 1) * gap;
+  const startX = (canvasWidth - totalCardsWidth) / 2;
+  const cardY = 300;
+  const centerY = cardY + cardHeight / 2;
 
   const renderSvgContent = (isModal = false) => (
     <svg
@@ -94,7 +81,7 @@ export function SkillVisualizerCanvas({
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        {/* Vector Arrow Markers */}
+        {/* Crisp Vector Arrow Markers */}
         <marker
           id={`arr-${uniqueId}${isModal ? "-m" : ""}`}
           viewBox="0 0 10 10"
@@ -122,7 +109,7 @@ export function SkillVisualizerCanvas({
       {/* 16:9 Canvas Background - Deep Monochromatic Dark */}
       <rect width="1600" height="900" fill="#09090b" />
 
-      {/* Subtle Dot Grid Background */}
+      {/* Subtle Dot Matrix Grid */}
       <g opacity="0.12">
         {Array.from({ length: 16 }).map((_, r) =>
           Array.from({ length: 28 }).map((_, c) => (
@@ -140,7 +127,7 @@ export function SkillVisualizerCanvas({
       {/* Large Centered Title with Monochromatic + Brand Blue Namespace */}
       <text
         x="800"
-        y="180"
+        y="170"
         fontSize="64"
         fontFamily="var(--font-sans), system-ui, -apple-system, sans-serif"
         fontWeight="700"
@@ -154,7 +141,7 @@ export function SkillVisualizerCanvas({
       {/* Subtitle / Category Hook */}
       <text
         x="800"
-        y="230"
+        y="225"
         fontSize="20"
         fontFamily="var(--font-mono), monospace"
         fontWeight="500"
@@ -179,7 +166,7 @@ export function SkillVisualizerCanvas({
             key={`connector-${i}`}
             d={`M ${x1} ${centerY} L ${x2} ${centerY}`}
             stroke={isLastConnector ? "#3b82f6" : "#3f3f46"}
-            strokeWidth="3"
+            strokeWidth="3.5"
             fill="none"
             markerEnd={
               isLastConnector
@@ -190,80 +177,72 @@ export function SkillVisualizerCanvas({
         );
       })}
 
-      {/* Monochromatic Flowchart Pod Cards */}
+      {/* HTML / ForeignObject Flowchart Pod Cards for Flawless Text Wrapping */}
       {nodes.map((node, i) => {
         const x = startX + i * (cardWidth + gap);
-        const isLead = i === 0;
         const isLast = i === count - 1;
 
         return (
-          <g key={node.id} transform={`translate(${x}, ${cardY})`}>
-            {/* Solid Card Container */}
-            <rect
-              width={cardWidth}
-              height={cardHeight}
-              rx="20"
-              fill="#18181b"
-              stroke={isLast ? "#3b82f6" : isLead ? "#27272a" : "#27272a"}
-              strokeWidth={isLast ? "2" : "1"}
-            />
-
-            {/* Step Number Tag (Mono) */}
-            <text
-              x="24"
-              y="44"
-              fill={isLast ? "#60a5fa" : "#3b82f6"}
-              fontSize="14"
-              fontFamily="var(--font-mono), monospace"
-              fontWeight="700"
-              letterSpacing="0.5"
+          <foreignObject
+            key={node.id}
+            x={x}
+            y={cardY}
+            width={cardWidth}
+            height={cardHeight}
+          >
+            <div
+              className={`w-full h-full p-6 rounded-2xl bg-[#18181b] border flex flex-col justify-start gap-3 shadow-xl transition-colors ${
+                isLast
+                  ? "border-blue-500/80 shadow-blue-500/10"
+                  : "border-zinc-800 hover:border-zinc-700"
+              }`}
+              style={{
+                fontFamily: "var(--font-sans), system-ui, -apple-system, sans-serif",
+                boxSizing: "border-box",
+              }}
             >
-              PHASE {node.step}
-            </text>
-
-            {/* Title Header */}
-            <text
-              x="24"
-              y="74"
-              fill="#fafafa"
-              fontSize={titleFontSize}
-              fontFamily="var(--font-sans), system-ui, -apple-system, sans-serif"
-              fontWeight="700"
-              letterSpacing="-0.2"
-            >
-              {node.title}
-            </text>
-
-            {/* Subtle Divider Line */}
-            <line
-              x1="24"
-              y1="94"
-              x2={cardWidth - 24}
-              y2="94"
-              stroke="#27272a"
-              strokeWidth="1"
-            />
-
-            {/* Body Lines */}
-            <text
-              x="24"
-              y="126"
-              fill="#a1a1aa"
-              fontSize={bodyFontSize}
-              fontFamily="var(--font-sans), system-ui, -apple-system, sans-serif"
-              fontWeight="400"
-            >
-              {node.description.map((line, lineIdx) => (
-                <tspan
-                  key={lineIdx}
-                  x="24"
-                  dy={lineIdx === 0 ? 0 : lineDy}
+              {/* Step Tag */}
+              <div className="flex items-center justify-between">
+                <span
+                  className="font-mono font-bold text-xs uppercase tracking-wider text-blue-400"
+                  style={{ fontSize: "14px" }}
                 >
-                  • {line}
-                </tspan>
-              ))}
-            </text>
-          </g>
+                  PHASE {node.step}
+                </span>
+                {isLast && (
+                  <span
+                    className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"
+                    title="Active / Terminal State"
+                  />
+                )}
+              </div>
+
+              {/* Title Header (Wrapped safely) */}
+              <h3
+                className="font-bold text-zinc-100 tracking-tight leading-snug break-words"
+                style={{ fontSize: count >= 5 ? "19px" : "22px" }}
+              >
+                {node.title}
+              </h3>
+
+              {/* Divider Line */}
+              <div className="w-full h-px bg-zinc-800" />
+
+              {/* Description List with Auto-wrapping */}
+              <ul className="flex flex-col gap-2 overflow-hidden">
+                {node.description.map((line, lineIdx) => (
+                  <li
+                    key={lineIdx}
+                    className="flex items-start gap-2 text-zinc-300 font-light leading-snug break-words"
+                    style={{ fontSize: count >= 5 ? "15px" : "16.5px" }}
+                  >
+                    <span className="text-blue-400 font-bold shrink-0 mt-0.5">•</span>
+                    <span>{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </foreignObject>
         );
       })}
     </svg>
@@ -271,7 +250,7 @@ export function SkillVisualizerCanvas({
 
   return (
     <>
-      {/* Standard In-Page 16:9 Canvas View */}
+      {/* 1. Standard 16:9 Canvas View with Fullscreen Button */}
       <div
         className={`group relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-[#09090b] border border-border/80 shadow-md ${className}`}
       >
@@ -281,16 +260,40 @@ export function SkillVisualizerCanvas({
         <button
           type="button"
           onClick={() => setIsFullscreen(true)}
-          title="Expand to Fullscreen"
+          title="Expand Architecture Diagram to Fullscreen"
           aria-label="Expand Architecture Diagram to Fullscreen"
-          className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/60 hover:bg-black/90 text-white/80 hover:text-white border border-white/10 hover:border-white/30 backdrop-blur-md transition-all text-xs font-mono cursor-pointer"
+          className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/70 hover:bg-black/90 text-white/80 hover:text-white border border-white/15 hover:border-white/40 backdrop-blur-md transition-all text-xs font-mono cursor-pointer shadow-sm"
         >
           <Maximize2 className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Fullscreen</span>
         </button>
       </div>
 
-      {/* Fullscreen Modal View (No heavy background podlozhka, transparent blurred backdrop) */}
+      {/* 2. Responsive Mobile Card Strip (Ensures readable text on narrow phones) */}
+      <div className="sm:hidden flex flex-col gap-3 pt-2">
+        {nodes.map((node) => (
+          <div
+            key={`mobile-${node.id}`}
+            className="p-4 rounded-xl bg-card border border-border/80 flex flex-col gap-2 shadow-sm"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono font-bold text-accent">PHASE {node.step}</span>
+              <span className="text-xs font-mono text-muted-foreground">·</span>
+              <h4 className="text-sm font-bold text-foreground">{node.title}</h4>
+            </div>
+            <ul className="space-y-1 text-xs text-muted-foreground leading-relaxed">
+              {node.description.map((line, lIdx) => (
+                <li key={lIdx} className="flex items-start gap-1.5">
+                  <span className="text-accent">•</span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* 3. Fullscreen Modal View (No heavy background podlozhka, transparent blurred backdrop) */}
       {isFullscreen && (
         <div
           ref={backdropRef}

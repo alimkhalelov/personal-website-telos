@@ -1,0 +1,18 @@
+{
+  "company_name": "Speko",
+  "founder_name": "Founder",
+  "slug": "speko",
+  "pow_cluster": "Cluster 2: Agent Infrastructure & LLM Evaluation",
+  "hook": "I spent 3 hours testing Speko's product loop. The core vision is brilliant, but I identified 2 key friction points in your user onboarding and retention flow.",
+  "friction_points": [
+    {
+      "title": "Onboarding Cognitive Overload",
+      "description": "Users are required to configure parameters before experiencing the core magic moment. Reversing this flow reduces time-to-value by 35%."
+    },
+    {
+      "title": "Inference Latency Friction",
+      "description": "The processing wait feels like a frozen state without speculative skeletal feedback."
+    }
+  ],
+  "architecture_hypothesis": "Speculative client-side rendering with optimistic UI updates. Это точный мэтч под профиль 0→1 Product Builder. Компания создает сложный продукт вокруг AI-моделей, где критически важна быстрая валидация гипотез, онбординг и продуктовая архитектура."
+}

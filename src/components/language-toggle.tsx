@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Script from "next/script";
 
 const languages = [
@@ -18,72 +18,67 @@ const languages = [
   { code: "kk", name: "Қазақша" },
 ];
 
+function setLanguageCookie(lang: string) {
+  if (typeof document === "undefined") return;
+  if (lang === "en") {
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${location.hostname};`;
+  } else {
+    document.cookie = `googtrans=/en/${lang}; path=/;`;
+    document.cookie = `googtrans=/en/${lang}; path=/; domain=${location.hostname};`;
+  }
+}
+
+function getInitialLanguage(): string {
+  if (typeof window === "undefined") return "en";
+  try {
+    const storedLang = localStorage.getItem("preferred_lang");
+    if (storedLang) return storedLang;
+
+    const match = document.cookie.match(/(^|;) ?googtrans=([^;]*)(;|$)/);
+    if (match && match[2]) {
+      const parts = match[2].split("/");
+      if (parts.length === 3) return parts[2];
+    }
+
+    const browserLang = navigator.language.split("-")[0];
+    if (languages.some((l) => l.code === browserLang)) {
+      return browserLang;
+    }
+  } catch {}
+  return "en";
+}
+
+const emptySubscribe = () => () => {};
+
 export function LanguageToggle() {
-  const [currentLang, setCurrentLang] = useState("en");
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+  const [currentLang, setCurrentLang] = useState<string>(getInitialLanguage);
 
   useEffect(() => {
-    setIsClient(true);
-    
-    // Check if the user has manually chosen a language previously
-    const storedLang = localStorage.getItem("preferred_lang");
-    
-    // Check for googtrans cookie
-    const match = document.cookie.match(/(^|;) ?googtrans=([^;]*)(;|$)/);
-    let cookieLang = null;
-    if (match && match[2]) {
-      const parts = match[2].split('/');
-      if (parts.length === 3) {
-        cookieLang = parts[2];
-      }
-    }
-
-    let targetLang = "en";
-
-    if (storedLang) {
-      targetLang = storedLang;
-    } else if (cookieLang) {
-      targetLang = cookieLang;
-    } else {
-      // Auto-detect browser language if neither is set
-      const browserLang = navigator.language.split('-')[0];
-      if (languages.some(l => l.code === browserLang)) {
-        targetLang = browserLang;
-      }
-    }
-
-    // Set cookie if needed
-    if (targetLang !== cookieLang) {
-      setLanguageCookie(targetLang);
-    }
-    
-    setCurrentLang(targetLang);
-
     // Provide the initialization callback for Google Translate
-    (window as any).googleTranslateElementInit = () => {
-      new (window as any).google.translate.TranslateElement(
-        { pageLanguage: 'en', autoDisplay: false },
-        'google_translate_element'
-      );
+    (window as unknown as { googleTranslateElementInit: () => void }).googleTranslateElementInit = () => {
+      const googleObj = (window as unknown as { google?: { translate: { TranslateElement: new (config: { pageLanguage: string; autoDisplay: boolean }, el: string) => void } } }).google;
+      if (googleObj?.translate?.TranslateElement) {
+        new googleObj.translate.TranslateElement(
+          { pageLanguage: "en", autoDisplay: false },
+          "google_translate_element"
+        );
+      }
     };
   }, []);
-
-  const setLanguageCookie = (lang: string) => {
-    if (lang === "en") {
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${location.hostname};`;
-    } else {
-      document.cookie = `googtrans=/en/${lang}; path=/;`;
-      document.cookie = `googtrans=/en/${lang}; path=/; domain=${location.hostname};`;
-    }
-  };
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLang = e.target.value;
     setCurrentLang(newLang);
-    localStorage.setItem("preferred_lang", newLang);
-    setLanguageCookie(newLang);
-    // Reload the page to apply the translation immediately
+    try {
+      localStorage.setItem("preferred_lang", newLang);
+      setLanguageCookie(newLang);
+    } catch {}
     window.location.reload();
   };
 
@@ -91,27 +86,27 @@ export function LanguageToggle() {
 
   return (
     <>
-      {/* Hidden element required for Google Translate to mount */}
-      <div id="google_translate_element" style={{ display: 'none' }}></div>
+      <div id="google_translate_element" style={{ display: "none" }}></div>
       <Script 
         src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
         strategy="lazyOnload"
       />
       
-      <div className="relative inline-flex items-center">
+      <div className="relative inline-flex items-center text-right">
         <select 
           value={currentLang} 
           onChange={handleLanguageChange}
-          className="bg-transparent text-sm font-medium outline-none text-muted-foreground hover:text-foreground transition-all appearance-none cursor-pointer pr-3"
+          aria-label="Select Language"
+          className="bg-transparent text-xs font-mono font-medium outline-none text-muted-foreground hover:text-foreground transition-all appearance-none cursor-pointer pr-4 pl-1.5 py-1.5 rounded-md hover:bg-muted/20"
         >
-          {languages.map(lang => (
-            <option key={lang.code} value={lang.code} className="bg-background text-foreground">
+          {languages.map((lang) => (
+            <option key={lang.code} value={lang.code} className="bg-background text-foreground text-xs font-mono">
               {lang.code.toUpperCase()}
             </option>
           ))}
         </select>
-        <div className="absolute right-0 pointer-events-none text-muted-foreground/70">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        <div className="absolute right-1 pointer-events-none text-muted-foreground/70">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </div>
       </div>
     </>
