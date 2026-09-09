@@ -73,6 +73,32 @@ export const METHODOLOGY_ITEMS: WikiItem[] = [
 
 export const SYSTEM_ITEMS: WikiItem[] = [
   {
+    id: "teamwork-preview",
+    title: "/teamwork-preview — Teamwork Multi-Agent Swarm & Prompt Crafting Protocol",
+    summary: "Two-phase autonomous multi-agent teamwork architecture: 9-step prompt crafting wizard, objective forcing functions, dynamic swarm routing, and subagent delegation.",
+    category: "systems",
+    categoryLabel: "Agent Skill",
+    tags: ["Multi-Agent Swarm", "Teamwork", "Prompt Crafting", "Dynamic Routing", "Forcing Functions"],
+    date: "2026-09-09",
+    href: "/projects/teamwork-preview",
+    featured: true,
+    readingTime: "Spec & Swarm Demo",
+    keyTakeaway: "Transforms user goals into hardened prompt artifacts with objective forcing functions and dynamic swarm execution.",
+  },
+  {
+    id: "boost-orchestrator",
+    title: "/boost — Cognitive Booster & Dual-Subagent Engine",
+    summary: "Master ReAct cognitive orchestration protocol routing between Solo and Delegation routines, deploying DeepCoder & DeepInvestigator with verbatim intent preservation.",
+    category: "systems",
+    categoryLabel: "Master System",
+    tags: ["Cognitive Boost", "Master Orchestrator", "DeepCoder", "DeepInvestigator", "Verbatim Intent", "ReAct"],
+    date: "2026-09-09",
+    href: "/projects/boost",
+    featured: true,
+    readingTime: "Spec & ReAct Demo",
+    keyTakeaway: "Zero pre-work context pollution; routes verbatim user intent to specialized subagents with multi-round adversarial verification.",
+  },
+  {
     id: "bloobs-styles",
     title: "/bloobs-styles — Bloobs Aesthetic Matrix (10 Styles)",
     summary: "Curated taxonomy of 10 modern generative design styles (Risograph, Clay, Organic Tech, Holographic, Brutalism, Gzhel) with tested prompt recipes and animated reference loop.",

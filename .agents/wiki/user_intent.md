@@ -56,3 +56,9 @@
   Summary: Ingest bloobs-styles.gif and create a new flagship showcase project 'Bloobs Aesthetic Matrix — 10 Avant-Garde Generative Design Styles' (/bloobs-styles) on alim.dest.page following showcase-project-builder protocol (animated 16:9 GIF thumbnail in marquee, 10 visual styles with verified prompt recipes, 1-click clipboard copying, 16:9 vector visualizer, SDD spec, build & test checklists, and public wiki doc).
   Status: Completed
   Origin: "/showcase-project-builder создай на лендинге https://alim.dest.page/ новый проект 'C:\\Users\\alimz\\Downloads\\bloobs-styles.gif' с описанием промптов этих стилейчто на гифке 1. Risograph ... 10. Gzhel"
+
+- [INTENT-019] [2026-09-09 19:33] [Category: Feature|Showcase|MultiAgent]
+  Summary: Integrate two flagship autonomous showcase projects on https://alim.dest.page/ for /teamwork-preview (Teamwork Multi-Agent Swarm & Prompt Crafting Protocol) and /boost (Boost Cognitive Orchestrator & Dual-Subagent Engine) following the 8 pillars of the showcase-project-builder standard: custom 16:9 thumbnails, 4-node vector visualizers, SDD architecture specs, build/test checklists, interactive client-side simulators (TeamworkWizard and BoostPlayground), markdown documentation in src/content/projects/, and public wiki registration.
+  Status: Completed
+  Origin: "lсоздай на лендинге https://alim.dest.page/ новых 2 проекта: для скилла /teamwork-preview и /boost - что каждый делает"
+

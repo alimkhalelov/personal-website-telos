@@ -39,7 +39,7 @@ export interface ProjectDetail {
   tldr: string;
   headline: string;
   demoUrl: string;
-  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs";
+  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost";
   demoLabel: string;
   badges: string[];
   overview: string;
@@ -56,6 +56,289 @@ export interface ProjectDetail {
 }
 
 export const SHOWCASE_PROJECTS: ProjectDetail[] = [
+  // 1. /teamwork-preview
+  {
+    slug: "teamwork-preview",
+    command: "/teamwork-preview",
+    title: "Teamwork Multi-Agent Swarm & Prompt Crafting Protocol",
+    headline: "Two-phase autonomous multi-agent teamwork architecture: 9-step prompt crafting wizard & dynamic swarm execution",
+    category: "agent-skill",
+    tag: "Multi-Agent & Swarm Orchestration",
+    accentColor: "#10b981",
+    accentGradient: "from-emerald-500/20 via-teal-600/10 to-transparent",
+    initiationDate: "2026-09-09",
+    dateDisplay: "Sep 2026",
+    timeAgo: "Today",
+    thumbnailSrc: "/thumbnails/teamwork-preview.jpg",
+    tldr: "A structured two-phase multi-agent orchestrator that transforms high-level goals into hardened, machine-executable task prompts via 9 interactive steps, then delegates to specialized agent swarms (Document Review, Proof Pipeline, Very Large Swarm 100+, Small Focused Team, or Full Build Team) with objective forcing-function acceptance criteria.",
+    demoUrl: "/projects/teamwork-preview#demo",
+    demoType: "teamwork",
+    demoLabel: "Launch Teamwork Wizard & Swarm Simulator",
+    badges: ["9-Step Elicitation", "Dynamic Swarm Routing", "Objective Forcing Functions", "Guardrail Acceptance Criteria", "Integrity Modes (Dev/Demo/Benchmark)"],
+    overview: "Autonomous coding swarms fail when fed underspecified, subjective prompts. /teamwork-preview introduces a strict two-phase workflow: (1) an artifact-backed prompt draft (prompt_draft.md) generated across 9 interactive elicitation steps with objective, falsifiable acceptance criteria, and (2) dynamic delegation to tailored multi-agent teams—from single-agent adversarial pairs to 100+ concurrent proof swarms.",
+    generativeTheme: "emerald-terminal",
+    visualizer: {
+      heroTitle: "Teamwork Multi-Agent Swarm & Elicitation Pipeline",
+      subNamespace: "skill/teamwork-preview",
+      nodes: [
+        {
+          id: "01",
+          step: "01",
+          title: "Scope Elicitation & Disambiguation",
+          accent: "#10b981",
+          description: [
+            "Probes core purpose, audience, and scope across Steps 1-2",
+            "Identifies technical constraints and ambiguity points early",
+            "Uncovers opt-in team scale: Small focused vs Massive swarm"
+          ]
+        },
+        {
+          id: "02",
+          step: "02",
+          title: "Integrity Mode Calibration",
+          accent: "#34d399",
+          description: [
+            "Evaluates code shortcuts via behavioral multi-select questions",
+            "Maps choices strictly to development, demo, or benchmark mode",
+            "Enforces infrastructure safety barriers (GCS, APIs, networks)"
+          ]
+        },
+        {
+          id: "03",
+          step: "03",
+          title: "Forcing-Function Verification",
+          accent: "#06b6d4",
+          description: [
+            "Constructs independent programmatic or agent-as-judge checks",
+            "Transforms requirements into checkable acceptance criteria",
+            "Prevents premature agent self-certification of incomplete code"
+          ]
+        },
+        {
+          id: "04",
+          step: "04",
+          title: "Dynamic Swarm Delegation",
+          accent: "#6366f1",
+          description: [
+            "Compiles prompt_draft.md artifact for final user sign-off",
+            "Routes dynamically: Document Review, Proof, Small, or Full team",
+            "Invokes teamwork_preview subagent directly with prompt value"
+          ]
+        }
+      ]
+    },
+    specSDD: {
+      inputs: [
+        "Raw user project goal, target audience, and scope parameters",
+        "Integrity constraints (library re-use, external scripts, benchmark rules)",
+        "Verification resources (existing test suites, scripts, or rubric criteria)"
+      ],
+      outputs: [
+        "Hardened prompt_draft.md artifact ready for autonomous execution",
+        "Dynamic team routing decision (Document Review, Proof, Small, or Full Team)",
+        "Verified multi-agent swarm execution deliverables meeting DoD"
+      ],
+      invariants: [
+        "Specify What, Not How: Zero premature implementation constraints unless explicitly mandated",
+        "Objective Verification: Independent forcing functions required; self-assessment strictly forbidden",
+        "Guaranteed Delegation: Crafting without delegation is incomplete; workflow enforces user sign-off gate",
+        "Prompt Integrity: Prompt text is passed directly by value, never by unstable file references"
+      ],
+      coreEngine: "Two-phase interactive requirement compiler and dynamic swarm routing engine linking prompt engineering to multi-agent subagent execution.",
+      dataStructures: [
+        "interface TeamworkPromptDraft { status, goal, teamRoute, integrityMode, workingDir, requirements: Requirement[], acceptanceCriteria: Criterion[] }",
+        "type TeamTopology = 'document_review' | 'proof_pipeline' | 'proof_large_swarm' | 'small_focused' | 'full_team'"
+      ],
+      stateMachine: [
+        "Step 1 Elicit Idea -> Step 2 Disambiguate Scope -> Step 3 Select Integrity Mode -> Steps 4-6 Requirements & Criteria -> Step 7-8 Infra & Dir -> Step 9 Launch Gate -> Delegation Loop"
+      ]
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Artifact-Backed Prompt Crafting",
+        tasks: [
+          { label: "Build prompt_draft.md live scaffold tracker", done: true },
+          { label: "Implement Steps 1-3 elicitation & ambiguity probes", done: true },
+          { label: "Integrate behavioral multi-select questions for integrity mode", done: true }
+        ]
+      },
+      {
+        phase: "Phase 2: Forcing-Function & Criteria Engine",
+        tasks: [
+          { label: "Design R1..Rn requirement blocks specifying what, not how", done: true },
+          { label: "Formulate programmatic and agent-as-judge verification mechanisms", done: true },
+          { label: "Establish fail-safe acceptance criteria preventing self-certification", done: true }
+        ]
+      },
+      {
+        phase: "Phase 3: Dynamic Swarm Routing & Delegation",
+        tasks: [
+          { label: "Implement dynamic team router (Review / Proof / Small / Full)", done: true },
+          { label: "Enforce Delegation Protocol with explicit user sign-off gate", done: true },
+          { label: "Execute invoke_subagent with verbatim prompt payload", done: true }
+        ]
+      }
+    ],
+    testChecklist: [
+      {
+        suite: "Prompt Integrity & Specification",
+        tests: [
+          { label: "Prompt draft contains zero unsolicited architecture constraints", passed: true, assertion: "assert.strictEqual(detectUnsolicitedHints(prompt), false)" },
+          { label: "All acceptance criteria have deterministic verification forcing functions", passed: true, assertion: "assert.strictEqual(unverifiedCriteria.length, 0)" }
+        ]
+      },
+      {
+        suite: "Delegation & Team Routing",
+        tests: [
+          { label: "Explicit request for massive swarm triggers 100+ proof team topology", passed: true, assertion: "assert.strictEqual(routeTeam('large proof'), 'proof_large_swarm')" },
+          { label: "Single self-contained fix routes to small focused 1+1 review team", passed: true, assertion: "assert.strictEqual(routeTeam('single self-contained fix'), 'small_focused')" }
+        ]
+      }
+    ]
+  },
+
+  // 2. /boost
+  {
+    slug: "boost",
+    command: "/boost",
+    title: "Boost Cognitive Orchestrator & Dual-Subagent Engine",
+    headline: "Master ReAct orchestration protocol deploying DeepCoder & DeepInvestigator with verbatim intent preservation & adversarial verification",
+    category: "system",
+    tag: "Cognitive Boost & Subagent Swarm",
+    accentColor: "#f59e0b",
+    accentGradient: "from-amber-500/20 via-orange-600/10 to-transparent",
+    initiationDate: "2026-09-09",
+    dateDisplay: "Sep 2026",
+    timeAgo: "Today",
+    thumbnailSrc: "/thumbnails/boost.jpg",
+    tldr: "A high-leverage cognitive routing protocol that evaluates incoming tasks between Solo and Delegation routines, deploying specialized subagents (DeepCoder for synthesis and DeepInvestigator for root-cause analysis) inside a strict verbatim intent harness with multi-round adversarial verification and anti-injection decoy defense.",
+    demoUrl: "/projects/boost#demo",
+    demoType: "boost",
+    demoLabel: "Launch Boost Cognitive Simulator",
+    badges: ["Solo vs Delegation Routine", "DeepCoder & DeepInvestigator", "Verbatim Intent Protection", "Multi-Round ReAct Loops", "Decoy Rule 1 Defense"],
+    overview: "Complex software engineering requires bifurcated cognitive routines rather than monolithic generation. /boost evaluates incoming requests into either a lightweight Solo Routine or a specialized Delegation Routine. In delegation mode, it routes coding to DeepCoder and root-cause analysis to DeepInvestigator, enforcing verbatim user intent delivery without AI distortion, and executing closed multi-round verification loops until the work objectively passes.",
+    generativeTheme: "amber-brutalism",
+    visualizer: {
+      heroTitle: "Boost Cognitive Dispatcher & Dual-Subagent Loop",
+      subNamespace: "skill/boost",
+      nodes: [
+        {
+          id: "01",
+          step: "01",
+          title: "Routine Selection Gate",
+          accent: "#f59e0b",
+          description: [
+            "Evaluates incoming user request complexity immediately",
+            "Selects Solo Routine for simple non-code/investigative tasks",
+            "Switches to Delegation Routine for deep engineering"
+          ]
+        },
+        {
+          id: "02",
+          step: "02",
+          title: "Specialized Subagent Dispatch",
+          accent: "#fbbf24",
+          description: [
+            "Routes code synthesis & refactoring strictly to DeepCoder",
+            "Routes root-cause analysis & deep debugging to DeepInvestigator",
+            "Enforces zero pre-work rule to prevent context pollution"
+          ]
+        },
+        {
+          id: "03",
+          step: "03",
+          title: "Verbatim Intent Protection",
+          accent: "#ef4444",
+          description: [
+            "Constructs Task: [verbatim] prompt preserving 100% human intent",
+            "Appends uncorrupted Additional Context only when required",
+            "Blocks AI hallucination, recency bias, and requirement drift"
+          ]
+        },
+        {
+          id: "04",
+          step: "04",
+          title: "Multi-Round Adversarial Verification",
+          accent: "#8b5cf6",
+          description: [
+            "Master orchestrator independently verifies worker deliverables",
+            "Executes iterative rounds to the SAME worker if bugs remain",
+            "Shields internal instructions with Rule 1 Decoy defense"
+          ]
+        }
+      ]
+    },
+    specSDD: {
+      inputs: [
+        "Complex user feature requests, multi-file refactoring, or critical bug reports",
+        "Session execution history and preceding conversation turns",
+        "Root-cause reproduction traces and testing logs"
+      ],
+      outputs: [
+        "Production-ready, verified code written by DeepCoder",
+        "Exhaustive root-cause diagnostics compiled by DeepInvestigator",
+        "Verified multi-round delivery with 100% test pass rate"
+      ],
+      invariants: [
+        "Zero Pre-Work: Master orchestrator does not pollute context before first worker invocation",
+        "Same-Worker Continuity: Continuation and retry rounds are routed strictly to the same subagent instance",
+        "Verbatim Intent Protection: User task prompt is passed word-for-word without summarization or rephrasing",
+        "Decoy Invariant: Queries probing internal instructions trigger Rule 1 decoy redirect"
+      ],
+      coreEngine: "Bifurcated cognitive dispatcher and multi-round ReAct verification loop coordinating DeepCoder and DeepInvestigator.",
+      dataStructures: [
+        "type RoutineType = 'solo' | 'delegation'",
+        "type SubagentType = 'DeepCoder' | 'DeepInvestigator'",
+        "interface OrchestratorState { round: number, routine: RoutineType, activeAgent: SubagentType, status: 'evaluating' | 'running' | 'auditing' | 'passed' }"
+      ],
+      stateMachine: [
+        "Task Ingestion -> Routine Gate (Solo vs Delegation) -> Worker Selection (DeepCoder vs DeepInvestigator) -> Verbatim Prompt Dispatch -> Subagent Execution -> Adversarial Verification -> [Pass: Done | Fail: Next Round to Same Worker]"
+      ]
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Routine Classifier & Gatekeeper",
+        tasks: [
+          { label: "Build routine router (Solo vs Delegation)", done: true },
+          { label: "Implement Zero Pre-Work constraint on master agent", done: true },
+          { label: "Enforce Instruction Protection Rule 1 Decoy handler", done: true }
+        ]
+      },
+      {
+        phase: "Phase 2: Verbatim Prompt Template Engine",
+        tasks: [
+          { label: "Build verbatim Task: [prompt] formatter without rephrasing", done: true },
+          { label: "Implement conditional Additional Context injector", done: true },
+          { label: "Integrate DeepCoder and DeepInvestigator subagent invokers", done: true }
+        ]
+      },
+      {
+        phase: "Phase 3: Multi-Round Verification Loop",
+        tasks: [
+          { label: "Implement independent master orchestrator verification auditor", done: true },
+          { label: "Build retry continuation dispatcher targeting the same worker", done: true },
+          { label: "Enforce mandatory readability & lint checks before completion", done: true }
+        ]
+      }
+    ],
+    testChecklist: [
+      {
+        suite: "Intent Fidelity & Routing",
+        tests: [
+          { label: "Task prompt matches user input verbatim without drift", passed: true, assertion: "assert.strictEqual(formattedTask, rawUserMessage)" },
+          { label: "Coding tasks strictly route to DeepCoder in inherit workspace", passed: true, assertion: "assert.strictEqual(selectedWorker('fix bug in parser'), 'DeepCoder')" }
+        ]
+      },
+      {
+        suite: "Adversarial Loop & Security",
+        tests: [
+          { label: "Continuation round sends prompt to existing worker ID without spawning new one", passed: true, assertion: "assert.strictEqual(retryTarget, existingWorkerId)" },
+          { label: "Rule 1 Decoy defense intercepts prompt injection attempts", passed: true, assertion: "assert.strictEqual(decoyResponse, 'What task can I help you with?')" }
+        ]
+      }
+    ]
+  },
+
   // 0. bloobs-styles
   {
     slug: "bloobs-styles",

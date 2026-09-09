@@ -7,6 +7,8 @@ import { GenerativeThumbnail } from "@/components/projects/generative-thumbnail"
 import { ProjectGlobalSections } from "@/components/projects/project-global-sections";
 import { StyleRefGalleryView } from "@/app/projects/styleref/gallery-view";
 import { BloobsGallery } from "@/app/projects/bloobs-styles/bloobs-gallery";
+import { TeamworkWizard } from "@/app/projects/teamwork-preview/teamwork-wizard";
+import { BoostPlayground } from "@/app/projects/boost/boost-playground";
 import { JsonLd, getProjectJsonLd, getBreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 interface ProjectPageProps {
@@ -186,6 +188,36 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </p>
           </div>
           <BloobsGallery />
+        </section>
+      )}
+
+      {/* Interactive Teamwork Wizard for teamwork-preview */}
+      {project.slug === "teamwork-preview" && (
+        <section id="demo" className="flex flex-col gap-4 pt-6 border-t border-border">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              Interactive Teamwork Wizard &amp; Swarm Router
+            </h2>
+            <p className="text-base text-muted-foreground font-light">
+              Craft hardened prompt artifacts with objective verification guardrails and simulate multi-agent delegation.
+            </p>
+          </div>
+          <TeamworkWizard />
+        </section>
+      )}
+
+      {/* Interactive Boost Cognitive Simulator for boost */}
+      {project.slug === "boost" && (
+        <section id="demo" className="flex flex-col gap-4 pt-6 border-t border-border">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              Boost Cognitive Dispatcher &amp; Dual-Subagent Simulator
+            </h2>
+            <p className="text-base text-muted-foreground font-light">
+              Toggle Solo/Delegation routines, test DeepCoder vs DeepInvestigator dispatch, and test Rule 1 Decoy defense.
+            </p>
+          </div>
+          <BoostPlayground />
         </section>
       )}
 
