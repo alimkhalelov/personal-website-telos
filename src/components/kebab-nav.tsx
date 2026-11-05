@@ -13,8 +13,10 @@ import {
   Moon, 
   Send, 
   Mail, 
-  ExternalLink 
+  ExternalLink,
+  Sparkles
 } from "lucide-react";
+import { useDynamicDaytime } from "./one-ui-wallpaper";
 
 function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -43,6 +45,7 @@ export function KebabNav() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
+  const { enabled: daytimeEnabled, toggle: toggleDaytime } = useDynamicDaytime();
 
   React.useEffect(() => {
     setMounted(true);
@@ -171,6 +174,24 @@ export function KebabNav() {
                 {theme === "dark" ? "Dark" : "Light"}
               </button>
             )}
+          </div>
+
+          <div className="flex items-center justify-between px-3 py-1.5 rounded-xl hover:bg-muted/30 transition-colors">
+            <span className="text-xs text-foreground/80 flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500/80 dark:text-amber-400" />
+              Dynamic Daytime
+            </span>
+            <button
+              type="button"
+              onClick={toggleDaytime}
+              className={`text-xs font-mono px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+                daytimeEnabled
+                  ? "bg-accent/20 text-accent font-semibold"
+                  : "bg-muted/30 text-muted-foreground hover:bg-muted/60"
+              }`}
+            >
+              {daytimeEnabled ? "On" : "Off"}
+            </button>
           </div>
 
           <div className="flex items-center justify-between px-3 py-1 rounded-xl hover:bg-muted/30 transition-colors">

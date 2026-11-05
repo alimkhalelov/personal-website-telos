@@ -1,8 +1,26 @@
 import Link from "next/link";
 import { getSortedArticles } from "@/lib/mdx";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
+
+function LinkedinIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+    >
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
+    </svg>
+  );
+}
 
 const formatDate = (dateString: string) => {
   try {
@@ -22,59 +40,65 @@ export default function Home() {
   return (
     <>
       <OneUiWallpaper />
-      <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative z-10">
-        {/* Hero Section */}
+      <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-20 sm:gap-24 w-full relative z-10">
+        {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          <div className="flex flex-col gap-3">
-            <h1 className="text-4xl sm:text-6xl font-bold tracking-tighter leading-[1.15]">
-              Alim Khalelov <span className="text-muted-foreground/60 font-light text-2xl sm:text-4xl block sm:inline">| AI-Native Product Manager</span>
+          <div className="flex flex-col gap-2">
+            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-foreground">
+              Alim Khalelov
             </h1>
-
-            {/* Contacts Row */}
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs sm:text-sm text-muted-foreground font-mono">
-              <a
-                href="mailto:alim.khalelov@gmail.com"
-                className="hover:text-foreground transition-colors underline-offset-4 hover:underline !no-underline text-foreground/80"
-              >
-                alim.khalelov@gmail.com
-              </a>
-              <span className="text-muted-foreground/40">·</span>
-              <a
-                href="tel:+77053508033"
-                className="hover:text-foreground transition-colors underline-offset-4 hover:underline !no-underline text-foreground/80"
-              >
-                +7 705 350 80 33
-              </a>
-              <span className="text-muted-foreground/40">·</span>
-              <a
-                href="https://t.me/AlimLLC"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-foreground transition-colors underline-offset-4 hover:underline !no-underline text-foreground/80"
-              >
-                Telegram: @AlimLLC
-              </a>
-              <span className="text-muted-foreground/40">·</span>
-              <a
-                href="https://linkedin.com/in/alimzhan-khalelov"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-foreground transition-colors underline-offset-4 hover:underline !no-underline text-foreground/80"
-              >
-                linkedin.com/in/alimzhan-khalelov
-              </a>
-            </div>
-          </div>
-
-          {/* Summary Section */}
-          <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
-            <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/80 font-mono">
-              Summary
-            </h2>
-            <p className="text-base sm:text-lg text-foreground/90 max-w-3xl leading-relaxed font-light">
-              Product Manager with 5+ years shipping 0-to-1 products at AI and Web3 startups. I build multi-agent systems, design validation pipelines for LLM outputs, and run rapid prototyping cycles to find product-market fit before scaling.
+            <p className="text-xl sm:text-2xl text-muted-foreground font-light tracking-tight">
+              AI-Native Product Manager
             </p>
           </div>
+
+          {/* Minimalist Contact Icon Pills */}
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <a
+              href="mailto:alim.khalelov@gmail.com"
+              title="alim.khalelov@gmail.com"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+            >
+              <Mail className="w-3.5 h-3.5 text-muted-foreground" />
+              <span>Email</span>
+            </a>
+
+            <a
+              href="https://t.me/AlimLLC"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="@AlimLLC"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+            >
+              <Send className="w-3.5 h-3.5 text-blue-500" />
+              <span>Telegram</span>
+            </a>
+
+            <a
+              href="https://linkedin.com/in/alimzhan-khalelov"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="linkedin.com/in/alimzhan-khalelov"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+            >
+              <LinkedinIcon className="w-3.5 h-3.5 text-blue-600" />
+              <span>LinkedIn</span>
+            </a>
+
+            <a
+              href="tel:+77053508033"
+              title="+7 705 350 80 33"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+            >
+              <Phone className="w-3.5 h-3.5 text-emerald-500" />
+              <span>+7 705 350 80 33</span>
+            </a>
+          </div>
+
+          {/* Crisp, Non-Repetitive Summary Bio */}
+          <p className="text-base sm:text-lg text-foreground/85 max-w-2xl leading-relaxed font-light pt-2">
+            5+ years shipping 0-to-1 products across AI & Web3. Building multi-agent systems, LLM evaluation pipelines, and rapid prototyping cycles to validate product-market fit before scaling.
+          </p>
         </section>
 
         {/* Featured Showcase & Agent Skills Horizontal Strip */}
@@ -92,7 +116,7 @@ export default function Home() {
                 <Link
                   href={`/blog/${article.slug}`}
                   key={article.slug}
-                  className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !no-underline text-blue-600 visited:text-purple-600"
+                  className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !no-underline"
                 >
                   <div className="flex items-center gap-4">
                     <time

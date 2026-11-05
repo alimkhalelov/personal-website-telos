@@ -87,7 +87,7 @@ export default function RootLayout({
         <JsonLd data={getPersonAndWebsiteGraph()} />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-accent/30 transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <KebabNav />
           {children}
           <Analytics />
