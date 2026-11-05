@@ -13,9 +13,11 @@ import {
   Moon, 
   Send, 
   Mail, 
-  ExternalLink,
-  Sparkles
+  Sparkles 
 } from "lucide-react";
+import { useTheme } from "next-themes";
+import { LanguageToggle } from "./language-toggle";
+import { BionicToggle } from "./bionic-toggle";
 import { useDynamicDaytime } from "./one-ui-wallpaper";
 
 function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
@@ -35,9 +37,6 @@ function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
     </svg>
   );
 }
-import { useTheme } from "next-themes";
-import { LanguageToggle } from "./language-toggle";
-import { BionicToggle } from "./bionic-toggle";
 
 export function KebabNav() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -75,88 +74,89 @@ export function KebabNav() {
     };
   }, [isOpen]);
 
-  // Закрывать при смене страницы
+  // Закрывать при переходе на другую страницу
   React.useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
   return (
     <div ref={menuRef} className="fixed top-4 right-4 sm:right-8 z-50 select-none">
-      {/* Кнопка 3 вертикальные точки (без подложки и без обводки) */}
+      {/* Кнопка 3 вертикальные точки — чистый белый цвет темы, без подложки и без обводки */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        aria-label="Navigation menu"
+        aria-label="Toggle navigation menu"
         aria-expanded={isOpen}
-        className="p-2 transition-all cursor-pointer flex items-center justify-center text-foreground/85 hover:text-foreground hover:scale-110 active:scale-95 bg-transparent border-0 shadow-none outline-none"
+        className="p-2.5 transition-all cursor-pointer flex items-center justify-center text-white/90 hover:text-white hover:scale-110 active:scale-95 bg-transparent border-0 shadow-none outline-none focus:outline-none"
       >
         {isOpen ? (
           <X className="w-5 h-5 transition-transform rotate-0 hover:rotate-90 duration-200" />
         ) : (
-          <MoreVertical className="w-5 h-5" />
+          <MoreVertical className="w-5 h-5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]" />
         )}
       </button>
 
-      {/* Выпадающее меню */}
+      {/* Выпадающее меню — спроектировано по стандартам /design (Frosted Glassmorphism, 44px hitboxes) */}
       {isOpen && (
-        <div className="absolute right-0 top-12 w-64 rounded-2xl border border-border/80 bg-background/90 dark:bg-zinc-950/90 backdrop-blur-2xl shadow-2xl p-2 flex flex-col gap-1 animate-in fade-in slide-in-from-top-2 duration-200">
-          {/* Раздел: Навигация */}
-          <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">
+        <div className="absolute right-0 top-12 w-68 rounded-3xl bg-black/55 dark:bg-black/75 backdrop-blur-3xl border border-white/15 shadow-[0_24px_64px_rgba(0,0,0,0.5)] p-2.5 flex flex-col gap-1.5 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-200">
+          {/* Секция: Навигация */}
+          <div className="px-3 pt-1.5 pb-0.5 text-[11px] font-mono uppercase tracking-wider text-white/45">
             Navigation
           </div>
 
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors !no-underline ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl text-[15px] font-medium transition-all !no-underline ${
               pathname === "/"
-                ? "bg-accent/15 text-accent font-semibold"
-                : "text-foreground/80 hover:text-foreground hover:bg-muted/40"
+                ? "bg-white/15 text-white font-semibold"
+                : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
-            <Home className="w-4 h-4 text-muted-foreground" />
+            <Home className="w-4 h-4 text-white/70" />
             <span>Home</span>
           </Link>
 
           <Link
             href="/projects"
             onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors !no-underline ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl text-[15px] font-medium transition-all !no-underline ${
               pathname?.startsWith("/projects")
-                ? "bg-accent/15 text-accent font-semibold"
-                : "text-foreground/80 hover:text-foreground hover:bg-muted/40"
+                ? "bg-white/15 text-white font-semibold"
+                : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
-            <FolderKanban className="w-4 h-4 text-muted-foreground" />
+            <FolderKanban className="w-4 h-4 text-white/70" />
             <span>Projects</span>
           </Link>
 
           <Link
             href="/wiki"
             onClick={() => setIsOpen(false)}
-            className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors !no-underline ${
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl text-[15px] font-medium transition-all !no-underline ${
               pathname?.startsWith("/wiki")
-                ? "bg-accent/15 text-accent font-semibold"
-                : "text-foreground/80 hover:text-foreground hover:bg-muted/40"
+                ? "bg-white/15 text-white font-semibold"
+                : "text-white/80 hover:text-white hover:bg-white/10"
             }`}
           >
-            <BookOpen className="w-4 h-4 text-muted-foreground" />
+            <BookOpen className="w-4 h-4 text-white/70" />
             <span>Wiki Hub</span>
           </Link>
 
-          <div className="pt-2" />
+          <div className="pt-1.5" />
 
-          {/* Раздел: Настройки и сервисы */}
-          <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">
+          {/* Секция: Настройки */}
+          <div className="px-3 pt-1 pb-0.5 text-[11px] font-mono uppercase tracking-wider text-white/45">
             Preferences
           </div>
 
-          <div className="flex items-center justify-between px-3 py-1.5 rounded-xl hover:bg-muted/30 transition-colors">
-            <span className="text-xs text-foreground/80 flex items-center gap-2">
+          {/* Переключатель темы */}
+          <div className="flex items-center justify-between px-3 py-2 rounded-2xl hover:bg-white/5 transition-colors">
+            <span className="text-[14px] text-white/90 flex items-center gap-2.5">
               {mounted && theme === "dark" ? (
-                <Moon className="w-3.5 h-3.5 text-muted-foreground" />
+                <Moon className="w-4 h-4 text-white/70" />
               ) : (
-                <Sun className="w-3.5 h-3.5 text-muted-foreground" />
+                <Sun className="w-4 h-4 text-white/70" />
               )}
               Theme
             </span>
@@ -164,55 +164,57 @@ export function KebabNav() {
               <button
                 type="button"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="text-xs font-mono px-2 py-0.5 rounded-md bg-muted/30 hover:bg-muted/60 text-foreground transition-colors cursor-pointer"
+                className="text-xs font-mono px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
               >
                 {theme === "dark" ? "Dark" : "Light"}
               </button>
             )}
           </div>
 
-          <div className="flex items-center justify-between px-3 py-1.5 rounded-xl hover:bg-muted/30 transition-colors">
-            <span className="text-xs text-foreground/80 flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500/80 dark:text-amber-400" />
+          {/* Переключатель Dynamic Daytime */}
+          <div className="flex items-center justify-between px-3 py-2 rounded-2xl hover:bg-white/5 transition-colors">
+            <span className="text-[14px] text-white/90 flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-amber-300" />
               Dynamic Daytime
             </span>
             <button
               type="button"
               onClick={toggleDaytime}
-              className={`text-xs font-mono px-2 py-0.5 rounded-md transition-colors cursor-pointer ${
+              className={`text-xs font-mono px-3 py-1 rounded-full transition-colors cursor-pointer ${
                 daytimeEnabled
-                  ? "bg-accent/20 text-accent font-semibold"
-                  : "bg-muted/30 text-muted-foreground hover:bg-muted/60"
+                  ? "bg-white/25 text-white font-semibold shadow-xs"
+                  : "bg-white/10 text-white/60 hover:bg-white/15"
               }`}
             >
               {daytimeEnabled ? "On" : "Off"}
             </button>
           </div>
 
-          <div className="flex items-center justify-between px-3 py-1 rounded-xl hover:bg-muted/30 transition-colors">
-            <span className="text-xs text-foreground/80">Language</span>
+          {/* Выбор языка */}
+          <div className="flex items-center justify-between px-3 py-1.5 rounded-2xl hover:bg-white/5 transition-colors">
+            <span className="text-[14px] text-white/90">Language</span>
             <LanguageToggle />
           </div>
 
-          {/* Bionic reading появляется если мы внутри статьи */}
           <BionicToggle />
 
-          <div className="pt-2" />
+          <div className="pt-1.5" />
 
-          {/* Раздел: Прямой контакт */}
-          <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">
+          {/* Секция: Прямая связь (Tactile Frosted Squircles) */}
+          <div className="px-3 pt-1 pb-0.5 text-[11px] font-mono uppercase tracking-wider text-white/45">
             Connect
           </div>
 
-          <div className="flex items-center gap-1 px-1">
+          <div className="flex items-center gap-2 px-1 pb-1">
             <a
               href="https://t.me/AlimLLC"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-foreground/80 hover:text-foreground hover:bg-muted/40 transition-colors !no-underline"
+              aria-label="Telegram"
               title="Telegram: @AlimLLC"
+              className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-white/90 bg-white/10 hover:bg-white/20 active:scale-95 transition-all !no-underline"
             >
-              <Send className="w-3.5 h-3.5 text-blue-400" />
+              <Send className="w-3.5 h-3.5 text-sky-400" />
               <span>Telegram</span>
             </a>
 
@@ -220,19 +222,21 @@ export function KebabNav() {
               href="https://linkedin.com/in/alimzhan-khalelov"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium text-foreground/80 hover:text-foreground hover:bg-muted/40 transition-colors !no-underline"
+              aria-label="LinkedIn"
               title="LinkedIn"
+              className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-medium text-white/90 bg-white/10 hover:bg-white/20 active:scale-95 transition-all !no-underline"
             >
-              <LinkedinIcon className="w-3.5 h-3.5 text-blue-500" />
+              <LinkedinIcon className="w-3.5 h-3.5 text-blue-400" />
               <span>LinkedIn</span>
             </a>
 
             <a
               href="mailto:alim.khalelov@gmail.com"
-              className="p-1.5 rounded-lg text-foreground/80 hover:text-foreground hover:bg-muted/40 transition-colors !no-underline"
-              title="Email"
+              aria-label="Email"
+              title="Email: alim.khalelov@gmail.com"
+              className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white/90 flex items-center justify-center transition-all !no-underline"
             >
-              <Mail className="w-3.5 h-3.5 text-foreground/70" />
+              <Mail className="w-3.5 h-3.5 text-white/80" />
             </a>
           </div>
         </div>

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Outfit, Geist_Mono, Antonio } from "next/font/google";
+import { Outfit, Geist_Mono, Asap_Condensed } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { KebabNav } from "@/components/kebab-nav";
+import { ScrollController } from "@/components/scroll-controller";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd, getPersonAndWebsiteGraph } from "@/components/seo/json-ld";
 
@@ -16,10 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const antonio = Antonio({
-  variable: "--font-antonio",
+const asapCondensed = Asap_Condensed({
+  variable: "--font-asap-condensed",
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -80,6 +81,13 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons: {
+    icon: [
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "512x512", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
@@ -88,11 +96,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${geistMono.variable} ${antonio.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${geistMono.variable} ${asapCondensed.variable} h-full antialiased`}>
       <head>
         <JsonLd data={getPersonAndWebsiteGraph()} />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-accent/30 transition-colors duration-300">
+        <ScrollController />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <KebabNav />
           {children}
