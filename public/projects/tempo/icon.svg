@@ -1,28 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="tempo-brand" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="tempo-brand-squircle" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#38bdf8" />
       <stop offset="50%" stop-color="#6366f1" />
       <stop offset="100%" stop-color="#8b5cf6" />
     </linearGradient>
   </defs>
 
-  <!-- Solid Angular Sports Octagon -->
-  <polygon points="18,4 46,4 60,18 60,46 46,60 18,60 4,46 4,18" fill="url(#tempo-brand)" />
+  <!-- Full Canvas Background Gradient filling entire squircle -->
+  <rect width="64" height="64" rx="14" fill="url(#tempo-brand-squircle)" />
 
-  <!-- Exact Negative Space Silhouette of the Kinetic Runner -->
+  <!-- Kinetic Runner Silhouette -->
   <g stroke="#07080d" fill="none" stroke-linecap="round" stroke-linejoin="round">
     <!-- Head -->
-    <circle cx="38" cy="12" r="4.5" fill="#07080d" stroke="none" />
+    <circle cx="38" cy="13" r="4.5" fill="#07080d" stroke="none" />
     <!-- Rear Arm -->
-    <polyline points="34,19 26,24 29,31" stroke-width="4" />
+    <polyline points="34,20 26,25 29,32" stroke-width="4" />
     <!-- Rear Leg -->
-    <polyline points="28,33 20,44 12,52" stroke-width="4.5" />
+    <polyline points="28,34 20,45 12,53" stroke-width="4.5" />
     <!-- Torso -->
-    <line x1="35" y1="18" x2="28" y2="33" stroke-width="5" />
+    <line x1="35" y1="19" x2="28" y2="34" stroke-width="5" />
     <!-- Front Leg -->
-    <polyline points="28,33 38,41 35,53" stroke-width="4.5" />
+    <polyline points="28,34 38,42 35,54" stroke-width="4.5" />
     <!-- Front Arm -->
-    <polyline points="34,19 41,26 47,21" stroke-width="4" />
+    <polyline points="34,20 41,27 47,22" stroke-width="4" />
   </g>
 </svg>

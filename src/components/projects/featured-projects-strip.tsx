@@ -38,33 +38,15 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
         <AppStoreProjectCard
           title={tempoProject.title}
           subtitle={tempoProject.subtitle || tempoProject.headline}
-          category={tempoProject.tag}
-          badges={tempoProject.badges}
           iconSrc={tempoProject.iconSrc || "/projects/tempo/icon.svg"}
           demoUrl={tempoProject.demoUrl}
-          detailUrl={`/projects/${tempoProject.slug}`}
           isPublic={true}
           screenshots={[
-            {
-              src: "/projects/tempo/01-tempo-brand-hero.png",
-              caption: "Tempo Brand Hero & Push/Pull Progression",
-            },
-            {
-              src: "/projects/tempo/02-crush-fatigue.png",
-              caption: "Crush Fatigue — Dual-Axis Focus Engine",
-            },
-            {
-              src: "/projects/tempo/03-surge-past-equator.png",
-              caption: "Surge Past The Equator — Halfway Milestone",
-            },
-            {
-              src: "/projects/tempo/04-lock-in-your-zone.png",
-              caption: "Lock In Your Zone — Procedural IK Runner",
-            },
-            {
-              src: "/projects/tempo/05-rig-any-treadmill.png",
-              caption: "Universal Workouts — Any Target Duration",
-            },
+            "/projects/tempo/01-tempo-brand-hero.png",
+            "/projects/tempo/02-crush-fatigue.png",
+            "/projects/tempo/03-surge-past-equator.png",
+            "/projects/tempo/04-lock-in-your-zone.png",
+            "/projects/tempo/05-rig-any-treadmill.png",
           ]}
         />
       )}
