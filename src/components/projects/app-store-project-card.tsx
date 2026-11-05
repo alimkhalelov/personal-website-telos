@@ -12,6 +12,7 @@ export interface AppStoreCardProps {
   demoUrl: string;
   screenshots: (string | { src: string; caption?: string })[];
   isPublic?: boolean;
+  maxWidthRem?: number;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ export function AppStoreProjectCard({
   demoUrl,
   screenshots,
   isPublic = true,
+  maxWidthRem = 56,
   className = "",
 }: AppStoreCardProps) {
   const { isAdmin } = useAuth();
@@ -84,22 +86,31 @@ export function AppStoreProjectCard({
         </div>
       </div>
 
-      {/* 2. Horizontal Screenshots Gallery in 9:16 (Squircle rounded-[20px], no zoom, no captions) */}
-      <div className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 scrollbar-none snap-x snap-mandatory">
-        {normalizedScreenshots.map((s, idx) => (
-          <div
-            key={s.src}
-            className="relative flex-none w-[200px] sm:w-[240px] md:w-[270px] aspect-[9/16] rounded-[20px] overflow-hidden border border-white/15 bg-neutral-950 shadow-md snap-start"
-          >
-            <Image
-              src={s.src}
-              alt={`${title} screenshot ${idx + 1}`}
-              fill
-              sizes="(max-width: 640px) 200px, (max-width: 1024px) 240px, 270px"
-              className="object-cover"
-            />
-          </div>
-        ))}
+      {/* 2. Full-bleed edge-to-edge Horizontal Screenshots Gallery in 9:16 (breaks out across full viewport width to the right) */}
+      <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory">
+        <div 
+          className="flex gap-4 sm:gap-5 min-w-max"
+          style={{
+            paddingLeft: `max(1.5rem, calc((100vw - ${maxWidthRem}rem) / 2 + 1.5rem))`,
+            paddingRight: `max(1.5rem, calc((100vw - ${maxWidthRem}rem) / 2 + 1.5rem))`,
+          }}
+        >
+          {normalizedScreenshots.map((s, idx) => (
+            <div
+              key={s.src}
+              className="relative flex-none w-[210px] sm:w-[250px] md:w-[285px] aspect-[9/16] rounded-[24px] overflow-hidden border border-white/15 bg-neutral-950 shadow-[0_12px_36px_rgba(0,0,0,0.35)] snap-start transition-transform duration-200 hover:scale-[1.01]"
+            >
+              <Image
+                src={s.src}
+                alt={`${title} screenshot ${idx + 1}`}
+                fill
+                sizes="(max-width: 640px) 210px, (max-width: 1024px) 250px, 285px"
+                className="object-cover"
+                priority={idx < 2}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

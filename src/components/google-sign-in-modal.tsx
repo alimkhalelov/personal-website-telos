@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, ShieldCheck, UserCheck, ArrowRight, CheckCircle2 } from "lucide-react";
+import { X, ShieldCheck, CheckCircle2, KeyRound, ExternalLink, Sparkles, AlertCircle } from "lucide-react";
 import { useAuth, ADMIN_EMAIL } from "./auth-context";
 
 export function GoogleLogoIcon({ className = "w-5 h-5" }: { className?: string }) {
@@ -28,10 +28,24 @@ export function GoogleLogoIcon({ className = "w-5 h-5" }: { className?: string }
 }
 
 export function GoogleSignInModal() {
-  const { isAuthModalOpen, closeAuthModal, loginWithGoogle, user, isAdmin, logout } = useAuth();
-  const [customEmail, setCustomEmail] = React.useState("");
-  const [showCustomInput, setShowCustomInput] = React.useState(false);
+  const { 
+    isAuthModalOpen, 
+    closeAuthModal, 
+    user, 
+    isAdmin, 
+    logout,
+    googleClientId,
+    isGoogleScriptLoaded,
+    loginWithGoogleCredential,
+    loginWithDevFastPass,
+    setRuntimeGoogleClientId
+  } = useAuth();
 
+  const googleBtnContainerRef = React.useRef<HTMLDivElement>(null);
+  const [clientIdInput, setClientIdInput] = React.useState(googleClientId);
+  const [showConfig, setShowConfig] = React.useState(false);
+
+  // Close on Escape
   React.useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -48,18 +62,41 @@ export function GoogleSignInModal() {
     };
   }, [isAuthModalOpen, closeAuthModal]);
 
+  // Render official Google Identity Services button if script & client ID ready
+  React.useEffect(() => {
+    if (!isAuthModalOpen || !isGoogleScriptLoaded || !googleClientId || user) return;
+
+    try {
+      if (window.google?.accounts?.id && googleBtnContainerRef.current) {
+        googleBtnContainerRef.current.innerHTML = "";
+        window.google.accounts.id.initialize({
+          client_id: googleClientId,
+          callback: (response: { credential: string }) => {
+            loginWithGoogleCredential(response.credential);
+          },
+        });
+        window.google.accounts.id.renderButton(googleBtnContainerRef.current, {
+          type: "standard",
+          theme: "outline",
+          size: "large",
+          shape: "pill",
+          text: "signin_with",
+          logo_alignment: "left",
+          width: 320,
+        });
+      }
+    } catch (err) {
+      console.error("Error rendering Google Sign-In button:", err);
+    }
+  }, [isAuthModalOpen, isGoogleScriptLoaded, googleClientId, user, loginWithGoogleCredential]);
+
   if (!isAuthModalOpen) return null;
 
-  const handleAdminSignIn = () => {
-    loginWithGoogle(ADMIN_EMAIL, "Alimzhan Khalelov");
-  };
-
-  const handleCustomSubmit = (e: React.FormEvent) => {
+  const handleSaveClientId = (e: React.FormEvent) => {
     e.preventDefault();
-    if (customEmail.trim()) {
-      loginWithGoogle(customEmail.trim(), customEmail.split("@")[0]);
-      setCustomEmail("");
-      setShowCustomInput(false);
+    if (clientIdInput.trim()) {
+      setRuntimeGoogleClientId(clientIdInput.trim());
+      setShowConfig(false);
     }
   };
 
@@ -67,7 +104,7 @@ export function GoogleSignInModal() {
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black/70 backdrop-blur-md animate-in fade-in duration-200"
+        className="absolute inset-0 bg-black/75 backdrop-blur-md animate-in fade-in duration-200"
         onClick={closeAuthModal}
       />
 
@@ -75,8 +112,8 @@ export function GoogleSignInModal() {
       <div 
         role="dialog"
         aria-modal="true"
-        aria-label="Google Sign In"
-        className="relative w-full max-w-md rounded-3xl bg-neutral-900/90 border border-white/15 p-6 sm:p-7 shadow-[0_24px_72px_rgba(0,0,0,0.6)] backdrop-blur-2xl text-white flex flex-col gap-6 animate-in zoom-in-95 fade-in duration-200 z-10"
+        aria-label="Google Authentication"
+        className="relative w-full max-w-md rounded-3xl bg-neutral-900/95 border border-white/15 p-6 sm:p-7 shadow-[0_24px_72px_rgba(0,0,0,0.6)] backdrop-blur-2xl text-white flex flex-col gap-6 animate-in zoom-in-95 fade-in duration-200 z-10"
       >
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -85,8 +122,8 @@ export function GoogleSignInModal() {
               <GoogleLogoIcon className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold tracking-tight text-white">Google Sign-In</h2>
-              <p className="text-xs text-white/50">Authenticate for administrative access</p>
+              <h2 className="text-lg font-semibold tracking-tight text-white">Google Identity Services</h2>
+              <p className="text-xs text-white/50">Official OAuth 2.0 Cryptographic Auth</p>
             </div>
           </div>
           <button
@@ -99,7 +136,7 @@ export function GoogleSignInModal() {
           </button>
         </div>
 
-        {/* Status if already logged in */}
+        {/* Status: Logged in */}
         {user ? (
           <div className="flex flex-col gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
             <div className="flex items-center gap-3">
@@ -120,6 +157,11 @@ export function GoogleSignInModal() {
                   )}
                 </div>
                 <p className="text-xs text-white/50 truncate">{user.email}</p>
+                <div className="flex items-center gap-1.5 pt-0.5 text-[10px] text-white/40">
+                  <span>Provider:</span>
+                  <span className="font-mono text-emerald-400 uppercase">{user.provider || "google"}</span>
+                  {user.token && <span>· Cryptographically Signed JWT</span>}
+                </div>
               </div>
             </div>
 
@@ -127,7 +169,7 @@ export function GoogleSignInModal() {
               <div className="flex items-start gap-2.5 text-xs text-emerald-300/90 bg-emerald-950/30 p-3 rounded-xl border border-emerald-800/30 leading-relaxed">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <span>
-                  Admin privileges active. All unreleased projects, articles, and wiki nodes are visible in semi-transparent mode.
+                  Admin privileges verified. All unreleased projects, articles, and wiki nodes are rendered in semi-transparent mode.
                 </span>
               </div>
             )}
@@ -138,7 +180,7 @@ export function GoogleSignInModal() {
                 onClick={closeAuthModal}
                 className="flex-1 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-medium transition-colors cursor-pointer"
               >
-                Done
+                Close
               </button>
               <button
                 type="button"
@@ -153,60 +195,91 @@ export function GoogleSignInModal() {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
-            {/* Primary Action: 1-Click Google Sign In as Admin */}
-            <button
-              type="button"
-              onClick={handleAdminSignIn}
-              className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-neutral-100 text-neutral-900 font-medium text-sm transition-all shadow-md active:scale-98 cursor-pointer group"
-            >
-              <div className="flex items-center gap-3">
-                <GoogleLogoIcon className="w-5 h-5 shrink-0" />
-                <div className="flex flex-col text-left">
-                  <span className="font-semibold text-neutral-900">Sign in with Google</span>
-                  <span className="text-[11px] text-neutral-500">Continue as {ADMIN_EMAIL}</span>
+          <div className="flex flex-col gap-5">
+            {/* Real Official Google Button Container */}
+            {googleClientId ? (
+              <div className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10">
+                <div className="text-xs text-white/70 font-medium">Official Google OAuth 2.0:</div>
+                <div ref={googleBtnContainerRef} className="min-h-[44px] flex items-center justify-center" />
+                <div className="text-[11px] text-white/40 text-center">
+                  Client ID: <span className="font-mono text-white/60">{googleClientId.slice(0, 16)}...</span>
                 </div>
               </div>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 group-hover:translate-x-0.5 transition-transform">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Admin</span>
-              </div>
-            </button>
-
-            {/* Custom Google Email Accordion */}
-            {!showCustomInput ? (
-              <button
-                type="button"
-                onClick={() => setShowCustomInput(true)}
-                className="text-xs text-white/50 hover:text-white/80 transition-colors text-center py-1 cursor-pointer"
-              >
-                Or sign in with another Google account →
-              </button>
             ) : (
-              <form onSubmit={handleCustomSubmit} className="flex flex-col gap-2.5 pt-2 border-t border-white/10">
-                <label className="text-xs text-white/60">Enter Google Account Email:</label>
+              <div className="flex flex-col gap-3 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-200/90 text-xs">
+                <div className="flex items-center gap-2 font-medium text-amber-300">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>Real Google OAuth Setup</span>
+                </div>
+                <p className="leading-relaxed text-[11.5px] text-amber-200/80">
+                  To enable live Google login popups on your domain and localhost, Google requires a <strong>Google Cloud Client ID</strong> in <code className="bg-amber-950/50 px-1 py-0.5 rounded font-mono text-amber-300">NEXT_PUBLIC_GOOGLE_CLIENT_ID</code>.
+                </p>
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setShowConfig(!showConfig)}
+                    className="text-[11px] underline text-amber-300 hover:text-white transition-colors cursor-pointer"
+                  >
+                    {showConfig ? "Hide Client ID Input" : "Enter Google Client ID now →"}
+                  </button>
+                  <a
+                    href="https://console.cloud.google.com/apis/credentials"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-amber-300 hover:text-white inline-flex items-center gap-1 underline ml-auto"
+                  >
+                    <span>GCP Console</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            )}
+
+            {/* Custom Client ID Input */}
+            {showConfig && (
+              <form onSubmit={handleSaveClientId} className="flex flex-col gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 text-xs">
+                <label className="text-white/60 font-mono text-[11px]">Paste Google OAuth Client ID:</label>
                 <div className="flex gap-2">
                   <input
-                    type="email"
+                    type="text"
                     required
-                    placeholder="user@gmail.com"
-                    value={customEmail}
-                    onChange={(e) => setCustomEmail(e.target.value)}
-                    className="flex-1 px-3.5 py-2 rounded-xl bg-white/5 border border-white/15 text-white text-xs placeholder:text-white/30 focus:outline-none focus:border-blue-400"
+                    placeholder="xxxx-xxxx.apps.googleusercontent.com"
+                    value={clientIdInput}
+                    onChange={(e) => setClientIdInput(e.target.value)}
+                    className="flex-1 px-3 py-1.5 rounded-xl bg-white/5 border border-white/15 text-white text-xs placeholder:text-white/30 focus:outline-none focus:border-blue-400 font-mono"
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-medium transition-colors cursor-pointer flex items-center gap-1"
+                    className="px-3 py-1.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium transition-colors cursor-pointer"
                   >
-                    <span>Sign In</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    Save
                   </button>
                 </div>
               </form>
             )}
 
-            <div className="text-[11px] text-white/40 leading-relaxed text-center px-2">
-              Admin email <code className="text-white/60 bg-white/5 px-1 py-0.5 rounded font-mono">{ADMIN_EMAIL}</code> grants visibility into private projects, drafts, and knowledge wiki graphs.
+            {/* Dev Fast-Pass for local convenience */}
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => loginWithDevFastPass(ADMIN_EMAIL, "Alimzhan Khalelov")}
+                className="w-full flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-neutral-100 text-neutral-900 font-medium text-sm transition-all shadow-md active:scale-98 cursor-pointer group"
+              >
+                <div className="flex items-center gap-3">
+                  <GoogleLogoIcon className="w-5 h-5 shrink-0" />
+                  <div className="flex flex-col text-left">
+                    <span className="font-semibold text-neutral-900">Sign in as Admin (Fast-Pass)</span>
+                    <span className="text-[11px] text-neutral-500">{ADMIN_EMAIL}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-lg">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Admin</span>
+                </div>
+              </button>
+              <p className="text-[11px] text-white/40 text-center px-1">
+                Admin email <code className="text-white/60 font-mono">{ADMIN_EMAIL}</code> unlocks semi-transparent rendering for drafts &amp; private projects.
+              </p>
             </div>
           </div>
         )}
