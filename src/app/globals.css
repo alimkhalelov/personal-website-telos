@@ -143,3 +143,33 @@ html.has-dynamic-daytime a {
 html.has-dynamic-daytime a:hover {
   color: #93c5fd;
 }
+
+
+/* Liquid Glass Typography Effect (Transparent Glass Title) */
+.glass-text {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(255, 255, 255, 0.6) 45%,
+    rgba(255, 255, 255, 0.22) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.2));
+}
+
+html:not(.has-dynamic-daytime):not(.dark) .glass-text {
+  background: linear-gradient(
+    180deg,
+    rgba(25, 25, 25, 0.95) 0%,
+    rgba(25, 25, 25, 0.55) 50%,
+    rgba(25, 25, 25, 0.2) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  filter: none;
+}

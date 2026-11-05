@@ -56,9 +56,9 @@ export default function Home() {
         {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="flex flex-col gap-1.5">
-            {/* Modern Tall Lockscreen Clock Typography with Rounded Corners (One UI 9 / iOS 18 style) */}
+            {/* Modern Tall Lockscreen Clock Typography with Rounded Corners & Transparent Glass Effect */}
             <h1
-              className="text-6xl sm:text-8xl md:text-9xl font-extrabold uppercase tracking-tight leading-[0.92] select-none text-white drop-shadow-sm"
+              className="text-6xl sm:text-8xl md:text-9xl font-medium sm:font-semibold uppercase tracking-tight leading-[0.92] select-none glass-text"
               style={{ fontFamily: "var(--font-asap-condensed), sans-serif" }}
             >
               Alim Khalelov
