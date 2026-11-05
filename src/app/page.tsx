@@ -4,6 +4,18 @@ import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 
+function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg 
+      className={className} 
+      viewBox="0 0 24 24" 
+      fill="currentColor"
+    >
+      <path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701v.001l-.313 4.69c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.431z" />
+    </svg>
+  );
+}
+
 function LinkedinIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg 
@@ -79,7 +91,7 @@ export default function Home() {
               className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
               <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
-              <Send className="w-5 h-5 text-white/95 -rotate-12 translate-x-[-1px] translate-y-[-1px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
+              <TelegramIcon className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
 
             {/* LinkedIn */}
