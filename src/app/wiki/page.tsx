@@ -21,8 +21,8 @@ export default function WikiIndexPage() {
   const allPages = getAllWikiPages();
   const publicPages = allPages.filter((p) => p.visibility === "public");
   
-  // Default to fan-filter-scale-methodology or the first public page
-  const defaultSlug = publicPages.find((p) => p.slug === "fan-filter-scale-methodology")?.slug || publicPages[0]?.slug;
+  // Default to tempo or the first public page
+  const defaultSlug = publicPages.find((p) => p.slug === "tempo")?.slug || publicPages[0]?.slug || allPages[0]?.slug;
   const currentPage = getWikiPageBySlug(defaultSlug);
 
   if (!currentPage) {

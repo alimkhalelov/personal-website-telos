@@ -11,6 +11,7 @@ export type ArticleMeta = {
   description?: string;
   hidden?: boolean;
   archived?: boolean;
+  isPublic?: boolean;
 };
 
 export function getSortedArticles(includeHidden: boolean = false): ArticleMeta[] {
@@ -37,6 +38,7 @@ export function getSortedArticles(includeHidden: boolean = false): ArticleMeta[]
         slug,
         title,
         date: matterResult.data.date || new Date().toISOString(),
+        isPublic: Boolean(matterResult.data.isPublic),
       } as ArticleMeta;
     })
     .filter((article: any) => {

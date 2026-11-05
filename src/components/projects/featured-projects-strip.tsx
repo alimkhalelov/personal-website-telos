@@ -1,8 +1,12 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { getAllProjects } from "@/lib/projects-data";
 import { GenerativeThumbnail } from "./generative-thumbnail";
+import { AppStoreProjectCard } from "./app-store-project-card";
+import { useAuth } from "@/components/auth-context";
+import { ShieldCheck } from "lucide-react";
 
 interface FeaturedProjectsStripProps {
   className?: string;
@@ -10,103 +14,140 @@ interface FeaturedProjectsStripProps {
 
 export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripProps) {
   const projects = getAllProjects();
+  const { isAdmin } = useAuth();
+
+  const tempoProject = projects.find((p) => p.slug === "tempo");
+  const privateProjects = projects.filter((p) => p.slug !== "tempo");
 
   return (
-    <section className={`flex flex-col gap-8 w-full ${className}`}>
+    <section className={`flex flex-col gap-6 w-full ${className}`}>
       {/* Section Header */}
-      <div className="flex items-center justify-between pb-2">
-        <h2 className="text-3xl font-bold tracking-tight">Projects</h2>
+      <div className="flex items-center justify-between pb-1">
+        <h2 className="text-3xl font-bold tracking-tight text-white">Projects</h2>
         <Link
           href="/projects"
-          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors !no-underline"
+          className="text-sm font-medium text-white/70 hover:text-white transition-colors !no-underline"
           style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
           View all →
         </Link>
       </div>
 
-      {/* Full-width edge-to-edge infinite horizontal marquee */}
-      <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-hidden py-1">
-        <div className="animate-marquee flex gap-6 px-3">
-          {/* Set A */}
-          {projects.map((project) => (
-            <Link
-              key={`a-${project.slug}`}
-              href={`/projects/${project.slug}`}
-              className="group flex-none w-[300px] sm:w-[360px] flex flex-col gap-3 !no-underline select-none"
-            >
-              {/* 1. 16:9 YouTube-Style Thumbnail */}
-              <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-border/80 group-hover:border-border transition-colors bg-card shadow-sm">
-                <GenerativeThumbnail
-                  theme={project.generativeTheme}
-                  command={project.command}
-                  title={project.title}
-                  thumbnailSrc={project.thumbnailSrc}
-                />
-              </div>
+      {/* Featured Public App: Tempo in App Store Layout */}
+      {tempoProject && (
+        <AppStoreProjectCard
+          title={tempoProject.title}
+          subtitle={tempoProject.subtitle || tempoProject.headline}
+          category={tempoProject.tag}
+          badges={tempoProject.badges}
+          iconSrc={tempoProject.iconSrc || "/projects/tempo/icon.svg"}
+          demoUrl={tempoProject.demoUrl}
+          detailUrl={`/projects/${tempoProject.slug}`}
+          isPublic={true}
+          screenshots={[
+            {
+              src: "/projects/tempo/01-tempo-brand-hero.png",
+              caption: "Tempo Brand Hero & Push/Pull Progression",
+            },
+            {
+              src: "/projects/tempo/02-crush-fatigue.png",
+              caption: "Crush Fatigue — Dual-Axis Focus Engine",
+            },
+            {
+              src: "/projects/tempo/03-surge-past-equator.png",
+              caption: "Surge Past The Equator — Halfway Milestone",
+            },
+            {
+              src: "/projects/tempo/04-lock-in-your-zone.png",
+              caption: "Lock In Your Zone — Procedural IK Runner",
+            },
+            {
+              src: "/projects/tempo/05-rig-any-treadmill.png",
+              caption: "Universal Workouts — Any Target Duration",
+            },
+          ]}
+        />
+      )}
 
-              {/* 2. Typography */}
-              <div className="flex flex-col gap-1 px-1">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <time style={{ fontFamily: "'Google Sans', sans-serif" }}>
-                    {project.dateDisplay}
-                  </time>
-                  <span>·</span>
-                  <span className="text-xs font-mono opacity-80">
-                    {project.timeAgo}
-                  </span>
-                </div>
-                <h3 
-                  className="text-lg font-bold text-foreground group-hover:text-accent transition-colors"
-                  style={{ fontFamily: "'Google Sans', sans-serif" }}
+      {/* Admin Marquee: 11 Private Projects Visible Semi-Transparently */}
+      {isAdmin && (
+        <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
+          <div className="flex items-center gap-2 text-xs text-amber-300 font-mono">
+            <ShieldCheck className="w-4 h-4 text-amber-400" />
+            <span>Admin Private Drafts ({privateProjects.length} archived/unreleased — semi-transparent)</span>
+          </div>
+
+          <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-hidden py-1 opacity-40 hover:opacity-85 transition-opacity">
+            <div className="animate-marquee flex gap-6 px-3">
+              {/* Set A */}
+              {privateProjects.map((project) => (
+                <Link
+                  key={`a-${project.slug}`}
+                  href={`/projects/${project.slug}`}
+                  className="group flex-none w-[280px] sm:w-[320px] flex flex-col gap-2.5 !no-underline select-none"
                 >
-                  {project.title}
-                </h3>
-              </div>
-            </Link>
-          ))}
+                  <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-amber-500/30 group-hover:border-amber-400 transition-colors bg-card shadow-sm">
+                    <GenerativeThumbnail
+                      theme={project.generativeTheme}
+                      command={project.command}
+                      title={project.title}
+                      thumbnailSrc={project.thumbnailSrc}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-0.5 px-1">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="font-mono text-amber-400">[Private]</span>
+                      <span>{project.dateDisplay}</span>
+                      <span>·</span>
+                      <span className="font-mono">{project.command}</span>
+                    </div>
+                    <h3 
+                      className="text-base font-bold text-foreground group-hover:text-accent transition-colors truncate"
+                      style={{ fontFamily: "'Google Sans', sans-serif" }}
+                    >
+                      {project.title}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
 
-          {/* Set B (Identical clone for seamless 0px jump loop) */}
-          {projects.map((project) => (
-            <Link
-              key={`b-${project.slug}`}
-              href={`/projects/${project.slug}`}
-              className="group flex-none w-[300px] sm:w-[360px] flex flex-col gap-3 !no-underline select-none"
-              aria-hidden="true"
-              tabIndex={-1}
-            >
-              {/* 1. 16:9 YouTube-Style Thumbnail */}
-              <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-border/80 group-hover:border-border transition-colors bg-card shadow-sm">
-                <GenerativeThumbnail
-                  theme={project.generativeTheme}
-                  command={project.command}
-                  title={project.title}
-                  thumbnailSrc={project.thumbnailSrc}
-                />
-              </div>
-
-              {/* 2. Typography */}
-              <div className="flex flex-col gap-1 px-1">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <time style={{ fontFamily: "'Google Sans', sans-serif" }}>
-                    {project.dateDisplay}
-                  </time>
-                  <span>·</span>
-                  <span className="text-xs font-mono opacity-80">
-                    {project.timeAgo}
-                  </span>
-                </div>
-                <h3 
-                  className="text-lg font-bold text-foreground group-hover:text-accent transition-colors"
-                  style={{ fontFamily: "'Google Sans', sans-serif" }}
+              {/* Set B clone */}
+              {privateProjects.map((project) => (
+                <Link
+                  key={`b-${project.slug}`}
+                  href={`/projects/${project.slug}`}
+                  className="group flex-none w-[280px] sm:w-[320px] flex flex-col gap-2.5 !no-underline select-none"
+                  aria-hidden="true"
+                  tabIndex={-1}
                 >
-                  {project.title}
-                </h3>
-              </div>
-            </Link>
-          ))}
+                  <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-amber-500/30 group-hover:border-amber-400 transition-colors bg-card shadow-sm">
+                    <GenerativeThumbnail
+                      theme={project.generativeTheme}
+                      command={project.command}
+                      title={project.title}
+                      thumbnailSrc={project.thumbnailSrc}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-0.5 px-1">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="font-mono text-amber-400">[Private]</span>
+                      <span>{project.dateDisplay}</span>
+                      <span>·</span>
+                      <span className="font-mono">{project.command}</span>
+                    </div>
+                    <h3 
+                      className="text-base font-bold text-foreground group-hover:text-accent transition-colors truncate"
+                      style={{ fontFamily: "'Google Sans', sans-serif" }}
+                    >
+                      {project.title}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

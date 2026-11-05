@@ -13,12 +13,16 @@ import {
   Moon, 
   Send, 
   Mail, 
-  Sparkles 
+  Sparkles,
+  ShieldCheck,
+  LogOut
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { LanguageToggle } from "./language-toggle";
 import { BionicToggle } from "./bionic-toggle";
 import { useDynamicDaytime } from "./one-ui-wallpaper";
+import { useAuth } from "./auth-context";
+import { GoogleLogoIcon } from "./google-sign-in-modal";
 
 function LinkedinIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
@@ -45,6 +49,7 @@ export function KebabNav() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   const { enabled: daytimeEnabled, toggle: toggleDaytime } = useDynamicDaytime();
+  const { user, isAdmin, openAuthModal, logout } = useAuth();
 
   React.useEffect(() => {
     setMounted(true);
@@ -197,6 +202,74 @@ export function KebabNav() {
           </div>
 
           <BionicToggle />
+
+          <div className="pt-1.5" />
+
+          {/* Секция: Аккаунт / Google Вход */}
+          <div className="px-3 pt-1 pb-0.5 text-[11px] font-mono uppercase tracking-wider text-white/45">
+            Account
+          </div>
+
+          {!user ? (
+            <button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                openAuthModal();
+              }}
+              className="flex items-center justify-between px-3 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white transition-all text-[14px] font-medium cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <GoogleLogoIcon className="w-4 h-4 shrink-0" />
+                <span>Google Sign-In</span>
+              </div>
+              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/10 text-white/70">
+                Log In
+              </span>
+            </button>
+          ) : (
+            <div className="flex flex-col gap-2 p-2.5 rounded-2xl bg-white/5 border border-white/10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xs font-bold shrink-0">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs font-semibold text-white truncate max-w-[130px]">{user.name}</span>
+                    <span className="text-[10px] text-white/50 truncate max-w-[130px]">{user.email}</span>
+                  </div>
+                </div>
+                {isAdmin ? (
+                  <span className="text-[9px] uppercase font-mono font-bold tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shrink-0">
+                    Admin
+                  </span>
+                ) : (
+                  <span className="text-[9px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded bg-white/10 text-white/60 shrink-0">
+                    User
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2 pt-0.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    openAuthModal();
+                  }}
+                  className="flex-1 py-1 text-center text-[11px] font-medium rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                >
+                  Manage
+                </button>
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  className="py-1 px-3 text-center text-[11px] font-medium rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-300 transition-colors cursor-pointer"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="pt-1.5" />
 

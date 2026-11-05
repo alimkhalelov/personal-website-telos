@@ -3,6 +3,8 @@ import { Outfit, Geist_Mono, Asap_Condensed } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/components/auth-context";
+import { GoogleSignInModal } from "@/components/google-sign-in-modal";
 import { KebabNav } from "@/components/kebab-nav";
 import { ScrollController } from "@/components/scroll-controller";
 import { Analytics } from "@vercel/analytics/next";
@@ -136,8 +138,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-accent/30 transition-colors duration-300">
         <ScrollController />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <KebabNav />
-          {children}
+          <AuthProvider>
+            <KebabNav />
+            <GoogleSignInModal />
+            {children}
+          </AuthProvider>
           <Analytics />
         </ThemeProvider>
       </body>

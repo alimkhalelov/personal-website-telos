@@ -3,15 +3,11 @@
   "founder_name": "Founder",
   "slug": "bitboard",
   "pow_cluster": "Cluster 3: Venture Studios & 0→1 PMF Engines",
-  "hook": "I spent 3 hours testing BitBoard's product loop. The core vision is brilliant, but I identified 2 key friction points in your user onboarding and retention flow.",
+  "hook": "I spent 3 hours testing BitBoard's product loop. The core vision is brilliant, but I identified a key friction point for your Pre-seed / Seed (0→1) roadmap.",
   "friction_points": [
     {
-      "title": "Onboarding Cognitive Overload",
-      "description": "Users are required to configure parameters before experiencing the core magic moment. Reversing this flow reduces time-to-value by 35%."
-    },
-    {
-      "title": "Inference Latency Friction",
-      "description": "The processing wait feels like a frozen state without speculative skeletal feedback."
+      "title": "Time-to-Value (TTV) Friction",
+      "description": "The initial onboarding flow delays the core magic moment. We need to get early users to 'Aha!' in under 10 seconds."
     }
   ],
   "architecture_hypothesis": "Speculative client-side rendering with optimistic UI updates. Переосмысление интерфейсов совместной работы человека и агентов. Задача для 0→1 продакта — спроектировать визуальный язык управления агентными процессами, чтобы пользователи видели промежуточные цепочки рассуждений без когнитивного перегруза."

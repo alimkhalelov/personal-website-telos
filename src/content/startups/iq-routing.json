@@ -1,0 +1,14 @@
+{
+  "company_name": "IQ Routing",
+  "founder_name": "Founder",
+  "slug": "iq-routing",
+  "pow_cluster": "Cluster 2: Agent Infrastructure & LLM Evaluation",
+  "hook": "I spent 3 hours testing IQ Routing's product loop. The core vision is brilliant, but I identified a key friction point for your Pre-seed / Seed (0→1) roadmap.",
+  "friction_points": [
+    {
+      "title": "Time-to-Value (TTV) Friction",
+      "description": "The initial onboarding flow delays the core magic moment. We need to get early users to 'Aha!' in under 10 seconds."
+    }
+  ],
+  "architecture_hypothesis": "Speculative client-side rendering with optimistic UI updates. Мэтч по профилю 0→1 Product Builder (AI Agents & Orchestration). Фокус на решении задач PMF, продуктовой архитектуры, снижении когнитивной нагрузки и масштабировании петель вовлечения."
+}

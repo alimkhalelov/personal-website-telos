@@ -28,8 +28,9 @@ export interface TestSuite {
 export interface ProjectDetail {
   slug: string;
   title: string;
+  subtitle?: string;
   command: string;
-  category: "agent-skill" | "engine" | "gallery" | "system";
+  category: "agent-skill" | "engine" | "gallery" | "system" | "app";
   tag: string;
   accentColor: string;
   accentGradient: string;
@@ -39,12 +40,16 @@ export interface ProjectDetail {
   tldr: string;
   headline: string;
   demoUrl: string;
-  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost";
+  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo";
   demoLabel: string;
   badges: string[];
   overview: string;
   generativeTheme: "neon-cyan" | "lime-cyber" | "purple-matrix" | "amber-brutalism" | "prism-spectrum" | "emerald-terminal";
   thumbnailSrc?: string;
+  iconSrc?: string;
+  isPublic?: boolean;
+  appStoreLayout?: boolean;
+  screenshots?: string[];
   visualizer: {
     heroTitle: string;
     subNamespace: string;
@@ -56,6 +61,162 @@ export interface ProjectDetail {
 }
 
 export const SHOWCASE_PROJECTS: ProjectDetail[] = [
+  // 0. Tempo (Public flagship App Store project)
+  {
+    slug: "tempo",
+    command: "/tempo",
+    title: "Tempo",
+    subtitle: "Precision Progressive Interval & Pacing Visualizer",
+    headline: "Zero-dependency progressive interval telemetry HUD & procedural runner kinematics for endurance athletes",
+    category: "app",
+    tag: "Kinematics & Interval Telemetry",
+    accentColor: "#38bdf8",
+    accentGradient: "from-sky-500/20 via-indigo-600/10 to-transparent",
+    initiationDate: "2026-11-05",
+    dateDisplay: "Nov 2026",
+    timeAgo: "Today",
+    thumbnailSrc: "/projects/tempo/01-tempo-brand-hero.png",
+    iconSrc: "/projects/tempo/icon.svg",
+    tldr: "A zero-dependency browser-native interval HUD for runners and HIIT athletes that decomposes any timeframe into balanced symmetric stages (9 -> 6 -> 5 -> 3 -> 2 -> 3 -> 5 -> 6 -> 9), dual-axis cinematic zoom, and a 60 FPS procedural inverse kinematics runner.",
+    demoUrl: "https://alimkhalelov.github.io/tempo/",
+    demoType: "tempo",
+    demoLabel: "Launch Live Tempo HUD",
+    badges: ["Harmonic Intervals", "Push & Pull Engine", "Procedural IK Runner", "60 FPS Kinematics", "Zero Dependencies"],
+    overview: "Tempo eliminates the psychological drag of static countdown timers. By decomposing target durations into symmetric Push & Pull stages with a halfway equator, runners experience accelerating progress toward the midpoint and gravitational pull toward the finish line.",
+    generativeTheme: "neon-cyan",
+    isPublic: true,
+    appStoreLayout: true,
+    screenshots: [
+      "/projects/tempo/01-tempo-brand-hero.png",
+      "/projects/tempo/02-crush-fatigue.png",
+      "/projects/tempo/03-surge-past-equator.png",
+      "/projects/tempo/04-lock-in-your-zone.png",
+      "/projects/tempo/05-rig-any-treadmill.png",
+    ],
+    visualizer: {
+      heroTitle: "TEMPO_KINEMATICS_PIPELINE",
+      subNamespace: "interval.hud.procedural_ik.v1",
+      nodes: [
+        {
+          id: "node-1",
+          step: "01",
+          title: "Harmonic Stage Decomposition",
+          accent: "text-sky-400",
+          description: [
+            "Evaluates divisor candidates k in [2, 12] via roundness scoring",
+            "Generates symmetric Push (9->6->5->3->2) and Pull (2->3->5->6->9) stages",
+            "Guarantees mandatory halfway equator milestone at k=2",
+          ],
+        },
+        {
+          id: "node-2",
+          step: "02",
+          title: "Dual-Axis Cinematic Camera",
+          accent: "text-indigo-400",
+          description: [
+            "Active segment zoom scales up to 4.8x on immediate sub-interval",
+            "Eliminates perceived exertion by focusing solely on the immediate milestone",
+            "Sinusoidal sweep transitions (4200ms) provide macro progress context",
+          ],
+        },
+        {
+          id: "node-3",
+          step: "03",
+          title: "Procedural IK Runner Kinematics",
+          accent: "text-emerald-400",
+          description: [
+            "60 FPS pure SVG inverse kinematics with dual-bounce CoG oscillation",
+            "Trigonometric leg linkage with non-linear swing-phase knee flexion",
+            "Anti-phase upper body counter-balance arms swinging in opposite phase",
+          ],
+        },
+        {
+          id: "node-4",
+          step: "04",
+          title: "Zero-Dependency Runtime",
+          accent: "text-amber-400",
+          description: [
+            "Pure vanilla TypeScript / SVG architecture with zero external libraries",
+            "Single 52 KB bundle footprint with hardware-accelerated transforms",
+            "Deployable instantly to any browser, mobile screen, or treadmill tablet",
+          ],
+        },
+      ],
+    },
+    specSDD: {
+      inputs: [
+        "Target workout duration in minutes (e.g. 17 min, 45 min, 60 min)",
+        "Playback controls (Play, Pause, Reset, Fast Forward 2x/4x)",
+        "Telemetry HUD toggles (IK Runner, Metric Pacing, Audio Cadence)",
+      ],
+      outputs: [
+        "Symmetric Push & Pull interval stage matrix",
+        "Active segment high-magnification camera zoom",
+        "Procedural 60 FPS skeletal runner SVG animation",
+        "Auditory cadence beeps on milestone transitions",
+      ],
+      invariants: [
+        "Halfway equator milestone (k=2) is mathematically invariant across all durations",
+        "Locked 60 FPS animation loop with requestAnimationFrame and performance.now()",
+        "Zero external CSS or JS dependencies (single self-contained payload)",
+      ],
+      coreEngine: "Dynamic Harmonic Push & Pull Divisor Matrix with Procedural Trigonometric Linkages",
+      dataStructures: [
+        "IntervalStage { index: number, durationSec: number, splits: number, label: string }",
+        "KinematicJointState { hipAngle: number, kneeAngle: number, ankleAngle: number, cogOffset: number }",
+        "CameraTransform { zoom: number, offsetX: number, transitionProgress: number }",
+      ],
+      stateMachine: [
+        "IDLE -> COMPUTING_HARMONICS: duration input parsed into divisor candidates",
+        "COMPUTING_HARMONICS -> RUNNING: stage timeline generated and ticker starts",
+        "RUNNING -> EQUATOR_SURGE: halfway mark triggers milestone celebration sweep",
+        "EQUATOR_SURGE -> PULL_PHASE: countdown intervals expand toward finish line",
+        "PULL_PHASE -> COMPLETED: workout telemetry finalized and summary shown",
+      ],
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Harmonic Divisor Algorithm",
+        tasks: [
+          { label: "Implement roundness and modulo scoring function for divisor candidates", done: true },
+          { label: "Enforce mandatory halfway equator milestone at k=2", done: true },
+          { label: "Generate Push & Pull symmetric timeline array", done: true },
+        ],
+      },
+      {
+        phase: "Phase 2: Procedural IK Runner & Viewport",
+        tasks: [
+          { label: "Implement 60 FPS trigonometric skeletal linkages for hips and knees", done: true },
+          { label: "Add double vertical bounce Center-of-Gravity (CoG) displacement", done: true },
+          { label: "Build dual-axis camera zoom and milestone sweep easing curves", done: true },
+        ],
+      },
+      {
+        phase: "Phase 3: Zero-Dependency Single Bundle",
+        tasks: [
+          { label: "Package telemetry HUD into self-contained 52 KB asset", done: true },
+          { label: "Publish live production build to alimkhalelov.github.io/tempo", done: true },
+          { label: "Generate 5 high-converting App Store panoramic screenshot assets", done: true },
+        ],
+      },
+    ],
+    testChecklist: [
+      {
+        suite: "Harmonic Divisor Math",
+        tests: [
+          { label: "Divisor candidates score correctly for standard 45m workout", passed: true, assertion: "splits.length === 9 && equatorIndex === 4" },
+          { label: "Non-standard 17m workout decomposes without fractional seconds drift", passed: true, assertion: "totalDuration === 1020 && errorMargin < 0.001" },
+        ],
+      },
+      {
+        suite: "Kinematics & Rendering",
+        tests: [
+          { label: "Procedural runner executes locked 60 FPS without layout thrashing", passed: true, assertion: "frameDropCount === 0 && deltaT <= 16.7ms" },
+          { label: "Camera zoom scale remains within [1.0, 4.8] bounds", passed: true, assertion: "cameraZoom >= 1.0 && cameraZoom <= 4.8" },
+        ],
+      },
+    ],
+  },
   // 1. /teamwork-preview
   {
     slug: "teamwork-preview",
@@ -77,6 +238,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["9-Step Elicitation", "Dynamic Swarm Routing", "Objective Forcing Functions", "Guardrail Acceptance Criteria", "Integrity Modes (Dev/Demo/Benchmark)"],
     overview: "Autonomous coding swarms fail when fed underspecified, subjective prompts. /teamwork-preview introduces a strict two-phase workflow: (1) an artifact-backed prompt draft (prompt_draft.md) generated across 9 interactive elicitation steps with objective, falsifiable acceptance criteria, and (2) dynamic delegation to tailored multi-agent teams—from single-agent adversarial pairs to 100+ concurrent proof swarms.",
     generativeTheme: "emerald-terminal",
+    isPublic: false,
     visualizer: {
       heroTitle: "Teamwork Multi-Agent Swarm & Elicitation Pipeline",
       subNamespace: "skill/teamwork-preview",
@@ -218,6 +380,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["Solo vs Delegation Routine", "DeepCoder & DeepInvestigator", "Verbatim Intent Protection", "Multi-Round ReAct Loops", "Decoy Rule 1 Defense"],
     overview: "Complex software engineering requires bifurcated cognitive routines rather than monolithic generation. /boost evaluates incoming requests into either a lightweight Solo Routine or a specialized Delegation Routine. In delegation mode, it routes coding to DeepCoder and root-cause analysis to DeepInvestigator, enforcing verbatim user intent delivery without AI distortion, and executing closed multi-round verification loops until the work objectively passes.",
     generativeTheme: "amber-brutalism",
+    isPublic: false,
     visualizer: {
       heroTitle: "Boost Cognitive Dispatcher & Dual-Subagent Loop",
       subNamespace: "skill/boost",
@@ -360,6 +523,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["10 Visual Styles", "Instant Prompt Copy", "Animated Reference Loop", "Avant-Garde Aesthetics", "Zero AI Slop"],
     overview: "Modern generative design requires distinct visual taxonomy rather than generic default renders. Bloobs Styles deconstructs 10 contemporary aesthetic movements—from the tactile textures of Risograph and traditional Gzhel ceramics to raw Clean Girl Brutalism and Organic Tech—pairing each with verified prompt recipes and continuous visual references.",
     generativeTheme: "prism-spectrum",
+    isPublic: false,
     visualizer: {
       heroTitle: "Bloobs Aesthetic & Prompt Engine",
       subNamespace: "skill/bloobs-styles",
@@ -490,6 +654,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["2D to 1D Unrolling", "GitHub Projects & Issues", "6-Vector Gap Engine", "Human-in-the-Loop", "Sprint Orchestration"],
     overview: "AI coding assistants need unambiguous linear priorities, while product managers and founders need visual 2D context across Customer Journey Map (CJM) stages. /usm establishes a dual-representation architecture automating GitHub Projects and pinned master issues.",
     generativeTheme: "prism-spectrum",
+    isPublic: false,
     visualizer: {
       heroTitle: "USM & Sprint Orchestration Engine",
       subNamespace: "skill/usm",
@@ -630,6 +795,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["5-Second Clarity", "Mobile Budget (LCP < 2.5s)", "Native UX (No Scrolljack)", "Outcome Hierarchy", "CRO Audit"],
     overview: "Most landing pages suffer from cognitive confusion, heavy mobile assets, and decorative noise. The Clarity-First Framework enforces 4 non-negotiable design principles to maximize clarity, accessibility, and conversion.",
     generativeTheme: "neon-cyan",
+    isPublic: false,
     visualizer: {
       heroTitle: "The Clarity-First Framework",
       subNamespace: "skill/landing-checklist",
@@ -770,6 +936,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["Fast Search", "Clean Documentation", "Public & Private", "Zero Bloat", "Obsidian Ready"],
     overview: "Most project wikis get messy and out of date quickly. This engine automatically scans your real project folders, extracts key takeaways, and renders a minimalist, distraction-free reading portal.",
     generativeTheme: "neon-cyan",
+    isPublic: false,
     visualizer: {
       heroTitle: "AI-Wiki Knowledge Compiler",
       subNamespace: "skill/wiki",
@@ -912,6 +1079,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["1 Idea = 1 Slide", "Presenter Mode (S)", "Smooth Animations", "Zero PowerPoint", "Full Screen"],
     overview: "Traditional slides are usually cluttered with too many bullet points and lose the audience's attention. Presentation Studio enforces a strict 'One Idea per Slide' principle with calibrated 25-second pacing, presenter notes, and smooth keyboard navigation.",
     generativeTheme: "lime-cyber",
+    isPublic: false,
     visualizer: {
       heroTitle: "Strategic Deck & Motion Engine",
       subNamespace: "skill/presentation",
@@ -1052,6 +1220,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["16:9 Fullscreen", "Crisp Vector SVG", "Auto Card Sizing", "Zero Clutter", "Copy Embed Code"],
     overview: "Most architecture diagrams look either cluttered or awkwardly formatted. This engine generates clean, standalone 16:9 SVG diagrams that automatically scale card sizes, header fonts, and text density to fit the exact complexity of your project.",
     generativeTheme: "purple-matrix",
+    isPublic: false,
     visualizer: {
       heroTitle: "16:9 Vector Architecture Engine",
       subNamespace: "skill/visualizer",
@@ -1192,6 +1361,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["19 Curated Styles", "Copy Prompt Formula", "High-Res Gallery", "Lighting Guides", "Zero Generic AI"],
     overview: "Finding the right aesthetic for AI image generation usually takes dozens of failed attempts. StyleRef gives you 19 battle-tested art style formulas with high-resolution visual examples, lighting recipes, and instant copy buttons.",
     generativeTheme: "amber-brutalism",
+    isPublic: false,
     visualizer: {
       heroTitle: "Visual Styles & Prompt Matrix",
       subNamespace: "skill/styleref",
@@ -1331,6 +1501,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["Google Labs Standard", "OKLCH Color Palette", "Typography Scale", "YAML Tokens", "Anti-Generic"],
     overview: "AI coding assistants build much better UI when they have clear design guidelines to follow. This tool generates a complete DESIGN.md file that defines exact colors, font pairings, spacing rules, and layout principles for your project.",
     generativeTheme: "prism-spectrum",
+    isPublic: false,
     visualizer: {
       heroTitle: "DESIGN.md Architecture Generator",
       subNamespace: "skill/design-md",
@@ -1470,6 +1641,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     badges: ["Living Memory", "Automated Retro", "Safe Git Commits", "Server Cleanup", "Zero Context Loss"],
     overview: "When long coding sessions end without a structured wrap-up, AI assistants lose context and leave dangling processes. The /end protocol executes a 4-phase shutdown ritual that updates project memory, verifies task completion, and pushes clean git commits.",
     generativeTheme: "emerald-terminal",
+    isPublic: false,
     visualizer: {
       heroTitle: "Session Ritual & Memory Engine",
       subNamespace: "skill/end",

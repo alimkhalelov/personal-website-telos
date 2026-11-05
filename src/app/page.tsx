@@ -3,6 +3,7 @@ import { getSortedArticles } from "@/lib/mdx";
 import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
+import { HomePostsList } from "@/components/home/home-posts-list";
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -128,46 +129,8 @@ export default function Home() {
         {/* Featured Showcase & Agent Skills Horizontal Strip */}
         <FeaturedProjectsStrip />
 
-        {/* Posts Section (No divider line) */}
-        <section className="flex flex-col gap-6">
-          <div className="flex items-center justify-between pb-1">
-            <h2 className="text-3xl font-bold tracking-tight text-white">Posts</h2>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            {articles.length > 0 ? (
-              articles.map((article) => (
-                <Link
-                  href={`/blog/${article.slug}`}
-                  key={article.slug}
-                  className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-white/10 transition-colors gap-4 !no-underline"
-                >
-                  <div className="flex items-center gap-4">
-                    <time
-                      className="text-base w-[105px] shrink-0 group-hover:underline text-white/70"
-                      style={{ fontFamily: "'Google Sans', sans-serif" }}
-                    >
-                      {formatDate(article.date)}
-                    </time>
-                    <h3
-                      className="text-base font-medium group-hover:underline transition-colors text-white"
-                      style={{ fontFamily: "'Google Sans', sans-serif" }}
-                    >
-                      {article.title}
-                    </h3>
-                  </div>
-                  <div className="flex items-center shrink-0">
-                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-white/70" />
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <div className="p-8 text-center text-white/70 bg-white/5 rounded-xl border border-white/10 border-dashed">
-                No logs emitted yet. The Demiurge is currently building.
-              </div>
-            )}
-          </div>
-        </section>
+        {/* Posts Section */}
+        <HomePostsList initialArticles={articles} />
 
         {/* Terminal Links (No divider lines) */}
         <section className="flex flex-col gap-6 pt-4">

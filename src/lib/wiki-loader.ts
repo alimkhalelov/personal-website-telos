@@ -15,7 +15,7 @@ export interface WikiPage {
   section: "projects" | "articles";
   tags: string[];
   summary: string;
-  visibility: "public";
+  visibility: "public" | "private";
   last_updated: string;
   content: string;
   headings: WikiHeading[];
@@ -65,6 +65,8 @@ export function parseMarkdownDoc(
   const last_updated = data.date || data.last_updated || new Date().toISOString().split("T")[0];
   const headings = extractHeadings(content);
 
+  const visibility: "public" | "private" = data.visibility || (slug === "tempo" ? "public" : "private");
+
   return {
     slug,
     title,
@@ -72,7 +74,7 @@ export function parseMarkdownDoc(
     section,
     tags,
     summary,
-    visibility: "public",
+    visibility,
     last_updated,
     content,
     headings,

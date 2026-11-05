@@ -18,6 +18,7 @@ import { WikiPage } from "@/lib/wiki-loader";
 import { SearchModal } from "./search-modal";
 import { PropertiesPanel } from "./properties-panel";
 import { MarkdownView } from "./markdown-view";
+import { useAuth } from "@/components/auth-context";
 
 interface DocsLayoutProps {
   currentPage: WikiPage;
@@ -28,9 +29,11 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const { isAdmin } = useAuth();
 
-  const projectPages = allPages.filter((p) => p.section === "projects");
-  const articlePages = allPages.filter((p) => p.section !== "projects");
+  const visiblePages = allPages.filter((p) => isAdmin || p.visibility === "public");
+  const projectPages = visiblePages.filter((p) => p.section === "projects");
+  const articlePages = visiblePages.filter((p) => p.section !== "projects");
 
   // Keyboard shortcut ⌘K for search
   useEffect(() => {
@@ -132,18 +135,26 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
                 <nav className="space-y-1">
                   {projectPages.map((page) => {
                     const isActive = currentPage.slug === page.slug;
+                    const isPrivate = page.visibility !== "public";
                     return (
                       <Link
                         key={page.slug}
                         href={`/wiki/${page.slug}`}
-                        className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
+                        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
                           isActive
                             ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
                             : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525] hover:!text-zinc-950 dark:hover:!text-zinc-100 font-normal"
-                        }`}
+                        } ${isPrivate ? "opacity-40 hover:opacity-85" : ""}`}
                       >
-                        <Sparkles className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
-                        <span className="truncate">{page.title}</span>
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <Sparkles className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
+                          <span className="truncate">{page.title}</span>
+                        </div>
+                        {isPrivate && (
+                          <span className="text-[10px] font-mono uppercase font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded shrink-0">
+                            Priv
+                          </span>
+                        )}
                       </Link>
                     );
                   })}
@@ -161,18 +172,26 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
               <nav className="space-y-1">
                 {articlePages.map((page) => {
                   const isActive = currentPage.slug === page.slug;
+                  const isPrivate = page.visibility !== "public";
                   return (
                     <Link
                       key={page.slug}
                       href={`/wiki/${page.slug}`}
-                      className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
+                      className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-[14.5px] transition-all !no-underline ${
                         isActive
                           ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
                           : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525] hover:!text-zinc-950 dark:hover:!text-zinc-100 font-normal"
-                      }`}
+                      } ${isPrivate ? "opacity-40 hover:opacity-85" : ""}`}
                     >
-                      <FileText className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
-                      <span className="truncate">{page.title}</span>
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <FileText className={`w-4 h-4 shrink-0 ${isActive ? "text-zinc-900 dark:text-zinc-100" : "text-zinc-400"}`} />
+                        <span className="truncate">{page.title}</span>
+                      </div>
+                      {isPrivate && (
+                        <span className="text-[10px] font-mono uppercase font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded shrink-0">
+                          Priv
+                        </span>
+                      )}
                     </Link>
                   );
                 })}
@@ -268,14 +287,21 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
                           key={page.slug}
                           href={`/wiki/${page.slug}`}
                           onClick={() => setIsMobileMenuOpen(false)}
-                          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
+                          className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
                             currentPage.slug === page.slug
                               ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
                               : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
-                          }`}
+                          } ${page.visibility !== "public" ? "opacity-40" : ""}`}
                         >
-                          <Sparkles className="w-4 h-4 shrink-0 text-zinc-400" />
-                          <span className="truncate">{page.title}</span>
+                          <div className="flex items-center gap-2 min-w-0">
+                            <Sparkles className="w-4 h-4 shrink-0 text-zinc-400" />
+                            <span className="truncate">{page.title}</span>
+                          </div>
+                          {page.visibility !== "public" && (
+                            <span className="text-[9px] font-mono uppercase font-bold text-amber-500 bg-amber-500/10 px-1 py-0.5 rounded shrink-0">
+                              Priv
+                            </span>
+                          )}
                         </Link>
                       ))}
                     </div>
@@ -294,14 +320,21 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
                         key={page.slug}
                         href={`/wiki/${page.slug}`}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
+                        className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors !no-underline ${
                           currentPage.slug === page.slug
                             ? "bg-[#E4E4E0] dark:bg-[#252525] !text-zinc-950 dark:!text-white font-bold"
                             : "!text-zinc-600 dark:!text-zinc-400 hover:bg-[#EBEBE8] dark:hover:bg-[#252525]"
-                        }`}
+                        } ${page.visibility !== "public" ? "opacity-40" : ""}`}
                       >
-                        <FileText className="w-4 h-4 shrink-0 text-zinc-400" />
-                        <span className="truncate">{page.title}</span>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText className="w-4 h-4 shrink-0 text-zinc-400" />
+                          <span className="truncate">{page.title}</span>
+                        </div>
+                        {page.visibility !== "public" && (
+                          <span className="text-[9px] font-mono uppercase font-bold text-amber-500 bg-amber-500/10 px-1 py-0.5 rounded shrink-0">
+                            Priv
+                          </span>
+                        )}
                       </Link>
                     ))}
                   </div>
@@ -321,7 +354,7 @@ export function DocsLayout({ currentPage, allPages }: DocsLayoutProps) {
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
-        allPages={allPages}
+        allPages={visiblePages}
       />
     </div>
   );
