@@ -100,29 +100,35 @@ export function AppStoreProjectCard({
         </div>
       </div>
 
-      {/* 2. Full-bleed edge-to-edge Horizontal Screenshots in 9:16:
-          - Starts at exact left pixel line of Projects & Tempo icon
-          - Flows smoothly to the right edge of the screen
-          - No shadow on cards so overflow-x-auto will never clip a shadow line
+      {/* 2. Horizontal Screenshots in 9:16:
+          - Starts precisely at the left vertical line of the Tempo icon (marginLeft: 0, paddingLeft: 0)
+          - Extends across and out to the right edge of the screen (marginRight breakout)
+          - No drop-shadow on cards to prevent clipped shadow artifacts
       */}
-      <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory">
+      <div 
+        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
+        style={{
+          marginLeft: 0,
+          marginRight: "calc(-1 * max(0px, (100vw - 100%) / 2))",
+        }}
+      >
         <div 
           className="flex gap-4 sm:gap-5 min-w-max"
           style={{
-            paddingLeft: leftOffset !== null ? `${leftOffset}px` : "1.5rem",
-            paddingRight: "2.5rem",
+            paddingLeft: 0,
+            paddingRight: "3rem",
           }}
         >
           {normalizedScreenshots.map((s, idx) => (
             <div
               key={s.src}
-              className="relative flex-none w-[210px] sm:w-[250px] md:w-[285px] aspect-[9/16] rounded-[24px] overflow-hidden border border-white/15 bg-neutral-950 snap-start"
+              className="relative flex-none w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px] overflow-hidden border border-white/15 bg-neutral-950 snap-start"
             >
               <Image
                 src={s.src}
                 alt={`${title} screenshot ${idx + 1}`}
                 fill
-                sizes="(max-width: 640px) 210px, (max-width: 1024px) 250px, 285px"
+                sizes="(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
                 className="object-cover"
                 priority={idx < 2}
               />

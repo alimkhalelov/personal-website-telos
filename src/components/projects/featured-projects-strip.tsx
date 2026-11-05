@@ -21,16 +21,18 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
 
   return (
     <section id="projects" className={`flex flex-col gap-6 w-full ${className}`}>
-      {/* Section Header */}
+      {/* Section Header (Duplicate Projects title removed on desktop; View all link aligned to right) */}
       <div className="flex items-center justify-between pb-1">
-        <h2 className="text-3xl font-bold tracking-tight text-white">Projects</h2>
-        <Link
-          href="/projects"
-          className="text-sm font-medium text-white/70 hover:text-white transition-colors !no-underline"
-          style={{ fontFamily: "'Google Sans', sans-serif" }}
-        >
-          View all →
-        </Link>
+        <h2 className="text-2xl font-bold tracking-tight text-white lg:hidden">Projects</h2>
+        <div className="ml-auto">
+          <Link
+            href="/projects"
+            className="text-sm font-medium text-white/60 hover:text-white transition-colors !no-underline"
+            style={{ fontFamily: "'Google Sans', sans-serif" }}
+          >
+            View all →
+          </Link>
+        </div>
       </div>
 
       {/* Featured Public App: Tempo in App Store Layout */}

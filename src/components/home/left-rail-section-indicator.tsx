@@ -17,11 +17,37 @@ const SECTIONS: SectionConfig[] = [
 
 export function LeftRailSectionIndicator() {
   const [activeId, setActiveId] = React.useState<string>("hero");
+  const [hasEntered, setHasEntered] = React.useState(false);
+  const [heroBaselineY, setHeroBaselineY] = React.useState<number>(182);
 
+  // Measure bottom baseline of #hero h1 on mount and resize
+  React.useEffect(() => {
+    const measureBaseline = () => {
+      const h1 = document.querySelector("#hero h1");
+      if (h1) {
+        const rect = h1.getBoundingClientRect();
+        // rect.bottom is the bottom line of the title block.
+        // With leading-[1.05], the text baseline sits ~14px above the bottom of the bounding box.
+        setHeroBaselineY(rect.bottom - 14);
+      }
+    };
+
+    measureBaseline();
+    window.addEventListener("resize", measureBaseline);
+    return () => window.removeEventListener("resize", measureBaseline);
+  }, []);
+
+  // Delay the initial entrance of "hey, I'm" by 800ms so it doesn't appear immediately
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasEntered(true);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Track active section on scroll
   React.useEffect(() => {
     const handleScroll = () => {
-      // Find the currently active section by top offset relative to viewport
-      const heroEl = document.getElementById("hero");
       const projectsEl = document.getElementById("projects");
       const postsEl = document.getElementById("posts");
       const networkEl = document.getElementById("network");
@@ -41,7 +67,7 @@ export function LeftRailSectionIndicator() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Trigger initial state
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -50,31 +76,39 @@ export function LeftRailSectionIndicator() {
   return (
     <aside
       aria-label="Current section indicator"
-      className="hidden lg:flex fixed top-[118px] sm:top-[128px] md:top-[132px] z-30 pointer-events-none select-none flex-col items-end"
+      className="hidden lg:flex fixed z-30 pointer-events-none select-none flex-col items-end"
       style={{
         left: 0,
         width: "calc(50vw - 28rem + 0.5rem)",
+        // In hero section, align with the bottom baseline of "Alim Khalelov"
+        // In other sections, float at comfortable eye level (130px)
+        top: activeId === "hero" ? `${heroBaselineY}px` : "130px",
+        transform: activeId === "hero" ? "translateY(-88%)" : "translateY(0%)",
+        transition: "top 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
-      <div className="pr-4 sm:pr-5 flex items-center justify-end">
+      <div className="pr-5 sm:pr-6 flex items-center justify-end">
         <AnimatePresence mode="wait">
-          <motion.span
-            key={currentSection.id}
-            initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
-            transition={{
-              duration: 0.38,
-              ease: [0.16, 1, 0.3, 1], // Smooth Apple physical spring curve
-            }}
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-white/35 drop-shadow-[0_1px_8px_rgba(0,0,0,0.18)] whitespace-nowrap text-right"
-            style={{
-              fontFamily:
-                "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-            }}
-          >
-            {currentSection.label}
-          </motion.span>
+          {hasEntered && (
+            <motion.span
+              key={currentSection.id}
+              initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -18, filter: "blur(10px)" }}
+              transition={{
+                duration: 0.85, // Slower, luxurious transition
+                ease: [0.16, 1, 0.3, 1], // Apple physical spring easing
+              }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white/30 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap text-right"
+              style={{
+                fontFamily:
+                  "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                lineHeight: 1.05,
+              }}
+            >
+              {currentSection.label}
+            </motion.span>
+          )}
         </AnimatePresence>
       </div>
     </aside>
