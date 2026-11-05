@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Geist_Mono, Asap_Condensed } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { KebabNav } from "@/components/kebab-nav";
@@ -21,6 +22,38 @@ const asapCondensed = Asap_Condensed({
   variable: "--font-asap-condensed",
   subsets: ["latin"],
   weight: ["400", "600", "700", "800", "900"],
+});
+
+const sfProRounded = localFont({
+  src: [
+    {
+      path: "../../public/fonts/SFRounded-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SFRounded-Medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SFRounded-Semibold.woff2",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SFRounded-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/SFRounded-Heavy.woff2",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  variable: "--font-sf-pro-rounded",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -96,7 +129,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${geistMono.variable} ${asapCondensed.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${geistMono.variable} ${asapCondensed.variable} ${sfProRounded.variable} h-full antialiased`}>
       <head>
         <JsonLd data={getPersonAndWebsiteGraph()} />
       </head>
