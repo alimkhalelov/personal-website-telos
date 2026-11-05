@@ -20,7 +20,7 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
   const privateProjects = projects.filter((p) => p.slug !== "tempo");
 
   return (
-    <section className={`flex flex-col gap-6 w-full ${className}`}>
+    <section id="projects" className={`flex flex-col gap-6 w-full ${className}`}>
       {/* Section Header */}
       <div className="flex items-center justify-between pb-1">
         <h2 className="text-3xl font-bold tracking-tight text-white">Projects</h2>

@@ -4,6 +4,7 @@ import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 import { HomePostsList } from "@/components/home/home-posts-list";
+import { LeftRailSectionIndicator } from "@/components/home/left-rail-section-indicator";
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -53,9 +54,10 @@ export default function Home() {
   return (
     <>
       <OneUiWallpaper />
+      <LeftRailSectionIndicator />
       <main className="max-w-4xl mx-auto px-6 py-16 sm:py-28 flex flex-col gap-16 sm:gap-20 w-full relative z-10">
         {/* Minimalist Hero Section */}
-        <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        <section id="hero" className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="flex flex-col gap-1.5">
             {/* Apple SF Pro Rounded Hero Title (Matte Translucent White) */}
             <h1
@@ -133,7 +135,7 @@ export default function Home() {
         <HomePostsList initialArticles={articles} />
 
         {/* Terminal Links (No divider lines) */}
-        <section className="flex flex-col gap-6 pt-4">
+        <section id="network" className="flex flex-col gap-6 pt-4">
           <h2 className="text-lg font-medium text-white/70 uppercase tracking-wider text-center sm:text-left">
             Network & Index
           </h2>
