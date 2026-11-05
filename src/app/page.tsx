@@ -60,7 +60,7 @@ export default function Home() {
             {/* Apple iOS Liquid Glass 3D Typography with Rounded Condensed Lockscreen Font */}
             <LiquidGlassTitle
               as="h1"
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium sm:font-semibold tracking-[-0.01em] leading-[1.02]"
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-semibold sm:font-bold tracking-[-0.01em] leading-[1.02]"
               style={{ fontFamily: "var(--font-dosis), sans-serif" }}
             >
               Alim Khalelov
