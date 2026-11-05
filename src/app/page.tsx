@@ -4,7 +4,7 @@ import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 
-function LinkedinIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
+function LinkedinIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg 
       className={className} 
@@ -40,63 +40,75 @@ export default function Home() {
   return (
     <>
       <OneUiWallpaper />
-      <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-20 sm:gap-24 w-full relative z-10">
+      <main className="max-w-4xl mx-auto px-6 py-16 sm:py-28 flex flex-col gap-16 sm:gap-20 w-full relative z-10">
         {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-foreground">
+          <div className="flex flex-col gap-1.5">
+            {/* Modern Tall Lockscreen Clock Typography (Samsung One UI 9 / iOS 18 style) */}
+            <h1
+              className="text-6xl sm:text-8xl md:text-9xl font-extrabold uppercase tracking-tight leading-[0.92] select-none text-white drop-shadow-sm"
+              style={{ fontFamily: "var(--font-antonio), sans-serif" }}
+            >
               Alim Khalelov
             </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground font-light tracking-tight">
+            <p className="text-xl sm:text-2xl text-white/80 font-light tracking-tight mt-1">
               AI-Native Product Manager
             </p>
           </div>
 
-          {/* Minimalist Contact Icon Pills */}
-          <div className="flex flex-wrap items-center gap-2 pt-1">
+          {/* 4 Squircle iPhone App Icon Buttons (Mail, Telegram, LinkedIn, Call) */}
+          <div className="flex items-center gap-3.5 sm:gap-4 pt-1">
+            {/* Mail */}
             <a
               href="mailto:alim.khalelov@gmail.com"
-              title="alim.khalelov@gmail.com"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+              aria-label="Email"
+              title="Email: alim.khalelov@gmail.com"
+              className="group relative w-12 h-12 rounded-[16px] bg-gradient-to-b from-[#34AADC] to-[#007AFF] flex items-center justify-center shadow-md shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-110 active:scale-95 transition-all duration-200 ring-1 ring-white/25 overflow-hidden !no-underline cursor-pointer"
             >
-              <Mail className="w-3.5 h-3.5 text-muted-foreground" />
-              <span>Email</span>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-[16px]" />
+              <Mail className="w-5 h-5 text-white transition-transform group-hover:scale-110" />
             </a>
 
+            {/* Telegram */}
             <a
               href="https://t.me/AlimLLC"
               target="_blank"
               rel="noopener noreferrer"
-              title="@AlimLLC"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+              aria-label="Telegram"
+              title="Telegram: @AlimLLC"
+              className="group relative w-12 h-12 rounded-[16px] bg-gradient-to-b from-[#2AABEE] to-[#229ED9] flex items-center justify-center shadow-md shadow-sky-500/25 hover:shadow-sky-500/40 hover:scale-110 active:scale-95 transition-all duration-200 ring-1 ring-white/25 overflow-hidden !no-underline cursor-pointer"
             >
-              <Send className="w-3.5 h-3.5 text-blue-500" />
-              <span>Telegram</span>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-[16px]" />
+              <Send className="w-5 h-5 text-white -rotate-12 translate-x-[-1px] translate-y-[-1px] transition-transform group-hover:scale-110" />
             </a>
 
+            {/* LinkedIn */}
             <a
               href="https://linkedin.com/in/alimzhan-khalelov"
               target="_blank"
               rel="noopener noreferrer"
-              title="linkedin.com/in/alimzhan-khalelov"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+              aria-label="LinkedIn"
+              title="LinkedIn: /in/alimzhan-khalelov"
+              className="group relative w-12 h-12 rounded-[16px] bg-gradient-to-b from-[#0A66C2] to-[#004182] flex items-center justify-center shadow-md shadow-blue-700/25 hover:shadow-blue-700/40 hover:scale-110 active:scale-95 transition-all duration-200 ring-1 ring-white/25 overflow-hidden !no-underline cursor-pointer"
             >
-              <LinkedinIcon className="w-3.5 h-3.5 text-blue-600" />
-              <span>LinkedIn</span>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-[16px]" />
+              <LinkedinIcon className="w-5 h-5 text-white transition-transform group-hover:scale-110" />
             </a>
 
+            {/* Call / Phone */}
             <a
               href="tel:+77053508033"
-              title="+7 705 350 80 33"
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-border/70 hover:border-foreground/40 bg-card/70 hover:bg-card text-xs font-mono text-foreground/80 hover:text-foreground transition-all shadow-xs !no-underline"
+              aria-label="Call"
+              title="Call: +7 705 350 80 33"
+              className="group relative w-12 h-12 rounded-[16px] bg-gradient-to-b from-[#34C759] to-[#248A3D] flex items-center justify-center shadow-md shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-110 active:scale-95 transition-all duration-200 ring-1 ring-white/25 overflow-hidden !no-underline cursor-pointer"
             >
-              <Phone className="w-3.5 h-3.5 text-emerald-500" />
-              <span>+7 705 350 80 33</span>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/35 to-transparent pointer-events-none rounded-t-[16px]" />
+              <Phone className="w-5 h-5 text-white transition-transform group-hover:scale-110" />
             </a>
           </div>
 
-          {/* Crisp, Non-Repetitive Summary Bio */}
-          <p className="text-base sm:text-lg text-foreground/85 max-w-2xl leading-relaxed font-light pt-2">
+          {/* Crisp Bio (No redundant "Product Manager" repeats, no divider line) */}
+          <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
             5+ years shipping 0-to-1 products across AI & Web3. Building multi-agent systems, LLM evaluation pipelines, and rapid prototyping cycles to validate product-market fit before scaling.
           </p>
         </section>
@@ -104,10 +116,10 @@ export default function Home() {
         {/* Featured Showcase & Agent Skills Horizontal Strip */}
         <FeaturedProjectsStrip />
 
-        {/* Lab Log / Blog Section */}
-        <section className="flex flex-col gap-10">
-          <div className="flex items-center justify-between border-b border-border pb-6">
-            <h2 className="text-3xl font-bold tracking-tight">Posts</h2>
+        {/* Posts Section (No divider line) */}
+        <section className="flex flex-col gap-6">
+          <div className="flex items-center justify-between pb-1">
+            <h2 className="text-3xl font-bold tracking-tight text-white">Posts</h2>
           </div>
 
           <div className="flex flex-col gap-1">
@@ -116,74 +128,74 @@ export default function Home() {
                 <Link
                   href={`/blog/${article.slug}`}
                   key={article.slug}
-                  className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-muted/50 transition-colors gap-4 !no-underline"
+                  className="group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-white/10 transition-colors gap-4 !no-underline"
                 >
                   <div className="flex items-center gap-4">
                     <time
-                      className="text-base w-[105px] shrink-0 group-hover:underline text-muted-foreground"
+                      className="text-base w-[105px] shrink-0 group-hover:underline text-white/70"
                       style={{ fontFamily: "'Google Sans', sans-serif" }}
                     >
                       {formatDate(article.date)}
                     </time>
                     <h3
-                      className="text-base font-medium group-hover:underline transition-colors text-foreground"
+                      className="text-base font-medium group-hover:underline transition-colors text-white"
                       style={{ fontFamily: "'Google Sans', sans-serif" }}
                     >
                       {article.title}
                     </h3>
                   </div>
                   <div className="flex items-center shrink-0">
-                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-muted-foreground" />
+                    <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-white/70" />
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="p-8 text-center text-muted-foreground bg-muted/10 rounded-xl border border-border border-dashed">
+              <div className="p-8 text-center text-white/70 bg-white/5 rounded-xl border border-white/10 border-dashed">
                 No logs emitted yet. The Demiurge is currently building.
               </div>
             )}
           </div>
         </section>
 
-        {/* Terminal Links */}
-        <section className="flex flex-col gap-8 pt-8">
-          <h2 className="text-lg font-medium text-muted-foreground uppercase tracking-wider text-center sm:text-left">
+        {/* Terminal Links (No divider lines) */}
+        <section className="flex flex-col gap-6 pt-4">
+          <h2 className="text-lg font-medium text-white/70 uppercase tracking-wider text-center sm:text-left">
             Network & Index
           </h2>
           <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-start">
             <Link
               href="/wiki"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium !no-underline text-foreground"
+              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
             >
               Knowledge Wiki
-              <ArrowUpRight className="w-3 h-3" />
+              <ArrowUpRight className="w-3 h-3 text-white/70" />
             </Link>
             <a
               href="https://t.me/AlimLLC"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium !no-underline text-foreground"
+              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
             >
               Telegram
-              <ArrowUpRight className="w-3 h-3" />
+              <ArrowUpRight className="w-3 h-3 text-white/70" />
             </a>
             <a
               href="https://github.com/alimzhankhalelov"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium !no-underline text-foreground"
+              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
             >
               GitHub
-              <ArrowUpRight className="w-3 h-3" />
+              <ArrowUpRight className="w-3 h-3 text-white/70" />
             </a>
             <a
               href="https://linkedin.com/in/alimzhan-khalelov"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-border hover:border-accent hover:text-accent bg-card hover:bg-accent/5 transition-all text-sm font-medium !no-underline text-foreground"
+              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
             >
               LinkedIn
-              <ArrowUpRight className="w-3 h-3" />
+              <ArrowUpRight className="w-3 h-3 text-white/70" />
             </a>
           </div>
         </section>

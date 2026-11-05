@@ -82,17 +82,13 @@ export function KebabNav() {
 
   return (
     <div ref={menuRef} className="fixed top-4 right-4 sm:right-8 z-50 select-none">
-      {/* Кнопка 3 вертикальные точки */}
+      {/* Кнопка 3 вертикальные точки (без подложки и без обводки) */}
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Navigation menu"
         aria-expanded={isOpen}
-        className={`p-2.5 rounded-full backdrop-blur-xl border transition-all cursor-pointer flex items-center justify-center shadow-sm ${
-          isOpen
-            ? "bg-foreground/15 border-border/80 text-foreground scale-105"
-            : "bg-background/60 dark:bg-zinc-900/60 border-border/40 hover:border-border text-foreground/80 hover:text-foreground hover:bg-background/80 dark:hover:bg-zinc-900/80"
-        }`}
+        className="p-2 transition-all cursor-pointer flex items-center justify-center text-foreground/85 hover:text-foreground hover:scale-110 active:scale-95 bg-transparent border-0 shadow-none outline-none"
       >
         {isOpen ? (
           <X className="w-5 h-5 transition-transform rotate-0 hover:rotate-90 duration-200" />
@@ -148,8 +144,7 @@ export function KebabNav() {
             <span>Wiki Hub</span>
           </Link>
 
-          {/* Разделитель */}
-          <div className="h-px bg-border/50 my-1" />
+          <div className="pt-2" />
 
           {/* Раздел: Настройки и сервисы */}
           <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">
@@ -202,8 +197,7 @@ export function KebabNav() {
           {/* Bionic reading появляется если мы внутри статьи */}
           <BionicToggle />
 
-          {/* Разделитель */}
-          <div className="h-px bg-border/50 my-1" />
+          <div className="pt-2" />
 
           {/* Раздел: Прямой контакт */}
           <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/70">

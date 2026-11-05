@@ -24,6 +24,11 @@ export function setDynamicDaytimeEnabled(enabled: boolean) {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(STORAGE_KEY, String(enabled));
+    if (enabled) {
+      document.documentElement.classList.add("has-dynamic-daytime");
+    } else {
+      document.documentElement.classList.remove("has-dynamic-daytime");
+    }
     window.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: enabled }));
   } catch {}
 }
@@ -32,12 +37,23 @@ export function useDynamicDaytime() {
   const [enabled, setEnabled] = useState<boolean>(true);
 
   useEffect(() => {
-    setEnabled(getDynamicDaytimeEnabled());
+    const isEn = getDynamicDaytimeEnabled();
+    setEnabled(isEn);
+    if (isEn) {
+      document.documentElement.classList.add("has-dynamic-daytime");
+    } else {
+      document.documentElement.classList.remove("has-dynamic-daytime");
+    }
 
     const handler = (e: Event) => {
       const custom = e as CustomEvent<boolean>;
       if (typeof custom.detail === "boolean") {
         setEnabled(custom.detail);
+        if (custom.detail) {
+          document.documentElement.classList.add("has-dynamic-daytime");
+        } else {
+          document.documentElement.classList.remove("has-dynamic-daytime");
+        }
       }
     };
     window.addEventListener(EVENT_NAME, handler);

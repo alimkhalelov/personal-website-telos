@@ -14,7 +14,7 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
   return (
     <section className={`flex flex-col gap-8 w-full ${className}`}>
       {/* Section Header */}
-      <div className="flex items-center justify-between border-b border-border pb-6">
+      <div className="flex items-center justify-between pb-2">
         <h2 className="text-3xl font-bold tracking-tight">Projects</h2>
         <Link
           href="/projects"

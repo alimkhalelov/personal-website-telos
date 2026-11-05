@@ -10,6 +10,7 @@
   --color-card: var(--card);
   --font-sans: "Google Sans", "Product Sans", var(--font-outfit), sans-serif;
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-antonio), sans-serif;
 }
 
 :root {
@@ -105,3 +106,59 @@ body {
   animation-play-state: paused;
 }
 
+
+
+/* Modern Minimalist Glass Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+}
+
+/* Fallback scrollbar thumb when dynamic daytime is off in light mode */
+html:not(.has-dynamic-daytime):not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+html:not(.has-dynamic-daytime):not(.dark) * {
+  scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
+}
+
+/* High-contrast pure white theme when Dynamic Daytime is active */
+html.has-dynamic-daytime body {
+  color: #ffffff !important;
+}
+
+html.has-dynamic-daytime .text-foreground {
+  color: #ffffff !important;
+}
+
+html.has-dynamic-daytime .text-muted-foreground {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+html.has-dynamic-daytime a {
+  color: #ffffff;
+}
+
+html.has-dynamic-daytime a:hover {
+  color: #93c5fd;
+}
