@@ -55,7 +55,6 @@ export function ProjectsFeed({ initialProjects }: ProjectsFeedProps) {
                   iconSrc={project.iconSrc || "/projects/tempo/icon.svg"}
                   demoUrl={project.demoUrl}
                   isPublic={project.isPublic !== false}
-                  maxWidthRem={48}
                   screenshots={[
                     "/projects/tempo/01-tempo-brand-hero.png",
                     "/projects/tempo/02-crush-fatigue.png",

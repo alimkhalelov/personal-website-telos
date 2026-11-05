@@ -12,7 +12,6 @@ export interface AppStoreCardProps {
   demoUrl: string;
   screenshots: (string | { src: string; caption?: string })[];
   isPublic?: boolean;
-  maxWidthRem?: number;
   className?: string;
 }
 
@@ -23,10 +22,25 @@ export function AppStoreProjectCard({
   demoUrl,
   screenshots,
   isPublic = true,
-  maxWidthRem = 56,
   className = "",
 }: AppStoreCardProps) {
   const { isAdmin } = useAuth();
+  const headerRef = React.useRef<HTMLDivElement>(null);
+  const [leftOffset, setLeftOffset] = React.useState<number | null>(null);
+
+  // Measure exact pixel offset of the header so screenshots align with "Projects" & Tempo icon
+  React.useEffect(() => {
+    const updateOffset = () => {
+      if (headerRef.current) {
+        const rect = headerRef.current.getBoundingClientRect();
+        setLeftOffset(rect.left);
+      }
+    };
+
+    updateOffset();
+    window.addEventListener("resize", updateOffset);
+    return () => window.removeEventListener("resize", updateOffset);
+  }, []);
 
   // If not public and user is not admin, do not render
   if (!isPublic && !isAdmin) {
@@ -53,10 +67,10 @@ export function AppStoreProjectCard({
         </div>
       )}
 
-      {/* 1. Header: Icon in squircle + Title & Subtitle without divider or action buttons */}
-      <div className="flex items-center gap-4 sm:gap-5 min-w-0">
+      {/* 1. Header: Icon in squircle + Title & Subtitle */}
+      <div ref={headerRef} className="flex items-center gap-4 sm:gap-5 min-w-0">
         {/* App Icon (Apple Squircle rounded-[22%]) */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-[22%] overflow-hidden border border-white/20 shadow-lg">
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-[22%] overflow-hidden border border-white/20 shadow-md">
           <Image
             src={iconSrc}
             alt={`${title} App Icon`}
@@ -86,19 +100,23 @@ export function AppStoreProjectCard({
         </div>
       </div>
 
-      {/* 2. Full-bleed edge-to-edge Horizontal Screenshots Gallery in 9:16 (breaks out across full viewport width to the right) */}
-      <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-x-auto pb-6 pt-2 scrollbar-none snap-x snap-mandatory">
+      {/* 2. Full-bleed edge-to-edge Horizontal Screenshots in 9:16:
+          - Starts at exact left pixel line of Projects & Tempo icon
+          - Flows smoothly to the right edge of the screen
+          - No shadow on cards so overflow-x-auto will never clip a shadow line
+      */}
+      <div className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory">
         <div 
           className="flex gap-4 sm:gap-5 min-w-max"
           style={{
-            paddingLeft: `max(1.5rem, calc((100vw - ${maxWidthRem}rem) / 2 + 1.5rem))`,
-            paddingRight: `max(1.5rem, calc((100vw - ${maxWidthRem}rem) / 2 + 1.5rem))`,
+            paddingLeft: leftOffset !== null ? `${leftOffset}px` : "1.5rem",
+            paddingRight: "2.5rem",
           }}
         >
           {normalizedScreenshots.map((s, idx) => (
             <div
               key={s.src}
-              className="relative flex-none w-[210px] sm:w-[250px] md:w-[285px] aspect-[9/16] rounded-[24px] overflow-hidden border border-white/15 bg-neutral-950 shadow-[0_12px_36px_rgba(0,0,0,0.35)] snap-start transition-transform duration-200 hover:scale-[1.01]"
+              className="relative flex-none w-[210px] sm:w-[250px] md:w-[285px] aspect-[9/16] rounded-[24px] overflow-hidden border border-white/15 bg-neutral-950 snap-start"
             >
               <Image
                 src={s.src}
