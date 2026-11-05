@@ -56,14 +56,14 @@ export default function Home() {
         {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="flex flex-col gap-1.5">
-            {/* Apple SF Pro Rounded Hero Title */}
+            {/* Apple SF Pro Rounded Hero Title (Matte Translucent White) */}
             <h1
-              className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tight leading-[0.96] select-none text-white drop-shadow-sm"
+              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.05] select-none text-white/80 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)]"
               style={{ fontFamily: "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif" }}
             >
               Alim Khalelov
             </h1>
-            <p className="text-xl sm:text-2xl text-white/80 font-light tracking-tight mt-1">
+            <p className="text-lg sm:text-xl text-white/60 font-light tracking-tight mt-1">
               AI-Native Product Manager
             </p>
           </div>
