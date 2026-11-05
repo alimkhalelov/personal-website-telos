@@ -57,11 +57,11 @@ export default function Home() {
         {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="flex flex-col gap-1.5">
-            {/* Apple iOS Liquid Glass 3D Typography */}
+            {/* Apple iOS Liquid Glass 3D Typography with Rounded Condensed Lockscreen Font */}
             <LiquidGlassTitle
               as="h1"
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-normal sm:font-medium tracking-[-0.02em] leading-[1.05]"
-              style={{ fontFamily: "var(--font-outfit), sans-serif" }}
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium sm:font-semibold tracking-[-0.01em] leading-[1.02]"
+              style={{ fontFamily: "var(--font-dosis), sans-serif" }}
             >
               Alim Khalelov
             </LiquidGlassTitle>
