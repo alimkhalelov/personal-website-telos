@@ -3,6 +3,7 @@ import { getSortedArticles } from "@/lib/mdx";
 import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
+import { LiquidGlassTitle } from "@/components/liquid-glass-title";
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -56,13 +57,14 @@ export default function Home() {
         {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="flex flex-col gap-1.5">
-            {/* Modern Tall Lockscreen Clock Typography with Rounded Corners & Transparent Glass Effect */}
-            <h1
-              className="text-6xl sm:text-8xl md:text-9xl font-medium sm:font-semibold uppercase tracking-tight leading-[0.92] select-none glass-text"
+            {/* Apple iOS Liquid Glass 3D Typography */}
+            <LiquidGlassTitle
+              as="h1"
+              className="text-6xl sm:text-8xl md:text-9xl font-semibold uppercase tracking-tight leading-[0.92]"
               style={{ fontFamily: "var(--font-asap-condensed), sans-serif" }}
             >
               Alim Khalelov
-            </h1>
+            </LiquidGlassTitle>
             <p className="text-xl sm:text-2xl text-white/80 font-light tracking-tight mt-1">
               AI-Native Product Manager
             </p>
