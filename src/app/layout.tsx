@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { BionicToggle } from "@/components/bionic-toggle";
+import { KebabNav } from "@/components/kebab-nav";
 import { Analytics } from "@vercel/analytics/next";
-import { LanguageToggle } from "@/components/language-toggle";
 import { JsonLd, getPersonAndWebsiteGraph } from "@/components/seo/json-ld";
 
 const outfit = Outfit({
@@ -21,11 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://alim.dest.page"),
   title: {
-    default: "Alim Khalelov | Architect of Autonomous Systems",
+    default: "Alim Khalelov | AI-Native Product Manager",
     template: "%s | Alim Khalelov",
   },
   description:
-    "Alim Khalelov — Architect of Autonomous Systems and AI-Native Product Manager. Building high-leverage products using the Fan-Filter-Scale methodology.",
+    "Product Manager with 5+ years shipping 0-to-1 products at AI and Web3 startups. I build multi-agent systems, design validation pipelines for LLM outputs, and run rapid prototyping cycles to find product-market fit before scaling.",
   keywords: [
     "Alim Khalelov",
     "Architect of Autonomous Systems",
@@ -90,11 +88,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans selection:bg-accent/30 transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <div className="fixed top-3.5 right-4 sm:right-6 z-50 flex items-center gap-1.5 sm:gap-2">
-            <BionicToggle />
-            <ThemeToggle />
-            <LanguageToggle />
-          </div>
+          <KebabNav />
           {children}
           <Analytics />
         </ThemeProvider>
