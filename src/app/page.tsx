@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSortedArticles } from "@/lib/mdx";
 import { ArrowUpRight } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
+import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 
 const formatDate = (dateString: string) => {
   try {
@@ -19,7 +20,9 @@ export default function Home() {
   const articles = getSortedArticles();
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative">
+    <>
+      <OneUiWallpaper />
+      <main className="max-w-4xl mx-auto px-6 py-20 sm:py-32 flex flex-col gap-24 w-full relative z-10">
       {/* Top Header / Navigation Area */}
       <header className="absolute top-8 right-6 sm:top-12 sm:right-12 z-40">
         <div className="relative group flex items-center gap-6">
@@ -116,5 +119,6 @@ export default function Home() {
       </section>
 
     </main>
+    </>
   );
 }
