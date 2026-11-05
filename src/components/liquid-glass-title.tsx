@@ -10,10 +10,12 @@ interface LiquidGlassTitleProps {
 }
 
 /**
- * Аутентичная Apple Liquid Glass 3D-типографика (iOS 18 / VisionOS):
- * 1. Проекционная тень преломления (ambient glass cast shadow).
- * 2. Оптический фацет (2px каустический ободок по контуру букв, собирающий свет).
- * 3. Диагональный спектральный блик (135°) с прозрачной серединой (12%), пропускающей фон.
+ * Authentic Apple Liquid Glass Typography (iOS / VisionOS):
+ * Replicates pure optical glass:
+ * - Crystal translucent body allowing the dynamic One UI canvas to shine through.
+ * - feSpecularLighting 3D curved surface reflection catching ambient overhead light.
+ * - Delicate 0.65px optical lens perimeter (NO cartoon neon borders).
+ * - Diffused physical ambient drop-shadow.
  */
 export function LiquidGlassTitle({
   children,
@@ -22,21 +24,45 @@ export function LiquidGlassTitle({
   style = {},
 }: LiquidGlassTitleProps) {
   return (
-    <Component className={`apple-glass-title ${className}`} style={style}>
-      {/* Слой 1: Проекционная тень преломления стекла на фон */}
-      <span aria-hidden="true" className="apple-glass-shadow">
-        {children}
-      </span>
+    <>
+      {/* SVG Specular Light Filter for Physical 3D Glass Refraction & Curved Bevel */}
+      <svg
+        width="0"
+        height="0"
+        className="absolute pointer-events-none opacity-0 overflow-hidden"
+        style={{ position: "absolute", width: 0, height: 0 }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id="apple-liquid-glass" x="-20%" y="-20%" width="140%" height="140%">
+            {/* Height profile of the curved liquid surface */}
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="blur" />
+            {/* Top-left ambient specular reflection (natural curved glass glint) */}
+            <feSpecularLighting
+              in="blur"
+              surfaceScale="3.2"
+              specularConstant="1.3"
+              specularExponent="22"
+              lightingColor="#ffffff"
+              result="specular"
+            >
+              <feDistantLight azimuth="132" elevation="58" />
+            </feSpecularLighting>
+            {/* Mask specular highlight to stay strictly inside the glyph perimeter */}
+            <feComposite in="specular" in2="SourceAlpha" operator="in" result="specularInside" />
+            {/* Composite glass gradient body + specular highlight */}
+            <feComposite in="SourceGraphic" in2="specularInside" operator="over" />
+          </filter>
+        </defs>
+      </svg>
 
-      {/* Слой 2: Оптический фацет и каустический ободок */}
-      <span aria-hidden="true" className="apple-glass-rim">
+      <Component
+        className={`apple-liquid-glass-heading ${className}`}
+        style={style}
+      >
         {children}
-      </span>
-
-      {/* Слой 3: Лицевое тело жидкого стекла */}
-      <span className="apple-glass-core block">
-        {children}
-      </span>
-    </Component>
+      </Component>
+    </>
   );
 }
+
