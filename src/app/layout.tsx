@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit, Geist_Mono, Dosis } from "next/font/google";
+import { Outfit, Geist_Mono, Asap_Condensed } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { KebabNav } from "@/components/kebab-nav";
@@ -17,10 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const dosis = Dosis({
-  variable: "--font-dosis",
+const asapCondensed = Asap_Condensed({
+  variable: "--font-asap-condensed",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -96,7 +96,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${geistMono.variable} ${dosis.variable} h-full antialiased`}>
+    <html lang="en" suppressHydrationWarning className={`${outfit.variable} ${geistMono.variable} ${asapCondensed.variable} h-full antialiased`}>
       <head>
         <JsonLd data={getPersonAndWebsiteGraph()} />
       </head>

@@ -3,7 +3,6 @@ import { getSortedArticles } from "@/lib/mdx";
 import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
-import { LiquidGlassTitle } from "@/components/liquid-glass-title";
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -57,14 +56,13 @@ export default function Home() {
         {/* Minimalist Hero Section */}
         <section className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
           <div className="flex flex-col gap-1.5">
-            {/* Apple iOS Liquid Glass 3D Typography with Rounded Condensed Lockscreen Font */}
-            <LiquidGlassTitle
-              as="h1"
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-semibold sm:font-bold tracking-[-0.01em] leading-[1.02]"
-              style={{ fontFamily: "var(--font-dosis), sans-serif" }}
+            {/* Modern Tall Lockscreen Clock Typography with Rounded Corners (One UI 9 / iOS 18 style) */}
+            <h1
+              className="text-6xl sm:text-8xl md:text-9xl font-extrabold uppercase tracking-tight leading-[0.92] select-none text-white drop-shadow-sm"
+              style={{ fontFamily: "var(--font-asap-condensed), sans-serif" }}
             >
               Alim Khalelov
-            </LiquidGlassTitle>
+            </h1>
             <p className="text-xl sm:text-2xl text-white/80 font-light tracking-tight mt-1">
               AI-Native Product Manager
             </p>
@@ -77,10 +75,10 @@ export default function Home() {
               href="mailto:alim.khalelov@gmail.com"
               aria-label="Email"
               title="Email: alim.khalelov@gmail.com"
-              className="group relative w-12 h-12 rounded-[18px] bg-white/12 hover:bg-white/20 active:bg-white/28 backdrop-blur-2xl border border-white/25 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+              className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
-              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[18px]" />
-              <Mail className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform group-hover:scale-110" />
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+              <Mail className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
 
             {/* Telegram */}
@@ -90,10 +88,10 @@ export default function Home() {
               rel="noopener noreferrer"
               aria-label="Telegram"
               title="Telegram: @AlimLLC"
-              className="group relative w-12 h-12 rounded-[18px] bg-white/12 hover:bg-white/20 active:bg-white/28 backdrop-blur-2xl border border-white/25 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+              className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
-              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[18px]" />
-              <TelegramIcon className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform group-hover:scale-110" />
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+              <TelegramIcon className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
 
             {/* LinkedIn */}
@@ -103,10 +101,10 @@ export default function Home() {
               rel="noopener noreferrer"
               aria-label="LinkedIn"
               title="LinkedIn: /in/alimzhan-khalelov"
-              className="group relative w-12 h-12 rounded-[18px] bg-white/12 hover:bg-white/20 active:bg-white/28 backdrop-blur-2xl border border-white/25 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+              className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
-              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[18px]" />
-              <LinkedinIcon className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform group-hover:scale-110" />
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+              <LinkedinIcon className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
 
             {/* Call / Phone */}
@@ -114,10 +112,10 @@ export default function Home() {
               href="tel:+77053508033"
               aria-label="Call"
               title="Call: +7 705 350 80 33"
-              className="group relative w-12 h-12 rounded-[18px] bg-white/12 hover:bg-white/20 active:bg-white/28 backdrop-blur-2xl border border-white/25 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+              className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
-              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[18px]" />
-              <Phone className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)] transition-transform group-hover:scale-110" />
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+              <Phone className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
           </div>
 
