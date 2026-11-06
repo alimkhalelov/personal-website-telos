@@ -107,32 +107,31 @@ export function AppStoreProjectCard({
       </div>
 
       {/* 2. Horizontal Screenshots in 9:16:
-          - Starts precisely at the left vertical line of the Tempo icon (marginLeft: 0, paddingLeft: 0)
-          - Extends across and out to the right edge of the screen (marginRight breakout)
-          - Left fade-out mask activates on scroll to smoothly dissolve cards near "Projects"
-          - Right fade-out mask indicates scrollable content
+          - Full viewport width breakout (left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw])
+          - Starts precisely at the left vertical line of the Tempo icon via paddingLeft: leftOffset
+          - Cards scroll freely to the left PAST "Projects" into the left margin (no hard wall at Tempo icon)
+          - Zero paint/mask on cards in the viewport; zero paint on the right side
+          - Soft fade only at the extreme left edge of the screen (0px to 64px) when scrolled past Projects
       */}
       <div 
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
+        className="relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] w-screen max-w-[100vw] overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
         style={{
-          marginLeft: 0,
-          marginRight: "calc(-1 * max(0px, (100vw - 100%) / 2))",
           WebkitMaskImage: canScrollLeft
-            ? "linear-gradient(to right, transparent 0px, black 64px, black calc(100% - 64px), transparent 100%)"
-            : "linear-gradient(to right, black 0px, black calc(100% - 64px), transparent 100%)",
+            ? "linear-gradient(to right, transparent 0px, black 64px, black 100%)"
+            : "none",
           maskImage: canScrollLeft
-            ? "linear-gradient(to right, transparent 0px, black 64px, black calc(100% - 64px), transparent 100%)"
-            : "linear-gradient(to right, black 0px, black calc(100% - 64px), transparent 100%)",
+            ? "linear-gradient(to right, transparent 0px, black 64px, black 100%)"
+            : "none",
           transition: "mask-image 0.25s ease, -webkit-mask-image 0.25s ease",
         }}
       >
         <div 
           className="flex gap-4 sm:gap-5 min-w-max"
           style={{
-            paddingLeft: 0,
-            paddingRight: "3rem",
+            paddingLeft: leftOffset !== null ? `${leftOffset}px` : "max(1.5rem, calc((100vw - 56rem) / 2 + 1.5rem))",
+            paddingRight: "max(2rem, calc((100vw - 56rem) / 2))",
           }}
         >
           {normalizedScreenshots.map((s, idx) => (
