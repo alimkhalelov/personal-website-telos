@@ -107,23 +107,23 @@ export function AppStoreProjectCard({
       </div>
 
       {/* 2. Horizontal Screenshots in 9:16:
-          - Starts precisely at the left vertical line of the Tempo icon (marginLeft: 0, paddingLeft: 0)
+          - Starts precisely at the left vertical line of the Tempo icon (marginLeft: -var + paddingLeft: var)
           - Extends across and out to the right edge of the screen (marginRight breakout)
-          - Left fade-out mask activates only during scroll to softly dissolve cards as they scroll left
+          - Left fade-out mask is strictly ON THE LEFT of the Tempo icon line (towards Projects), NEVER over the picture
           - Zero paint/mask on the right side
       */}
       <div 
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
+        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory [--left-fade:24px] sm:[--left-fade:48px]"
         style={{
-          marginLeft: 0,
+          marginLeft: "calc(-1 * var(--left-fade, 48px))",
           marginRight: "calc(-1 * max(0px, (100vw - 100%) / 2))",
           WebkitMaskImage: canScrollLeft
-            ? "linear-gradient(to right, transparent 0px, black 32px, black 100%)"
+            ? "linear-gradient(to right, transparent 0px, black var(--left-fade, 48px), black 100%)"
             : "none",
           maskImage: canScrollLeft
-            ? "linear-gradient(to right, transparent 0px, black 32px, black 100%)"
+            ? "linear-gradient(to right, transparent 0px, black var(--left-fade, 48px), black 100%)"
             : "none",
           transition: "mask-image 0.2s ease, -webkit-mask-image 0.2s ease",
         }}
@@ -131,7 +131,7 @@ export function AppStoreProjectCard({
         <div 
           className="flex gap-4 sm:gap-5 min-w-max"
           style={{
-            paddingLeft: 0,
+            paddingLeft: "var(--left-fade, 48px)",
             paddingRight: "3rem",
           }}
         >
