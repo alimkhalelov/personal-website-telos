@@ -61,10 +61,16 @@ export default function Home() {
           <div className="flex flex-col gap-1.5">
             {/* Apple SF Pro Rounded Hero Title (Matte Translucent White) */}
             <h1
+              id="hero-title"
               className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.05] select-none text-white/80 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)]"
               style={{ fontFamily: "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif" }}
             >
               Alim Khalelov
+              <span
+                id="hero-baseline-probe"
+                className="inline-block w-0 h-0 align-baseline pointer-events-none select-none opacity-0"
+                aria-hidden="true"
+              />
             </h1>
             <p className="text-lg sm:text-xl text-white/60 font-light tracking-tight mt-1">
               AI-Native Product Manager

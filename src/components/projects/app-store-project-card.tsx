@@ -26,7 +26,13 @@ export function AppStoreProjectCard({
 }: AppStoreCardProps) {
   const { isAdmin } = useAuth();
   const headerRef = React.useRef<HTMLDivElement>(null);
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const [leftOffset, setLeftOffset] = React.useState<number | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setCanScrollLeft(e.currentTarget.scrollLeft > 6);
+  };
 
   // Measure exact pixel offset of the header so screenshots align with "Projects" & Tempo icon
   React.useEffect(() => {
@@ -103,13 +109,23 @@ export function AppStoreProjectCard({
       {/* 2. Horizontal Screenshots in 9:16:
           - Starts precisely at the left vertical line of the Tempo icon (marginLeft: 0, paddingLeft: 0)
           - Extends across and out to the right edge of the screen (marginRight breakout)
-          - No drop-shadow on cards to prevent clipped shadow artifacts
+          - Left fade-out mask activates on scroll to smoothly dissolve cards near "Projects"
+          - Right fade-out mask indicates scrollable content
       */}
       <div 
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
         className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
         style={{
           marginLeft: 0,
           marginRight: "calc(-1 * max(0px, (100vw - 100%) / 2))",
+          WebkitMaskImage: canScrollLeft
+            ? "linear-gradient(to right, transparent 0px, black 64px, black calc(100% - 64px), transparent 100%)"
+            : "linear-gradient(to right, black 0px, black calc(100% - 64px), transparent 100%)",
+          maskImage: canScrollLeft
+            ? "linear-gradient(to right, transparent 0px, black 64px, black calc(100% - 64px), transparent 100%)"
+            : "linear-gradient(to right, black 0px, black calc(100% - 64px), transparent 100%)",
+          transition: "mask-image 0.25s ease, -webkit-mask-image 0.25s ease",
         }}
       >
         <div 
