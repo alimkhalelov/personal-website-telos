@@ -27,26 +27,29 @@ export function AppStoreProjectCard({
   const { isAdmin } = useAuth();
   const headerRef = React.useRef<HTMLDivElement>(null);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
-  const [leftOffset, setLeftOffset] = React.useState<number | null>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
+  const [fadeWidth, setFadeWidth] = React.useState(80);
+
+  // Wide disappearance window (80px on desktop, 24px on mobile)
+  React.useEffect(() => {
+    const updateFade = () => {
+      setFadeWidth(window.innerWidth < 640 ? 24 : 80);
+    };
+    updateFade();
+    window.addEventListener("resize", updateFade);
+    return () => window.removeEventListener("resize", updateFade);
+  }, []);
+
+  // Ensure scrollLeft starts at 0 upon load/refresh
+  React.useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = 0;
+    }
+  }, []);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    setCanScrollLeft(e.currentTarget.scrollLeft > 6);
+    setCanScrollLeft(e.currentTarget.scrollLeft > 4);
   };
-
-  // Measure exact pixel offset of the header so screenshots align with "Projects" & Tempo icon
-  React.useEffect(() => {
-    const updateOffset = () => {
-      if (headerRef.current) {
-        const rect = headerRef.current.getBoundingClientRect();
-        setLeftOffset(rect.left);
-      }
-    };
-
-    updateOffset();
-    window.addEventListener("resize", updateOffset);
-    return () => window.removeEventListener("resize", updateOffset);
-  }, []);
 
   // If not public and user is not admin, do not render
   if (!isPublic && !isAdmin) {
@@ -107,23 +110,24 @@ export function AppStoreProjectCard({
       </div>
 
       {/* 2. Horizontal Screenshots in 9:16:
-          - Starts precisely at the left vertical line of the Tempo icon (marginLeft: -var + paddingLeft: var)
+          - Starts precisely at the left vertical line of the Tempo icon (-fadeWidth margin + fadeWidth padding)
           - Extends across and out to the right edge of the screen (marginRight breakout)
-          - Left fade-out mask is strictly ON THE LEFT of the Tempo icon line (towards Projects), NEVER over the picture
-          - Zero paint/mask on the right side
+          - Wide 80px disappearance window strictly ON THE LEFT of the Tempo icon line (towards Projects)
+          - Zero paint/mask in the viewing area to the right of the line; zero paint/mask on the right side
       */}
       <div 
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory [--left-fade:24px] sm:[--left-fade:48px]"
+        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
         style={{
-          marginLeft: "calc(-1 * var(--left-fade, 48px))",
+          marginLeft: `-${fadeWidth}px`,
           marginRight: "calc(-1 * max(0px, (100vw - 100%) / 2))",
+          scrollPaddingLeft: `${fadeWidth}px`,
           WebkitMaskImage: canScrollLeft
-            ? "linear-gradient(to right, transparent 0px, black var(--left-fade, 48px), black 100%)"
+            ? `linear-gradient(to right, transparent 0px, black ${fadeWidth}px, black 100%)`
             : "none",
           maskImage: canScrollLeft
-            ? "linear-gradient(to right, transparent 0px, black var(--left-fade, 48px), black 100%)"
+            ? `linear-gradient(to right, transparent 0px, black ${fadeWidth}px, black 100%)`
             : "none",
           transition: "mask-image 0.2s ease, -webkit-mask-image 0.2s ease",
         }}
@@ -131,7 +135,7 @@ export function AppStoreProjectCard({
         <div 
           className="flex gap-4 sm:gap-5 min-w-max"
           style={{
-            paddingLeft: "var(--left-fade, 48px)",
+            paddingLeft: `${fadeWidth}px`,
             paddingRight: "3rem",
           }}
         >
