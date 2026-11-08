@@ -15,6 +15,9 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - `src/app/admin/draft`: AI Drafting room.
 - `src/app/blog/[slug]`: MDX renderer.
 - `src/app/projects/[slug]`: Showcase project & skill engine with 16:9 visualizer, SDD specs, and live demos.
+- `src/components/projects/app-store-project-card.tsx`: App Store project card with support for 9:16 (mobile) and 16:9 (widescreen) horizontal screenshot carousels.
+- `public/projects/ocus`: 16:9 App Store marketing screenshots & brand icon for Ocus OS.
+- `public/projects/ocus-portal`: 16:9 App Store marketing screenshots & brand icon for Ocus Portal.
 - `src/components/resume/resume-section.tsx`: Authentic Resume section with executive profile, work history, skill domains, education, honors, and direct PDF downloads.
 - `content/articles`: Local Markdown files (until Outstatic fully configured).
 - **AI-Wiki Master Hook:** When capturing user intent/requirements (`raw/`), compiling project documentation (`wiki/`), recording architectural invariants, or managing the wiki portal — read `.agents/skills/wiki/SKILL.md` and follow its master router.
@@ -38,6 +41,7 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - [x] Refactor /projects into 4 Global Sections (Specs, Plan, Build, Tests) with 1-click AI prompt copy buttons, large icon-free TL;DR, and fullscreen architecture modal.
 - [x] Integrate Bloobs Aesthetic Matrix (/bloobs-styles) with 10 generative styles, animated reference loop, and instant prompt recipes.
 - [x] Integrate /teamwork-preview and /boost showcase projects with 16:9 vector visualizers, SDD specs, interactive simulators, and public wiki integration.
+- [x] Publish Ocus OS (/projects/ocus) and Ocus Portal (/projects/ocus-portal) in 16:9 App Store layout with live interactive runners, brand hero preview slides, and full SDD specs.
 
 ## Known Issues & Fixes
 - **Vercel AI Streaming**: When streaming raw text back to the client, `result.textStream` (an `AsyncIterable`) MUST be explicitly wrapped in a standard `ReadableStream` on the server before passing to `new Response()`. Passing `AsyncIterable` directly causes Vercel serverless functions to either throw a 500 error or buffer the response and timeout after 10-15s.
