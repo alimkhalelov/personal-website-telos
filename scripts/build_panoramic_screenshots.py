@@ -224,10 +224,10 @@ body {
   height: 120px;
   border-radius: 32px;
   background: #0B0E14;
-  border: 2px solid rgba(16, 185, 129, 0.45);
+  border: none;
   box-shadow: 
     0 30px 80px -15px rgba(0, 0, 0, 0.95), 
-    0 0 60px -10px rgba(16, 185, 129, 0.5);
+    0 0 60px -10px rgba(16, 185, 129, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -301,14 +301,13 @@ body {
   text-shadow: 0 0 45px rgba(56, 189, 248, 0.65);
 }
 
-/* Edge-to-Edge Titanium Bezel for Dark Surface UI */
+/* Edge-to-Edge Borderless Bezel for Dark Surface UI */
 .titanium-frame {
   width: 1760px;
   height: 855px;
   border-radius: 28px 28px 0 0;
   background: #0B0E14;
-  border: 2px solid rgba(255, 255, 255, 0.18);
-  border-bottom: none;
+  border: none;
   box-shadow: 0 40px 100px -15px rgba(0, 0, 0, 0.98);
   overflow: hidden;
   position: relative;
@@ -328,7 +327,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(130deg, rgba(255, 255, 255, 0.05) 0%, transparent 55%);
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.04) 0%, transparent 55%);
   pointer-events: none;
 }
 
@@ -336,8 +335,8 @@ body {
 .tilt-3d {
   transform: perspective(1400px) rotateY(-8deg) rotateX(6deg);
   transform-origin: center left;
-  border-color: rgba(16, 185, 129, 0.45);
-  box-shadow: -40px 40px 100px -15px rgba(0, 0, 0, 0.98), 0 0 70px -10px rgba(16, 185, 129, 0.35);
+  border: none;
+  box-shadow: -40px 40px 100px -15px rgba(0, 0, 0, 0.98), 0 0 70px -10px rgba(16, 185, 129, 0.3);
 }
 
 /* Slide 4: Macro 4.8x Zoom with Peripheral CSS Fog */
@@ -446,11 +445,11 @@ s5 = f"""
 """
 
 SLIDES = [
-    ("01-ocus-brand-reveal.png", 0, s1),
-    ("02-crush-compliance.png", 1, s2),
-    ("03-surge-critical-path.png", 2, s3),
-    ("04-lock-in-banking.png", 3, s4),
-    ("05-rig-launch-cockpit.png", 4, s5),
+    ("01-brand-reveal.png", 0, s1),
+    ("02-mica-operations-dag.png", 1, s2),
+    ("03-critical-path-timeline.png", 2, s3),
+    ("04-institutional-bank-passport.png", 3, s4),
+    ("05-pan-eu-licensing-matrix.png", 4, s5),
 ]
 
 print("[2/4] Rendering 5 pristine 16:9 widescreen slides...")

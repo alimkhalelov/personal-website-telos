@@ -82,8 +82,8 @@ export function AppStoreProjectCard({
 
       {/* 1. Header: Icon in squircle + Title & Subtitle */}
       <div ref={headerRef} className="flex items-center gap-4 sm:gap-5 min-w-0">
-        {/* App Icon (Apple Squircle rounded-[22%]) */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-[22%] overflow-hidden border border-white/20 shadow-md">
+        {/* App Icon (Apple Squircle rounded-[22%]) - Borderless clean luxury */}
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-[22%] overflow-hidden shadow-xl">
           <Image
             src={iconSrc}
             alt={`${title} App Icon`}
@@ -148,7 +148,7 @@ export function AppStoreProjectCard({
             return (
               <div
                 key={s.src}
-                className={`relative flex-none overflow-hidden border border-white/15 bg-neutral-950 snap-start shadow-md ${
+                className={`relative flex-none overflow-hidden bg-neutral-950 snap-start shadow-2xl ${
                   is169
                     ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
                     : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
