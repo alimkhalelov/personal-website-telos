@@ -62,3 +62,8 @@
   Status: Completed
   Origin: "lсоздай на лендинге https://alim.dest.page/ новых 2 проекта: для скилла /teamwork-preview и /boost - что каждый делает"
 
+- [INTENT-020] [2026-11-08 13:00] [Category: Feature|Resume|UI]
+  Summary: Add authentic Resume section below Projects on the homepage using verified data from Q2 2026 and Q3 2025 PDFs, with executive summary, 3 key experience roles, 4 skill domains, education, honors, segmented tab navigation, left-rail scroll sync, and downloadable PDFs.
+  Status: Completed
+  Origin: "добавь под проектами раздел резюме из моего реального резюме 'D:\\Study&Work\\2025\\Head of Product\\Resume Product Manager Khalelov Alim Q2 2026.pdf' 'D:\\Study&Work\\2025\\Head of Product\\Resume-Product-Manager-Alim-Khalelov-Q3-2025.pdf' и по дизайну оформи как все остальное вокруг"
+
