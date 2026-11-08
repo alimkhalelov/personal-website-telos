@@ -11,7 +11,7 @@ interface SectionConfig {
 const SECTIONS: SectionConfig[] = [
   { id: "hero", label: "hey, I'm" },
   { id: "projects", label: "Projects" },
-  { id: "resume", label: "Resume" },
+  { id: "resume", label: "Experience" },
   { id: "posts", label: "Posts" },
   { id: "network", label: "Network" },
 ];
