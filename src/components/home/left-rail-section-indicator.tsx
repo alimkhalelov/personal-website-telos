@@ -152,7 +152,7 @@ export function LeftRailSectionIndicator() {
         </div>
       </div>
 
-      {/* 2. OTHER SECTIONS (Projects, Posts, Network): Fixed eye-level rail at 130px */}
+      {/* 2. STANDALONE SECTIONS (Posts, Network): Fixed eye-level rail at 130px */}
       <aside
         aria-label="Current section indicator"
         className="hidden lg:flex fixed z-30 pointer-events-none select-none flex-col items-end"
@@ -164,7 +164,7 @@ export function LeftRailSectionIndicator() {
       >
         <div className="pr-5 sm:pr-6 flex items-center justify-end">
           <AnimatePresence mode="wait">
-            {activeId !== "hero" && (
+            {["network", "posts"].includes(activeId) && (
               <motion.span
                 key={activeId}
                 initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}

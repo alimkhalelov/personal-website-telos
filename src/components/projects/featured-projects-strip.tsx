@@ -7,6 +7,7 @@ import { GenerativeThumbnail } from "./generative-thumbnail";
 import { AppStoreProjectCard } from "./app-store-project-card";
 import { useAuth } from "@/components/auth-context";
 import { ShieldCheck } from "lucide-react";
+import { DockingHeader } from "@/components/home/docking-header";
 
 interface FeaturedProjectsStripProps {
   className?: string;
@@ -21,10 +22,11 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
 
   return (
     <section id="projects" className={`flex flex-col gap-8 w-full ${className}`}>
-      {/* Section Header (Duplicate Projects title removed on desktop; View all link aligned to right) */}
-      <div className="flex items-center justify-between pb-1">
-        <h2 className="text-2xl font-bold tracking-tight text-white lg:hidden">Projects</h2>
-        <div className="ml-auto">
+      {/* Dynamic Docking Section Header: In-flow above cards, glides left on scroll into left rail */}
+      <DockingHeader
+        sectionId="projects"
+        title="Projects"
+        rightAction={
           <Link
             href="/projects"
             className="text-sm font-medium text-white/60 hover:text-white transition-colors !no-underline"
@@ -32,8 +34,8 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
           >
             View all →
           </Link>
-        </div>
-      </div>
+        }
+      />
 
       {/* Featured Public Apps: Tempo & Ocus in App Store Layout (Clean, No Dividers) */}
       <div className="flex flex-col gap-14 sm:gap-16">

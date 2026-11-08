@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Copy, Check } from "lucide-react";
+import { DockingHeader } from "@/components/home/docking-header";
 
 interface RoleExperience {
   role: string;
@@ -91,20 +92,11 @@ export function ResumeSection() {
 
   return (
     <section id="resume" className="flex flex-col gap-6 sm:gap-8 w-full scroll-mt-24">
-      {/* Section Header:
-          - Experience title hidden on desktop (lg:hidden) because Left Rail already displays "Experience"
-          - Frosted squircle Copy button placed on the right with "Copy" label on the left and copy icon on the right
-      */}
-      <div className="flex items-center justify-between pb-1">
-        <h2
-          className="text-2xl font-bold tracking-tight text-white lg:hidden"
-          style={{ fontFamily: "'Google Sans', sans-serif" }}
-        >
-          Experience
-        </h2>
-
-        {/* Copy Button (Frosted Matte Glass Squircle with label 'Copy' to the left of the copy icon) */}
-        <div className="ml-auto flex items-center">
+      {/* Dynamic Docking Section Header: In-flow above resume items, glides left on scroll into left rail */}
+      <DockingHeader
+        sectionId="resume"
+        title="Experience"
+        rightAction={
           <button
             type="button"
             onClick={handleCopy}
@@ -125,8 +117,8 @@ export function ResumeSection() {
               <Copy className="w-4 h-4 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             )}
           </button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Experience Roles List (Directly on background, no card podlozhka, large comfortable typography) */}
       <div className="flex flex-col gap-10 sm:gap-12">
