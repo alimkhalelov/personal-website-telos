@@ -35,10 +35,10 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
         </div>
       </div>
 
-      {/* Featured Public Apps: Tempo, Ocus & Ocus Portal in App Store Layout */}
-      <div className="flex flex-col gap-10 divide-y divide-white/10">
+      {/* Featured Public Apps: Tempo & Ocus in App Store Layout (Clean, No Dividers) */}
+      <div className="flex flex-col gap-14 sm:gap-16">
         {featuredAppProjects.map((proj) => (
-          <div key={proj.slug} className="first:pt-0 pt-8">
+          <div key={proj.slug}>
             <AppStoreProjectCard
               slug={proj.slug}
               title={proj.title}

@@ -48,7 +48,7 @@ export function ProjectsFeed({ initialProjects }: ProjectsFeedProps) {
           // If the project specifies App Store Layout (Tempo, Ocus, Ocus Portal)
           if (project.appStoreLayout) {
             return (
-              <div key={project.slug} className="py-6 first:pt-0 last:pb-0">
+              <div key={project.slug} className="py-8 first:pt-0 last:pb-0 !border-t-0">
                 <AppStoreProjectCard
                   slug={project.slug}
                   title={project.title}

@@ -122,7 +122,7 @@ export function AppStoreProjectCard({
       <div 
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="w-auto overflow-x-auto py-2 scrollbar-none snap-x snap-mandatory"
+        className="w-auto overflow-x-auto pt-2 pb-12 sm:pb-14 -mb-8 scrollbar-none snap-x snap-mandatory"
         style={{
           marginLeft: `-${fadeWidth}px`,
           marginRight: "calc(-1 * max(0px, (100vw - 100%) / 2))",
