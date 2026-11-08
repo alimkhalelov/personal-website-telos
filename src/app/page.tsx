@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getSortedArticles } from "@/lib/mdx";
 import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
+import { ResumeSection } from "@/components/resume/resume-section";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 import { HomePostsList } from "@/components/home/home-posts-list";
 import { LeftRailSectionIndicator } from "@/components/home/left-rail-section-indicator";
@@ -136,6 +137,9 @@ export default function Home() {
 
         {/* Featured Showcase & Agent Skills Horizontal Strip */}
         <FeaturedProjectsStrip />
+
+        {/* Resume Section */}
+        <ResumeSection />
 
         {/* Posts Section */}
         <HomePostsList initialArticles={articles} />

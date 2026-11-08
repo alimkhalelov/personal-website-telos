@@ -11,6 +11,7 @@ interface SectionConfig {
 const SECTIONS: SectionConfig[] = [
   { id: "hero", label: "hey, I'm" },
   { id: "projects", label: "Projects" },
+  { id: "resume", label: "Resume" },
   { id: "posts", label: "Posts" },
   { id: "network", label: "Network" },
 ];
@@ -81,6 +82,7 @@ export function LeftRailSectionIndicator() {
   React.useEffect(() => {
     const handleScroll = () => {
       const projectsEl = document.getElementById("projects");
+      const resumeEl = document.getElementById("resume");
       const postsEl = document.getElementById("posts");
       const networkEl = document.getElementById("network");
 
@@ -90,6 +92,8 @@ export function LeftRailSectionIndicator() {
         setActiveId("network");
       } else if (postsEl && postsEl.getBoundingClientRect().top <= threshold) {
         setActiveId("posts");
+      } else if (resumeEl && resumeEl.getBoundingClientRect().top <= threshold) {
+        setActiveId("resume");
       } else if (projectsEl && projectsEl.getBoundingClientRect().top <= threshold) {
         setActiveId("projects");
       } else {
