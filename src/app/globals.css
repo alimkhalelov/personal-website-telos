@@ -21,6 +21,8 @@
   --muted: #737373;
   --border: #e5e5e5;
   --card: #f9fafb;
+  --font-sf-pro-rounded: "SF Pro Rounded", -apple-system, BlinkMacSystemFont, var(--font-outfit), system-ui, sans-serif;
+  --circadian-grad: linear-gradient(175deg, #0277BD 0%, #0288D1 26%, #29B6F6 52%, #81D4FA 76%, #E1F5FE 100%);
 }
 
 .dark {
@@ -106,8 +108,6 @@ body {
   animation-play-state: paused;
 }
 
-
-
 /* Полное скрытие системного нативного скроллбара (Windows/Chrome/Firefox) */
 html, body, * {
   scrollbar-width: none !important;
@@ -123,8 +123,13 @@ body::-webkit-scrollbar,
   background: transparent !important;
 }
 
-/* High-contrast pure white theme when Dynamic Daytime is active */
+/* 0ms Instant Circadian Canvas & Typography when Dynamic Daytime is active */
+html.has-dynamic-daytime {
+  background: var(--circadian-grad, #0277BD);
+}
+
 html.has-dynamic-daytime body {
+  background: transparent !important;
   color: #ffffff !important;
 }
 

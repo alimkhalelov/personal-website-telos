@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 
-interface Keyframe {
+export interface Keyframe {
   hour: number;
+  phase: string;
   stops: [string, string, string, string, string];
+  radial: { x: number; y: number; color: string; size: string };
 }
 
 const STORAGE_KEY = "oneui-dynamic-daytime";
@@ -70,42 +72,68 @@ export function useDynamicDaytime() {
 }
 
 /**
- * Палитра One UI Dynamic Wallpaper по времени суток (0.0 — 24.0 часа).
- * Значение 18.5 (вечер/закат) повторяет карточку Dynamic со скриншота One UI:
- * Верх: #256AE5 -> #5E7CE2 -> #9E78C9 -> #CF7E8E -> Низ: #E88D67
+ * 8 Circadian Keyframes across the 24-hour cycle.
+ * Designed with distinct, unmistakably different visual identities:
+ * - Night (23:00 - 05:00): Cosmic Midnight Obsidian & Violet
+ * - Dawn / Sunrise (05:00 - 08:30): Golden Morning Amber, Rose Gold & Apricot
+ * - Day / High Noon (08:30 - 16:30): Radiant Cerulean Azure & Crystal Sky
+ * - Sunset (16:30 - 19:30): Velvet Indigo, Electric Magenta & Fiery Coral
+ * - Twilight / Blue Hour (19:30 - 23:00): Cobalt Indigo & Dusk Plum
  */
-const KEYFRAMES: Keyframe[] = [
+export const CIRCADIAN_KEYFRAMES: Keyframe[] = [
   {
     hour: 0.0,
-    stops: ["#080B1E", "#13183F", "#251E52", "#3B2562", "#4D2E66"],
+    phase: "Cosmic Midnight",
+    stops: ["#050714", "#0C102A", "#15173B", "#221845", "#180D2D"],
+    radial: { x: 50, y: 15, color: "rgba(120, 110, 200, 0.16)", size: "70%" },
   },
   {
-    hour: 4.5,
-    stops: ["#121C4E", "#26357A", "#4F4B94", "#7E5A9B", "#B06E94"],
+    hour: 5.0,
+    phase: "Pre-Dawn Awakening",
+    stops: ["#0D1230", "#1C1D4D", "#3E295E", "#6B355A", "#994754"],
+    radial: { x: 50, y: 80, color: "rgba(220, 110, 130, 0.22)", size: "75%" },
   },
   {
-    hour: 7.5,
-    stops: ["#3876F2", "#5C93F8", "#89A8F9", "#C6B4EE", "#F3BC9C"],
+    hour: 6.8,
+    phase: "Golden Sunrise",
+    stops: ["#171B47", "#3B336A", "#7E4E7A", "#C9636A", "#F8A56E"],
+    radial: { x: 50, y: 85, color: "rgba(255, 180, 100, 0.45)", size: "85%" },
+  },
+  {
+    hour: 9.0,
+    phase: "Crisp Morning",
+    stops: ["#0A5BA5", "#1577C6", "#3CA2E0", "#7DC8EE", "#BDE4F4"],
+    radial: { x: 50, y: 35, color: "rgba(255, 255, 255, 0.35)", size: "80%" },
   },
   {
     hour: 13.0,
-    stops: ["#0D5CE8", "#1C82F6", "#28A9F4", "#3DC9E8", "#68E3D4"],
+    phase: "Radiant High Noon",
+    stops: ["#0277BD", "#0288D1", "#29B6F6", "#81D4FA", "#E1F5FE"],
+    radial: { x: 50, y: 10, color: "rgba(255, 255, 255, 0.42)", size: "90%" },
   },
   {
     hour: 16.5,
-    stops: ["#1D65EC", "#4283F0", "#7E87DE", "#B987BA", "#E59580"],
+    phase: "Late Afternoon",
+    stops: ["#0D5CA8", "#245EA5", "#625997", "#A55B7E", "#E27766"],
+    radial: { x: 50, y: 65, color: "rgba(255, 210, 140, 0.35)", size: "80%" },
   },
   {
     hour: 18.5,
-    stops: ["#256AE5", "#5E7CE2", "#9E78C9", "#CF7E8E", "#E88D67"],
+    phase: "Sunset Glow",
+    stops: ["#18153A", "#431E6E", "#882375", "#D83A56", "#FF764A"],
+    radial: { x: 50, y: 85, color: "rgba(255, 120, 80, 0.52)", size: "85%" },
   },
   {
     hour: 21.0,
-    stops: ["#11194A", "#292968", "#523479", "#7C407B", "#9D526E"],
+    phase: "Twilight Blue Hour",
+    stops: ["#090D24", "#141B49", "#28296A", "#423778", "#5A3F7A"],
+    radial: { x: 50, y: 50, color: "rgba(110, 110, 230, 0.22)", size: "75%" },
   },
   {
     hour: 24.0,
-    stops: ["#080B1E", "#13183F", "#251E52", "#3B2562", "#4D2E66"],
+    phase: "Cosmic Midnight",
+    stops: ["#050714", "#0C102A", "#15173B", "#221845", "#180D2D"],
+    radial: { x: 50, y: 15, color: "rgba(120, 110, 200, 0.16)", size: "70%" },
   },
 ];
 
@@ -127,10 +155,6 @@ function smoothstep(t: number): number {
   return t * t * (3 - 2 * t);
 }
 
-function easeOutQuart(x: number): number {
-  return 1 - Math.pow(1 - x, 4);
-}
-
 function lerpColor(hexA: string, hexB: string, t: number): string {
   const a = hexToRgb(hexA);
   const b = hexToRgb(hexB);
@@ -140,11 +164,15 @@ function lerpColor(hexA: string, hexB: string, t: number): string {
   return `rgb(${r}, ${g}, ${bl})`;
 }
 
-function getColorsForHour(hour: number): [string, string, string, string, string] {
+export function getCircadianDataForHour(hour: number): {
+  phase: string;
+  stops: [string, string, string, string, string];
+  radial: { x: number; y: number; color: string; size: string };
+} {
   const h = ((hour % 24) + 24) % 24;
-  for (let i = 0; i < KEYFRAMES.length - 1; i++) {
-    const k1 = KEYFRAMES[i];
-    const k2 = KEYFRAMES[i + 1];
+  for (let i = 0; i < CIRCADIAN_KEYFRAMES.length - 1; i++) {
+    const k1 = CIRCADIAN_KEYFRAMES[i];
+    const k2 = CIRCADIAN_KEYFRAMES[i + 1];
     if (h >= k1.hour && h <= k2.hour) {
       const span = k2.hour - k1.hour;
       const localT = span === 0 ? 0 : smoothstep((h - k1.hour) / span);
@@ -155,159 +183,125 @@ function getColorsForHour(hour: number): [string, string, string, string, string
         string,
         string
       ];
-      return stops;
+      const radialX = Math.round(lerp(k1.radial.x, k2.radial.x, localT));
+      const radialY = Math.round(lerp(k1.radial.y, k2.radial.y, localT));
+      const phase = localT < 0.5 ? k1.phase : k2.phase;
+      return {
+        phase,
+        stops,
+        radial: {
+          x: radialX,
+          y: radialY,
+          color: k1.radial.color,
+          size: k1.radial.size,
+        },
+      };
     }
   }
-  return KEYFRAMES[0].stops;
+  return {
+    phase: CIRCADIAN_KEYFRAMES[0].phase,
+    stops: CIRCADIAN_KEYFRAMES[0].stops,
+    radial: CIRCADIAN_KEYFRAMES[0].radial,
+  };
 }
 
 export function OneUiWallpaper() {
   const { enabled } = useDynamicDaytime();
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [currentHour, setCurrentHour] = useState<number>(12);
+  const [bloomActive, setBloomActive] = useState(false);
 
-  const getRealTimeHour = useCallback(() => {
-    const now = new Date();
-    return now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
-  }, []);
-
-  const animState = useRef({
-    targetTime: 18.5,
-    currentTime: 18.5,
-    unlockStartTime: 0,
-    unlockDuration: 1900,
-    unlockProgress: 0,
-    rafId: 0,
-  });
-
-  const triggerUnlock = useCallback(() => {
-    animState.current.unlockStartTime = performance.now();
-    animState.current.unlockProgress = 0;
-  }, []);
-
+  // Synchronize directly with the visitor's local system time immediately on mount
   useEffect(() => {
-    if (!enabled) return;
-
-    const realHour = getRealTimeHour();
-    animState.current.targetTime = realHour;
-    animState.current.currentTime = realHour;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d", { alpha: false });
-    if (!ctx) return;
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
+    setMounted(true);
+    const getLocalHour = () => {
+      const now = new Date();
+      return now.getHours() + now.getMinutes() / 60;
     };
 
-    window.addEventListener("resize", resize);
-    resize();
+    setCurrentHour(getLocalHour());
 
-    animState.current.unlockStartTime = performance.now();
-    animState.current.unlockProgress = 0;
+    const interval = setInterval(() => {
+      setCurrentHour(getLocalHour());
+    }, 15000);
 
-    let lastMinuteTick = Date.now();
+    return () => clearInterval(interval);
+  }, [enabled]);
 
-    const render = (now: number) => {
-      const state = animState.current;
-      const w = canvas.width;
-      const h = canvas.height;
+  const circadianData = useMemo(() => {
+    return getCircadianDataForHour(currentHour);
+  }, [currentHour]);
 
-      if (now - lastMinuteTick > 20000) {
-        lastMinuteTick = now;
-        state.targetTime = getRealTimeHour();
-      }
-
-      const diff = state.targetTime - state.currentTime;
-      state.currentTime += diff * 0.12;
-
-      const elapsed = now - state.unlockStartTime;
-      const rawUnlock = Math.min(1, Math.max(0, elapsed / state.unlockDuration));
-      state.unlockProgress = easeOutQuart(rawUnlock);
-
-      const introTimeOffset = (1 - state.unlockProgress) * -2.2;
-      const effectiveHour = state.currentTime + introTimeOffset;
-
-      const stops = getColorsForHour(effectiveHour);
-      const breath = Math.sin(now * 0.0012) * 0.018;
-
-      const openShift = (1 - state.unlockProgress) * 0.28;
-      const tiltX = Math.sin(now * 0.0007 + (1 - state.unlockProgress) * 2.5) * w * 0.08;
-
-      const x0 = w * 0.5 - tiltX;
-      const y0 = -h * openShift;
-      const x1 = w * 0.5 + tiltX;
-      const y1 = h * (1 + openShift * 0.65);
-
-      const grad = ctx.createLinearGradient(x0, y0, x1, y1);
-
-      const p0 = 0.0;
-      const p1 = Math.min(0.95, Math.max(0.05, 0.27 + breath * 0.8 + openShift * 0.18));
-      const p2 = Math.min(0.95, Math.max(0.10, 0.53 + breath * 1.1 + openShift * 0.12));
-      const p3 = Math.min(0.98, Math.max(0.15, 0.77 - breath * 0.7 + openShift * 0.06));
-      const p4 = 1.0;
-
-      grad.addColorStop(p0, stops[0]);
-      grad.addColorStop(p1, stops[1]);
-      grad.addColorStop(p2, stops[2]);
-      grad.addColorStop(p3, stops[3]);
-      grad.addColorStop(p4, stops[4]);
-
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
-
-      const bloomIntensity = (1 - state.unlockProgress) * 0.32 + 0.08;
-      const bloomY = h * (0.85 - (1 - state.unlockProgress) * 0.35);
-      const bloomX = w * 0.5 + Math.cos(now * 0.001) * w * 0.1;
-      const radial = ctx.createRadialGradient(
-        bloomX,
-        bloomY,
-        0,
-        bloomX,
-        bloomY,
-        Math.max(w, h) * 0.75
-      );
-
-      radial.addColorStop(
-        0,
-        stops[4].replace("rgb(", "rgba(").replace(")", `, ${bloomIntensity})`)
-      );
-      radial.addColorStop(
-        0.5,
-        stops[2].replace("rgb(", "rgba(").replace(")", `, ${bloomIntensity * 0.4})`)
-      );
-      radial.addColorStop(1, "rgba(0, 0, 0, 0)");
-
-      ctx.fillStyle = radial;
-      ctx.fillRect(0, 0, w, h);
-
-      state.rafId = requestAnimationFrame(render);
-    };
-
-    animState.current.rafId = requestAnimationFrame(render);
-
-    return () => {
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animState.current.rafId);
-    };
-  }, [enabled, getRealTimeHour]);
+  const triggerBloom = useCallback(() => {
+    setBloomActive(true);
+    const timer = setTimeout(() => setBloomActive(false), 900);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (!enabled) {
     return null;
   }
 
+  const { phase, stops, radial } = circadianData;
+  const gradientCss = `linear-gradient(175deg, ${stops[0]} 0%, ${stops[1]} 26%, ${stops[2]} 52%, ${stops[3]} 76%, ${stops[4]} 100%)`;
+  const radialCss = `radial-gradient(circle at ${radial.x}% ${radial.y}%, ${radial.color} 0%, rgba(0,0,0,0) ${radial.size})`;
+
+  const displayHours = Math.floor(currentHour);
+  const displayMinutes = Math.floor((currentHour - displayHours) * 60);
+  const timeFormatted = `${String(displayHours).padStart(2, "0")}:${String(
+    displayMinutes
+  ).padStart(2, "0")}`;
+
   return (
-    <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none transition-opacity duration-700">
-      <canvas
-        ref={canvasRef}
-        onClick={triggerUnlock}
-        className="w-full h-full block cursor-pointer pointer-events-auto"
-        title="One UI Dynamic Circadian Wallpaper (Click to re-trigger unlock bloom)"
+    <div
+      className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none"
+      title={`Local Time: ${timeFormatted} (${phase}) • One UI Dynamic Circadian Wallpaper`}
+    >
+      {/* 1. Base 0ms Circadian Gradient: uses --circadian-grad before hydration, then smoothly transitions */}
+      <div
+        className="w-full h-full absolute inset-0 transition-all duration-1000 ease-out"
+        style={{
+          background: mounted
+            ? gradientCss
+            : "var(--circadian-grad, linear-gradient(175deg, #0277BD 0%, #38BDF8 25%, #7DD3FC 50%, #A5F3FC 75%, #E0F2FE 100%))",
+        }}
       />
-      <div className="absolute inset-0 bg-background/55 dark:bg-black/45 backdrop-blur-[0.5px] pointer-events-none transition-colors duration-500" />
+
+      {/* 2. Ambient Sun/Moon Horizon Radial Glow */}
+      <div
+        className="w-full h-full absolute inset-0 transition-all duration-1000 ease-out pointer-events-none"
+        style={{
+          background: radialCss,
+          opacity: mounted ? 1 : 0.7,
+        }}
+      />
+
+      {/* 3. Interactive Touch / Click Bloom Effect */}
+      {bloomActive && (
+        <div
+          className="w-full h-full absolute inset-0 pointer-events-none animate-in fade-in zoom-in duration-500"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${stops[2]} 0%, transparent 65%)`,
+            opacity: 0.35,
+          }}
+        />
+      )}
+
+      {/* 4. Subtle Vignette for pristine typography contrast without color washout */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 25%, transparent 40%, rgba(0, 0, 0, 0.22) 100%)",
+        }}
+      />
+
+      {/* 5. Clickable surface to re-trigger bloom */}
+      <div
+        onClick={triggerBloom}
+        className="absolute inset-0 pointer-events-auto cursor-pointer"
+        aria-hidden="true"
+      />
     </div>
   );
 }

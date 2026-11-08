@@ -40,14 +40,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [`${baseUrl}/thumbnails/${project.slug}.jpg`],
   }));
 
-  // 3. Blog Essay Routes
+  // 3. Blog Essay Routes (only public articles)
   const articles = getSortedArticles();
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${baseUrl}/blog/${article.slug}`,
-    lastModified: `${article.date}T00:00:00.000Z`,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
+  const articleRoutes: MetadataRoute.Sitemap = articles
+    .filter((article) => article.isPublic === true)
+    .map((article) => ({
+      url: `${baseUrl}/blog/${article.slug}`,
+      lastModified: `${article.date}T00:00:00.000Z`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }));
 
   // 4. Wiki Document Routes
   const wikiPages = getAllWikiPages();

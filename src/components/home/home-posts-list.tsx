@@ -30,6 +30,11 @@ export function HomePostsList({ initialArticles }: HomePostsListProps) {
     return initialArticles.filter((a) => a.isPublic === true);
   }, [initialArticles, isAdmin]);
 
+  // Completely hide the posts section when there are no public posts and user is not admin
+  if (visibleArticles.length === 0) {
+    return null;
+  }
+
   return (
     <section id="posts" className="flex flex-col gap-6">
       <div className="flex items-center justify-between pb-1">
@@ -43,49 +48,41 @@ export function HomePostsList({ initialArticles }: HomePostsListProps) {
       </div>
 
       <div className="flex flex-col gap-1">
-        {visibleArticles.length > 0 ? (
-          visibleArticles.map((article) => {
-            const isPrivate = article.isPublic !== true;
-            return (
-              <Link
-                href={`/blog/${article.slug}`}
-                key={article.slug}
-                className={`group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-white/10 transition-all gap-4 !no-underline ${
-                  isPrivate ? "opacity-40 hover:opacity-85" : ""
-                }`}
-              >
-                <div className="flex items-center gap-4 min-w-0">
-                  <time
-                    className="text-base w-[105px] shrink-0 group-hover:underline text-white/70"
-                    style={{ fontFamily: "'Google Sans', sans-serif" }}
-                  >
-                    {formatDate(article.date)}
-                  </time>
-                  <h3
-                    className="text-base font-medium group-hover:underline transition-colors text-white truncate"
-                    style={{ fontFamily: "'Google Sans', sans-serif" }}
-                  >
-                    {article.title}
-                  </h3>
-                  {isPrivate && (
-                    <span className="text-[10px] font-mono uppercase font-bold text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30 shrink-0">
-                      Private
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center shrink-0">
-                  <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-white/70" />
-                </div>
-              </Link>
-            );
-          })
-        ) : (
-          <div className="p-8 text-center text-white/70 bg-white/5 rounded-2xl border border-white/10 border-dashed flex flex-col items-center gap-2">
-            <Lock className="w-5 h-5 text-white/40 mb-1" />
-            <p className="text-sm">All research articles and engineering essays are currently set to private.</p>
-            <p className="text-xs text-white/40">Sign in as admin via the 3-dots menu to inspect private drafts.</p>
-          </div>
-        )}
+        {visibleArticles.map((article) => {
+          const isPrivate = article.isPublic !== true;
+          return (
+            <Link
+              href={`/blog/${article.slug}`}
+              key={article.slug}
+              className={`group flex items-center justify-between p-4 -mx-4 rounded-xl hover:bg-white/10 transition-all gap-4 !no-underline ${
+                isPrivate ? "opacity-40 hover:opacity-85" : ""
+              }`}
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <time
+                  className="text-base w-[105px] shrink-0 group-hover:underline text-white/70"
+                  style={{ fontFamily: "'Google Sans', sans-serif" }}
+                >
+                  {formatDate(article.date)}
+                </time>
+                <h3
+                  className="text-base font-medium group-hover:underline transition-colors text-white truncate"
+                  style={{ fontFamily: "'Google Sans', sans-serif" }}
+                >
+                  {article.title}
+                </h3>
+                {isPrivate && (
+                  <span className="text-[10px] font-mono uppercase font-bold text-amber-400 bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30 shrink-0">
+                    Private
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center shrink-0">
+                <ArrowUpRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-white/70" />
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
