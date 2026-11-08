@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Download, ArrowUpRight } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 
 interface RoleExperience {
   role: string;
@@ -46,30 +46,85 @@ const EXPERIENCES: RoleExperience[] = [
   },
 ];
 
+const RESUME_TEXT = `Alim Khalelov | Product Manager (0→1 | AI & Web3)
+Email: alim.khalelov@gmail.com | Telegram: @AlimLLC | LinkedIn: alimzhan-khalelov
+Portfolio: https://alim.dest.page
+
+EXPERIENCE:
+
+• Independent AI Product Consultant (01/2025 - Present · Remote)
+  - AI Property Staging: Architected a full-stack Next.js system with multi-agent validation, cutting time-to-market by 70%.
+  - Automated Prospecting: Programmed an autonomous lead-generation engine processing 100+ qualified leads daily.
+  - Local Agent Workspace: Integrated multi-agent environments for research and PRD drafting, cutting routine workflows by 80%.
+
+• Senior / Founding Product Manager - Cryptomeria Capital Group (04/2023 - 01/2025 · Dubai, UAE)
+  - 0→1 Discovery: Prototyped and validated 7+ Web3 products (NFTs, Telegram mini-apps), establishing early shutdown criteria to protect capital.
+  - Telegram Mini-Apps & Growth: Designed gamified onboarding mini-apps as the primary user acquisition engine; scaled community 0 → 10K in 30 days.
+  - Narrative AI & Partnerships: Directed an automated AI storytelling pipeline (lorebook, 60 comics, 10 trailers); closed 50+ strategic deals including Animoca Brands and The Sandbox.
+
+• Junior Product Manager - Startup Studio B51 (09/2021 - 05/2023 · Tomsk)
+  - Founder Mentorship: Mentored student founders on rapid assumption testing (RAT) and lean MVP design before writing code.
+  - Funding & Grants: Connected early-stage teams with VC networks, securing government startup grants (UMNIK, Start, Student Startup).
+
+CV PDF: https://alim.dest.page/Resume-Product-Manager-Alim-Khalelov.pdf`;
+
 export function ResumeSection() {
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = React.useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(RESUME_TEXT);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback if clipboard API is restricted
+      const textarea = document.createElement("textarea");
+      textarea.value = RESUME_TEXT;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, []);
+
   return (
-    <section id="resume" className="flex flex-col gap-8 w-full scroll-mt-24">
-      {/* Section Header (Matches Posts header styling) */}
+    <section id="resume" className="flex flex-col gap-6 sm:gap-8 w-full scroll-mt-24">
+      {/* Section Header:
+          - Experience title hidden on desktop (lg:hidden) because Left Rail already displays "Experience"
+          - Frosted squircle Copy button placed on the right, matching Hero icon buttons
+      */}
       <div className="flex items-center justify-between pb-1">
         <h2
-          className="text-3xl font-bold tracking-tight text-white"
+          className="text-2xl font-bold tracking-tight text-white lg:hidden"
           style={{ fontFamily: "'Google Sans', sans-serif" }}
         >
           Experience
         </h2>
 
-        {/* Download PDF button (Matches Network pill styling) */}
-        <a
-          href="/Resume-Product-Manager-Alim-Khalelov.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          download="Resume-Product-Manager-Alim-Khalelov.pdf"
-          className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-xs sm:text-sm font-medium !no-underline text-white shadow-xs cursor-pointer group"
-          title="Download PDF Resume (Q2 2026 Edition)"
-        >
-          <span>Download CV</span>
-          <Download className="w-3.5 h-3.5 text-white/70 group-hover:text-white transition-colors" />
-        </a>
+        {/* Copy Button (Frosted Matte Glass Squircle, exactly like Hero icons) */}
+        <div className="ml-auto flex items-center gap-3">
+          {copied && (
+            <span className="text-xs font-mono text-emerald-300 animate-in fade-in duration-200">
+              Copied to clipboard
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleCopy}
+            aria-label="Copy resume experience to clipboard"
+            title={copied ? "Copied!" : "Copy experience summary"}
+            className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden cursor-pointer"
+          >
+            <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+            {copied ? (
+              <Check className="w-5 h-5 text-emerald-400 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
+            ) : (
+              <Copy className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Experience Roles List (Directly on background, no card podlozhka, large comfortable typography) */}
