@@ -93,7 +93,7 @@ export function ResumeSection() {
     <section id="resume" className="flex flex-col gap-6 sm:gap-8 w-full scroll-mt-24">
       {/* Section Header:
           - Experience title hidden on desktop (lg:hidden) because Left Rail already displays "Experience"
-          - Frosted squircle Copy button placed on the right, matching Hero icon buttons
+          - Frosted squircle Copy button placed on the right with "Copy" label on the left and copy icon on the right
       */}
       <div className="flex items-center justify-between pb-1">
         <h2
@@ -103,25 +103,26 @@ export function ResumeSection() {
           Experience
         </h2>
 
-        {/* Copy Button (Frosted Matte Glass Squircle, exactly like Hero icons) */}
-        <div className="ml-auto flex items-center gap-3">
-          {copied && (
-            <span className="text-xs font-mono text-emerald-300 animate-in fade-in duration-200">
-              Copied to clipboard
-            </span>
-          )}
+        {/* Copy Button (Frosted Matte Glass Squircle with label 'Copy' to the left of the copy icon) */}
+        <div className="ml-auto flex items-center">
           <button
             type="button"
             onClick={handleCopy}
             aria-label="Copy resume experience to clipboard"
             title={copied ? "Copied!" : "Copy experience summary"}
-            className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden cursor-pointer"
+            className="group relative h-12 px-5 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-200 overflow-hidden cursor-pointer select-none"
           >
             <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+            <span
+              className="text-sm sm:text-base font-medium text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]"
+              style={{ fontFamily: "'Google Sans', sans-serif" }}
+            >
+              {copied ? "Copied" : "Copy"}
+            </span>
             {copied ? (
-              <Check className="w-5 h-5 text-emerald-400 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
+              <Check className="w-4 h-4 text-emerald-400 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]" />
             ) : (
-              <Copy className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
+              <Copy className="w-4 h-4 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             )}
           </button>
         </div>
