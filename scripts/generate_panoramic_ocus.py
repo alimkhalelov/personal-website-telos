@@ -1,6 +1,7 @@
 import os
 import base64
 from pathlib import Path
+from PIL import Image
 from playwright.sync_api import sync_playwright
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,25 +10,26 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 RAW_DIR = BASE_DIR / "temp_raw_captures"
 RAW_DIR.mkdir(parents=True, exist_ok=True)
 
+WEB3AGENCY_DIR = Path(r"D:\Study&Work\2025\Antigravity Vibecoding Projects\web3agency")
+
 def img_to_b64(path):
     with open(path, "rb") as f:
         return f"data:image/png;base64,{base64.b64encode(f.read()).decode('utf-8')}"
 
-# 1. Capture genuine high-res runtime screens
+print("[1/4] Capturing pristine high-res runtime screens via Playwright...")
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     # High-res retina context
     context = browser.new_context(viewport={"width": 1920, "height": 1080}, device_scale_factor=2)
     
-    # Page A: Landing
+    # 1. Landing Hero (Genuine live capture)
     page = context.new_page()
     page.goto("https://ocus-eu.vercel.app", wait_until="networkidle")
     page.wait_for_timeout(2000)
+    page.screenshot(path=str(RAW_DIR / "live_landing_hero.png"), full_page=False)
     
-    # Hero
-    page.screenshot(path=str(RAW_DIR / "landing_hero.png"), full_page=False)
-    
-    # DAG Section
+    # 2. Operations DAG (Scroll to DAG)
     dag_el = page.query_selector("#graph") or page.query_selector(".dag-container")
     if dag_el:
         dag_el.scroll_into_view_if_needed()
@@ -35,52 +37,29 @@ with sync_playwright() as p:
     else:
         page.evaluate("window.scrollTo(0, 1850)")
         page.wait_for_timeout(1000)
-    page.screenshot(path=str(RAW_DIR / "landing_dag.png"), full_page=False)
-    
-    # Banking Section
-    bank_el = page.query_selector("#banking")
-    if bank_el:
-        bank_el.scroll_into_view_if_needed()
-        page.wait_for_timeout(1000)
-    else:
-        page.evaluate("window.scrollTo(0, 3100)")
-        page.wait_for_timeout(1000)
-    page.screenshot(path=str(RAW_DIR / "landing_banking.png"), full_page=False)
+    page.screenshot(path=str(RAW_DIR / "live_landing_dag.png"), full_page=False)
 
-    # Page B: Portal
-    portal = context.new_page()
-    portal.goto("https://ocus-eu.vercel.app/ocus", wait_until="networkidle")
-    portal.wait_for_timeout(2000)
-    
-    # Launch Map (Topology + 48% readiness)
-    portal.screenshot(path=str(RAW_DIR / "portal_map.png"), full_page=False)
-    
-    # Plan (15-week Gantt)
-    plan_btn = portal.query_selector('button[data-view="plan"]')
-    if plan_btn:
-        plan_btn.click()
-        portal.wait_for_timeout(1000)
-        portal.screenshot(path=str(RAW_DIR / "portal_plan.png"), full_page=False)
-    
     browser.close()
 
-print("[+] High-res captures completed!")
+# Use 2880x1800 genuine platform captures directly from web3agency project assets
+platform_map_src = WEB3AGENCY_DIR / "assets" / "platform" / "screen-launch-map.png"
+platform_plan_src = WEB3AGENCY_DIR / "assets" / "platform" / "screen-launch-plan.png"
+platform_bank_src = WEB3AGENCY_DIR / "assets" / "platform" / "screen-bank-passport.png"
 
-# Load raw captures
-hero_b64 = img_to_b64(RAW_DIR / "landing_hero.png")
-dag_b64 = img_to_b64(RAW_DIR / "landing_dag.png")
-map_b64 = img_to_b64(RAW_DIR / "portal_map.png")
-banking_b64 = img_to_b64(RAW_DIR / "landing_banking.png")
-plan_b64 = img_to_b64(RAW_DIR / "portal_plan.png")
+hero_b64 = img_to_b64(RAW_DIR / "live_landing_hero.png")
+dag_b64 = img_to_b64(RAW_DIR / "live_landing_dag.png")
+map_b64 = img_to_b64(platform_map_src)
+plan_b64 = img_to_b64(platform_plan_src)
+bank_b64 = img_to_b64(platform_bank_src)
 
-# Exact authentic SVG from web3agency
-exact_eye_svg = """<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#F8FAFC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+# Authentic project icon SVG from web3agency
+exact_icon_svg = """<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F8FAFC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7Z"/>
   <circle cx="12" cy="12" r="3.2" fill="#F8FAFC" stroke="none"/>
 </svg>"""
 
 PANORAMIC_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700;1,800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700;1,800&display=swap');
 
 * {
   margin: 0;
@@ -94,12 +73,12 @@ body {
   height: 1080px;
   overflow: hidden;
   background-color: #07080D;
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
   color: #F8FAFC;
   position: relative;
 }
 
-/* Continuous 9600px Panoramic Ribbon (5 slides x 1920px) */
+/* Continuous 9600px Panoramic Track (5 screens x 1920px) */
 .panoramic-track-bg {
   position: absolute;
   top: 0;
@@ -110,13 +89,12 @@ body {
   z-index: 1;
 }
 
-/* Laser energy ribbon at y: 880px spanning across all slides */
 .laser-ribbon-line {
   position: absolute;
-  top: 890px;
+  top: 920px;
   left: 0;
   width: 9600px;
-  height: 2px;
+  height: 3px;
   background: linear-gradient(90deg, 
     #10B981 0%, 
     #38BDF8 25%, 
@@ -124,17 +102,17 @@ body {
     #6366F1 75%, 
     #10B981 100%
   );
-  box-shadow: 0 0 24px 3px rgba(16, 185, 129, 0.45);
+  box-shadow: 0 0 30px 4px rgba(16, 185, 129, 0.55);
 }
 
 .laser-ambient-beam {
   position: absolute;
-  top: 720px;
+  top: 700px;
   left: 0;
   width: 9600px;
-  height: 360px;
-  background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.08) 60%, transparent 100%);
-  filter: blur(40px);
+  height: 380px;
+  background: linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.12) 60%, transparent 100%);
+  filter: blur(50px);
 }
 
 .slide-canvas {
@@ -146,7 +124,7 @@ body {
 }
 
 /* Slide 1: Brand Hero Reveal */
-.brand-hero-content {
+.brand-hero-wrap {
   width: 100%;
   height: 100%;
   display: flex;
@@ -154,221 +132,125 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 60px 80px;
+  padding: 40px 80px 20px;
   position: relative;
   z-index: 3;
 }
 
 .brand-icon-box {
-  width: 96px;
-  height: 96px;
-  border-radius: 24px;
+  width: 104px;
+  height: 104px;
+  border-radius: 26px;
   background: #0B0E14;
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.9), 0 0 40px -10px rgba(16, 185, 129, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.95), 0 0 50px -10px rgba(16, 185, 129, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-.brand-hero-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #10B981;
-  margin-bottom: 12px;
-}
-
-.brand-hero-title {
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 88px;
+.brand-name {
+  font-size: 116px;
   font-weight: 800;
   font-style: italic;
-  letter-spacing: -0.03em;
-  line-height: 1.0;
-  margin-bottom: 18px;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin-bottom: 14px;
   background: linear-gradient(180deg, #FFFFFF 0%, #D1D5DB 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.brand-hero-oneliner {
-  font-size: 24px;
-  font-weight: 500;
-  color: #94A3B8;
-  max-width: 1000px;
-  line-height: 1.4;
-  margin-bottom: 38px;
+.brand-mission {
+  font-size: 30px;
+  font-weight: 700;
+  color: #10B981;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 36px;
+  text-shadow: 0 0 25px rgba(16, 185, 129, 0.45);
 }
 
-.brand-hero-pills {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 40px;
-}
-
-.hero-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 7px 18px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #E2E8F0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  backdrop-filter: blur(12px);
-}
-
-.hero-pill-emerald {
-  border-color: rgba(16, 185, 129, 0.35);
-  background: rgba(16, 185, 129, 0.1);
-  color: #34D399;
-}
-
-.brand-hero-mockup-frame {
-  width: 1240px;
-  height: 480px;
-  border-radius: 18px;
+.brand-hero-frame {
+  width: 1300px;
+  height: 520px;
+  border-radius: 24px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.95), 0 0 50px -15px rgba(16, 185, 129, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.98), 0 0 60px -15px rgba(16, 185, 129, 0.25);
   background: #020617;
   position: relative;
 }
 
-.brand-hero-mockup-frame img {
+.brand-hero-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: top center;
+  display: block;
 }
 
-/* Feature Slides (02, 03, 04, 05) */
-.feature-slide-inner {
+.screen-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  padding: 56px 80px 0 80px;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.07) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* Feature Slides (02, 03, 04, 05) - Strict Radical Luxury Restraint */
+.slide-feature-wrap {
+  width: 100%;
+  height: 100%;
+  padding: 48px 80px 0;
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 3;
 }
 
-.aso-headline-band {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 34px;
+/* Giant 104px Chakra Petch Headline (ACTION VERB + BENEFIT) */
+.headline-bar {
+  margin-bottom: 32px;
 }
 
-.aso-eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #10B981;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.aso-headline {
-  font-family: 'Chakra Petch', sans-serif;
-  font-size: 78px;
+.aso-headline-text {
+  font-size: 100px;
+  line-height: 0.95;
   font-weight: 800;
   font-style: italic;
   text-transform: uppercase;
   letter-spacing: -0.035em;
-  line-height: 1.0;
   color: #FFFFFF;
 }
 
-.aso-headline .lit-green {
+.accent-green {
   color: #10B981;
-  text-shadow: 0 0 35px rgba(16, 185, 129, 0.5);
+  text-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
 }
 
-.aso-headline .lit-cyan {
+.accent-cyan {
   color: #38BDF8;
-  text-shadow: 0 0 35px rgba(56, 189, 248, 0.5);
+  text-shadow: 0 0 40px rgba(56, 189, 248, 0.6);
 }
 
-/* Browser Frame Container */
-.clean-browser-frame {
+/* Edge-to-Edge Titanium Bezel */
+.titanium-frame {
   width: 1760px;
-  height: 820px;
-  border-radius: 20px 20px 0 0;
+  height: 840px;
+  border-radius: 28px 28px 0 0;
   background: #0B0E14;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 2px solid rgba(255, 255, 255, 0.16);
   border-bottom: none;
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.98);
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 40px 100px -15px rgba(0, 0, 0, 0.98);
   overflow: hidden;
   position: relative;
 }
 
-.browser-bar {
-  height: 48px;
-  background: #0F131D;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  flex-shrink: 0;
-}
-
-.browser-dots {
-  display: flex;
-  gap: 8px;
-}
-
-.b-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-}
-
-.b-dot-red { background: #FF5F56; }
-.b-dot-yellow { background: #FFBD2E; }
-.b-dot-green { background: #27C93F; }
-
-.browser-url-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: #94A3B8;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 5px 22px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.browser-status {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: #10B981;
-}
-
-.browser-screen {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  background: #020617;
-}
-
-.browser-screen img {
+.titanium-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -377,31 +259,31 @@ body {
 }
 
 /* Slide 3: 3D Perspective Tilt */
-.tilt-3d-frame {
+.tilt-3d {
   transform: perspective(1400px) rotateY(-8deg) rotateX(6deg);
-  box-shadow: -40px 40px 100px -15px rgba(0, 0, 0, 0.95), 0 0 60px -15px rgba(16, 185, 129, 0.25);
   transform-origin: center left;
-  border-color: rgba(16, 185, 129, 0.35);
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: -40px 40px 100px -15px rgba(0, 0, 0, 0.98), 0 0 70px -10px rgba(16, 185, 129, 0.35);
 }
 
-/* Slide 4: Macro 4.8x Zoom Frame with Peripheral Fog */
-.macro-zoom-screen img {
-  transform: scale(1.6) translate(-5%, -15%);
+/* Slide 4: Macro 4.8x Zoom with Peripheral CSS Fog */
+.macro-zoom img {
+  transform: scale(1.65) translate(-4%, -14%);
   filter: contrast(1.05);
 }
 
-.fog-overlay {
+.fog-radial-mask {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 60% 50%, transparent 40%, rgba(7, 8, 13, 0.85) 90%);
+  background: radial-gradient(circle at 60% 50%, transparent 40%, rgba(7, 8, 13, 0.88) 88%);
   pointer-events: none;
 }
 """
 
-def generate_slide_html(index, content_html):
+def make_slide(index, body_html):
     track_offset = index * 1920
     return f"""<!DOCTYPE html>
 <html>
@@ -415,140 +297,89 @@ def generate_slide_html(index, content_html):
     <div class="laser-ribbon-line"></div>
   </div>
   <div class="slide-canvas">
-    {content_html}
+    {body_html}
   </div>
 </body>
 </html>"""
 
-# SLIDE 1: Brand Hero Reveal (Authentic Logo + Platform)
-slide1_content = f"""
-<div class="brand-hero-content">
+# Slide 1: Brand Hero Reveal (Brandmark + One-liner + Hero Frame)
+s1 = f"""
+<div class="brand-hero-wrap">
   <div class="brand-icon-box">
-    {exact_eye_svg}
+    {exact_icon_svg}
   </div>
-  <div class="brand-hero-eyebrow">● EU CRYPTO COMPLIANCE & BANKING OS</div>
-  <h1 class="brand-hero-title">OCUS</h1>
-  <p class="brand-hero-oneliner">From 1,000+ pages of EU MiCA & DORA directives into an executable 31-node operations DAG with Tier-1 banking rails.</p>
+  <h1 class="brand-name">OCUS</h1>
+  <div class="brand-mission">EU CRYPTO COMPLIANCE & BANKING OS</div>
   
-  <div class="brand-hero-pills">
-    <div class="hero-pill hero-pill-emerald">● 31 Regulatory Checkpoints</div>
-    <div class="hero-pill">● ESMA Supervisory Sync</div>
-    <div class="hero-pill hero-pill-emerald">● Tier-1 Banking Rails</div>
-    <div class="hero-pill">● 15-Week Launch Critical Path</div>
-  </div>
-
-  <div class="brand-hero-mockup-frame">
+  <div class="brand-hero-frame">
     <img src="{hero_b64}" alt="Ocus OS Hero Preview" />
+    <div class="screen-glare"></div>
   </div>
 </div>
 """
 
-# SLIDE 2: Core Value (Landing 31-Node DAG)
-slide2_content = f"""
-<div class="feature-slide-inner">
-  <div class="aso-headline-band">
-    <div class="aso-eyebrow">● COMPLIANCE TOPOLOGY</div>
-    <h1 class="aso-headline">AUTOMATE <span class="lit-green">MICA DIRECTIVES</span></h1>
+# Slide 2: Core Value (CRUSH MICA COMPLEXITY)
+s2 = f"""
+<div class="slide-feature-wrap">
+  <div class="headline-bar">
+    <h1 class="aso-headline-text">CRUSH <span class="accent-green">MICA COMPLEXITY</span></h1>
   </div>
-  <div class="clean-browser-frame">
-    <div class="browser-bar">
-      <div class="browser-dots">
-        <div class="b-dot b-dot-red"></div>
-        <div class="b-dot b-dot-yellow"></div>
-        <div class="b-dot b-dot-green"></div>
-      </div>
-      <div class="browser-url-pill">ocus-eu.vercel.app/#graph</div>
-      <div class="browser-status">● 31 ACTIVE NODES</div>
-    </div>
-    <div class="browser-screen">
-      <img src="{dag_b64}" alt="Operations DAG" />
-    </div>
+  <div class="titanium-frame">
+    <img src="{dag_b64}" alt="31-Node Operations DAG" />
+    <div class="screen-glare"></div>
   </div>
 </div>
 """
 
-# SLIDE 3: Inflection Point (Portal 3D Tilt - Critical Path & Readiness)
-slide3_content = f"""
-<div class="feature-slide-inner">
-  <div class="aso-headline-band">
-    <div class="aso-eyebrow">● INTERACTIVE LAUNCH TOPOLOGY</div>
-    <h1 class="aso-headline">NAVIGATE <span class="lit-green">THE CRITICAL PATH</span></h1>
+# Slide 3: Inflection Point (SURGE PAST CRITICAL PATH - 3D Tilt)
+s3 = f"""
+<div class="slide-feature-wrap">
+  <div class="headline-bar">
+    <h1 class="aso-headline-text">SURGE PAST <span class="accent-green">CRITICAL PATH</span></h1>
   </div>
-  <div class="clean-browser-frame tilt-3d-frame">
-    <div class="browser-bar">
-      <div class="browser-dots">
-        <div class="b-dot b-dot-red"></div>
-        <div class="b-dot b-dot-yellow"></div>
-        <div class="b-dot b-dot-green"></div>
-      </div>
-      <div class="browser-url-pill">ocus-eu.vercel.app/ocus#map</div>
-      <div class="browser-status">● 48% READINESS GAUGE</div>
-    </div>
-    <div class="browser-screen">
-      <img src="{map_b64}" alt="Launch Map Topology" />
-    </div>
+  <div class="titanium-frame tilt-3d">
+    <img src="{map_b64}" alt="Launch Map Node Topology" />
+    <div class="screen-glare"></div>
   </div>
 </div>
 """
 
-# SLIDE 4: Intensity & Focus (Macro Zoom - Safeguarding & Banking Rails)
-slide4_content = f"""
-<div class="feature-slide-inner">
-  <div class="aso-headline-band">
-    <div class="aso-eyebrow">● INSTITUTIONAL RAILS</div>
-    <h1 class="aso-headline">LOCK IN <span class="lit-cyan">TIER-1 BANKING RAILS</span></h1>
+# Slide 4: Focus Zone (LOCK IN TIER-1 BANKING - Macro Zoom + Fog)
+s4 = f"""
+<div class="slide-feature-wrap">
+  <div class="headline-bar">
+    <h1 class="aso-headline-text">LOCK IN <span class="accent-cyan">TIER-1 BANKING</span></h1>
   </div>
-  <div class="clean-browser-frame">
-    <div class="browser-bar">
-      <div class="browser-dots">
-        <div class="b-dot b-dot-red"></div>
-        <div class="b-dot b-dot-yellow"></div>
-        <div class="b-dot b-dot-green"></div>
-      </div>
-      <div class="browser-url-pill">ocus-eu.vercel.app/#banking</div>
-      <div class="browser-status" style="color: #38BDF8;">● CLEAR JUNCTION INTEGRATED</div>
-    </div>
-    <div class="browser-screen macro-zoom-screen">
-      <img src="{banking_b64}" alt="Banking Rails" />
-      <div class="fog-overlay"></div>
-    </div>
+  <div class="titanium-frame macro-zoom">
+    <img src="{bank_b64}" alt="Institutional Bank Passport & Rails" />
+    <div class="fog-radial-mask"></div>
+    <div class="screen-glare"></div>
   </div>
 </div>
 """
 
-# SLIDE 5: Hardware Rig / Cockpit (Portal 15-Week Gantt Timeline)
-slide5_content = f"""
-<div class="feature-slide-inner">
-  <div class="aso-headline-band">
-    <div class="aso-eyebrow">● EXECUTION TIMELINE</div>
-    <h1 class="aso-headline">EXECUTE <span class="lit-cyan">15-WEEK GANTT</span></h1>
+# Slide 5: Real-World Context (RIG 15-WEEK LAUNCH GANTT - Cockpit)
+s5 = f"""
+<div class="slide-feature-wrap">
+  <div class="headline-bar">
+    <h1 class="aso-headline-text">RIG 15-WEEK <span class="accent-cyan">LAUNCH GANTT</span></h1>
   </div>
-  <div class="clean-browser-frame">
-    <div class="browser-bar">
-      <div class="browser-dots">
-        <div class="b-dot b-dot-red"></div>
-        <div class="b-dot b-dot-yellow"></div>
-        <div class="b-dot b-dot-green"></div>
-      </div>
-      <div class="browser-url-pill">ocus-eu.vercel.app/ocus#plan</div>
-      <div class="browser-status" style="color: #38BDF8;">● TARGET: GO-LIVE</div>
-    </div>
-    <div class="browser-screen">
-      <img src="{plan_b64}" alt="15-Week Plan" />
-    </div>
+  <div class="titanium-frame">
+    <img src="{plan_b64}" alt="15-Week Gantt Timeline" />
+    <div class="screen-glare"></div>
   </div>
 </div>
 """
 
 SLIDES = [
-    ("01-ocus-brand-hero.png", 0, slide1_content),
-    ("02-automate-mica-dag.png", 1, slide2_content),
-    ("03-navigate-critical-path.png", 2, slide3_content),
-    ("04-lock-in-banking.png", 3, slide4_content),
-    ("05-execute-15week-plan.png", 4, slide5_content),
+    ("01-ocus-brand-reveal.png", 0, s1),
+    ("02-crush-compliance.png", 1, s2),
+    ("03-surge-critical-path.png", 2, s3),
+    ("04-lock-in-banking.png", 3, s4),
+    ("05-rig-launch-cockpit.png", 4, s5),
 ]
 
-print("Rendering 5-slide panoramic ASO set via Playwright at 1920x1080 (16:9)...")
+print("[2/4] Rendering 5 ASO slides strictly according to /panoramic-aso-studio...")
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
@@ -556,13 +387,44 @@ with sync_playwright() as p:
     page = context.new_page()
 
     for filename, idx, content in SLIDES:
-        html = generate_slide_html(idx, content)
+        html = make_slide(idx, content)
         page.set_content(html, wait_until="load")
-        page.wait_for_timeout(600)
-        out_path = OUT_DIR / filename
-        page.screenshot(path=str(out_path), full_page=False)
-        print(f" -> Rendered Slide {idx+1}: {filename} (1920x1080)")
+        page.wait_for_timeout(500)
+        target = OUT_DIR / filename
+        page.screenshot(path=str(target), full_page=False)
+        print(f"   -> Rendered Slide {idx+1}: {filename} (1920x1080)")
 
     browser.close()
 
-print("[+] All 5 slides rendered successfully in public/projects/ocus!")
+print("[3/4] Building panoramic showcase & running 280px legibility test...")
+
+slide_paths = [str(OUT_DIR / name) for name, _, _ in SLIDES]
+images = [Image.open(s) for s in slide_paths]
+
+# 1. Master Continuous Strip (9600 x 1080)
+total_w = sum(img.width for img in images)
+max_h = max(img.height for img in images)
+master = Image.new("RGBA", (total_w, max_h), (7, 8, 13, 255))
+offset = 0
+for img in images:
+    master.paste(img, (offset, 0))
+    offset += img.width
+master.save(OUT_DIR / "panoramic-showcase.png", "PNG")
+
+# 2. Product Hunt & Behance Hero (3840 x 2160)
+hero_w, hero_h = 3840, 2160
+hero = Image.new("RGBA", (hero_w, hero_h), (7, 8, 13, 255))
+scale = 3600 / total_w
+strip_w = int(total_w * scale)
+strip_h = int(max_h * scale)
+resized = master.resize((strip_w, strip_h), Image.Resampling.LANCZOS)
+hero.paste(resized, ((hero_w - strip_w) // 2, (hero_h - strip_h) // 2))
+hero.save(OUT_DIR / "producthunt-hero.png", "PNG")
+
+# 3. 280px Thumbnail Legibility Test Gate
+thumb_w = 280
+thumb_h = int(images[0].height * (thumb_w / images[0].width))
+thumb = images[0].resize((thumb_w, thumb_h), Image.Resampling.LANCZOS)
+thumb.save(OUT_DIR / "thumbnail-legibility-test-280px.png", "PNG")
+
+print("[4/4] Panoramic ASO pipeline successfully completed!")
