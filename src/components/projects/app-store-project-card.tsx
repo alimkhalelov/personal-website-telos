@@ -95,26 +95,16 @@ export function AppStoreProjectCard({
 
         {/* Title & Subtitle block (Clean Title Case, no all-caps, no delimiters) */}
         <div className="flex flex-col min-w-0 gap-1">
-          <div className="flex items-center gap-3">
-            <a
-              href={demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-2xl sm:text-3xl font-bold tracking-tight text-white hover:text-sky-400 transition-colors !no-underline inline-flex items-center gap-1.5"
-              style={{ fontFamily: "'Google Sans', system-ui, sans-serif" }}
-            >
-              <span>{title}</span>
-              <ArrowUpRight className="w-5 h-5 text-white/50" />
-            </a>
-            {slug && (
-              <a
-                href={`/projects/${slug}`}
-                className="text-xs font-mono text-neutral-400 hover:text-white transition-colors px-2.5 py-1 rounded-full bg-white/5 border border-white/10 !no-underline"
-              >
-                Docs / Specs →
-              </a>
-            )}
-          </div>
+          <a
+            href={demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-2xl sm:text-3xl font-bold tracking-tight text-white hover:text-sky-400 transition-colors !no-underline inline-flex items-center gap-1.5"
+            style={{ fontFamily: "'Google Sans', system-ui, sans-serif" }}
+          >
+            <span>{title}</span>
+            <ArrowUpRight className="w-5 h-5 text-white/50" />
+          </a>
 
           {/* Subtitle - Clean sentence/title case */}
           <p className="text-sm sm:text-base text-neutral-300 font-normal leading-snug">

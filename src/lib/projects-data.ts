@@ -40,7 +40,7 @@ export interface ProjectDetail {
   tldr: string;
   headline: string;
   demoUrl: string;
-  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus" | "ocus-portal";
+  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus";
   demoLabel: string;
   badges: string[];
   overview: string;
@@ -218,13 +218,13 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
       },
     ],
   },
-  // 0b. Ocus OS (Public flagship 16:9 App Store project)
+  // 0b. Ocus (Unified Public Flagship 16:9 App Store project - Landing & Platform)
   {
     slug: "ocus",
     command: "/ocus",
     title: "Ocus",
     subtitle: "EU Crypto Compliance, Banking & Operations OS",
-    headline: "Convert 1,000+ pages of EU MiCA, DORA, and DAC8 directives into an actionable operations DAG",
+    headline: "From 1,000+ pages of EU MiCA & DORA directives to an actionable 31-node operations DAG and interactive launch cockpit",
     category: "app",
     tag: "Crypto Compliance & Banking OS",
     accentColor: "#10b981",
@@ -234,12 +234,12 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     timeAgo: "1 day ago",
     thumbnailSrc: "/projects/ocus/01-ocus-brand-hero.png",
     iconSrc: "/projects/ocus/icon.svg",
-    tldr: "An institutional operating system that translates complex EU regulatory directives (MiCA, DORA, DAC8) into an executable 31-node operations DAG, pre-integrated with Fireblocks custody, Clear Junction fiat rails, and Tier-1 European banking partners.",
+    tldr: "An institutional operating system that translates complex EU regulatory directives (MiCA, DORA, DAC8) into an executable 31-node operations DAG and an interactive launch cockpit with real-time critical path calculation, 15-week Gantt milestones, and Tier-1 banking integrations.",
     demoUrl: "https://ocus-eu.vercel.app",
     demoType: "ocus",
-    demoLabel: "Launch Ocus OS Live",
-    badges: ["EU MiCA Ready", "DORA Compliant", "Operations DAG", "Tier-1 Banking Rails", "Safeguarding Accounts", "ESMA Sync"],
-    overview: "Ocus eliminates months of regulatory friction and millions in legal advisory costs. By converting thousands of pages of ESMA guidelines and EU directives into a deterministic Directed Acyclic Graph (DAG), crypto asset service providers (CASPs) achieve operational compliance and institutional banking in weeks instead of quarters.",
+    demoLabel: "Launch Ocus OS & Platform",
+    badges: ["EU MiCA Ready", "DORA Compliant", "Operations DAG", "Critical Path Engine", "15-Week Gantt", "Tier-1 Banking Rails", "ESMA Sync"],
+    overview: "Ocus eliminates months of regulatory friction and millions in legal advisory costs. By converting thousands of pages of ESMA guidelines and EU directives into a deterministic Directed Acyclic Graph (DAG) paired with an interactive operational launch cockpit, crypto asset service providers (CASPs) achieve operational compliance, banking safeguarding, and supervisory authorization in 15 weeks.",
     generativeTheme: "emerald-terminal",
     isPublic: true,
     appStoreLayout: true,
@@ -247,13 +247,13 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     screenshots: [
       "/projects/ocus/01-ocus-brand-hero.png",
       "/projects/ocus/02-automate-mica-dag.png",
-      "/projects/ocus/03-expedite-tier1-banking.png",
-      "/projects/ocus/04-tailored-crypto-profiles.png",
-      "/projects/ocus/05-live-regulatory-telemetry.png",
+      "/projects/ocus/03-navigate-critical-path.png",
+      "/projects/ocus/04-lock-in-banking.png",
+      "/projects/ocus/05-execute-15week-plan.png",
     ],
     visualizer: {
-      heroTitle: "OCUS_COMPLIANCE_DAG_PIPELINE",
-      subNamespace: "eu.crypto.mica.dora.v1",
+      heroTitle: "OCUS_COMPLIANCE_AND_OPERATIONS_ENGINE",
+      subNamespace: "eu.crypto.compliance.cockpit.v1",
       nodes: [
         {
           id: "node-1",
@@ -269,7 +269,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         {
           id: "node-2",
           step: "02",
-          title: "Operational DAG Synthesis",
+          title: "Operational DAG & Critical Path",
           accent: "text-teal-400",
           description: [
             "Generates 31 interconnected operational nodes across entity, technical, and risk domains",
@@ -280,23 +280,23 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         {
           id: "node-3",
           step: "03",
-          title: "Vendor & Banking Pre-Wiring",
+          title: "Interactive Launch Cockpit",
           accent: "text-sky-400",
           description: [
-            "Pre-integrated technical connectors with Fireblocks custody and Cobo MPC infrastructure",
-            "Pre-approved onboarding dossiers and safeguarding account structures with Clear Junction",
-            "Tier-1 European legal firm validation ensuring zero-drift passporting across 27 nations",
+            "Interactive node topology map with dynamic zoom and real-time 48% readiness dial",
+            "15-week Gantt execution timeline tracking milestones across all regulatory phases",
+            "Dynamic capital adequacy modeling comparing regulatory floor (€350k) with maintained buffer (€500k)",
           ],
         },
         {
           id: "node-4",
           step: "04",
-          title: "Live Supervisory Telemetry",
+          title: "Institutional Rails & Telemetry",
           accent: "text-indigo-400",
           description: [
-            "Continuous automated sync with ESMA and national supervisory registers (CySEC, AMF, BaFin)",
-            "Automated capital sufficiency model tracking €350,000 regulatory minimum vs €500,000 buffer",
-            "Real-time regulatory diff monitoring alerting founders to legal updates before enforcement",
+            "Pre-packaged safeguarding account structures and fiat rails with Clear Junction",
+            "Pre-configured MPC security blueprints with Fireblocks and Cobo custody",
+            "Continuous automated sync with ESMA and national supervisory registers with live drift alerts",
           ],
         },
       ],
@@ -307,25 +307,29 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         "Target EU incorporation jurisdiction (CySEC, AMF, BaFin, Malta, Lithuania)",
         "Initial capital reserves and projected safeguarding volume",
         "Selected vendor infrastructure (Fireblocks, Clear Junction, Cobo)",
+        "Active portal state toggles (In Progress, Blocked, Done)",
       ],
       outputs: [
         "Executable 31-node compliance operations DAG with critical path timeline",
+        "Interactive SVG dependency visualization with real-time readiness gauge",
+        "15-week Gantt execution schedule with milestone audit dossiers",
         "Pre-packaged institutional bank passport dossier with AML safeguarding structure",
-        "Regulator interview readiness packet and operational governance manuals",
         "Live supervisory telemetry feed tracking ESMA register updates",
       ],
       invariants: [
         "Zero-drift compliance with ESMA RTS and EBA regulatory technical standards",
+        "Critical path recalculates instantaneously upon any node duration or dependency edit",
         "Safeguarding funds strictly segregated with Tier-1 European credit institutions",
         "Minimum capital requirements (€125k to €350k base + risk buffer) mathematically enforced",
       ],
-      coreEngine: "Deterministic DAG Topological Solver & Regulatory Requirement Mapper",
+      coreEngine: "Deterministic DAG Topological Solver & Interactive Cockpit Engine",
       dataStructures: [
         "interface ComplianceNode { id: string; category: 'entity' | 'capital' | 'safeguarding' | 'tech'; status: 'passed' | 'pending' | 'blocked'; prereqs: string[]; durationWeeks: number; }",
+        "interface LaunchCockpitState { activeView: 'map' | 'plan' | 'rules' | 'model'; readinessScore: number; criticalPathWeeks: number; }",
         "interface BankingPassport { caspId: string; safeguardingIban: string; tier1Bank: string; amlPackVerified: boolean; capitalVerified: number; }",
       ],
       stateMachine: [
-        "DRAFT -> INTAKE_PROFILED -> DAG_SYNTHESIZED -> SAFEGUARDING_FILED -> REGULATOR_REVIEW -> PASSPORTED_ACTIVE",
+        "DRAFT -> INTAKE_PROFILED -> DAG_SYNTHESIZED -> COCKPIT_ACTIVE -> SAFEGUARDING_FILED -> REGULATOR_REVIEW -> PASSPORTED_ACTIVE",
       ],
     },
     buildChecklist: [
@@ -338,19 +342,20 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         ],
       },
       {
-        phase: "Phase 2: Banking & Partner Rails",
+        phase: "Phase 2: Interactive Cockpit & Gantt Schedule",
         tasks: [
-          { label: "Clear Junction Rail Integration", done: true, description: "Pre-package institutional safeguarding and fiat rails." },
-          { label: "Fireblocks & Cobo Custody Blueprint", done: true, description: "Pre-configured MPC security architecture and key governance." },
-          { label: "Capital Adequacy Calculator", done: true, description: "Real-time buffer modeling (€350k vs €500k maintained reserves)." },
+          { label: "Vector Node Topology Canvas", done: true, description: "SVG graph canvas with force layout, category clustering, and readiness dial." },
+          { label: "15-Week Timeline Builder", done: true, description: "Interactive Gantt bar chart across 4 regulatory phases." },
+          { label: "Regulatory Diff Engine", done: true, description: "Changelog viewer highlighting modifications to EU crypto guidelines." },
         ],
       },
       {
-        phase: "Phase 3: Supervisory Telemetry & Verification",
+        phase: "Phase 3: Banking Rails & Supervisory Telemetry",
         tasks: [
+          { label: "Clear Junction Rail Integration", done: true, description: "Pre-package institutional safeguarding and fiat rails." },
+          { label: "Fireblocks & Cobo Blueprint", done: true, description: "Pre-configured MPC security architecture and key governance." },
+          { label: "Capital Adequacy Modeler", done: true, description: "Real-time buffer modeling (€350k vs €500k maintained reserves)." },
           { label: "ESMA Register Synchronizer", done: true, description: "Live marquee telemetry bar tracking regulatory checkpoint status." },
-          { label: "Regulatory Diff Engine", done: true, description: "Alerting system for new ESMA RTS and national circular updates." },
-          { label: "Multi-Jurisdiction Passporting Matrix", done: true, description: "27-state EU cross-border service notification templates." },
         ],
       },
     ],
@@ -364,165 +369,12 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
         ],
       },
       {
-        suite: "Banking & Capital Constraints",
+        suite: "Interactive Cockpit & Capital Verification",
         tests: [
+          { label: "Readiness Formula Math", passed: true, assertion: "expect(calculateReadiness(nodes)).toBe(48)" },
           { label: "Capital Adequacy Floor", passed: true, assertion: "expect(capitalReserves).toBeGreaterThanOrEqual(350000)" },
           { label: "Safeguarding Ratio Verification", passed: true, assertion: "expect(safeguardedFiatBalance / clientDeposits).toBe(1.0)" },
           { label: "Tier-1 Rail Handshake", passed: true, assertion: "expect(clearJunctionWebhook.status).toBe(200)" },
-        ],
-      },
-    ],
-  },
-  // 0c. Ocus Portal (Public flagship 16:9 App Store project)
-  {
-    slug: "ocus-portal",
-    command: "/ocus-portal",
-    title: "Ocus Portal",
-    subtitle: "Interactive Operations, Launch Map & Rules Engine",
-    headline: "Interactive launch topology, critical path analysis, 15-week Gantt milestones & automated regulatory diff monitoring",
-    category: "app",
-    tag: "Launch Topology & Rules Engine",
-    accentColor: "#38bdf8",
-    accentGradient: "from-sky-500/20 via-teal-600/10 to-transparent",
-    initiationDate: "2026-11-07",
-    dateDisplay: "Nov 2026",
-    timeAgo: "1 day ago",
-    thumbnailSrc: "/projects/ocus-portal/01-portal-brand-hero.png",
-    iconSrc: "/projects/ocus-portal/icon.svg",
-    tldr: "A live operational launch cockpit for Web3 institutions. Features interactive dependency node graphs, dynamic 15-week Gantt execution timelines, capital adequacy calculators (€350k vs €500k), pre-packaged bank passports, and live ESMA regulatory drift alerts.",
-    demoUrl: "https://ocus-eu.vercel.app/ocus",
-    demoType: "ocus-portal",
-    demoLabel: "Launch Ocus Portal Cockpit",
-    badges: ["Interactive Launch Map", "Critical Path Engine", "15-Week Gantt", "Capital Buffer Model", "Pre-Packaged Passports", "Rule Drift Alerts"],
-    overview: "Ocus Portal provides the interactive execution interface for crypto founders and compliance teams. Track real-time launch readiness score, explore critical dependency paths, verify capital adequacy against regulatory minimums, and generate institutional bank onboarding dossiers in seconds.",
-    generativeTheme: "neon-cyan",
-    isPublic: true,
-    appStoreLayout: true,
-    aspectRatio: "16/9",
-    screenshots: [
-      "/projects/ocus-portal/01-portal-brand-hero.png",
-      "/projects/ocus-portal/02-interactive-launch-topology.png",
-      "/projects/ocus-portal/03-executable-gantt-plan.png",
-      "/projects/ocus-portal/04-instant-bank-passports.png",
-      "/projects/ocus-portal/05-regulatory-rule-monitor.png",
-    ],
-    visualizer: {
-      heroTitle: "OCUS_PORTAL_INTERACTIVE_COCKPIT",
-      subNamespace: "portal.launch_map.gantt.v1",
-      nodes: [
-        {
-          id: "node-1",
-          step: "01",
-          title: "Launch Map Graph Canvas",
-          accent: "text-sky-400",
-          description: [
-            "Hardware-accelerated SVG interactive node topology with dynamic zoom and panning",
-            "Visualizes 31 checkpoints categorized by Entity, Capital, Tech, Safeguarding, and Legal",
-            "Real-time readiness gauge computing overall milestone completion percentage (48% target)",
-          ],
-        },
-        {
-          id: "node-2",
-          step: "02",
-          title: "15-Week Gantt Timeline",
-          accent: "text-teal-400",
-          description: [
-            "Phase-by-phase execution timeline from initial incorporation to regulatory interview",
-            "Real-time critical path highlighting items directly affecting target launch date",
-            "Interactive milestone drill-down with requirement dossiers and filing checklists",
-          ],
-        },
-        {
-          id: "node-3",
-          step: "03",
-          title: "Capital & Financial Modeler",
-          accent: "text-emerald-400",
-          description: [
-            "Dynamic capital adequacy modeling comparing regulatory floor (€350k) with maintained buffer (€500k)",
-            "Forecasts monthly burn, compliance overhead, safeguarding charges, and legal retainers",
-            "1-click export of financial viability projections for supervisory submissions",
-          ],
-        },
-        {
-          id: "node-4",
-          step: "04",
-          title: "Regulatory Drift Monitor",
-          accent: "text-indigo-400",
-          description: [
-            "Automated diff tracking across ESMA, EBA, and national supervisory authority guidelines",
-            "Maps upcoming rule changes directly to active operational nodes with impact ratings",
-            "Eliminates surprise compliance breaches during post-licensing operations",
-          ],
-        },
-      ],
-    },
-    specSDD: {
-      inputs: [
-        "Active node state toggles (In Progress, Blocked, Done)",
-        "Jurisdiction selection and CASP activity scope",
-        "Financial model assumptions (monthly transaction volume, headcount, custody tier)",
-        "Selected view mode (Launch Map, Plan Gantt, Rule Changes, Financial Model, Licences)",
-      ],
-      outputs: [
-        "Dynamic readiness score (0% to 100%)",
-        "Interactive SVG dependency visualization with critical path highlighted in cyan",
-        "Gantt schedule with milestone dates and dependency links",
-        "Exportable Bank Passport PDF and supervisory compliance audit dossiers",
-      ],
-      invariants: [
-        "Readiness percentage strictly derives from weighted node completion formulas",
-        "Critical path recalculates instantaneously upon any node duration or dependency edit",
-        "60 FPS smooth camera panning and node selection with zero DOM lag",
-      ],
-      coreEngine: "Interactive Graph State Engine & Dynamic Gantt Timeline Visualizer",
-      dataStructures: [
-        "interface LaunchNode { id: string; title: string; category: string; progress: number; dependencies: string[]; isCritical: boolean; }",
-        "interface GanttPhase { phase: string; startWeek: number; durationWeeks: number; milestones: string[]; }",
-      ],
-      stateMachine: [
-        "VIEW_MAP -> VIEW_PLAN -> VIEW_RULES -> VIEW_MODEL -> VIEW_LICENCES",
-      ],
-    },
-    buildChecklist: [
-      {
-        phase: "Phase 1: Interactive Graph Canvas",
-        tasks: [
-          { label: "Vector Node Topology", done: true, description: "SVG graph canvas with force layout and category clustering." },
-          { label: "Critical Path Highlighter", done: true, description: "Cyan pulse highlighting sequence determining 15-week go-live." },
-          { label: "Dynamic Readiness Dial", done: true, description: "Circular gauge rendering weighted progress and checkpoint count." },
-        ],
-      },
-      {
-        phase: "Phase 2: Gantt & Schedule Engine",
-        tasks: [
-          { label: "15-Week Timeline Builder", done: true, description: "Interactive horizontal bar chart across 4 regulatory phases." },
-          { label: "Dependency Linking", done: true, description: "Visual connectors illustrating strict sequencing between milestones." },
-          { label: "Milestone Detail Drawer", done: true, description: "Contextual inspector displaying prerequisites, docs, and audit gates." },
-        ],
-      },
-      {
-        phase: "Phase 3: Financial & Rule Drift Modules",
-        tasks: [
-          { label: "Capital Buffer Calculator", done: true, description: "Real-time slider modeling €350k vs €500k capital thresholds." },
-          { label: "Regulatory Diff Engine", done: true, description: "Changelog viewer highlighting modifications to EU crypto guidelines." },
-          { label: "Bank Passport Dossier Exporter", done: true, description: "Pre-formatted institutional dossier ready for bank KYC/compliance." },
-        ],
-      },
-    ],
-    testChecklist: [
-      {
-        suite: "Graph Topology & Interaction",
-        tests: [
-          { label: "Node Selection & View Sync", passed: true, assertion: "expect(activeView).toBe('map')" },
-          { label: "Readiness Formula Math", passed: true, assertion: "expect(calculateReadiness(nodes)).toBe(48)" },
-          { label: "Critical Path Continuity", passed: true, assertion: "expect(verifyCriticalPathContinuity(path)).toBe(true)" },
-        ],
-      },
-      {
-        suite: "Gantt Timeline Calculations",
-        tests: [
-          { label: "Total Duration Boundary", passed: true, assertion: "expect(totalDurationWeeks).toBe(15)" },
-          { label: "Phase Sequence Invariant", passed: true, assertion: "expect(phase4.start).toBeGreaterThanOrEqual(phase3.end)" },
         ],
       },
     ],

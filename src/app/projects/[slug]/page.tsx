@@ -254,15 +254,15 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </section>
       )}
 
-      {/* Interactive Ocus OS Live Runner */}
+      {/* Interactive Ocus Live Runner (Landing & Platform Cockpit) */}
       {project.slug === "ocus" && (
         <section id="demo" className="flex flex-col gap-5 pt-6 border-t border-border">
           <div className="flex flex-col gap-1">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-              Live Ocus Compliance OS Runner
+              Live Ocus Compliance OS &amp; Launch Cockpit
             </h2>
             <p className="text-base text-muted-foreground font-light">
-              Live interactive deployment converting EU MiCA &amp; DORA directives into an executable operations DAG.
+              Live interactive deployment converting EU MiCA &amp; DORA directives into an executable operations DAG and interactive launch cockpit.
             </p>
           </div>
           <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-border bg-neutral-950 shadow-xl">
@@ -275,47 +275,24 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           </div>
           <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
             <span>Production deployment: ocus-eu.vercel.app</span>
-            <a
-              href="https://ocus-eu.vercel.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline flex items-center gap-1 font-medium"
-            >
-              Open fullscreen in new tab →
-            </a>
-          </div>
-        </section>
-      )}
-
-      {/* Interactive Ocus Portal Live Cockpit */}
-      {project.slug === "ocus-portal" && (
-        <section id="demo" className="flex flex-col gap-5 pt-6 border-t border-border">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-              Live Ocus Operations &amp; Launch Cockpit
-            </h2>
-            <p className="text-base text-muted-foreground font-light">
-              Interactive cockpit featuring 31-node launch topology, critical path analysis, and 15-week Gantt execution milestones.
-            </p>
-          </div>
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-border bg-neutral-950 shadow-xl">
-            <iframe
-              src="https://ocus-eu.vercel.app/ocus"
-              title="Ocus Portal — Interactive Launch Map & Rules Engine"
-              className="w-full h-full border-0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope"
-            />
-          </div>
-          <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
-            <span>Production deployment: ocus-eu.vercel.app/ocus</span>
-            <a
-              href="https://ocus-eu.vercel.app/ocus"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline flex items-center gap-1 font-medium"
-            >
-              Open fullscreen in new tab →
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://ocus-eu.vercel.app/ocus"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline flex items-center gap-1 font-medium"
+              >
+                Launch Cockpit (/ocus) →
+              </a>
+              <a
+                href="https://ocus-eu.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline flex items-center gap-1 font-medium"
+              >
+                Open in new tab →
+              </a>
+            </div>
           </div>
         </section>
       )}
