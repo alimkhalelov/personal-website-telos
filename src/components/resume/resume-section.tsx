@@ -335,12 +335,12 @@ export function ResumeSection() {
       </div>
 
       {/* About Summary Callout Card (Radical restraint, frosted matte glass) */}
-      <div className="relative p-5 sm:p-6 rounded-2xl bg-white/[0.04] border border-white/15 backdrop-blur-xl flex flex-col gap-3">
-        <div className="flex items-center justify-between text-xs font-mono text-white/50 uppercase tracking-wider">
+      <div className="relative p-5 sm:p-6 rounded-2xl bg-black/25 border border-white/15 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex flex-col gap-3">
+        <div className="flex items-center justify-between text-xs font-mono text-white/60 uppercase tracking-wider">
           <span>Executive Discovery Profile</span>
           <span>5+ Years Startup Experience</span>
         </div>
-        <p className="text-sm sm:text-base text-white/90 leading-relaxed font-light">
+        <p className="text-sm sm:text-base text-white/95 leading-relaxed font-light">
           Product Builder (0→1) specializing in product discovery under extreme uncertainty. I focus on fast-cycle experimentation, rapid prototyping, and lean go-to-market, validating ideas before heavy execution. Known for aligning founders, engineers, and users without formal authority. Startups bring me in when there is no PMF, unclear users, or chaotic scope, and I turn that into a coherent, testable product system.
         </p>
       </div>
@@ -349,16 +349,16 @@ export function ResumeSection() {
       <div
         role="tablist"
         aria-label="Resume sections"
-        className="flex items-center p-1 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-xl overflow-x-auto scrollbar-none gap-1"
+        className="flex items-center p-1.5 rounded-2xl bg-black/30 border border-white/15 backdrop-blur-2xl shadow-[0_4px_24px_0_rgba(0,0,0,0.2)] overflow-x-auto scrollbar-none gap-1.5"
       >
         <button
           role="tab"
           aria-selected={activeTab === "experience"}
           onClick={() => setActiveTab("experience")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer select-none ${
             activeTab === "experience"
-              ? "bg-white/20 text-white shadow-xs border border-white/25"
-              : "text-white/60 hover:text-white hover:bg-white/5"
+              ? "bg-white/25 text-white shadow-xs border border-white/30 backdrop-blur-md"
+              : "text-white/70 hover:text-white hover:bg-white/10"
           }`}
         >
           <Briefcase className="w-3.5 h-3.5" />
@@ -369,10 +369,10 @@ export function ResumeSection() {
           role="tab"
           aria-selected={activeTab === "skills"}
           onClick={() => setActiveTab("skills")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer select-none ${
             activeTab === "skills"
-              ? "bg-white/20 text-white shadow-xs border border-white/25"
-              : "text-white/60 hover:text-white hover:bg-white/5"
+              ? "bg-white/25 text-white shadow-xs border border-white/30 backdrop-blur-md"
+              : "text-white/70 hover:text-white hover:bg-white/10"
           }`}
         >
           <Sparkles className="w-3.5 h-3.5" />
@@ -383,10 +383,10 @@ export function ResumeSection() {
           role="tab"
           aria-selected={activeTab === "education"}
           onClick={() => setActiveTab("education")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer select-none ${
             activeTab === "education"
-              ? "bg-white/20 text-white shadow-xs border border-white/25"
-              : "text-white/60 hover:text-white hover:bg-white/5"
+              ? "bg-white/25 text-white shadow-xs border border-white/30 backdrop-blur-md"
+              : "text-white/70 hover:text-white hover:bg-white/10"
           }`}
         >
           <GraduationCap className="w-3.5 h-3.5" />
@@ -397,10 +397,10 @@ export function ResumeSection() {
           role="tab"
           aria-selected={activeTab === "all"}
           onClick={() => setActiveTab("all")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all whitespace-nowrap cursor-pointer select-none ${
             activeTab === "all"
-              ? "bg-white/20 text-white shadow-xs border border-white/25"
-              : "text-white/60 hover:text-white hover:bg-white/5"
+              ? "bg-white/25 text-white shadow-xs border border-white/30 backdrop-blur-md"
+              : "text-white/70 hover:text-white hover:bg-white/10"
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
@@ -414,18 +414,18 @@ export function ResumeSection() {
         {(activeTab === "experience" || activeTab === "all") && (
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                <Briefcase className="w-5 h-5 text-white/70" />
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+                <Briefcase className="w-5 h-5 text-white/80" />
                 <span>Work Experience</span>
               </h3>
-              <span className="text-xs font-mono text-white/50">3 Key Roles</span>
+              <span className="text-xs font-mono text-white/60">3 Key Roles</span>
             </div>
 
             <div className="flex flex-col gap-6">
               {EXPERIENCES.map((exp) => (
                 <article
                   key={exp.role + exp.company}
-                  className="p-6 sm:p-7 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/15 hover:border-white/25 transition-all backdrop-blur-xl flex flex-col gap-4"
+                  className="p-6 sm:p-7 rounded-2xl bg-black/25 hover:bg-black/35 border border-white/15 hover:border-white/30 transition-all backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex flex-col gap-4"
                 >
                   {/* Role Header */}
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
@@ -436,20 +436,20 @@ export function ResumeSection() {
                       >
                         {exp.role}
                       </h4>
-                      <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-white/70">
-                        <span className="text-white/90 font-medium">{exp.company}</span>
+                      <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-white/80">
+                        <span className="text-white font-medium">{exp.company}</span>
                         <span>·</span>
                         <span>{exp.location}</span>
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-mono text-white/80 self-start sm:self-auto shrink-0">
+                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/12 border border-white/20 text-xs font-mono text-white/90 self-start sm:self-auto shrink-0">
                       {exp.period}
                     </div>
                   </div>
 
                   {/* Summary */}
-                  <p className="text-sm text-white/70 font-light leading-relaxed">
+                  <p className="text-sm text-white/85 font-light leading-relaxed">
                     {exp.summary}
                   </p>
 
@@ -457,12 +457,12 @@ export function ResumeSection() {
                   <ul className="flex flex-col gap-3 pt-2 border-t border-white/10">
                     {exp.bullets.map((bullet, idx) => (
                       <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm leading-relaxed">
-                        <span className="w-1.5 h-1.5 rounded-full bg-white/40 mt-2 shrink-0" />
-                        <div className="text-white/80">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white/60 mt-2 shrink-0" />
+                        <div className="text-white/90">
                           <strong className="text-white font-medium">
                             {bullet.highlight}:
                           </strong>{" "}
-                          <span>{bullet.detail}</span>
+                          <span className="text-white/80">{bullet.detail}</span>
                         </div>
                       </li>
                     ))}
@@ -477,11 +477,11 @@ export function ResumeSection() {
         {(activeTab === "skills" || activeTab === "all") && (
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-white/70" />
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+                <Sparkles className="w-5 h-5 text-white/80" />
                 <span>Competencies & Stack</span>
               </h3>
-              <span className="text-xs font-mono text-white/50">4 Core Domains</span>
+              <span className="text-xs font-mono text-white/60">4 Core Domains</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
@@ -490,10 +490,10 @@ export function ResumeSection() {
                 return (
                   <div
                     key={group.title}
-                    className="p-5 sm:p-6 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/15 hover:border-white/25 transition-all backdrop-blur-xl flex flex-col gap-4"
+                    className="p-5 sm:p-6 rounded-2xl bg-black/25 hover:bg-black/35 border border-white/15 hover:border-white/30 transition-all backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex flex-col gap-4"
                   >
                     <div className="flex items-center gap-2.5 pb-2 border-b border-white/10">
-                      <Icon className="w-4 h-4 text-white/70" />
+                      <Icon className="w-4 h-4 text-white/80" />
                       <h4 className="text-base font-semibold text-white tracking-tight">
                         {group.title}
                       </h4>
@@ -503,7 +503,7 @@ export function ResumeSection() {
                       {group.skills.map((skill) => (
                         <span
                           key={skill}
-                          className="px-3 py-1 rounded-lg bg-white/8 hover:bg-white/15 border border-white/15 hover:border-white/30 text-xs font-mono text-white/85 transition-colors"
+                          className="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/35 text-xs font-mono text-white/90 transition-colors"
                         >
                           {skill}
                         </span>
@@ -522,8 +522,8 @@ export function ResumeSection() {
             {/* Education subsection */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <GraduationCap className="w-5 h-5 text-white/70" />
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+                  <GraduationCap className="w-5 h-5 text-white/80" />
                   <span>Academic Degrees & International Exchange</span>
                 </h3>
               </div>
@@ -532,26 +532,26 @@ export function ResumeSection() {
                 {EDUCATION.map((edu, idx) => (
                   <div
                     key={idx}
-                    className="p-5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/15 hover:border-white/25 transition-all backdrop-blur-xl flex flex-col gap-2 justify-between"
+                    className="p-5 rounded-2xl bg-black/25 hover:bg-black/35 border border-white/15 hover:border-white/30 transition-all backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex flex-col gap-2 justify-between"
                   >
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-xs font-mono px-2 py-0.5 rounded bg-white/10 text-white/80 border border-white/15">
+                        <span className="text-xs font-mono px-2 py-0.5 rounded bg-white/12 text-white/90 border border-white/20">
                           {edu.degree}
                         </span>
-                        <span className="text-xs font-mono text-white/50">{edu.period}</span>
+                        <span className="text-xs font-mono text-white/60">{edu.period}</span>
                       </div>
                       <h4 className="text-base font-bold text-white tracking-tight mt-1">
                         {edu.field}
                       </h4>
-                      <p className="text-xs sm:text-sm text-white/70">
+                      <p className="text-xs sm:text-sm text-white/80">
                         {edu.institution}
                         {edu.location ? `, ${edu.location}` : ""}
                       </p>
                     </div>
 
                     {edu.note && (
-                      <div className="text-[11px] font-mono text-white/60 bg-white/5 px-2.5 py-1 rounded-md border border-white/10 self-start mt-1">
+                      <div className="text-[11px] font-mono text-white/70 bg-white/10 px-2.5 py-1 rounded-md border border-white/15 self-start mt-1">
                         {edu.note}
                       </div>
                     )}
@@ -563,8 +563,8 @@ export function ResumeSection() {
             {/* Achievements & Hackathon Wins */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <Award className="w-5 h-5 text-white/70" />
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2 drop-shadow-[0_1px_8px_rgba(0,0,0,0.3)]">
+                  <Award className="w-5 h-5 text-white/80" />
                   <span>Key Honors & Hackathon Wins</span>
                 </h3>
               </div>
@@ -573,17 +573,17 @@ export function ResumeSection() {
                 {ACHIEVEMENTS.map((item, idx) => (
                   <div
                     key={idx}
-                    className="p-5 rounded-2xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/15 hover:border-white/25 transition-all backdrop-blur-xl flex flex-col gap-2"
+                    className="p-5 rounded-2xl bg-black/25 hover:bg-black/35 border border-white/15 hover:border-white/30 transition-all backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex flex-col gap-2"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-mono uppercase tracking-wider text-white/50">
+                      <span className="text-[11px] font-mono uppercase tracking-wider text-white/60">
                         {item.category}
                       </span>
                     </div>
                     <h4 className="text-sm sm:text-base font-semibold text-white tracking-tight">
                       {item.title}
                     </h4>
-                    <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                    <p className="text-xs sm:text-sm text-white/80 font-light leading-relaxed">
                       {item.description}
                     </p>
                   </div>
