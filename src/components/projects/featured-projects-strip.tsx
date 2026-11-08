@@ -16,11 +16,11 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
   const projects = getAllProjects();
   const { isAdmin } = useAuth();
 
-  const tempoProject = projects.find((p) => p.slug === "tempo");
-  const privateProjects = projects.filter((p) => p.slug !== "tempo");
+  const featuredAppProjects = projects.filter((p) => p.isPublic && p.appStoreLayout);
+  const privateProjects = projects.filter((p) => !p.appStoreLayout || p.isPublic === false);
 
   return (
-    <section id="projects" className={`flex flex-col gap-6 w-full ${className}`}>
+    <section id="projects" className={`flex flex-col gap-8 w-full ${className}`}>
       {/* Section Header (Duplicate Projects title removed on desktop; View all link aligned to right) */}
       <div className="flex items-center justify-between pb-1">
         <h2 className="text-2xl font-bold tracking-tight text-white lg:hidden">Projects</h2>
@@ -35,23 +35,23 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
         </div>
       </div>
 
-      {/* Featured Public App: Tempo in App Store Layout */}
-      {tempoProject && (
-        <AppStoreProjectCard
-          title={tempoProject.title}
-          subtitle={tempoProject.subtitle || tempoProject.headline}
-          iconSrc={tempoProject.iconSrc || "/projects/tempo/icon.svg"}
-          demoUrl={tempoProject.demoUrl}
-          isPublic={true}
-          screenshots={[
-            "/projects/tempo/01-tempo-brand-hero.png",
-            "/projects/tempo/02-crush-fatigue.png",
-            "/projects/tempo/03-surge-past-equator.png",
-            "/projects/tempo/04-lock-in-your-zone.png",
-            "/projects/tempo/05-rig-any-treadmill.png",
-          ]}
-        />
-      )}
+      {/* Featured Public Apps: Tempo, Ocus & Ocus Portal in App Store Layout */}
+      <div className="flex flex-col gap-10 divide-y divide-white/10">
+        {featuredAppProjects.map((proj) => (
+          <div key={proj.slug} className="first:pt-0 pt-8">
+            <AppStoreProjectCard
+              slug={proj.slug}
+              title={proj.title}
+              subtitle={proj.subtitle || proj.headline}
+              iconSrc={proj.iconSrc || "/projects/tempo/icon.svg"}
+              demoUrl={proj.demoUrl}
+              isPublic={true}
+              aspectRatio={proj.aspectRatio || "9/16"}
+              screenshots={proj.screenshots || []}
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Admin Marquee: 11 Private Projects Visible Semi-Transparently */}
       {isAdmin && (

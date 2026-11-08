@@ -45,17 +45,19 @@ export function ProjectsFeed({ initialProjects }: ProjectsFeedProps) {
         {visibleProjects.map((project) => {
           const isPrivate = project.isPublic === false;
 
-          // If the project specifies App Store Layout (Tempo)
+          // If the project specifies App Store Layout (Tempo, Ocus, Ocus Portal)
           if (project.appStoreLayout) {
             return (
               <div key={project.slug} className="py-6 first:pt-0 last:pb-0">
                 <AppStoreProjectCard
+                  slug={project.slug}
                   title={project.title}
                   subtitle={project.subtitle || project.headline}
                   iconSrc={project.iconSrc || "/projects/tempo/icon.svg"}
                   demoUrl={project.demoUrl}
                   isPublic={project.isPublic !== false}
-                  screenshots={[
+                  aspectRatio={project.aspectRatio || "9/16"}
+                  screenshots={project.screenshots || [
                     "/projects/tempo/01-tempo-brand-hero.png",
                     "/projects/tempo/02-crush-fatigue.png",
                     "/projects/tempo/03-surge-past-equator.png",

@@ -13,6 +13,8 @@ export interface AppStoreCardProps {
   screenshots: (string | { src: string; caption?: string })[];
   isPublic?: boolean;
   className?: string;
+  aspectRatio?: "9/16" | "16/9";
+  slug?: string;
 }
 
 export function AppStoreProjectCard({
@@ -23,6 +25,8 @@ export function AppStoreProjectCard({
   screenshots,
   isPublic = true,
   className = "",
+  aspectRatio = "9/16",
+  slug,
 }: AppStoreCardProps) {
   const { isAdmin } = useAuth();
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -91,16 +95,26 @@ export function AppStoreProjectCard({
 
         {/* Title & Subtitle block (Clean Title Case, no all-caps, no delimiters) */}
         <div className="flex flex-col min-w-0 gap-1">
-          <a
-            href={demoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-white hover:text-sky-400 transition-colors !no-underline inline-flex items-center gap-1.5"
-            style={{ fontFamily: "'Google Sans', system-ui, sans-serif" }}
-          >
-            <span>{title}</span>
-            <ArrowUpRight className="w-5 h-5 text-white/50" />
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href={demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-white hover:text-sky-400 transition-colors !no-underline inline-flex items-center gap-1.5"
+              style={{ fontFamily: "'Google Sans', system-ui, sans-serif" }}
+            >
+              <span>{title}</span>
+              <ArrowUpRight className="w-5 h-5 text-white/50" />
+            </a>
+            {slug && (
+              <a
+                href={`/projects/${slug}`}
+                className="text-xs font-mono text-neutral-400 hover:text-white transition-colors px-2.5 py-1 rounded-full bg-white/5 border border-white/10 !no-underline"
+              >
+                Docs / Specs →
+              </a>
+            )}
+          </div>
 
           {/* Subtitle - Clean sentence/title case */}
           <p className="text-sm sm:text-base text-neutral-300 font-normal leading-snug">
@@ -109,10 +123,10 @@ export function AppStoreProjectCard({
         </div>
       </div>
 
-      {/* 2. Horizontal Screenshots in 9:16:
-          - Starts precisely at the left vertical line of the Tempo icon (-fadeWidth margin + fadeWidth padding)
+      {/* 2. Horizontal Screenshots in 9:16 or 16:9:
+          - Starts precisely at the left vertical line of the App icon (-fadeWidth margin + fadeWidth padding)
           - Extends across and out to the right edge of the screen (marginRight breakout)
-          - Wide 80px disappearance window strictly ON THE LEFT of the Tempo icon line (towards Projects)
+          - Wide 80px disappearance window strictly ON THE LEFT of the App icon line (towards Projects)
           - Zero paint/mask in the viewing area to the right of the line; zero paint/mask on the right side
       */}
       <div 
@@ -139,21 +153,32 @@ export function AppStoreProjectCard({
             paddingRight: "3rem",
           }}
         >
-          {normalizedScreenshots.map((s, idx) => (
-            <div
-              key={s.src}
-              className="relative flex-none w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px] overflow-hidden border border-white/15 bg-neutral-950 snap-start"
-            >
-              <Image
-                src={s.src}
-                alt={`${title} screenshot ${idx + 1}`}
-                fill
-                sizes="(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
-                className="object-cover"
-                priority={idx < 2}
-              />
-            </div>
-          ))}
+          {normalizedScreenshots.map((s, idx) => {
+            const is169 = aspectRatio === "16/9";
+            return (
+              <div
+                key={s.src}
+                className={`relative flex-none overflow-hidden border border-white/15 bg-neutral-950 snap-start shadow-md ${
+                  is169
+                    ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
+                    : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
+                }`}
+              >
+                <Image
+                  src={s.src}
+                  alt={`${title} screenshot ${idx + 1}`}
+                  fill
+                  sizes={
+                    is169
+                      ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"
+                      : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
+                  }
+                  className="object-cover"
+                  priority={idx < 2}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
