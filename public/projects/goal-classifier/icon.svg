@@ -1,60 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Goal Classifier Icon">
-  <defs>
-    <!-- Subtle linear background gradient -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#18181B"/>
-      <stop offset="100%" stop-color="#09090B"/>
-    </linearGradient>
-
-    <!-- Center core glow -->
-    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
-      <stop offset="40%" stop-color="#A1A1AA" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#18181B" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-
-  <!-- Squircle Base Canvas (Apple 22% squircle compatible) -->
-  <rect width="256" height="256" rx="56" fill="url(#bgGrad)"/>
-  
-  <!-- Subtle border inset ring -->
-  <rect x="1" y="1" width="254" height="254" rx="55" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1.5"/>
-
-  <!-- Core Geometric Target System (Precision Four-Dimension Alignment) -->
-  <g transform="translate(128, 128)">
-    <!-- Outer Hairline Coordinate Ring -->
-    <circle r="78" fill="none" stroke="#52525B" stroke-width="1.5" stroke-dasharray="2 6" opacity="0.6"/>
-
-    <!-- Middle Structural Cadence Ring -->
-    <circle r="56" fill="none" stroke="#A1A1AA" stroke-width="2.5" opacity="0.85"/>
-
-    <!-- Inner Focus Ring -->
-    <circle r="34" fill="none" stroke="#FFFFFF" stroke-width="3"/>
-
-    <!-- Center Core Dot with Subtle Depth -->
-    <circle r="14" fill="url(#coreGlow)"/>
-    <circle r="8" fill="#FFFFFF"/>
-
-    <!-- Precision 4-Quadrant Cardinal Crosshairs -->
-    <!-- Top (Goal: Intent) -->
-    <line x1="0" y1="-88" x2="0" y2="-66" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-    
-    <!-- Bottom (Plan: Execution Breakdown) -->
-    <line x1="0" y1="66" x2="0" y2="88" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-
-    <!-- Right (Deadline: Time Horizon) -->
-    <line x1="66" y1="0" x2="88" y2="0" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-
-    <!-- Left (Regularity: Daily Habits) -->
-    <line x1="-88" y1="0" x2="-66" y2="0" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
-
-    <!-- Editorial Diamond Spark on top-right quadrant (Subtle AI Catalyst) -->
-    <path d="M 44 -44 L 48 -52 L 56 -56 L 48 -60 L 44 -68 L 40 -60 L 32 -56 L 40 -52 Z" fill="#FFFFFF" opacity="0.95"/>
-    <circle cx="44" cy="-56" r="1.5" fill="#18181B"/>
-
-    <!-- 4 Diagnostic Quadrant Notches (45-degree angle ticks) -->
-    <circle cx="44" cy="44" r="2.5" fill="#71717A"/>
-    <circle cx="-44" cy="44" r="2.5" fill="#71717A"/>
-    <circle cx="-44" cy="-44" r="2.5" fill="#71717A"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" fill="none">
+  <rect width="128" height="128" rx="30" fill="#18181b"/>
+  <rect x="1" y="1" width="126" height="126" rx="29" stroke="#ffffff" stroke-opacity="0.08" stroke-width="2"/>
+  <rect x="30" y="38" width="22" height="22" rx="6" fill="#ffffff"/>
+  <path d="M 37 49 L 41 53 L 47 44" stroke="#18181b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="62" y="46" width="36" height="6" rx="3" fill="#ffffff"/>
+  <rect x="30" y="68" width="22" height="22" rx="6" stroke="#71717a" stroke-width="2.5" fill="none"/>
+  <rect x="62" y="76" width="24" height="6" rx="3" fill="#52525b"/>
 </svg>

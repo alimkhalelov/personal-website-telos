@@ -113,11 +113,11 @@ export const SYSTEM_ITEMS: WikiItem[] = [
   },
   {
     id: "goal-classifier",
-    title: "/goal-classifier — Minimalist Goal Clarification & Execution Diagnosis Workspace",
+    title: "/plain — Plain: The Simple Planner",
     summary: "A zero-build editorial workspace organizing goals across four core dimensions: Intent, Time Horizon, Execution Plan, and Habit Regularity, with real-time heuristic diagnosis and client-side Web Crypto AES-GCM encrypted BYOK AI.",
     category: "systems",
     categoryLabel: "Flagship App",
-    tags: ["Goal Classifier", "Heuristic Diagnosis", "Web Crypto AES-GCM", "Zero-Build SPA", "BYOK AI", "Editorial Minimalism"],
+    tags: ["Plain", "Simple Planner", "Goal Classifier", "Heuristic Diagnosis", "Web Crypto AES-GCM", "Zero-Build SPA", "BYOK AI"],
     date: "2026-11-10",
     href: "/projects/goal-classifier",
     featured: true,

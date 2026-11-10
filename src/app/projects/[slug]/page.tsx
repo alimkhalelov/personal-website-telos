@@ -345,7 +345,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <section id="demo" className="flex flex-col gap-5 pt-6 border-t border-border">
           <div className="flex flex-col gap-1">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
-              Live Goal Classifier Workspace
+              Live Plain Workspace (The Simple Planner)
             </h2>
             <p className="text-base text-muted-foreground font-light">
               Interactive zero-build workspace for four-dimension goal clarification, real-time heuristic diagnosis, and encrypted BYOK AI planning.
@@ -354,7 +354,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-border bg-neutral-950 shadow-xl">
             <iframe
               src="https://alimkhalelov.github.io/goal-classifier/"
-              title="Goal Classifier — Minimalist Goal & Strategy Diagnosis Workspace"
+              title="Plain — The Simple Planner"
               className="w-full h-full border-0"
               allow="clipboard-write"
             />

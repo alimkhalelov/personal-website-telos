@@ -18,7 +18,7 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 - `src/components/projects/app-store-project-card.tsx`: App Store project card with support for 9:16 (mobile) and 16:9 (widescreen) horizontal screenshot carousels.
 - `public/projects/ocus`: 16:9 panoramic App Store marketing screenshots & authentic brand icon for unified Ocus (Landing & Platform).
 - `public/projects/residual-intellect`: 16:9 widescreen screenshots & authentic brand icon for Residual Intellect (Telegram Channel Promo Landing).
-- `public/projects/goal-classifier`: 16:9 widescreen screenshots & authentic brand icon for Goal Classifier (Minimalist Goal Clarification & Execution Diagnosis Workspace).
+- `public/projects/goal-classifier`: 16:9 widescreen screenshots & authentic brand icon for Plain — The Simple Planner (Minimalist Goal Clarification & Execution Diagnosis Workspace).
 - `src/components/resume/resume-section.tsx`: Authentic Resume section with executive profile, work history, skill domains, education, honors, and direct PDF downloads.
 - `content/articles`: Local Markdown files (until Outstatic fully configured).
 - **AI-Wiki Master Hook:** When capturing user intent/requirements (`raw/`), compiling project documentation (`wiki/`), recording architectural invariants, or managing the wiki portal — read `.agents/skills/wiki/SKILL.md` and follow its master router.
