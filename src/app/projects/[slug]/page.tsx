@@ -297,6 +297,49 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </section>
       )}
 
+      {/* Interactive Residual Intellect Live Runner */}
+      {project.slug === "residual-intellect" && (
+        <section id="demo" className="flex flex-col gap-5 pt-6 border-t border-border">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              Live Residual Intellect Cyberpunk Portal
+            </h2>
+            <p className="text-base text-muted-foreground font-light">
+              Interactive portal exploring realized cyberpunk dystopias, the 52-year prophecy lag, and the retro Windows 95 quiz.
+            </p>
+          </div>
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-border bg-neutral-950 shadow-xl">
+            <iframe
+              src="https://alimkhalelov.github.io/residual-intellect/"
+              title="Residual Intellect — Cyberpunk Reality Radar"
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope"
+            />
+          </div>
+          <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
+            <span>Production deployment: alimkhalelov.github.io/residual-intellect</span>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://t.me/residual_intellect"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline flex items-center gap-1 font-medium"
+              >
+                Telegram Channel (@residual_intellect) →
+              </a>
+              <a
+                href="https://alimkhalelov.github.io/residual-intellect/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline flex items-center gap-1 font-medium"
+              >
+                Open in new tab →
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 4. More Projects & Tools Navigation */}
       <footer className="pt-8 border-t border-border flex flex-col gap-4">
         <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>

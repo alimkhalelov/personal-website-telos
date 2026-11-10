@@ -65,7 +65,7 @@ export function parseMarkdownDoc(
   const last_updated = data.date || data.last_updated || new Date().toISOString().split("T")[0];
   const headings = extractHeadings(content);
 
-  const visibility: "public" | "private" = data.visibility || (slug === "tempo" || slug === "ocus" ? "public" : "private");
+  const visibility: "public" | "private" = data.visibility || (slug === "tempo" || slug === "ocus" || slug === "residual-intellect" ? "public" : "private");
 
   return {
     slug,

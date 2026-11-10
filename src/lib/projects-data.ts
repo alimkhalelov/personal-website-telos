@@ -40,7 +40,7 @@ export interface ProjectDetail {
   tldr: string;
   headline: string;
   demoUrl: string;
-  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus";
+  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus" | "residual-intellect";
   demoLabel: string;
   badges: string[];
   overview: string;
@@ -375,6 +375,165 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
           { label: "Capital Adequacy Floor", passed: true, assertion: "expect(capitalReserves).toBeGreaterThanOrEqual(350000)" },
           { label: "Safeguarding Ratio Verification", passed: true, assertion: "expect(safeguardedFiatBalance / clientDeposits).toBe(1.0)" },
           { label: "Tier-1 Rail Handshake", passed: true, assertion: "expect(clearJunctionWebhook.status).toBe(200)" },
+        ],
+      },
+    ],
+  },
+  // 0c. Residual Intellect (Unified Public Flagship 16:9 App Store project)
+  {
+    slug: "residual-intellect",
+    command: "/residual-intellect",
+    title: "Residual Intellect",
+    subtitle: "Cyberpunk Reality Radar & Dystopia Index",
+    headline: "Autonomous sci-fi prophecy tracking, 16+ realized dystopias archive, and retro Windows 95 simulation engine",
+    category: "app",
+    tag: "Sci-Fi Archeology & Cyberpunk Radar",
+    accentColor: "#D4FF00",
+    accentGradient: "from-lime-400/20 via-emerald-600/10 to-transparent",
+    initiationDate: "2026-11-09",
+    dateDisplay: "Nov 2026",
+    timeAgo: "Today",
+    thumbnailSrc: "/projects/residual-intellect/01-hero-cyberpunk.png",
+    iconSrc: "/projects/residual-intellect/icon.svg",
+    tldr: "A neo-brutalist cyberpunk radar tracking sci-fi literature prophecies against real-world tech developments. Features an interactive archive of 16+ realized dystopias (Dick, Gibson, Huxley, Orwell, Pelevin) with a 52-year average prophecy lag, an interactive Windows 95 press-release quiz ('угадайка.exe'), and automated Telegram channel dispatch.",
+    demoUrl: "https://alimkhalelov.github.io/residual-intellect/",
+    demoType: "residual-intellect",
+    demoLabel: "Launch Cyberpunk Radar & Quiz",
+    badges: ["Cyberpunk Radar", "Sci-Fi Archeology", "52y Prophecy Lag", "16+ Realized Dystopias", "Retro Windows 95", "Telegram Pipeline", "Neo-Brutalist UI"],
+    overview: "Residual Intellect explores the terrifying threshold where classic science fiction stops being speculative fiction and becomes daily tech news. By cataloging dystopias written decades ago and matching them with modern algorithmic surveillance, synthetic biology, and AI neural networks, it measures the exact chronological lag between imagination and dystopian implementation.",
+    generativeTheme: "lime-cyber",
+    isPublic: true,
+    appStoreLayout: true,
+    aspectRatio: "16/9",
+    screenshots: [
+      "/projects/residual-intellect/01-hero-cyberpunk.png",
+      "/projects/residual-intellect/02-manifesto-pipeline.png",
+      "/projects/residual-intellect/03-archive-reality-timeline.png",
+      "/projects/residual-intellect/04-interactive-quiz.png",
+      "/projects/residual-intellect/05-guestbook-terminal.png",
+    ],
+    visualizer: {
+      heroTitle: "RESIDUAL_INTELLECT_CYBERPUNK_RADAR",
+      subNamespace: "cyberpunk.dystopia.radar.v1",
+      nodes: [
+        {
+          id: "node-1",
+          step: "01",
+          title: "Sci-Fi Prophecy Ingestion",
+          accent: "text-lime-400",
+          description: [
+            "Indexes classic works: Orwell, Huxley, Dick, Gibson, Stephenson, Pelevin",
+            "Extracts speculative inventions, societal models, and techno-dystopian mechanisms",
+            "Tags predictions with publication timestamps and philosophical vectors",
+          ],
+        },
+        {
+          id: "node-2",
+          step: "02",
+          title: "Real-World Tech Correlation",
+          accent: "text-emerald-400",
+          description: [
+            "Monitors patent filings, AI developments, and surveillance legislation",
+            "Calculates empirical prophecy lag (average 52 years from text to reality)",
+            "Scores dystopian realization fidelity and societal impact metrics",
+          ],
+        },
+        {
+          id: "node-3",
+          step: "03",
+          title: "Interactive Retro Cockpit",
+          accent: "text-yellow-400",
+          description: [
+            "Authentic Windows 95 desktop simulation with executable modal windows",
+            "Real-time press-release vs sci-fi prediction quiz engine ('угадайка.exe')",
+            "Web3 guestbook terminal recording community reactions and dystopian sightings",
+          ],
+        },
+        {
+          id: "node-4",
+          step: "04",
+          title: "Telegram Autonomous Broadcast",
+          accent: "text-cyan-400",
+          description: [
+            "Automated publishing pipeline into Telegram channel @residual_intellect",
+            "Synthesizes comparative essays contrasting literary quotes with current news",
+            "Delivers daily dystopian radar updates to active readers",
+          ],
+        },
+      ],
+    },
+    specSDD: {
+      inputs: [
+        "Classic dystopian literature corpus (Orwell, Huxley, Dick, Gibson, Stephenson, Pelevin)",
+        "Real-world tech developments, patent disclosures, and AI surveillance legislation",
+        "Interactive Windows 95 quiz selections and answers ('угадайка.exe')",
+        "Community guestbook dispatches and sci-fi prophecy sightings",
+      ],
+      outputs: [
+        "16+ realized dystopias interactive timeline with historical context and quotes",
+        "Calculated empirical prophecy lag metric (52-year average lag)",
+        "Executable retro Windows 95 desktop simulation dialogs",
+        "Automated Telegram channel syndication feed (@residual_intellect)",
+        "Responsive 16:9 widescreen showcase preview for personal portfolio",
+      ],
+      invariants: [
+        "Every dystopian case study strictly links original literature publication with real-world technical implementation",
+        "Empirical prophecy lag is calculated deterministically: CurrentYear - PublicationYear",
+        "High-contrast #D4FF00 acid neon palette and neo-brutalist typography maintained across all viewport widths",
+        "Retro Windows 95 interactive quiz state is client-evaluated with zero external latency",
+      ],
+      coreEngine: "Cyberpunk Prophecy Correlation Core & Retro Windows 95 State Machine",
+      dataStructures: [
+        "interface DystopiaCase { id: string; author: string; work: string; yearPublished: number; realTechMatch: string; lagYears: number; category: 'surveillance' | 'ai' | 'bio' | 'corpocracy'; }",
+        "interface QuizQuestion { id: string; quote: string; isRealPr: boolean; sourceOrigin: string; explanation: string; }",
+        "interface GuestbookEntry { id: string; handle: string; comment: string; timestamp: string; verifiedHuman: boolean; }",
+      ],
+      stateMachine: [
+        "ARCHIVE_LOADED -> FILTER_SELECTED -> CASE_EXPANDED -> QUIZ_STARTED -> ANSWER_EVALUATED -> TELEGRAM_DISPATCH_TRIGGERED",
+      ],
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Neo-Brutalist Portal & Archive Architecture",
+        tasks: [
+          { label: "Corpus Database Ingestion", done: true, description: "Structure 16+ dystopian books with year, author, quote, and real-world tech match." },
+          { label: "Prophecy Lag Computation", done: true, description: "Calculate timeline delta between publication date and real-world rollout (52y mean)." },
+          { label: "Acid Lime Palette System", done: true, description: "Implement high-contrast #D4FF00 neo-brutalist styling, scanlines, and typography." },
+          { label: "Filterable Dystopia Catalog", done: true, description: "Enable filtering by theme (Surveillance, AI, Bio-hacking, Corpocracy, Simulation)." },
+        ],
+      },
+      {
+        phase: "Phase 2: Retro Windows 95 Simulation Engine",
+        tasks: [
+          { label: "Windows 95 Window Manager", done: true, description: "Beveled window chrome, draggable titlebars, close buttons, and classic 3D borders." },
+          { label: "'угадайка.exe' Interactive Quiz", done: true, description: "Multi-round quiz challenging users to identify real PR vs sci-fi excerpt." },
+          { label: "Guestbook Terminal Feed", done: true, description: "Retro forum table with reader comments, dystopian reports, and AI critique." },
+        ],
+      },
+      {
+        phase: "Phase 3: Telegram Syndication & App Store Showcase",
+        tasks: [
+          { label: "Telegram Channel Bridge", done: true, description: "Syndicate daily case studies directly to @residual_intellect with deep links." },
+          { label: "16:9 App Store Panoramic Visuals", done: true, description: "Capture pixel-perfect 1440x810 Retina screenshots across all core surfaces." },
+          { label: "Responsive Live Runner", done: true, description: "Embed zero-latency interactive viewport inside personal website project specs." },
+        ],
+      },
+    ],
+    testChecklist: [
+      {
+        suite: "Archive & Lag Calculation Tests",
+        tests: [
+          { label: "Average Lag Invariant", passed: true, assertion: "expect(calculateMeanLag(archive)).toBeCloseTo(52, 1)" },
+          { label: "Prophecy Citation Integrity", passed: true, assertion: "expect(archive.every(item => item.book && item.realTech)).toBe(true)" },
+          { label: "Category Filter Coverage", passed: true, assertion: "expect(filterCategories.length).toBeGreaterThanOrEqual(5)" },
+        ],
+      },
+      {
+        suite: "Interactive Simulation & Responsive UX",
+        tests: [
+          { label: "Windows 95 Quiz State Machine", passed: true, assertion: "expect(quizEngine.submitAnswer('pr').isEvaluated).toBe(true)" },
+          { label: "Iframe Sandbox Security", passed: true, assertion: "expect(iframe.getAttribute('allow')).toContain('accelerometer')" },
+          { label: "Aspect Ratio Widescreen Compliance", passed: true, assertion: "expect(project.aspectRatio).toBe('16/9')" },
         ],
       },
     ],
