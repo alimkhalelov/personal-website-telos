@@ -566,10 +566,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     aspectRatio: "16/9",
     screenshots: [
       "/projects/goal-classifier/01-workspace-hero.png",
-      "/projects/goal-classifier/02-four-dimensions-breakdown.png",
-      "/projects/goal-classifier/03-heuristic-diagnosis-matrix.png",
-      "/projects/goal-classifier/04-encrypted-byok-ai-modal.png",
-      "/projects/goal-classifier/05-actionable-execution-cockpit.png",
+      "/projects/goal-classifier/02-encrypted-byok-ai-modal.png",
     ],
     visualizer: {
       heroTitle: "GOAL_CLASSIFIER_EXECUTION_ENGINE",
