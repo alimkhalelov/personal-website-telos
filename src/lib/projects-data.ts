@@ -40,7 +40,7 @@ export interface ProjectDetail {
   tldr: string;
   headline: string;
   demoUrl: string;
-  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus" | "residual-intellect";
+  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus" | "residual-intellect" | "goal-classifier";
   demoLabel: string;
   badges: string[];
   overview: string;
@@ -534,6 +534,170 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
           { label: "Windows 95 Quiz State Machine", passed: true, assertion: "expect(quizEngine.submitAnswer('pr').isEvaluated).toBe(true)" },
           { label: "Iframe Sandbox Security", passed: true, assertion: "expect(iframe.getAttribute('allow')).toContain('accelerometer')" },
           { label: "Aspect Ratio Widescreen Compliance", passed: true, assertion: "expect(project.aspectRatio).toBe('16/9')" },
+        ],
+      },
+    ],
+  },
+  // 0d. Goal Classifier (Unified Public Flagship 16:9 App Store project)
+  {
+    slug: "goal-classifier",
+    command: "/goal-classifier",
+    title: "Goal Classifier",
+    subtitle: "Minimalist Goal Clarification & Execution Diagnosis Workspace",
+    headline: "Four-dimension goal taxonomy, zero-latency heuristic diagnosis, and client-side encrypted BYOK AI strategic planning",
+    category: "app",
+    tag: "Goal Clarification & Heuristic Diagnosis",
+    accentColor: "#71717A",
+    accentGradient: "from-zinc-500/20 via-neutral-600/10 to-transparent",
+    initiationDate: "2026-11-10",
+    dateDisplay: "Nov 2026",
+    timeAgo: "Today",
+    thumbnailSrc: "/projects/goal-classifier/01-workspace-hero.png",
+    iconSrc: "/projects/goal-classifier/icon.svg",
+    tldr: "A zero-build, editorial minimalist workspace that organizes personal objectives across four core dimensions: Goal Statement, Time Horizon, Execution Plan, and Habit Regularity. Features real-time heuristic diagnosis (Fantasy -> Task -> Strategy -> Success) and encrypted client-side BYOK AI strategic decomposition via the Web Crypto API (AES-GCM).",
+    demoUrl: "https://alimkhalelov.github.io/goal-classifier/",
+    demoType: "goal-classifier",
+    demoLabel: "Launch Goal Classifier Workspace",
+    badges: ["Four-Dimension Architecture", "Heuristic Diagnosis", "Web Crypto AES-GCM", "Zero-Build SPA", "LocalStorage Persistence", "Multi-Provider AI", "Editorial Minimalism"],
+    overview: "Most goal-setting applications fail because they confuse vague aspirational wishes with concrete, falsifiable execution roadmaps. Goal Classifier introduces a disciplined four-dimension taxonomy that immediately exposes execution gaps. By analyzing deadlines, broken-down steps, and daily cadence, it computes an instantaneous heuristic diagnosis—from wishful fantasy to verified success—empowered by optional client-side encrypted AI strategic planning.",
+    generativeTheme: "amber-brutalism",
+    isPublic: true,
+    appStoreLayout: true,
+    aspectRatio: "16/9",
+    screenshots: [
+      "/projects/goal-classifier/01-workspace-hero.png",
+      "/projects/goal-classifier/02-four-dimensions-breakdown.png",
+      "/projects/goal-classifier/03-heuristic-diagnosis-matrix.png",
+      "/projects/goal-classifier/04-encrypted-byok-ai-modal.png",
+      "/projects/goal-classifier/05-actionable-execution-cockpit.png",
+    ],
+    visualizer: {
+      heroTitle: "GOAL_CLASSIFIER_EXECUTION_ENGINE",
+      subNamespace: "goal.classifier.diagnosis.v1",
+      nodes: [
+        {
+          id: "node-1",
+          step: "01",
+          title: "Goal Intent & Time Bounding",
+          accent: "text-zinc-400",
+          description: [
+            "Captures crisp statement of intent with auto-expanding minimal inputs",
+            "Enforces strict deadline time horizon with remaining-days indicator",
+            "Distinguishes boundless dreams from bounded operational tasks",
+          ],
+        },
+        {
+          id: "node-2",
+          step: "02",
+          title: "Execution Plan Decomposition",
+          accent: "text-neutral-300",
+          description: [
+            "Breaks high-level objectives into checkable milestone sub-actions",
+            "Auto-expands new todo slots upon enter/return with smooth transition",
+            "Visual strikethrough feedback on verified completed steps",
+          ],
+        },
+        {
+          id: "node-3",
+          step: "03",
+          title: "Cadence & Habit Regularity",
+          accent: "text-zinc-200",
+          description: [
+            "Tracks 7-day recurring habit cadence with rounded square toggles",
+            "Quantifies daily and weekly consistency necessary to sustain momentum",
+            "Prevents back-loaded deadline cramming through distributed habits",
+          ],
+        },
+        {
+          id: "node-4",
+          step: "04",
+          title: "Heuristic Diagnosis & Encrypted AI",
+          accent: "text-white",
+          description: [
+            "Deterministic status categorization: Fantasy -> Task -> Strategy -> Success",
+            "Zero-latency real-time DOM recomputation on every user keystroke",
+            "Client-side encrypted BYOK AI strategic planning with Web Crypto AES-GCM",
+          ],
+        },
+      ],
+    },
+    specSDD: {
+      inputs: [
+        "Goal statement text (intent definition)",
+        "Target deadline date picker value",
+        "Sub-action plan tasks and completion states",
+        "Weekly habit regularity checkboxes (7 days per cycle)",
+        "Optional Bring-Your-Own-Key API tokens (Gemini, OpenAI, Anthropic, DeepSeek)",
+      ],
+      outputs: [
+        "Real-time heuristic diagnosis label (Fantasy, Task, Strategy, Success)",
+        "Calculated remaining days countdown indicator",
+        "Encrypted local vault payload stored in browser localStorage",
+        "AI-suggested milestone decomposition and optimal deadlines",
+        "Responsive 16:9 editorial workspace viewport",
+      ],
+      invariants: [
+        "A goal without a deadline is mathematically diagnosed as 'fantasy'",
+        "A goal with a deadline but no sub-actions is diagnosed as 'task'",
+        "A goal with a deadline and plan but zero habits is diagnosed as 'strategy'",
+        "Only goals with deadline, plan, and active regularity achieve 'success'",
+        "BYOK credentials are encrypted locally with Web Crypto AES-GCM and never sent to middleman servers",
+      ],
+      coreEngine: "Four-Dimension Heuristic Evaluation & Web Crypto AES-GCM Vault",
+      dataStructures: [
+        "interface GoalRow { id: string; goal: string; deadline: string; todos: { text: string; done: boolean }[]; habits: boolean[]; }",
+        "interface DiagnosisResult { label: '—' | 'fantasy' | 'task' | 'strategy' | 'success'; tone: string; }",
+        "interface EncryptedAiPayload { iv: number[]; data: number[]; }",
+      ],
+      stateMachine: [
+        "IDLE -> GOAL_ENTERED (fantasy) -> DEADLINE_SET (task) -> PLAN_COMPOSED (strategy) -> HABITS_LOGGED (success)",
+      ],
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Zero-Build Editorial Workspace",
+        tasks: [
+          { label: "Wireframe Input Components", done: true, description: "Minimal borderless inputs with subtle background transitions." },
+          { label: "Rounded Square Checkboxes", done: true, description: "Custom SVG checkmark rounded 5px checkboxes with instant toggle." },
+          { label: "Instrument Serif Typography", done: true, description: "Curated typography pairings (Instrument Serif + Plus Jakarta Sans + Space Mono)." },
+          { label: "LocalStorage Persistence Layer", done: true, description: "Synchronous local state serialization under wireframe_goal_classifier_en_v2." },
+        ],
+      },
+      {
+        phase: "Phase 2: Heuristic Diagnosis & Web Crypto Security",
+        tasks: [
+          { label: "Heuristic Classification Engine", done: true, description: "Real-time rule engine evaluating Goal vs Deadline vs Plan vs Regularity." },
+          { label: "Countdown Math Calculator", done: true, description: "Empirical remaining-days calculation with humanized labels." },
+          { label: "Web Crypto AES-GCM Vault", done: true, description: "Client-side key derivation and ciphertext encryption for BYOK tokens." },
+          { label: "Multi-Provider AI Requester", done: true, description: "Unified gateway supporting Gemini, OpenAI, Claude, DeepSeek, Groq, and Qwen." },
+        ],
+      },
+      {
+        phase: "Phase 3: Portfolio App Store Presentation",
+        tasks: [
+          { label: "16:9 Retina Screenshot Gallery", done: true, description: "Five high-resolution 1440x810 captures covering hero, modal, and execution states." },
+          { label: "Minimalist Bullseye Vector Icon", done: true, description: "Geometric four-quadrant cardinal target squircle in dark zinc theme." },
+          { label: "Interactive Iframe Runner", done: true, description: "Embedded zero-latency production runner with links to live app and GitHub." },
+        ],
+      },
+    ],
+    testChecklist: [
+      {
+        suite: "Heuristic Diagnosis Invariant Suite",
+        tests: [
+          { label: "Empty Goal Returns Dash", passed: true, assertion: "expect(classifyRow({ goal: '' }).label).toBe('—')" },
+          { label: "No Deadline Classifies Fantasy", passed: true, assertion: "expect(classifyRow({ goal: 'X', deadline: '' }).label).toBe('fantasy')" },
+          { label: "No Plan Classifies Task", passed: true, assertion: "expect(classifyRow({ goal: 'X', deadline: '2026-12-31', todos: [] }).label).toBe('task')" },
+          { label: "No Regularity Classifies Strategy", passed: true, assertion: "expect(classifyRow({ goal: 'X', deadline: '2026-12-31', todos: [{ text: 'Y', done: false }], habits: [] }).label).toBe('strategy')" },
+          { label: "Full Dimensions Classify Success", passed: true, assertion: "expect(classifyRow(completeRow).label).toBe('success')" },
+        ],
+      },
+      {
+        suite: "Web Crypto AES-GCM Integrity",
+        tests: [
+          { label: "Key Derivation Success", passed: true, assertion: "expect(await getCryptoKey()).toBeInstanceOf(CryptoKey)" },
+          { label: "Ciphertext Decrypt Roundtrip", passed: true, assertion: "expect(await decrypt(await encrypt(payload))).toEqual(payload)" },
+          { label: "Zero Leaked Tokens", passed: true, assertion: "assert(window.networkRequests.every(r => !r.url.includes('api.middleman')))" },
         ],
       },
     ],

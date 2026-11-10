@@ -340,6 +340,49 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </section>
       )}
 
+      {/* Interactive Goal Classifier Live Runner */}
+      {project.slug === "goal-classifier" && (
+        <section id="demo" className="flex flex-col gap-5 pt-6 border-t border-border">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+              Live Goal Classifier Workspace
+            </h2>
+            <p className="text-base text-muted-foreground font-light">
+              Interactive zero-build workspace for four-dimension goal clarification, real-time heuristic diagnosis, and encrypted BYOK AI planning.
+            </p>
+          </div>
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden border border-border bg-neutral-950 shadow-xl">
+            <iframe
+              src="https://alimkhalelov.github.io/goal-classifier/"
+              title="Goal Classifier — Minimalist Goal & Strategy Diagnosis Workspace"
+              className="w-full h-full border-0"
+              allow="clipboard-write"
+            />
+          </div>
+          <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
+            <span>Production deployment: alimkhalelov.github.io/goal-classifier</span>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://github.com/alimkhalelov/goal-classifier"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline flex items-center gap-1 font-medium"
+              >
+                GitHub Repository →
+              </a>
+              <a
+                href="https://alimkhalelov.github.io/goal-classifier/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline flex items-center gap-1 font-medium"
+              >
+                Open in new tab →
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 4. More Projects & Tools Navigation */}
       <footer className="pt-8 border-t border-border flex flex-col gap-4">
         <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
