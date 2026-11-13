@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Play, Volume2, VolumeX } from "lucide-react";
 import { useAuth } from "@/components/auth-context";
 
 export interface AppStoreCardProps {
@@ -11,11 +11,145 @@ export interface AppStoreCardProps {
   iconSrc: string;
   demoUrl: string;
   screenshots: (string | { src: string; caption?: string })[];
+  videoSrc?: string;
+  videoPoster?: string;
   isPublic?: boolean;
   className?: string;
   aspectRatio?: "9/16" | "16/9";
   slug?: string;
   priority?: boolean;
+}
+
+interface AppStoreVideoCardProps {
+  src: string;
+  poster?: string;
+  is169: boolean;
+  title: string;
+}
+
+function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps) {
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [isMuted, setIsMuted] = React.useState(true);
+  const [progress, setProgress] = React.useState(0);
+
+  // Auto-play when visible, pause when scrolled out of view
+  React.useEffect(() => {
+    const video = videoRef.current;
+    const container = containerRef.current;
+    if (!video || !container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().then(() => {
+            setIsPlaying(true);
+          }).catch(() => {
+            // Browser autoplay policy requires muted
+            video.muted = true;
+            setIsMuted(true);
+            video.play().then(() => setIsPlaying(true)).catch(() => {});
+          });
+        } else {
+          video.pause();
+          setIsPlaying(false);
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  const togglePlay = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+    const nextMuted = !video.muted;
+    video.muted = nextMuted;
+    setIsMuted(nextMuted);
+  };
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video || !video.duration) return;
+    setProgress((video.currentTime / video.duration) * 100);
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      onClick={togglePlay}
+      className={`relative flex-none overflow-hidden bg-neutral-950 snap-start shadow-2xl group cursor-pointer select-none ${
+        is169
+          ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
+          : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
+      }`}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        autoPlay
+        playsInline
+        loop
+        muted={isMuted}
+        preload="metadata"
+        onTimeUpdate={handleTimeUpdate}
+        className="w-full h-full object-cover"
+        aria-label={`${title} launch video preview`}
+      />
+
+      {/* Center Play Icon when paused */}
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[1px] transition-all">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-lg text-white">
+            <Play className="w-6 h-6 fill-white translate-x-0.5" />
+          </div>
+        </div>
+      )}
+
+      {/* Bottom Controls Overlay: Preview Badge & Sound Toggle */}
+      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 flex items-center justify-between opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity pointer-events-none">
+        <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-white/90 bg-black/60 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/15 pointer-events-auto shadow-sm">
+          Preview
+        </span>
+        <button
+          type="button"
+          onClick={toggleMute}
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+          className="p-1.5 sm:p-2 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white/90 hover:text-white transition-all pointer-events-auto shadow-sm"
+        >
+          {isMuted ? (
+            <VolumeX className="w-4 h-4" />
+          ) : (
+            <Volume2 className="w-4 h-4" />
+          )}
+        </button>
+      </div>
+
+      {/* Minimalistic Progress Line at bottom */}
+      <div className="absolute bottom-0 inset-x-0 h-[2px] bg-white/10">
+        <div
+          className="h-full bg-emerald-400 transition-all duration-150"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
+  );
 }
 
 export function AppStoreProjectCard({
@@ -24,6 +158,8 @@ export function AppStoreProjectCard({
   iconSrc,
   demoUrl,
   screenshots,
+  videoSrc,
+  videoPoster,
   isPublic = true,
   className = "",
   aspectRatio = "9/16",
@@ -145,6 +281,16 @@ export function AppStoreProjectCard({
             paddingRight: "3rem",
           }}
         >
+          {/* Launch Video Preview placed BEFORE screenshots */}
+          {videoSrc && (
+            <AppStoreVideoCard
+              src={videoSrc}
+              poster={videoPoster}
+              is169={aspectRatio === "16/9"}
+              title={title}
+            />
+          )}
+
           {normalizedScreenshots.map((s, idx) => {
             const is169 = aspectRatio === "16/9";
             return (

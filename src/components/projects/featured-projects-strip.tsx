@@ -49,6 +49,8 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
               demoUrl={proj.demoUrl}
               isPublic={true}
               aspectRatio={proj.aspectRatio || "9/16"}
+              videoSrc={proj.videoSrc}
+              videoPoster={proj.videoPoster}
               screenshots={proj.screenshots || []}
               priority={idx === 0}
             />

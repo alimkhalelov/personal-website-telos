@@ -50,6 +50,8 @@ export interface ProjectDetail {
   isPublic?: boolean;
   appStoreLayout?: boolean;
   aspectRatio?: "9/16" | "16/9";
+  videoSrc?: string;
+  videoPoster?: string;
   screenshots?: string[];
   visualizer: {
     heroTitle: string;
@@ -244,6 +246,8 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     isPublic: true,
     appStoreLayout: true,
     aspectRatio: "16/9",
+    videoSrc: "/projects/ocus/ocus-launch-video.mp4",
+    videoPoster: "/projects/ocus/01-landing-hero.png",
     screenshots: [
       "/projects/ocus/01-landing-hero.png",
       "/projects/ocus/02-landing-dag-interactive.png",

@@ -57,6 +57,8 @@ export function ProjectsFeed({ initialProjects }: ProjectsFeedProps) {
                   demoUrl={project.demoUrl}
                   isPublic={project.isPublic !== false}
                   aspectRatio={project.aspectRatio || "9/16"}
+                  videoSrc={project.videoSrc}
+                  videoPoster={project.videoPoster}
                   screenshots={project.screenshots || [
                     "/projects/tempo/01-tempo-brand-hero.png",
                     "/projects/tempo/02-crush-fatigue.png",

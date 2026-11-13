@@ -256,8 +256,32 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       {/* Interactive Ocus Live Runner (Landing & Platform Cockpit) */}
       {project.slug === "ocus" && (
-        <section id="demo" className="flex flex-col gap-5 pt-6 border-t border-border">
-          <div className="flex flex-col gap-1">
+        <section id="demo" className="flex flex-col gap-6 pt-6 border-t border-border">
+          {/* Launch Video Preview */}
+          {project.videoSrc && (
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
+                  Ocus Launch Video &amp; Product Overview
+                </h2>
+                <p className="text-base text-muted-foreground font-light">
+                  Official launch walkthrough showcasing the operations DAG, regulatory compliance pipeline, and launch cockpit.
+                </p>
+              </div>
+              <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-border bg-neutral-950 shadow-xl">
+                <video
+                  src={project.videoSrc}
+                  poster={project.videoPoster}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-1 pt-2 border-t border-border/50">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground" style={{ fontFamily: "'Google Sans', sans-serif" }}>
               Live Ocus Compliance OS &amp; Launch Cockpit
             </h2>
