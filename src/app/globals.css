@@ -10,7 +10,7 @@
   --color-card: var(--card);
   --font-sans: "Google Sans", "Product Sans", var(--font-outfit), sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-asap-condensed), sans-serif;
+  --font-display: var(--font-sans);
 }
 
 :root {
@@ -123,9 +123,9 @@ body::-webkit-scrollbar,
   background: transparent !important;
 }
 
-/* 0ms Instant Circadian Canvas & Typography when Dynamic Daytime is active */
+/* 0ms Instant Base Canvas & Typography when Dynamic Daytime is active */
 html.has-dynamic-daytime {
-  background: var(--circadian-grad, #0277BD);
+  background-color: #050714;
 }
 
 html.has-dynamic-daytime body {

@@ -39,7 +39,7 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
 
       {/* Featured Public Apps: Tempo & Ocus in App Store Layout (Clean, No Dividers) */}
       <div className="flex flex-col gap-14 sm:gap-16">
-        {featuredAppProjects.map((proj) => (
+        {featuredAppProjects.map((proj, idx) => (
           <div key={proj.slug}>
             <AppStoreProjectCard
               slug={proj.slug}
@@ -50,6 +50,7 @@ export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripP
               isPublic={true}
               aspectRatio={proj.aspectRatio || "9/16"}
               screenshots={proj.screenshots || []}
+              priority={idx === 0}
             />
           </div>
         ))}

@@ -213,7 +213,6 @@ export function OneUiWallpaper() {
 
   // Synchronize directly with the visitor's local system time immediately on mount
   useEffect(() => {
-    setMounted(true);
     const getLocalHour = () => {
       const now = new Date();
       return now.getHours() + now.getMinutes() / 60;
@@ -221,11 +220,19 @@ export function OneUiWallpaper() {
 
     setCurrentHour(getLocalHour());
 
+    // Allow initial paint with the base canvas, then smoothly transition into local circadian sky
+    const rafId = requestAnimationFrame(() => {
+      setMounted(true);
+    });
+
     const interval = setInterval(() => {
       setCurrentHour(getLocalHour());
     }, 15000);
 
-    return () => clearInterval(interval);
+    return () => {
+      cancelAnimationFrame(rafId);
+      clearInterval(interval);
+    };
   }, [enabled]);
 
   const circadianData = useMemo(() => {
@@ -257,22 +264,30 @@ export function OneUiWallpaper() {
       className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none"
       title={`Local Time: ${timeFormatted} (${phase}) • One UI Dynamic Circadian Wallpaper`}
     >
-      {/* 1. Base 0ms Circadian Gradient: uses --circadian-grad before hydration, then smoothly transitions */}
+      {/* 1. Fast 0ms Base Canvas: Deep atmospheric midnight obsidian rendered immediately */}
       <div
-        className="w-full h-full absolute inset-0 transition-all duration-1000 ease-out"
+        className="base-canvas w-full h-full absolute inset-0"
         style={{
-          background: mounted
-            ? gradientCss
-            : "var(--circadian-grad, linear-gradient(175deg, #0277BD 0%, #38BDF8 25%, #7DD3FC 50%, #A5F3FC 75%, #E0F2FE 100%))",
+          background:
+            "linear-gradient(175deg, #050714 0%, #0C102A 26%, #15173B 52%, #221845 76%, #180D2D 100%)",
         }}
       />
 
-      {/* 2. Ambient Sun/Moon Horizon Radial Glow */}
+      {/* 2. Circadian Daytime Layer: smoothly fades in over 1.5s to match visitor's local timezone */}
       <div
-        className="w-full h-full absolute inset-0 transition-all duration-1000 ease-out pointer-events-none"
+        className="circadian-layer w-full h-full absolute inset-0 transition-opacity duration-1500 ease-out"
+        style={{
+          background: gradientCss,
+          opacity: mounted ? 1 : 0,
+        }}
+      />
+
+      {/* 3. Ambient Sun/Moon Horizon Radial Glow: smoothly adapts with visitor's local sun position */}
+      <div
+        className="w-full h-full absolute inset-0 transition-opacity duration-1500 ease-out pointer-events-none"
         style={{
           background: radialCss,
-          opacity: mounted ? 1 : 0.7,
+          opacity: mounted ? 1 : 0,
         }}
       />
 

@@ -15,6 +15,7 @@ export interface AppStoreCardProps {
   className?: string;
   aspectRatio?: "9/16" | "16/9";
   slug?: string;
+  priority?: boolean;
 }
 
 export function AppStoreProjectCard({
@@ -27,6 +28,7 @@ export function AppStoreProjectCard({
   className = "",
   aspectRatio = "9/16",
   slug,
+  priority = false,
 }: AppStoreCardProps) {
   const { isAdmin } = useAuth();
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -89,7 +91,7 @@ export function AppStoreProjectCard({
             alt={`${title} App Icon`}
             fill
             className="object-cover"
-            priority
+            priority={priority}
           />
         </div>
 
@@ -164,7 +166,8 @@ export function AppStoreProjectCard({
                       : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
                   }
                   className="object-cover"
-                  priority={idx < 2}
+                  priority={priority && idx === 0}
+                  loading={priority && idx === 0 ? "eager" : "lazy"}
                 />
               </div>
             );
