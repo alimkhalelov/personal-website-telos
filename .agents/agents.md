@@ -48,3 +48,4 @@ Minimalistic personal portfolio website with articles for a Demiurge/Vibecoder (
 
 ## Known Issues & Fixes
 - **Vercel AI Streaming**: When streaming raw text back to the client, `result.textStream` (an `AsyncIterable`) MUST be explicitly wrapped in a standard `ReadableStream` on the server before passing to `new Response()`. Passing `AsyncIterable` directly causes Vercel serverless functions to either throw a 500 error or buffer the response and timeout after 10-15s.
+- **Fast-Path Latency Budget**: For asset/media copying and UI wiring tasks, do NOT run open-ended codebase searches or read third-party builder source code. Wire targets directly in single turn. Use `Critic: fast-path` or `Model: flash_lite` to eliminate 10+ minute review stalls.
