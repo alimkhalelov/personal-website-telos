@@ -281,7 +281,34 @@ export function AppStoreProjectCard({
             paddingRight: "3rem",
           }}
         >
-          {/* Launch Video Preview placed BEFORE screenshots */}
+          {/* If first screenshot is an animated GIF (e.g. ocus.cc.gif), place it FIRST before the video */}
+          {normalizedScreenshots.length > 0 && normalizedScreenshots[0].src.endsWith(".gif") && (
+            <div
+              key={normalizedScreenshots[0].src}
+              className={`relative flex-none overflow-hidden bg-neutral-950 snap-start shadow-2xl ${
+                aspectRatio === "16/9"
+                  ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
+                  : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
+              }`}
+            >
+              <Image
+                src={normalizedScreenshots[0].src}
+                alt={`${title} live interactive preview`}
+                fill
+                unoptimized={true}
+                sizes={
+                  aspectRatio === "16/9"
+                    ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"
+                    : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
+                }
+                className="object-cover"
+                priority={priority}
+                loading={priority ? "eager" : "lazy"}
+              />
+            </div>
+          )}
+
+          {/* Launch Video Preview */}
           {videoSrc && (
             <AppStoreVideoCard
               src={videoSrc}
@@ -291,8 +318,13 @@ export function AppStoreProjectCard({
             />
           )}
 
-          {normalizedScreenshots.map((s, idx) => {
+          {/* Remaining screenshots (skip first if it was already rendered as lead GIF) */}
+          {(normalizedScreenshots.length > 0 && normalizedScreenshots[0].src.endsWith(".gif")
+            ? normalizedScreenshots.slice(1)
+            : normalizedScreenshots
+          ).map((s, idx) => {
             const is169 = aspectRatio === "16/9";
+            const isGif = s.src.endsWith(".gif");
             return (
               <div
                 key={s.src}
@@ -306,6 +338,7 @@ export function AppStoreProjectCard({
                   src={s.src}
                   alt={`${title} screenshot ${idx + 1}`}
                   fill
+                  unoptimized={isGif}
                   sizes={
                     is169
                       ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"

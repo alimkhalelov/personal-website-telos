@@ -234,7 +234,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     initiationDate: "2026-11-07",
     dateDisplay: "Nov 2026",
     timeAgo: "1 day ago",
-    thumbnailSrc: "/projects/ocus/01-landing-hero.png",
+    thumbnailSrc: "/projects/ocus/ocus.cc.gif",
     iconSrc: "/projects/ocus/icon.svg",
     tldr: "An institutional operating system that translates complex EU regulatory directives (MiCA, DORA, DAC8) into an executable 31-node operations DAG and an interactive launch cockpit with real-time critical path calculation, 15-week Gantt milestones, and Tier-1 banking integrations.",
     demoUrl: "https://ocus-eu.vercel.app",
@@ -249,6 +249,7 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     videoSrc: "/projects/ocus/ocus-launch-video.mp4",
     videoPoster: "/projects/ocus/01-landing-hero.png",
     screenshots: [
+      "/projects/ocus/ocus.cc.gif",
       "/projects/ocus/01-landing-hero.png",
       "/projects/ocus/02-landing-dag-interactive.png",
       "/projects/ocus/03-platform-launch-map.png",
