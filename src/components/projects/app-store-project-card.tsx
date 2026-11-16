@@ -32,7 +32,6 @@ function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isMuted, setIsMuted] = React.useState(true);
-  const [progress, setProgress] = React.useState(0);
 
   // Auto-play when visible, pause when scrolled out of view
   React.useEffect(() => {
@@ -83,17 +82,11 @@ function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps
     setIsMuted(nextMuted);
   };
 
-  const handleTimeUpdate = () => {
-    const video = videoRef.current;
-    if (!video || !video.duration) return;
-    setProgress((video.currentTime / video.duration) * 100);
-  };
-
   return (
     <div
       ref={containerRef}
       onClick={togglePlay}
-      className={`relative flex-none overflow-hidden bg-neutral-950 snap-start shadow-2xl group cursor-pointer select-none ${
+      className={`relative flex-none overflow-hidden bg-neutral-900/90 snap-start shadow-2xl group cursor-pointer select-none ${
         is169
           ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
           : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
@@ -108,7 +101,6 @@ function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps
         loop
         muted={isMuted}
         preload="metadata"
-        onTimeUpdate={handleTimeUpdate}
         className="w-full h-full object-cover"
         aria-label={`${title} launch video preview`}
       />
@@ -140,14 +132,54 @@ function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps
           )}
         </button>
       </div>
+    </div>
+  );
+}
 
-      {/* Minimalistic Progress Line at bottom */}
-      <div className="absolute bottom-0 inset-x-0 h-[2px] bg-white/10">
-        <div
-          className="h-full bg-emerald-400 transition-all duration-150"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+function AppStoreScreenshotCard({
+  src,
+  alt,
+  is169,
+  isEager = false,
+}: {
+  src: string;
+  alt: string;
+  is169: boolean;
+  isEager?: boolean;
+}) {
+  const [isLoaded, setIsLoaded] = React.useState(false);
+
+  return (
+    <div
+      className={`relative flex-none overflow-hidden bg-neutral-900/80 snap-start shadow-2xl transition-all ${
+        is169
+          ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
+          : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
+      }`}
+    >
+      {/* Sleek skeleton placeholder while image loads */}
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-neutral-900/90 animate-pulse flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full border border-white/10 border-t-emerald-400/50 animate-spin" />
+        </div>
+      )}
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        unoptimized={true}
+        loading={isEager ? "eager" : "lazy"}
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        sizes={
+          is169
+            ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"
+            : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
+        }
+        className={`object-cover transition-opacity duration-300 ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
     </div>
   );
 }
@@ -283,29 +315,13 @@ export function AppStoreProjectCard({
         >
           {/* If first screenshot is an animated GIF (e.g. ocus.cc.gif), place it FIRST before the video */}
           {normalizedScreenshots.length > 0 && normalizedScreenshots[0].src.endsWith(".gif") && (
-            <div
+            <AppStoreScreenshotCard
               key={normalizedScreenshots[0].src}
-              className={`relative flex-none overflow-hidden bg-neutral-950 snap-start shadow-2xl ${
-                aspectRatio === "16/9"
-                  ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
-                  : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
-              }`}
-            >
-              <Image
-                src={normalizedScreenshots[0].src}
-                alt={`${title} live interactive preview`}
-                fill
-                unoptimized={true}
-                sizes={
-                  aspectRatio === "16/9"
-                    ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"
-                    : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
-                }
-                className="object-cover"
-                priority={priority}
-                loading={priority ? "eager" : "lazy"}
-              />
-            </div>
+              src={normalizedScreenshots[0].src}
+              alt={`${title} live interactive preview`}
+              is169={aspectRatio === "16/9"}
+              isEager={true}
+            />
           )}
 
           {/* Launch Video Preview */}
@@ -322,35 +338,15 @@ export function AppStoreProjectCard({
           {(normalizedScreenshots.length > 0 && normalizedScreenshots[0].src.endsWith(".gif")
             ? normalizedScreenshots.slice(1)
             : normalizedScreenshots
-          ).map((s, idx) => {
-            const is169 = aspectRatio === "16/9";
-            const isGif = s.src.endsWith(".gif");
-            return (
-              <div
-                key={s.src}
-                className={`relative flex-none overflow-hidden bg-neutral-950 snap-start shadow-2xl ${
-                  is169
-                    ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
-                    : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
-                }`}
-              >
-                <Image
-                  src={s.src}
-                  alt={`${title} screenshot ${idx + 1}`}
-                  fill
-                  unoptimized={isGif}
-                  sizes={
-                    is169
-                      ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"
-                      : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
-                  }
-                  className="object-cover"
-                  priority={priority && idx === 0}
-                  loading={priority && idx === 0 ? "eager" : "lazy"}
-                />
-              </div>
-            );
-          })}
+          ).map((s, idx) => (
+            <AppStoreScreenshotCard
+              key={s.src}
+              src={s.src}
+              alt={`${title} screenshot ${idx + 1}`}
+              is169={aspectRatio === "16/9"}
+              isEager={idx < 2}
+            />
+          ))}
         </div>
       </div>
     </div>
