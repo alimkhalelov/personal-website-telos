@@ -40,7 +40,7 @@ export interface ProjectDetail {
   tldr: string;
   headline: string;
   demoUrl: string;
-  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus" | "residual-intellect" | "goal-classifier";
+  demoType: "wiki" | "presentation" | "skill-visualizer" | "styleref" | "bloobs" | "teamwork" | "boost" | "tempo" | "ocus" | "residual-intellect" | "goal-classifier" | "nebuly";
   demoLabel: string;
   badges: string[];
   overview: string;
@@ -700,6 +700,146 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
           { label: "Key Derivation Success", passed: true, assertion: "expect(await getCryptoKey()).toBeInstanceOf(CryptoKey)" },
           { label: "Ciphertext Decrypt Roundtrip", passed: true, assertion: "expect(await decrypt(await encrypt(payload))).toEqual(payload)" },
           { label: "Zero Leaked Tokens", passed: true, assertion: "assert(window.networkRequests.every(r => !r.url.includes('api.middleman')))" },
+        ],
+      },
+    ],
+  },
+  // 0d. Nebuly (Executive AI Weekly Brief & Stakeholder Enablement Platform)
+  {
+    slug: "nebuly",
+    command: "/nebuly",
+    title: "Nebuly",
+    subtitle: "Weekly AI Brief & Stakeholder Enablement Platform",
+    headline: "Executive weekly AI brief connecting launch film storytelling, OHLC conversation ROI telemetry, scroll-synced triage actions, and guardrailed enterprise enablement kits",
+    category: "app",
+    tag: "Executive AI Telemetry & Enablement",
+    accentColor: "#354C46",
+    accentGradient: "from-emerald-900/30 via-[#354C46]/20 to-transparent",
+    initiationDate: "2026-11-16",
+    dateDisplay: "Nov 2026",
+    timeAgo: "Today",
+    thumbnailSrc: "/projects/nebuly/02_hero_weekly_brief.png",
+    iconSrc: "/projects/nebuly/icon.svg",
+    tldr: "An executive intelligence platform for enterprise AI adoption that bridges high-level C-suite narrative storytelling with granular OHLC conversation telemetry, interactive three-order consequence simulation, and guardrailed enablement kits for cross-functional teams.",
+    demoUrl: "https://alimkhalelov.github.io/nebuly/",
+    demoType: "nebuly",
+    demoLabel: "Launch Nebuly Executive Brief",
+    badges: ["Weekly AI Brief", "OHLC ROI Telemetry", "Triage Actions", "Three-Order Cascade", "Stakeholder Enablement", "ASCII Telemetry", "Live Radar"],
+    overview: "Nebuly transforms fragmented enterprise AI experimentation into a coherent weekly operational cadence. By pairing cinematic launch storytelling with real-time OHLC conversation cost-to-resolution telemetry, executive teams triage operational bottlenecks, evaluate multi-order model routing impacts, and distribute production-ready enablement kits across business units.",
+    generativeTheme: "emerald-terminal",
+    isPublic: true,
+    appStoreLayout: true,
+    aspectRatio: "16/9",
+    videoSrc: "/projects/nebuly/01_nebuly_launch_video.mp4",
+    videoPoster: "/projects/nebuly/02_hero_weekly_brief.png",
+    screenshots: [
+      "/projects/nebuly/02_hero_weekly_brief.png",
+      "/projects/nebuly/03_roi_candles_terminal.png",
+      "/projects/nebuly/04_weekly_brief_cascade.png",
+      "/projects/nebuly/05_stakeholder_enablement.png",
+      "/projects/nebuly/06_footer_ascii_stream.png",
+    ],
+    visualizer: {
+      heroTitle: "NEBULY_EXECUTIVE_INTELLIGENCE_ENGINE",
+      subNamespace: "ai.telemetry.weekly.brief.v1",
+      nodes: [
+        {
+          id: "node-1",
+          step: "01",
+          title: "Conversation Telemetry Ingestion",
+          accent: "text-emerald-400",
+          description: [
+            "Collects real-time interaction logs, token usage, and resolution times across models",
+            "Synthesizes raw conversation telemetry into verified unit economics",
+          ],
+        },
+        {
+          id: "node-2",
+          step: "02",
+          title: "OHLC Cost & ROI Aggregation",
+          accent: "text-teal-400",
+          description: [
+            "Computes Open-High-Low-Close financial candlesticks for prompt cost volatility",
+            "Tracks resolution efficiency curves against user frustration signals",
+          ],
+        },
+        {
+          id: "node-3",
+          step: "03",
+          title: "Three-Order Consequence Cascade",
+          accent: "text-emerald-300",
+          description: [
+            "Simulates downstream ripple effects of model routing and prompt coaching",
+            "Projects 1st-order latency, 2nd-order cost shifts, and 3rd-order organizational impact",
+          ],
+        },
+        {
+          id: "node-4",
+          step: "04",
+          title: "Scroll-Synced Triage & Enablement",
+          accent: "text-green-400",
+          description: [
+            "Coordinates interactive triage checklists directly linked to weekly briefing chapters",
+            "Exports guardrailed deployment templates and enablement kits for cross-functional leads",
+          ],
+        },
+      ],
+    },
+    specSDD: {
+      inputs: [
+        "Raw model usage telemetry (interaction counts, latency, prompt tokens, completion tokens)",
+        "Conversation resolution metrics and user friction signals",
+        "Weekly briefing chapter data and active triage action items",
+        "Three-order consequence configuration (model routing, prompt coach, brief cadence)",
+      ],
+      outputs: [
+        "OHLC conversation ROI financial candlestick charts with volume histograms",
+        "Scroll-synced sticky chapter indicators with real-time triage completion tracking",
+        "Multi-order consequence projection cascades with metric delta modeling",
+        "Production-ready stakeholder enablement kits and guardrailed deployment templates",
+        "ASCII stream live telemetry footer with system operational status",
+      ],
+      invariants: [
+        "OHLC candlesticks enforce deterministic non-negative interval math: high >= max(open, close), low <= min(open, close)",
+        "Three-order consequence cascades resolve monotonically across 1st, 2nd, and 3rd order impacts",
+        "Scroll synchronization maintains zero layout shift (CLS < 0.01) during sticky tab transitions",
+        "Launch video preview autoplays muted in viewport with full user controls",
+      ],
+      coreEngine: "OHLC Telemetry Aggregator & Multi-Order Consequence Engine",
+      dataStructures: [
+        "interface OHLCCandle { timestamp: number; open: number; high: number; low: number; close: number; volume: number; }",
+        "interface ChapterBrief { id: string; step: string; title: string; actions: string[]; }",
+        "interface ConsequenceNode { trigger: string; firstOrder: string; secondOrder: string; thirdOrder: string; }",
+      ],
+      stateMachine: [
+        "IDLE -> TELEMETRY_INGESTED -> OHLC_SYNTHESIZED -> CHAPTER_SYNCED -> CASCADE_PROJECTED -> ENABLEMENT_EXPORTED",
+      ],
+    },
+    buildChecklist: [
+      {
+        phase: "Phase 1: Architecture & Media Layer",
+        tasks: [
+          { label: "High-definition 16:9 launch video encoding and thumbnail poster integration", done: true },
+          { label: "Widescreen App Store layout with smooth horizontal snap-scroll", done: true },
+          { label: "Authentic forest green (#354C46) brand design system and SVG icon", done: true },
+        ],
+      },
+      {
+        phase: "Phase 2: Telemetry & Interactive Modules",
+        tasks: [
+          { label: "Financial-grade OHLC candlestick conversation ROI charts", done: true },
+          { label: "Interactive three-order consequence cascade simulator", done: true },
+          { label: "Scroll-synced sticky chapter navigation and interactive triage checklist", done: true },
+        ],
+      },
+    ],
+    testChecklist: [
+      {
+        suite: "Core Engine Telemetry & Performance",
+        tests: [
+          { label: "OHLC candle generator produces valid non-negative ranges", passed: true, assertion: "high >= max(open, close) && low <= min(open, close)" },
+          { label: "Widescreen video container maintains locked 16:9 aspect ratio", passed: true, assertion: "aspectRatio === 16/9" },
+          { label: "Scroll observer triggers active chapter change within 50ms", passed: true, assertion: "observerLatency <= 50" },
         ],
       },
     ],
