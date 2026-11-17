@@ -86,7 +86,7 @@ function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps
     <div
       ref={containerRef}
       onClick={togglePlay}
-      className={`relative flex-none overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-black/5 dark:border-white/10 snap-start shadow-2xl group cursor-pointer select-none ${
+      className={`relative flex-none overflow-hidden bg-neutral-950 snap-start group cursor-pointer select-none ${
         is169
           ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
           : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
@@ -147,7 +147,7 @@ function AppStoreScreenshotCard({
 }) {
   return (
     <div
-      className={`relative flex-none overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-black/5 dark:border-white/10 snap-start shadow-2xl transition-all ${
+      className={`relative flex-none overflow-hidden bg-neutral-950 snap-start transition-all ${
         is169
           ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
           : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
@@ -240,7 +240,7 @@ export function AppStoreProjectCard({
       {/* 1. Header: Icon in squircle + Title & Subtitle */}
       <div ref={headerRef} className="flex items-center gap-4 sm:gap-5 min-w-0">
         {/* App Icon (Apple Squircle rounded-[22%]) - Borderless clean luxury */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-[22%] overflow-hidden shadow-xl">
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-[22%] overflow-hidden">
           <Image
             src={iconSrc}
             alt={`${title} App Icon`}
