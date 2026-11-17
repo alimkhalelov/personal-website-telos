@@ -569,6 +569,8 @@ export const SHOWCASE_PROJECTS: ProjectDetail[] = [
     isPublic: true,
     appStoreLayout: true,
     aspectRatio: "16/9",
+    videoSrc: "/projects/goal-classifier/00-plain-launch-video.mp4",
+    videoPoster: "/projects/goal-classifier/00-plain-video-poster.jpg",
     screenshots: [
       "/projects/goal-classifier/01-workspace-hero.webp",
       "/projects/goal-classifier/02-encrypted-byok-ai-modal.webp",
