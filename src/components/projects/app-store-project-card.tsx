@@ -86,7 +86,7 @@ function AppStoreVideoCard({ src, poster, is169, title }: AppStoreVideoCardProps
     <div
       ref={containerRef}
       onClick={togglePlay}
-      className={`relative flex-none overflow-hidden bg-neutral-900/90 snap-start shadow-2xl group cursor-pointer select-none ${
+      className={`relative flex-none overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-black/5 dark:border-white/10 snap-start shadow-2xl group cursor-pointer select-none ${
         is169
           ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
           : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
@@ -140,45 +140,32 @@ function AppStoreScreenshotCard({
   src,
   alt,
   is169,
-  isEager = false,
 }: {
   src: string;
   alt: string;
   is169: boolean;
-  isEager?: boolean;
 }) {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-
   return (
     <div
-      className={`relative flex-none overflow-hidden bg-neutral-900/80 snap-start shadow-2xl transition-all ${
+      className={`relative flex-none overflow-hidden bg-neutral-100 dark:bg-neutral-900 border border-black/5 dark:border-white/10 snap-start shadow-2xl transition-all ${
         is169
           ? "w-[300px] sm:w-[420px] md:w-[480px] aspect-video rounded-[20px]"
           : "w-[205px] sm:w-[245px] md:w-[280px] aspect-[9/16] rounded-[24px]"
       }`}
     >
-      {/* Sleek skeleton placeholder while image loads */}
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-neutral-900/90 animate-pulse flex items-center justify-center">
-          <div className="w-6 h-6 rounded-full border border-white/10 border-t-emerald-400/50 animate-spin" />
-        </div>
-      )}
       <Image
         src={src}
         alt={alt}
         fill
         unoptimized={true}
-        loading={isEager ? "eager" : "lazy"}
+        loading="eager"
         decoding="async"
-        onLoad={() => setIsLoaded(true)}
         sizes={
           is169
             ? "(max-width: 640px) 300px, (max-width: 1024px) 420px, 480px"
             : "(max-width: 640px) 205px, (max-width: 1024px) 245px, 280px"
         }
-        className={`object-cover transition-opacity duration-300 ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        className="object-cover"
       />
     </div>
   );
@@ -320,7 +307,6 @@ export function AppStoreProjectCard({
               src={normalizedScreenshots[0].src}
               alt={`${title} live interactive preview`}
               is169={aspectRatio === "16/9"}
-              isEager={true}
             />
           )}
 
@@ -344,7 +330,6 @@ export function AppStoreProjectCard({
               src={s.src}
               alt={`${title} screenshot ${idx + 1}`}
               is169={aspectRatio === "16/9"}
-              isEager={idx < 2}
             />
           ))}
         </div>
