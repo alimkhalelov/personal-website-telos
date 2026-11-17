@@ -1,7 +1,9 @@
-import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
-import TeardownHero from '@/components/startup-pitch/TeardownHero';
-import PoWClusterSelect from '@/components/startup-pitch/PoWClusterSelect';
+import { notFound, redirect } from "next/navigation";
+import { headers } from "next/headers";
+import type { Metadata } from "next";
+import TeardownHero from "@/components/startup-pitch/TeardownHero";
+import PoWClusterSelect from "@/components/startup-pitch/PoWClusterSelect";
+import { getTrackedLink, recordClick } from "@/lib/link-tracker";
 
 export const dynamicParams = true;
 
@@ -30,11 +32,27 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> 
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const data = await getTeardownData(resolvedParams.slug);
+  const slug = resolvedParams.slug.toLowerCase();
 
+  // 1. Check custom tracked link metadata
+  const customLink = getTrackedLink(slug);
+  if (customLink) {
+    return {
+      title: `${customLink.title} | Alim Khalelov`,
+      description: customLink.description || `Redirecting to ${customLink.title}`,
+      openGraph: {
+        title: customLink.title,
+        description: customLink.description || `Direct link to ${customLink.title}`,
+        url: `https://alim.dest.page/${slug}`,
+      },
+    };
+  }
+
+  // 2. Check startup teardown metadata
+  const data = await getTeardownData(slug);
   if (!data) {
     return {
-      title: 'Product Teardown | Alim Khalelov',
+      title: "Alim Khalelov",
     };
   }
 
@@ -47,39 +65,88 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      type: 'article',
+      type: "article",
       url: `https://alim.dest.page/${data.slug}`,
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
     },
   };
 }
 
-export default async function StartupTeardownPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function DynamicSlugPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
   const resolvedParams = await params;
-  const data = await getTeardownData(resolvedParams.slug);
+  const slug = resolvedParams.slug.toLowerCase();
 
-  if (!data) {
-    notFound();
+  // 1. Check if this slug is a custom tracked link (e.g. /nebuly, /tempo, /ocus, /cv)
+  const customLink = getTrackedLink(slug);
+  if (customLink) {
+    const headersList = await headers();
+    const ip =
+      headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      headersList.get("x-real-ip") ||
+      "127.0.0.1";
+    const country = headersList.get("x-vercel-ip-country") || "Unknown";
+    const city = decodeURIComponent(headersList.get("x-vercel-ip-city") || "") || "Unknown";
+    const region = headersList.get("x-vercel-ip-country-region") || "";
+    const referer = headersList.get("referer") || "direct";
+    const userAgent = headersList.get("user-agent") || "";
+
+    // Record click analytics asynchronously
+    await recordClick({
+      slug,
+      targetUrl: customLink.targetUrl,
+      title: customLink.title,
+      ip,
+      country,
+      city,
+      region,
+      referer,
+      userAgent,
+    });
+
+    // Instant temporary 307 redirect
+    redirect(customLink.targetUrl);
   }
 
-  return (
-    <main className="min-h-screen bg-[#111113] text-[#FAFAFA] antialiased">
-      {/* 1. The Hook / Teardown Section (AI-Wiki Bento Style) */}
-      <TeardownHero 
-        companyName={data.company_name}
-        founderName={data.founder_name}
-        hook={data.hook}
-        frictionPoints={data.friction_points}
-        architectureHypothesis={data.architecture_hypothesis}
-      />
+  // 2. Check if this slug is a startup teardown
+  const teardownData = await getTeardownData(slug);
+  if (teardownData) {
+    const headersList = await headers();
+    recordClick({
+      slug,
+      targetUrl: `https://alim.dest.page/${slug}`,
+      title: `Teardown: ${teardownData.company_name}`,
+      ip:
+        headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+        headersList.get("x-real-ip") ||
+        "127.0.0.1",
+      country: headersList.get("x-vercel-ip-country") || "Unknown",
+      city: decodeURIComponent(headersList.get("x-vercel-ip-city") || "") || "Unknown",
+      region: headersList.get("x-vercel-ip-country-region") || "",
+      referer: headersList.get("referer") || "direct",
+      userAgent: headersList.get("user-agent") || "",
+    }).catch(() => {});
 
-      {/* 2. The Dynamic Proof of Work & Track Record Section */}
-      <PoWClusterSelect cluster={data.pow_cluster} />
-    </main>
-  );
+    return (
+      <main className="min-h-screen bg-[#111113] text-[#FAFAFA] antialiased">
+        <TeardownHero 
+          companyName={teardownData.company_name}
+          founderName={teardownData.founder_name}
+          hook={teardownData.hook}
+          frictionPoints={teardownData.friction_points}
+          architectureHypothesis={teardownData.architecture_hypothesis}
+        />
+        <PoWClusterSelect cluster={teardownData.pow_cluster} />
+      </main>
+    );
+  }
+
+  notFound();
 }
-

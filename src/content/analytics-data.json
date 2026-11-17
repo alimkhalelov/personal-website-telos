@@ -1,0 +1,114 @@
+{
+  "links": {
+    "nebuly": {
+      "slug": "nebuly",
+      "targetUrl": "https://alimkhalelov.github.io/nebuly/",
+      "title": "Nebuly: Weekly AI Brief & Stakeholder Enablement Platform",
+      "description": "Direct link to production deployment of Nebuly",
+      "createdAt": "2026-11-16T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "tempo": {
+      "slug": "tempo",
+      "targetUrl": "https://alimkhalelov.github.io/tempo/",
+      "title": "Tempo: Adaptive Cadence Engine",
+      "description": "Kinetic runner cadence tracking platform",
+      "createdAt": "2026-11-05T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "ocus": {
+      "slug": "ocus",
+      "targetUrl": "https://ocus-eu.vercel.app",
+      "title": "Ocus: MiCA Compliance & Operations DAG Cockpit",
+      "description": "Institutional operating system for pan-EU digital asset compliance",
+      "createdAt": "2026-11-08T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "plain": {
+      "slug": "plain",
+      "targetUrl": "https://alimkhalelov.github.io/goal-classifier/",
+      "title": "Plain: The Simple Planner",
+      "description": "Minimalist goal clarification & execution diagnosis workspace",
+      "createdAt": "2026-11-10T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "goal-classifier": {
+      "slug": "goal-classifier",
+      "targetUrl": "https://alimkhalelov.github.io/goal-classifier/",
+      "title": "Plain (Goal Classifier)",
+      "description": "Four-dimension goal execution planner",
+      "createdAt": "2026-11-10T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "residual-intellect": {
+      "slug": "residual-intellect",
+      "targetUrl": "https://residual-intellect.vercel.app",
+      "title": "Residual Intellect Platform",
+      "description": "Daily AI news analysis & Telegram channel engine",
+      "createdAt": "2026-11-07T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "ri": {
+      "slug": "ri",
+      "targetUrl": "https://t.me/residual_intellect",
+      "title": "Residual Intellect Telegram Channel",
+      "description": "Direct invite to @residual_intellect",
+      "createdAt": "2026-11-07T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "tg": {
+      "slug": "tg",
+      "targetUrl": "https://t.me/AlimLLC",
+      "title": "Telegram: @AlimLLC",
+      "description": "Direct personal contact on Telegram",
+      "createdAt": "2026-11-01T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "telegram": {
+      "slug": "telegram",
+      "targetUrl": "https://t.me/AlimLLC",
+      "title": "Telegram: @AlimLLC",
+      "description": "Direct personal contact on Telegram",
+      "createdAt": "2026-11-01T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "linkedin": {
+      "slug": "linkedin",
+      "targetUrl": "https://linkedin.com/in/alimzhan-khalelov",
+      "title": "LinkedIn Profile",
+      "description": "Alimzhan Khalelov on LinkedIn",
+      "createdAt": "2026-11-01T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "github": {
+      "slug": "github",
+      "targetUrl": "https://github.com/alimkhalelov",
+      "title": "GitHub Profile",
+      "description": "Open source vibecoding repositories",
+      "createdAt": "2026-11-01T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    },
+    "cv": {
+      "slug": "cv",
+      "targetUrl": "/resume/Alimzhan_Khalelov_AI_Product_Manager_CV.pdf",
+      "title": "Executive Resume (PDF)",
+      "description": "Download Alimzhan Khalelov AI Product Manager Resume",
+      "createdAt": "2026-11-01T10:00:00.000Z",
+      "totalClicks": 0,
+      "uniqueVisitors": 0
+    }
+  },
+  "clicks": [],
+  "visitorIps": {}
+}
