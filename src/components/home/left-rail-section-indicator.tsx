@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AppleHello } from "./apple-hello";
 
 interface SectionConfig {
   id: string;
@@ -9,7 +10,7 @@ interface SectionConfig {
 }
 
 const SECTIONS: SectionConfig[] = [
-  { id: "hero", label: "hey, I'm" },
+  { id: "hero", label: "hello" },
   { id: "projects", label: "Projects" },
   { id: "resume", label: "Experience" },
   { id: "posts", label: "Posts" },
@@ -123,33 +124,17 @@ export function LeftRailSectionIndicator() {
           top: `${heroDocTop}px`,
         }}
       >
-        <div className="pr-5 sm:pr-6 flex items-center justify-end">
+        <div className="pr-5 sm:pr-6 flex items-end justify-end">
           <AnimatePresence>
             {hasEntered && activeId === "hero" && (
-              <motion.span
-                initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", filter: "blur(6px)" }}
-                animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", filter: "blur(0px)" }}
-                exit={{ opacity: 0, clipPath: "inset(0 100% 0 0)", filter: "blur(6px)" }}
-                transition={{
-                  duration: 1.2,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: 0.1,
-                }}
-                className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold tracking-tight text-white/50 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap text-right italic -rotate-2 select-none"
-                style={{
-                  fontFamily:
-                    "var(--font-caveat), 'Caveat', cursive, -apple-system, sans-serif",
-                  lineHeight: 1,
-                  transformOrigin: "right bottom",
-                }}
-              >
-                hey, I&apos;m
+              <div className="relative flex items-end pb-1">
+                <AppleHello speed={1.1} className="h-10 sm:h-12 w-auto" />
                 <span
                   id="indicator-baseline-probe"
                   className="inline-block w-0 h-0 align-baseline pointer-events-none select-none opacity-0"
                   aria-hidden="true"
                 />
-              </motion.span>
+              </div>
             )}
           </AnimatePresence>
         </div>
