@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { getSortedArticles } from "@/lib/mdx";
-import { ArrowUpRight, Mail, Send, Phone } from "lucide-react";
+import { ArrowUpRight, Mail, Send, Phone, FileText } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
-import { ResumeSection } from "@/components/resume/resume-section";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 import { HomePostsList } from "@/components/home/home-posts-list";
 import { LeftRailSectionIndicator } from "@/components/home/left-rail-section-indicator";
@@ -127,6 +126,19 @@ export default function Home() {
               <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
               <Phone className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
+
+            {/* CV / Resume */}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="CV / Resume"
+              title="CV / Resume (PDF)"
+              className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+            >
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
+              <FileText className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
+            </a>
           </div>
 
           {/* Crisp Bio (No redundant "Product Manager" repeats, no divider line) */}
@@ -137,9 +149,6 @@ export default function Home() {
 
         {/* Featured Showcase & Agent Skills Horizontal Strip */}
         <FeaturedProjectsStrip />
-
-        {/* Resume Section */}
-        <ResumeSection />
 
         {/* Posts Section */}
         <HomePostsList initialArticles={articles} />

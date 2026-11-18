@@ -11,13 +11,23 @@ import { DockingHeader } from "@/components/home/docking-header";
 
 interface FeaturedProjectsStripProps {
   className?: string;
+  order?: string[];
 }
 
-export function FeaturedProjectsStrip({ className = "" }: FeaturedProjectsStripProps) {
+export function FeaturedProjectsStrip({ className = "", order }: FeaturedProjectsStripProps) {
   const projects = getAllProjects();
   const { isAdmin } = useAuth();
 
-  const featuredAppProjects = projects.filter((p) => p.isPublic && p.appStoreLayout);
+  let featuredAppProjects = projects.filter((p) => p.isPublic && p.appStoreLayout);
+  if (order && order.length > 0) {
+    featuredAppProjects = [...featuredAppProjects].sort((a, b) => {
+      const idxA = order.indexOf(a.slug);
+      const idxB = order.indexOf(b.slug);
+      const posA = idxA === -1 ? 999 : idxA;
+      const posB = idxB === -1 ? 999 : idxB;
+      return posA - posB;
+    });
+  }
   const privateProjects = projects.filter((p) => !p.appStoreLayout || p.isPublic === false);
 
   return (
