@@ -362,8 +362,8 @@ export async function recordClick(params: {
 }
 
 async function sendTelegramPush(event: ClickEvent, stats: { total: number; unique: number }): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN || "8480651049:AAGh1maTVAMV_9YO8tOwcH-VZ0lTc6ZQwsg";
-  const chatId = process.env.TELEGRAM_CHAT_ID || "1817103078";
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return;
 
   const flag = getCountryFlag(event.country);

@@ -74,7 +74,7 @@ export default async function LaminarPortfolioPage() {
   } catch (e) {}
 
   return (
-    <main className="min-h-screen relative overflow-x-clip bg-black selection:bg-white/20 text-white">
+    <>
       {/* Dynamic Depth Wallpapers */}
       <OneUiWallpaper />
 
@@ -82,21 +82,15 @@ export default async function LaminarPortfolioPage() {
       <LeftRailSectionIndicator />
 
       {/* Main Single Column Container */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-8 pt-24 sm:pt-32 pb-24 flex flex-col gap-16 sm:gap-20">
+      <main className="max-w-4xl mx-auto px-6 py-16 sm:py-28 flex flex-col gap-16 sm:gap-20 w-full relative z-10">
         
         {/* Hero Section */}
-        <section id="hero" className="flex flex-col gap-6 sm:gap-7">
-          {/* Target Candidate Pill */}
-          <div className="flex items-center gap-2 w-fit px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/80 text-xs font-mono uppercase tracking-wider backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-sky-400" />
-            <span>Target Brief // Laminar (YC S24)</span>
-          </div>
-
-          <div className="flex flex-col gap-2">
+        <section id="hero" className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+          <div className="flex flex-col gap-1.5">
             <h1 
               id="hero-title"
-              className="text-4xl sm:text-6xl font-light tracking-tight text-white/95"
-              style={{ fontFamily: "'Google Sans', sans-serif" }}
+              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.05] select-none text-white/80 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)]"
+              style={{ fontFamily: "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif" }}
             >
               Alim Khalelov
               <span
@@ -106,7 +100,7 @@ export default async function LaminarPortfolioPage() {
               />
             </h1>
             <p className="text-lg sm:text-xl text-white/60 font-light tracking-tight mt-1">
-              AI Systems Architect &amp; Product Designer
+              AI-Native Product Manager
             </p>
           </div>
 
@@ -176,15 +170,10 @@ export default async function LaminarPortfolioPage() {
             </a>
           </div>
 
-          {/* Crisp Bio Tailored for Laminar */}
-          <div className="space-y-3 pt-1">
-            <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light">
-              5+ years shipping 0-to-1 products across AI &amp; systems architecture. Specializing in turning complex multi-agent execution traces into clear, actionable operator signals without cognitive overload.
-            </p>
-            <p className="text-xs sm:text-sm text-white/50 max-w-2xl leading-relaxed font-mono">
-              Prepared for Robert Kim &amp; Dinmukhamed Mailibay. Featured PoW below highlights live code prototyping, DAG execution engines, and enterprise AI evaluation.
-            </p>
-          </div>
+          {/* Crisp Bio */}
+          <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
+            5+ years shipping 0-to-1 products across AI &amp; Web3. Building multi-agent systems, LLM evaluation pipelines, and rapid prototyping cycles to validate product-market fit before scaling.
+          </p>
         </section>
 
         {/* Tailored Proof of Work Strip: Nebuly #1, Ocus #2, Plain #3 */}
@@ -226,8 +215,7 @@ export default async function LaminarPortfolioPage() {
             </a>
           </div>
         </section>
-
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
