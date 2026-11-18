@@ -134,11 +134,10 @@ export default function Home() {
               rel="noopener noreferrer"
               aria-label="Resume"
               title="Resume (PDF)"
-              className="group relative h-12 px-5 sm:px-6 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+              className="group relative h-12 px-6 sm:px-7 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
               <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
-              <FileText className="w-4 h-4 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
-              <span className="text-sm sm:text-base font-semibold tracking-tight text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+              <span className="text-base sm:text-lg font-bold tracking-tight text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-105">
                 Resume
               </span>
             </a>
