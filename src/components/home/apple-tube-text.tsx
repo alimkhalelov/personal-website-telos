@@ -28,9 +28,9 @@ interface AppleTubeTextProps {
  */
 export function AppleTubeText({
   text,
-  className = "h-10 sm:h-12 w-auto",
-  strokeWidth = 4.4,
-  duration = 2.0,
+  className = "h-9 sm:h-10 w-auto",
+  strokeWidth = 2.2,
+  duration = 1.8,
   autoPlay = true,
   loop = false,
   delayMs = 0,
@@ -79,11 +79,11 @@ export function AppleTubeText({
       className={`relative inline-flex items-center select-none pointer-events-none ${className}`}
     >
       {/* 1. Ambient Frosted Glass Bloom Layer (outer soft neon tube aura) */}
-      <div className="absolute inset-0 pointer-events-none filter blur-[3.5px] opacity-75">
+      <div className="absolute inset-0 pointer-events-none filter blur-[2px] opacity-60">
         <Letters
           ref={glowRef}
           text={text}
-          strokeWidth={strokeWidth * 1.35}
+          strokeWidth={strokeWidth * 1.25}
           color="rgba(255, 255, 255, 0.45)"
           animation={{ type: "tween", duration, ease: "easeInOut" }}
           autoPlay={hasStarted}
@@ -93,12 +93,12 @@ export function AppleTubeText({
       </div>
 
       {/* 2. Main 3D Frosted Glass Tube Body (translucent white cylinder with drop-shadow) */}
-      <div className="relative z-10 w-full h-full drop-shadow-[0_2px_10px_rgba(0,0,0,0.32)]">
+      <div className="relative z-10 w-full h-full drop-shadow-[0_2px_8px_rgba(0,0,0,0.22)]">
         <Letters
           ref={lettersRef}
           text={text}
           strokeWidth={strokeWidth}
-          color="rgba(255, 255, 255, 0.88)"
+          color="rgba(255, 255, 255, 0.90)"
           animation={{ type: "tween", duration, ease: "easeInOut" }}
           autoPlay={hasStarted}
           loop={loop}
@@ -108,11 +108,11 @@ export function AppleTubeText({
       </div>
 
       {/* 3. Inner Specular Ridge Highlight (glossy white reflection along the tube crown) */}
-      <div className="absolute inset-0 z-20 pointer-events-none opacity-90">
+      <div className="absolute inset-0 z-20 pointer-events-none opacity-95">
         <Letters
           ref={highlightRef}
           text={text}
-          strokeWidth={strokeWidth * 0.32}
+          strokeWidth={strokeWidth * 0.35}
           color="#ffffff"
           animation={{ type: "tween", duration, ease: "easeInOut" }}
           autoPlay={hasStarted}

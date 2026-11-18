@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppleTubeText } from "./apple-tube-text";
+import { AppleHello } from "./apple-hello";
 
 interface SectionConfig {
   id: string;
@@ -10,7 +10,7 @@ interface SectionConfig {
 }
 
 const SECTIONS: SectionConfig[] = [
-  { id: "hero", label: "hey, I'm" },
+  { id: "hero", label: "hello" },
   { id: "projects", label: "Projects" },
   { id: "resume", label: "Experience" },
   { id: "posts", label: "Posts" },
@@ -43,9 +43,9 @@ export function LeftRailSectionIndicator() {
         const indRect = indProbe.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
         const probeOffsetInContainer = indRect.top - containerRect.top;
-        // Shift baseline down to align precisely with the baseline of "Alim Khalelov"
-        // Accounting for SVG ascender ratio (24/57)
-        setHeroDocTop(heroYInParent - probeOffsetInContainer + 26);
+        // Apple "hello" baseline is at y=191/200 (~95% of SVG height).
+        // Align smoothly to the baseline of "Alim Khalelov"
+        setHeroDocTop(heroYInParent - probeOffsetInContainer + 4);
       } else {
         // Fallback estimate before indicator probe is mounted
         setHeroDocTop(heroYInParent);
@@ -129,11 +129,9 @@ export function LeftRailSectionIndicator() {
           <AnimatePresence>
             {hasEntered && activeId === "hero" && (
               <div className="relative flex items-end pb-1">
-                <AppleTubeText
-                  text="hey, I'm"
-                  strokeWidth={4.4}
-                  duration={2.0}
-                  className="h-10 sm:h-12 w-auto"
+                <AppleHello
+                  speed={1.0}
+                  className="h-14 sm:h-16 w-auto"
                 />
                 <span
                   id="indicator-baseline-probe"
