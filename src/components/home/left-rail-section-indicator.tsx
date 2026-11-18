@@ -27,7 +27,7 @@ export function LeftRailSectionIndicator() {
   // scrolls hardware-locked with the hero section on the compositor thread with 0 lag.
   const syncBaseline = React.useCallback(() => {
     const heroProbe = document.getElementById("hero-baseline-probe");
-    const indProbe = document.getElementById("indicator-baseline-probe");
+    const indDot = document.getElementById("indicator-baseline-dot");
     const container = heroAsideRef.current;
 
     if (heroProbe && container) {
@@ -35,17 +35,18 @@ export function LeftRailSectionIndicator() {
       const offsetParent = container.offsetParent as HTMLElement | null;
       const parentTop = offsetParent ? offsetParent.getBoundingClientRect().top : 0;
 
-      // Distance from document / parent top to hero baseline
-      const heroYInParent = heroRect.top - parentTop;
+      // Distance from document / parent top to hero baseline (bottom edge of "Alim Khalelov")
+      const heroBaselineInParent = heroRect.bottom - parentTop;
 
-      if (indProbe) {
-        const indRect = indProbe.getBoundingClientRect();
+      if (indDot) {
+        const indRect = indDot.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
-        const probeOffsetInContainer = indRect.top - containerRect.top;
-        setHeroDocTop(heroYInParent - probeOffsetInContainer);
+        // Distance from container top to the indicator text baseline
+        const probeOffsetInContainer = indRect.bottom - containerRect.top;
+        setHeroDocTop(heroBaselineInParent - probeOffsetInContainer);
       } else {
-        // Fallback estimate (~26px for 32px font) before indicator probe is mounted
-        setHeroDocTop(heroYInParent - 26);
+        // Fallback estimate before probe is ready (lg:text-[2rem] with leading 1.05 has baseline ~27px)
+        setHeroDocTop(heroBaselineInParent - 27);
       }
     }
   }, []);
@@ -122,13 +123,31 @@ export function LeftRailSectionIndicator() {
           top: `${heroDocTop}px`,
         }}
       >
-        <div className="pr-5 sm:pr-6 flex items-center justify-end">
+        <div className="pr-5 sm:pr-6 flex items-center justify-end relative">
+          {/* Static reference probe for 100% accurate baseline measurement without transform jitter */}
+          <span
+            id="indicator-baseline-probe"
+            aria-hidden="true"
+            className="text-2xl sm:text-3xl lg:text-[2rem] font-bold tracking-tight whitespace-nowrap opacity-0 pointer-events-none select-none absolute right-5 sm:right-6 invisible"
+            style={{
+              fontFamily:
+                "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+              lineHeight: 1.05,
+            }}
+          >
+            hey, I&apos;m
+            <span
+              id="indicator-baseline-dot"
+              className="inline-block w-0 h-0 align-baseline pointer-events-none select-none"
+            />
+          </span>
+
           <AnimatePresence>
             {hasEntered && activeId === "hero" && (
               <motion.span
-                initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -14, filter: "blur(8px)" }}
+                initial={{ opacity: 0, filter: "blur(8px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(8px)" }}
                 transition={{
                   duration: 0.85,
                   ease: [0.16, 1, 0.3, 1],
@@ -141,11 +160,6 @@ export function LeftRailSectionIndicator() {
                 }}
               >
                 hey, I&apos;m
-                <span
-                  id="indicator-baseline-probe"
-                  className="inline-block w-0 h-0 align-baseline pointer-events-none select-none opacity-0"
-                  aria-hidden="true"
-                />
               </motion.span>
             )}
           </AnimatePresence>

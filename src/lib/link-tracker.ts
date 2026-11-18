@@ -362,8 +362,8 @@ export async function recordClick(params: {
 }
 
 async function sendTelegramPush(event: ClickEvent, stats: { total: number; unique: number }): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const token = process.env.TELEGRAM_BOT_TOKEN || "8480651049:AAGh1maTVAMV_9YO8tOwcH-VZ0lTc6ZQwsg";
+  const chatId = process.env.TELEGRAM_CHAT_ID || "1817103078";
   if (!token || !chatId) return;
 
   const flag = getCountryFlag(event.country);
@@ -372,19 +372,35 @@ async function sendTelegramPush(event: ClickEvent, stats: { total: number; uniqu
       ? `${flag} ${event.city}, ${event.country}`
       : `${flag} ${event.country}`;
 
-  const cleanReferer =
-    event.referer === "direct" || !event.referer
-      ? "Прямой переход"
-      : event.referer.replace(/^https?:\/\/(www\.)?/, "");
+  const isEmailOpen = event.slug.startsWith("email-open-");
+  const timeStr = new Date().toLocaleString("ru-RU", { timeZone: "Asia/Almaty" });
 
-  const text =
-    `🔔 <b>Клик по кастомной ссылке:</b> <code>/${event.slug}</code>\n\n` +
-    `📍 <b>Откуда:</b> ${location}\n` +
-    `💻 <b>Клиент:</b> ${event.device} · ${event.os} · ${event.browser}\n` +
-    `🔗 <b>Источник:</b> <code>${cleanReferer}</code>\n` +
-    `🎯 <b>Цель:</b> <a href="${event.targetUrl}">${event.title}</a>\n` +
-    `📊 <b>Кликов:</b> ${stats.total} (уникальных: ${stats.unique})\n` +
-    `⏱️ <b>Время:</b> ${new Date().toLocaleString("ru-RU", { timeZone: "Asia/Almaty" })}`;
+  let text = "";
+  if (isEmailOpen) {
+    const targetName = event.slug.replace("email-open-", "").toUpperCase();
+    text =
+      `📬 <b>ПИСЬМО ОТКРЫТО! (${targetName})</b>\n\n` +
+      `🎯 <b>Событие:</b> ${event.title}\n` +
+      `📍 <b>Гео:</b> ${location}\n` +
+      `💻 <b>Клиент / Прокси:</b> ${event.browser} · ${event.os} · ${event.device}\n` +
+      `🌐 <b>IP:</b> <code>${event.ip}</code>\n` +
+      `📊 <b>Всего открытий:</b> ${stats.total}\n` +
+      `⏱️ <b>Время (Алматы):</b> ${timeStr}`;
+  } else {
+    const cleanReferer =
+      event.referer === "direct" || !event.referer
+        ? "Прямой переход"
+        : event.referer.replace(/^https?:\/\/(www\.)?/, "");
+
+    text =
+      `🔔 <b>Клик по кастомной ссылке:</b> <code>/${event.slug}</code>\n\n` +
+      `📍 <b>Откуда:</b> ${location}\n` +
+      `💻 <b>Клиент:</b> ${event.device} · ${event.os} · ${event.browser}\n` +
+      `🔗 <b>Источник:</b> <code>${cleanReferer}</code>\n` +
+      `🎯 <b>Цель:</b> <a href="${event.targetUrl}">${event.title}</a>\n` +
+      `📊 <b>Кликов:</b> ${stats.total} (уникальных: ${stats.unique})\n` +
+      `⏱️ <b>Время:</b> ${timeStr}`;
+  }
 
   try {
     const controller = new AbortController();

@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
     const region = req.headers.get("x-vercel-ip-country-region") || "";
     const userAgent = req.headers.get("user-agent") || "";
 
-    // Record open event asynchronously (triggers Telegram push & logs stats)
-    recordClick({
+    // Record open event (triggers Telegram push & logs stats)
+    await recordClick({
       slug: `email-open-${target}`,
       targetUrl: `mailto:${recipient}`,
       title: `📬 Email Opened: ${target} [Recipient: ${recipient}]`,
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
       region,
       referer: "Email Client",
       userAgent,
-    }).catch(() => {});
+    });
   } catch (err) {
     // Fail silently so image rendering never breaks in email client
   }

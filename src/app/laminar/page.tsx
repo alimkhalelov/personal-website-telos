@@ -94,10 +94,16 @@ export default async function LaminarPortfolioPage() {
 
           <div className="flex flex-col gap-2">
             <h1 
+              id="hero-title"
               className="text-4xl sm:text-6xl font-light tracking-tight text-white/95"
               style={{ fontFamily: "'Google Sans', sans-serif" }}
             >
               Alim Khalelov
+              <span
+                id="hero-baseline-probe"
+                className="inline-block w-0 h-0 align-baseline pointer-events-none select-none opacity-0"
+                aria-hidden="true"
+              />
             </h1>
             <p className="text-lg sm:text-xl text-white/60 font-light tracking-tight mt-1">
               AI Systems Architect &amp; Product Designer
@@ -154,17 +160,18 @@ export default async function LaminarPortfolioPage() {
               <Phone className="w-5 h-5 text-white/95 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
             </a>
 
-            {/* Laminar Targeted Resume Button */}
+            {/* Laminar Targeted Resume Button (Rectangular Frosted Glass Pill) */}
             <a
               href="/2026_Alim_Khalelov_Laminar_Product_Designer_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Download Laminar Resume"
               title="Download Laminar Tailored Resume (PDF)"
-              className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-sky-400/40 hover:border-sky-400/70 shadow-[0_8px_32px_0_rgba(56,189,248,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
+              className="group relative h-12 px-5 sm:px-6 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-sky-400/40 hover:border-sky-400/70 shadow-[0_8px_32px_0_rgba(56,189,248,0.2)] flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
               <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-sky-400/25 to-transparent pointer-events-none rounded-t-[16px]" />
-              <span className="text-[10px] font-mono font-bold tracking-tight text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110">
+              <FileText className="w-4 h-4 text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
+              <span className="text-sm sm:text-base font-semibold tracking-tight text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
                 Resume
               </span>
             </a>
