@@ -42,10 +42,11 @@ export function LeftRailSectionIndicator() {
         const indRect = indProbe.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
         const probeOffsetInContainer = indRect.top - containerRect.top;
-        setHeroDocTop(heroYInParent - probeOffsetInContainer);
+        // Shift baseline slightly down (+10px) to align precisely with bottom line of hero text
+        setHeroDocTop(heroYInParent - probeOffsetInContainer + 10);
       } else {
-        // Fallback estimate (~26px for 32px font) before indicator probe is mounted
-        setHeroDocTop(heroYInParent - 26);
+        // Fallback estimate before indicator probe is mounted
+        setHeroDocTop(heroYInParent - 16);
       }
     }
   }, []);
@@ -126,18 +127,20 @@ export function LeftRailSectionIndicator() {
           <AnimatePresence>
             {hasEntered && activeId === "hero" && (
               <motion.span
-                initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -14, filter: "blur(8px)" }}
+                initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)", filter: "blur(6px)" }}
+                animate={{ opacity: 1, clipPath: "inset(0 0% 0 0)", filter: "blur(0px)" }}
+                exit={{ opacity: 0, clipPath: "inset(0 100% 0 0)", filter: "blur(6px)" }}
                 transition={{
-                  duration: 0.85,
+                  duration: 1.2,
                   ease: [0.16, 1, 0.3, 1],
+                  delay: 0.1,
                 }}
-                className="text-2xl sm:text-3xl lg:text-[2rem] font-bold tracking-tight text-white/35 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap text-right"
+                className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold tracking-tight text-white/50 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap text-right italic -rotate-2 select-none"
                 style={{
                   fontFamily:
-                    "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-                  lineHeight: 1.05,
+                    "var(--font-caveat), 'Caveat', cursive, -apple-system, sans-serif",
+                  lineHeight: 1,
+                  transformOrigin: "right bottom",
                 }}
               >
                 hey, I&apos;m

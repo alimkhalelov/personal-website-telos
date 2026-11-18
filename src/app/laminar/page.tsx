@@ -164,7 +164,9 @@ export default async function LaminarPortfolioPage() {
               className="group relative w-12 h-12 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-sky-400/40 hover:border-sky-400/70 shadow-[0_8px_32px_0_rgba(56,189,248,0.2)] flex items-center justify-center hover:scale-108 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
               <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-sky-400/25 to-transparent pointer-events-none rounded-t-[16px]" />
-              <FileText className="w-5 h-5 text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110" />
+              <span className="text-[13px] font-mono font-bold tracking-wider text-sky-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] transition-transform group-hover:scale-110">
+                CV
+              </span>
             </a>
           </div>
 
