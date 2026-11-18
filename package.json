@@ -12,6 +12,7 @@
     "@ai-sdk/google": "^3.0.80",
     "@ai-sdk/openai": "^3.0.67",
     "@ai-sdk/react": "^3.0.195",
+    "@kumailnanji/letters": "^0.1.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tiptap/extension-bubble-menu": "^3.24.0",
     "@tiptap/extension-link": "^3.24.0",

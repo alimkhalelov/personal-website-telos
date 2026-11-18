@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { AppleTubeText } from "./apple-tube-text";
 
 interface DockingHeaderProps {
   sectionId: string;
@@ -172,17 +173,29 @@ export function DockingHeader({
           zIndex: 30,
         }}
       >
-        <h2
-          ref={textRef}
-          className="text-2xl sm:text-3xl lg:text-[2rem] font-bold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap"
-          style={{
-            fontFamily:
-              "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-            lineHeight: 1.05,
-          }}
-        >
-          {title}
-        </h2>
+        {title === "Projects" ? (
+          <div ref={textRef as any} className="flex items-center">
+            <AppleTubeText
+              text="Projects"
+              strokeWidth={4.4}
+              duration={2.0}
+              triggerOnView
+              className="h-8 sm:h-10 w-auto"
+            />
+          </div>
+        ) : (
+          <h2
+            ref={textRef}
+            className="text-2xl sm:text-3xl lg:text-[2rem] font-bold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap"
+            style={{
+              fontFamily:
+                "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+              lineHeight: 1.05,
+            }}
+          >
+            {title}
+          </h2>
+        )}
       </div>
 
       {/* Right-aligned action (View all → or Copy button) stays in-flow */}
