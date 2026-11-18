@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppleHeyIm } from "./apple-hey-im";
 
 interface SectionConfig {
   id: string;
@@ -43,12 +42,10 @@ export function LeftRailSectionIndicator() {
         const indRect = indProbe.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
         const probeOffsetInContainer = indRect.top - containerRect.top;
-        // Apple "hey, I'm" baseline is at y=191/280 (~68% of SVG height).
-        // Align smoothly to the baseline of "Alim Khalelov"
-        setHeroDocTop(heroYInParent - probeOffsetInContainer + 18);
+        setHeroDocTop(heroYInParent - probeOffsetInContainer);
       } else {
-        // Fallback estimate before indicator probe is mounted
-        setHeroDocTop(heroYInParent);
+        // Fallback estimate (~26px for 32px font) before indicator probe is mounted
+        setHeroDocTop(heroYInParent - 26);
       }
     }
   }, []);
@@ -125,20 +122,31 @@ export function LeftRailSectionIndicator() {
           top: `${heroDocTop}px`,
         }}
       >
-        <div className="pr-5 sm:pr-6 flex items-end justify-end">
+        <div className="pr-5 sm:pr-6 flex items-center justify-end">
           <AnimatePresence>
             {hasEntered && activeId === "hero" && (
-              <div className="relative flex items-end pb-1">
-                <AppleHeyIm
-                  speed={1.15}
-                  className="h-12 sm:h-14 w-auto"
-                />
+              <motion.span
+                initial={{ opacity: 0, y: 14, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -14, filter: "blur(8px)" }}
+                transition={{
+                  duration: 0.85,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="text-2xl sm:text-3xl lg:text-[2rem] font-bold tracking-tight text-white/35 drop-shadow-[0_2px_12px_rgba(0,0,0,0.18)] whitespace-nowrap text-right"
+                style={{
+                  fontFamily:
+                    "var(--font-sf-pro-rounded), 'SF Pro Rounded', system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                  lineHeight: 1.05,
+                }}
+              >
+                hey, I&apos;m
                 <span
                   id="indicator-baseline-probe"
                   className="inline-block w-0 h-0 align-baseline pointer-events-none select-none opacity-0"
                   aria-hidden="true"
                 />
-              </div>
+              </motion.span>
             )}
           </AnimatePresence>
         </div>
