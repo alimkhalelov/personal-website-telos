@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { getSortedArticles } from "@/lib/mdx";
 import { Mail, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
@@ -50,32 +50,37 @@ function LinkedinIcon({ className = "w-5 h-5" }: { className?: string }) {
 export default async function LaminarPortfolioPage() {
   const articles = getSortedArticles();
 
-  // Record visit analytics for outreach tracking
+  // Record visit analytics for outreach tracking (skip if owner cookie is set)
   try {
-    const headersList = await headers();
-    const ip =
-      headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      headersList.get("x-real-ip") ||
-      "127.0.0.1";
-    const country = headersList.get("x-vercel-ip-country") || "Unknown";
-    const city = decodeURIComponent(headersList.get("x-vercel-ip-city") || "") || "Unknown";
-    const region = headersList.get("x-vercel-ip-country-region") || "";
-    const referer = headersList.get("referer") || "Direct Email / Outreach";
-    const userAgent = headersList.get("user-agent") || "";
+    const cookieStore = await cookies();
+    const isOwner = cookieStore.get("alim_owner")?.value === "1";
 
-    await recordClick({
-      slug: "laminar",
-      targetUrl: "https://alim.dest.page/laminar",
-      title: "Laminar Targeted Portfolio (Robert Kim / Din Mailibay)",
-      ip,
-      country,
-      city,
-      region,
-      referer,
-      userAgent,
-    }).catch((err) => {
-      console.error("[laminar] recordClick failed:", err);
-    });
+    if (!isOwner) {
+      const headersList = await headers();
+      const ip =
+        headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+        headersList.get("x-real-ip") ||
+        "127.0.0.1";
+      const country = headersList.get("x-vercel-ip-country") || "Unknown";
+      const city = decodeURIComponent(headersList.get("x-vercel-ip-city") || "") || "Unknown";
+      const region = headersList.get("x-vercel-ip-country-region") || "";
+      const referer = headersList.get("referer") || "Direct Email / Outreach";
+      const userAgent = headersList.get("user-agent") || "";
+
+      await recordClick({
+        slug: "laminar",
+        targetUrl: "https://alim.dest.page/laminar",
+        title: "Laminar Targeted Portfolio (Robert Kim / Din Mailibay)",
+        ip,
+        country,
+        city,
+        region,
+        referer,
+        userAgent,
+      }).catch((err) => {
+        console.error("[laminar] recordClick failed:", err);
+      });
+    }
   } catch (e) {}
 
   return (

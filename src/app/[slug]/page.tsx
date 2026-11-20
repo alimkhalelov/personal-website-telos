@@ -1,5 +1,5 @@
 import { notFound, redirect } from "next/navigation";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import type { Metadata } from "next";
 import TeardownHero from "@/components/startup-pitch/TeardownHero";
 import PoWClusterSelect from "@/components/startup-pitch/PoWClusterSelect";
@@ -118,23 +118,28 @@ export default async function DynamicSlugPage({
   // 2. Check if this slug is a startup teardown
   const teardownData = await getTeardownData(slug);
   if (teardownData) {
-    const headersList = await headers();
-    await recordClick({
-      slug,
-      targetUrl: `https://alim.dest.page/${slug}`,
-      title: `Teardown: ${teardownData.company_name}`,
-      ip:
-        headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-        headersList.get("x-real-ip") ||
-        "127.0.0.1",
-      country: headersList.get("x-vercel-ip-country") || "Unknown",
-      city: decodeURIComponent(headersList.get("x-vercel-ip-city") || "") || "Unknown",
-      region: headersList.get("x-vercel-ip-country-region") || "",
-      referer: headersList.get("referer") || "direct",
-      userAgent: headersList.get("user-agent") || "",
-    }).catch((err) => {
-      console.error("[teardown] recordClick failed:", err);
-    });
+    const cookieStore = await cookies();
+    const isOwner = cookieStore.get("alim_owner")?.value === "1";
+
+    if (!isOwner) {
+      const headersList = await headers();
+      await recordClick({
+        slug,
+        targetUrl: `https://alim.dest.page/${slug}`,
+        title: `Teardown: ${teardownData.company_name}`,
+        ip:
+          headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+          headersList.get("x-real-ip") ||
+          "127.0.0.1",
+        country: headersList.get("x-vercel-ip-country") || "Unknown",
+        city: decodeURIComponent(headersList.get("x-vercel-ip-city") || "") || "Unknown",
+        region: headersList.get("x-vercel-ip-country-region") || "",
+        referer: headersList.get("referer") || "direct",
+        userAgent: headersList.get("user-agent") || "",
+      }).catch((err) => {
+        console.error("[teardown] recordClick failed:", err);
+      });
+    }
 
     return (
       <main className="min-h-screen bg-[#111113] text-[#FAFAFA] antialiased">

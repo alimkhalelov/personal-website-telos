@@ -22,27 +22,38 @@ export async function serveTrackingPixel(req: NextRequest): Promise<NextResponse
       searchParams.get("r") ||
       searchParams.get("to") ||
       "founder";
+    const insertedAt = Number(searchParams.get("v") || "0");
+    const force = searchParams.get("force") === "1";
+    const isOwner = req.cookies.get("alim_owner")?.value === "1";
 
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      req.headers.get("x-real-ip") ||
-      "127.0.0.1";
-    const country = req.headers.get("x-vercel-ip-country") || "Unknown";
-    const city = decodeURIComponent(req.headers.get("x-vercel-ip-city") || "") || "Unknown";
-    const region = req.headers.get("x-vercel-ip-country-region") || "";
-    const userAgent = req.headers.get("user-agent") || "";
+    // Ignore owner cookie AND Gmail Compose draft preview render (first 6s after insert)
+    const isComposePreview =
+      insertedAt > 1700000000000 &&
+      Date.now() - insertedAt >= 0 &&
+      Date.now() - insertedAt < 6000;
 
-    await recordClick({
-      slug: `email-open-${target}`,
-      targetUrl: `mailto:${recipient}`,
-      title: `📬 Email Opened: ${target} [Recipient: ${recipient}]`,
-      ip,
-      country,
-      city,
-      region,
-      referer: "Email Client",
-      userAgent,
-    });
+    if (force || (!isOwner && !isComposePreview)) {
+      const ip =
+        req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+        req.headers.get("x-real-ip") ||
+        "127.0.0.1";
+      const country = req.headers.get("x-vercel-ip-country") || "Unknown";
+      const city = decodeURIComponent(req.headers.get("x-vercel-ip-city") || "") || "Unknown";
+      const region = req.headers.get("x-vercel-ip-country-region") || "";
+      const userAgent = req.headers.get("user-agent") || "";
+
+      await recordClick({
+        slug: `email-open-${target}`,
+        targetUrl: `mailto:${recipient}`,
+        title: `📬 Email Opened: ${target} [Recipient: ${recipient}]`,
+        ip,
+        country,
+        city,
+        region,
+        referer: "Email Client",
+        userAgent,
+      });
+    }
   } catch (err) {
     console.error("[pixel] recordClick failed:", err);
   }
