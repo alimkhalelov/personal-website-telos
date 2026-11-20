@@ -13,8 +13,8 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Alim Khalelov — Product Designer, AI Systems",
-  description: "5+ years shipping 0-to-1 developer tools across AI and Web3. Prototyping multi-agent trace workflows, LLM evaluation dashboards, and production interfaces in live code.",
+  title: "Alim Khalelov — AI-Native Product Manager",
+  description: "5+ years shipping 0-to-1 products across AI and Web3. Turning dense multi-agent execution trees, trace spans, and LLM evaluation pipelines into clear B2B products in live code.",
 };
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
@@ -105,7 +105,7 @@ export default async function LaminarPortfolioPage() {
               />
             </h1>
             <p className="text-lg sm:text-xl text-white/60 font-light tracking-tight mt-1">
-              Product Designer, AI Systems
+              AI-Native Product Manager
             </p>
           </div>
 
@@ -161,11 +161,11 @@ export default async function LaminarPortfolioPage() {
 
             {/* Laminar Targeted Resume Button (Rectangular Frosted Glass Pill) */}
             <a
-              href="/2026_Alim_Khalelov_Laminar_Product_Designer_Resume.pdf"
+              href="/2026_Alim_Khalelov_AI_Product_Manager_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Download Laminar Resume"
-              title="Download Laminar Tailored Resume (PDF)"
+              aria-label="Download Resume"
+              title="Resume (PDF)"
               className="group relative h-12 px-6 sm:px-7 rounded-[16px] bg-white/12 hover:bg-white/22 active:bg-white/30 backdrop-blur-2xl border border-white/20 hover:border-white/40 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all duration-200 overflow-hidden !no-underline cursor-pointer"
             >
               <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-[16px]" />
@@ -175,9 +175,9 @@ export default async function LaminarPortfolioPage() {
             </a>
           </div>
 
-          {/* Crisp Bio personalized from tailored resume */}
+          {/* Crisp Bio personalized from tailored PM resume */}
           <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
-            5+ years shipping 0-to-1 developer tools across AI and Web3. Turning dense multi-agent execution trees, trace spans, and LLM evaluation pipelines into clear, fast operator interfaces directly in live code.
+            5+ years shipping 0-to-1 products across AI and Web3. Turning dense multi-agent execution trees, trace spans, and LLM evaluation pipelines into clear, high-trust enterprise products—validated directly in live code.
           </p>
         </section>
 
