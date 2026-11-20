@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Alim Khalelov | AI-Native Product Manager",
-  description: "5+ years shipping 0-to-1 products across AI tools and Web3. Prototyping directly in code to test agent workflows, trace inspection, and LLM evaluation pipelines with real users.",
+  description: "Product builder with 5+ years leading 0-to-1 roadmaps across monetization tools, ad tech, and AI software. Fast-cycle experimentation, rapid prototyping in code, and lean GTM.",
 };
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
@@ -175,9 +175,9 @@ export default async function LaminarPortfolioPage() {
             </a>
           </div>
 
-          {/* Crisp Bio synced 1:1 from tailored PM resume (/no-ai-slop) */}
+          {/* Crisp Bio synced 1:1 from master resume baseline + /no-ai-slop */}
           <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
-            5+ years shipping 0-to-1 products across AI tools and Web3. Instead of writing long specs that sit in docs, I prototype directly in code to test agent workflows, trace inspection, and LLM evaluation pipelines with real users.
+            Product builder with 5+ years of experience leading 0-to-1 roadmaps across monetization tools, ad tech, and AI software. I focus on fast-cycle experimentation, rapid prototyping in code, and lean go-to-market, validating ideas with real users before heavy execution.
           </p>
         </section>
 
