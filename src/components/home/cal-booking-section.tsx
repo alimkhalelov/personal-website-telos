@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ArrowUpRight } from "lucide-react";
+import { DockingHeader } from "@/components/home/docking-header";
 
 declare global {
   interface Window {
@@ -14,7 +14,8 @@ const CAL_NAMESPACE = "30min";
 
 /**
  * Native inline Cal.com booking widget anchored at the bottom of the page.
- * Styled to sit cleanly inside the frosted One UI glass layout without heavy card clutter.
+ * Uses DockingHeader (matching Projects) and transparent glass CSS variables
+ * so the calendar sits directly inside a single frosted One UI glass surface.
  */
 export function CalBookingSection() {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -23,7 +24,6 @@ export function CalBookingSection() {
     const container = containerRef.current;
     if (!container) return;
 
-    // Clear previous embed nodes on client-side re-navigation
     container.innerHTML = "";
 
     const initCal = () => {
@@ -83,7 +83,21 @@ export function CalBookingSection() {
           theme: "dark",
           cssVarsPerTheme: {
             dark: {
-              "cal-brand": "#38bdf8",
+              "cal-bg": "transparent",
+              "cal-bg-emphasis": "rgba(255, 255, 255, 0.14)",
+              "cal-bg-subtle": "rgba(255, 255, 255, 0.08)",
+              "cal-bg-muted": "rgba(255, 255, 255, 0.06)",
+              "cal-border": "rgba(255, 255, 255, 0.16)",
+              "cal-border-booker": "rgba(255, 255, 255, 0.14)",
+              "cal-border-subtle": "rgba(255, 255, 255, 0.10)",
+              "cal-border-emphasis": "rgba(255, 255, 255, 0.28)",
+              "cal-brand": "#ffffff",
+              "cal-brand-emphasis": "rgba(255, 255, 255, 0.92)",
+              "cal-brand-text": "#0f172a",
+              "cal-text": "#ffffff",
+              "cal-text-emphasis": "#ffffff",
+              "cal-text-subtle": "rgba(255, 255, 255, 0.72)",
+              "cal-text-muted": "rgba(255, 255, 255, 0.55)",
             },
           },
           hideEventTypeDetails: false,
@@ -97,28 +111,28 @@ export function CalBookingSection() {
 
   return (
     <section id="book-call" className="flex flex-col gap-6 pt-2">
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="text-3xl font-bold tracking-tight text-white">
-          Book a Call
-        </h2>
-        <a
-          href={`https://cal.com/${CAL_LINK}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm font-medium text-white/60 hover:text-white transition-colors !no-underline"
-          style={{ fontFamily: "'Google Sans', sans-serif" }}
-        >
-          <span>Open in Cal.com</span>
-          <ArrowUpRight className="w-3.5 h-3.5" />
-        </a>
-      </div>
+      <DockingHeader
+        sectionId="book-call"
+        title="Book a Call"
+        rightAction={
+          <a
+            href={`https://cal.com/${CAL_LINK}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-medium text-white/60 hover:text-white transition-colors !no-underline"
+            style={{ fontFamily: "'Google Sans', sans-serif" }}
+          >
+            Open in Cal.com →
+          </a>
+        }
+      />
 
-      <div className="w-full rounded-[24px] border border-white/15 bg-black/25 backdrop-blur-2xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.2)]">
+      <div className="w-full rounded-[24px] border border-white/18 bg-white/10 backdrop-blur-2xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.18)]">
         <div
           ref={containerRef}
           id="my-cal-inline-30min"
-          className="w-full min-h-[560px]"
-          style={{ width: "100%", height: "100%", overflow: "auto" }}
+          className="w-full"
+          style={{ width: "100%", overflow: "hidden" }}
         />
       </div>
     </section>
