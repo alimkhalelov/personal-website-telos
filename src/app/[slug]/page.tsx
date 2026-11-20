@@ -119,7 +119,7 @@ export default async function DynamicSlugPage({
   const teardownData = await getTeardownData(slug);
   if (teardownData) {
     const headersList = await headers();
-    recordClick({
+    await recordClick({
       slug,
       targetUrl: `https://alim.dest.page/${slug}`,
       title: `Teardown: ${teardownData.company_name}`,
@@ -132,7 +132,9 @@ export default async function DynamicSlugPage({
       region: headersList.get("x-vercel-ip-country-region") || "",
       referer: headersList.get("referer") || "direct",
       userAgent: headersList.get("user-agent") || "",
-    }).catch(() => {});
+    }).catch((err) => {
+      console.error("[teardown] recordClick failed:", err);
+    });
 
     return (
       <main className="min-h-screen bg-[#111113] text-[#FAFAFA] antialiased">

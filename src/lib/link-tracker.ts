@@ -404,8 +404,8 @@ async function sendTelegramPush(event: ClickEvent, stats: { total: number; uniqu
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000);
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const timeoutId = setTimeout(() => controller.abort(), 4500);
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -417,7 +417,13 @@ async function sendTelegramPush(event: ClickEvent, stats: { total: number; uniqu
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
-  } catch (e) {}
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      console.error("[telegram] sendMessage failed:", res.status, body);
+    }
+  } catch (e) {
+    console.error("[telegram] sendMessage exception:", e);
+  }
 }
 
 export function getAnalyticsSummary() {

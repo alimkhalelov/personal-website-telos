@@ -1,13 +1,16 @@
-import Link from "next/link";
 import { headers } from "next/headers";
 import { getSortedArticles } from "@/lib/mdx";
-import { ArrowUpRight, Mail, Phone, FileText, Sparkles, Terminal } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 import { HomePostsList } from "@/components/home/home-posts-list";
 import { LeftRailSectionIndicator } from "@/components/home/left-rail-section-indicator";
+import { AdminNetworkSection } from "@/components/home/admin-network-section";
+import { CalBookingSection } from "@/components/home/cal-booking-section";
 import { recordClick } from "@/lib/link-tracker";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Alim Khalelov — Systems Architect & Product Designer // Laminar",
@@ -60,7 +63,7 @@ export default async function LaminarPortfolioPage() {
     const referer = headersList.get("referer") || "Direct Email / Outreach";
     const userAgent = headersList.get("user-agent") || "";
 
-    recordClick({
+    await recordClick({
       slug: "laminar",
       targetUrl: "https://alim.dest.page/laminar",
       title: "Laminar Targeted Portfolio (Robert Kim / Din Mailibay)",
@@ -70,7 +73,9 @@ export default async function LaminarPortfolioPage() {
       region,
       referer,
       userAgent,
-    }).catch(() => {});
+    }).catch((err) => {
+      console.error("[laminar] recordClick failed:", err);
+    });
   } catch (e) {}
 
   return (
@@ -182,39 +187,11 @@ export default async function LaminarPortfolioPage() {
         {/* Posts Section */}
         <HomePostsList initialArticles={articles} />
 
-        {/* Network & Index */}
-        <section id="network" className="flex flex-col gap-6 pt-4">
-          <h2 className="text-lg font-medium text-white/70 uppercase tracking-wider text-center sm:text-left">
-            Network &amp; Index
-          </h2>
-          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-start">
-            <Link
-              href="/wiki"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
-            >
-              Knowledge Wiki
-              <ArrowUpRight className="w-3 h-3 text-white/70" />
-            </Link>
-            <a
-              href="https://github.com/alimkhalelov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
-            >
-              GitHub
-              <ArrowUpRight className="w-3 h-3 text-white/70" />
-            </a>
-            <a
-              href="https://calendar.app.google/oAzWxXbhNbwFA7Mg6"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-sky-400/30 hover:border-sky-400/60 bg-sky-500/10 hover:bg-sky-500/20 backdrop-blur-md transition-all text-sm font-medium !no-underline text-sky-300 shadow-xs"
-            >
-              Book 15m Sync
-              <ArrowUpRight className="w-3 h-3 text-sky-400" />
-            </a>
-          </div>
-        </section>
+        {/* Admin-only Network & Index */}
+        <AdminNetworkSection />
+
+        {/* Native Cal.com Booking */}
+        <CalBookingSection />
       </main>
     </>
   );

@@ -14,6 +14,7 @@ const SECTIONS: SectionConfig[] = [
   { id: "resume", label: "Experience" },
   { id: "posts", label: "Posts" },
   { id: "network", label: "Network" },
+  { id: "book-call", label: "Schedule" },
 ];
 
 export function LeftRailSectionIndicator() {
@@ -86,10 +87,13 @@ export function LeftRailSectionIndicator() {
       const resumeEl = document.getElementById("resume");
       const postsEl = document.getElementById("posts");
       const networkEl = document.getElementById("network");
+      const bookEl = document.getElementById("book-call");
 
       const threshold = 260;
 
-      if (networkEl && networkEl.getBoundingClientRect().top <= threshold) {
+      if (bookEl && bookEl.getBoundingClientRect().top <= threshold) {
+        setActiveId("book-call");
+      } else if (networkEl && networkEl.getBoundingClientRect().top <= threshold) {
         setActiveId("network");
       } else if (postsEl && postsEl.getBoundingClientRect().top <= threshold) {
         setActiveId("posts");

@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { getSortedArticles } from "@/lib/mdx";
-import { ArrowUpRight, Mail, Send, Phone, FileText } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { FeaturedProjectsStrip } from "@/components/projects/featured-projects-strip";
 import { OneUiWallpaper } from "@/components/one-ui-wallpaper";
 import { HomePostsList } from "@/components/home/home-posts-list";
 import { LeftRailSectionIndicator } from "@/components/home/left-rail-section-indicator";
+import { AdminNetworkSection } from "@/components/home/admin-network-section";
+import { CalBookingSection } from "@/components/home/cal-booking-section";
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -155,48 +156,11 @@ export default function Home() {
         {/* Posts Section */}
         <HomePostsList initialArticles={articles} />
 
-        {/* Terminal Links (No divider lines) */}
-        <section id="network" className="flex flex-col gap-6 pt-4">
-          <h2 className="text-lg font-medium text-white/70 uppercase tracking-wider text-center sm:text-left">
-            Network & Index
-          </h2>
-          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center sm:justify-start">
-            <Link
-              href="/wiki"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
-            >
-              Knowledge Wiki
-              <ArrowUpRight className="w-3 h-3 text-white/70" />
-            </Link>
-            <a
-              href="https://t.me/AlimLLC"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
-            >
-              Telegram
-              <ArrowUpRight className="w-3 h-3 text-white/70" />
-            </a>
-            <a
-              href="https://github.com/alimzhankhalelov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
-            >
-              GitHub
-              <ArrowUpRight className="w-3 h-3 text-white/70" />
-            </a>
-            <a
-              href="https://linkedin.com/in/alimzhan-khalelov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 hover:border-white/60 bg-white/10 hover:bg-white/15 backdrop-blur-md transition-all text-sm font-medium !no-underline text-white shadow-xs"
-            >
-              LinkedIn
-              <ArrowUpRight className="w-3 h-3 text-white/70" />
-            </a>
-          </div>
-        </section>
+        {/* Admin-only Network & Index */}
+        <AdminNetworkSection />
+
+        {/* Native Cal.com Booking */}
+        <CalBookingSection />
       </main>
     </>
   );
