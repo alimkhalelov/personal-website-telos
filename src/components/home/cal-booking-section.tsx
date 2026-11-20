@@ -84,20 +84,20 @@ export function CalBookingSection() {
           cssVarsPerTheme: {
             dark: {
               "cal-bg": "transparent",
-              "cal-bg-emphasis": "rgba(255, 255, 255, 0.16)",
-              "cal-bg-subtle": "rgba(255, 255, 255, 0.08)",
-              "cal-bg-muted": "rgba(255, 255, 255, 0.10)",
-              "cal-border": "rgba(255, 255, 255, 0.18)",
-              "cal-border-booker": "rgba(255, 255, 255, 0.16)",
-              "cal-border-subtle": "rgba(255, 255, 255, 0.14)",
-              "cal-border-emphasis": "rgba(255, 255, 255, 0.34)",
+              "cal-bg-emphasis": "rgba(255, 255, 255, 0.14)",
+              "cal-bg-subtle": "rgba(255, 255, 255, 0.04)",
+              "cal-bg-muted": "transparent",
+              "cal-border": "rgba(255, 255, 255, 0.16)",
+              "cal-border-booker": "rgba(255, 255, 255, 0.14)",
+              "cal-border-subtle": "rgba(255, 255, 255, 0.12)",
+              "cal-border-emphasis": "rgba(255, 255, 255, 0.32)",
               "cal-brand": "#ffffff",
               "cal-brand-emphasis": "rgba(255, 255, 255, 0.92)",
               "cal-brand-text": "#0f172a",
               "cal-text": "#ffffff",
               "cal-text-emphasis": "#ffffff",
-              "cal-text-subtle": "rgba(255, 255, 255, 0.88)",
-              "cal-text-muted": "rgba(255, 255, 255, 0.72)",
+              "cal-text-subtle": "rgba(255, 255, 255, 0.90)",
+              "cal-text-muted": "rgba(255, 255, 255, 0.74)",
             },
           },
           hideEventTypeDetails: false,
@@ -127,7 +127,7 @@ export function CalBookingSection() {
         }
       />
 
-      <div className="w-full rounded-[24px] border border-white/20 bg-slate-950/30 backdrop-blur-2xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.22)]">
+      <div className="w-full rounded-[24px] border border-white/20 bg-slate-950/38 backdrop-blur-2xl overflow-hidden shadow-[0_8px_32px_0_rgba(0,0,0,0.22)]">
         <div
           ref={containerRef}
           id="my-cal-inline-30min"

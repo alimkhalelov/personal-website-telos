@@ -13,8 +13,8 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Alim Khalelov — Systems Architect & Product Designer // Laminar",
-  description: "Targeted 0→1 Proof of Work for Laminar (YC S24): AI systems, agent observability, and Just-in-Time UX architectures by Alim Khalelov.",
+  title: "Alim Khalelov — Product Designer, AI Systems",
+  description: "5+ years shipping 0-to-1 developer tools across AI and Web3. Prototyping multi-agent trace workflows, LLM evaluation dashboards, and production interfaces in live code.",
 };
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {
@@ -105,7 +105,7 @@ export default async function LaminarPortfolioPage() {
               />
             </h1>
             <p className="text-lg sm:text-xl text-white/60 font-light tracking-tight mt-1">
-              AI-Native Product Manager
+              Product Designer, AI Systems
             </p>
           </div>
 
@@ -175,9 +175,9 @@ export default async function LaminarPortfolioPage() {
             </a>
           </div>
 
-          {/* Crisp Bio */}
+          {/* Crisp Bio personalized from tailored resume */}
           <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
-            5+ years shipping 0-to-1 products across AI &amp; Web3. Building multi-agent systems, LLM evaluation pipelines, and rapid prototyping cycles to validate product-market fit before scaling.
+            5+ years shipping 0-to-1 developer tools across AI and Web3. Turning dense multi-agent execution trees, trace spans, and LLM evaluation pipelines into clear, fast operator interfaces directly in live code.
           </p>
         </section>
 
