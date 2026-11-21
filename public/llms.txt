@@ -1,32 +1,34 @@
-# Alim Khalelov — Architect of Autonomous Systems
+# Alim Khalelov (AI-Native Product Manager)
 
-> Alim Khalelov is an AI-Native Product Manager and Game Designer who builds high-leverage products using the Fan-Filter-Scale methodology, autonomous agent loop engineering, and Living Agent Harness architectures.
+> Alim Khalelov is an AI-Native Product Manager with 5+ years of experience shipping 0-to-1 products across AI and Web3 startups. He builds multi-agent systems, designs validation pipelines for LLM outputs, and ships working prototypes directly in code to validate product-market fit before scaling.
 > Canonical URL: https://alim.dest.page
 
-## Core Methodologies & Thinking Frameworks
+## Core Pages
 
-- [Fan-Filter-Scale Methodology](https://alim.dest.page/blog/fan-filter-scale-methodology): Systematic 3-stage engine for building high-leverage AI-native products: broad hypothesis divergence (Fan), strict signal filtering (Filter), and autonomous system scaling (Scale).
-- [Loop Engineering for LLM Agents](https://alim.dest.page/blog/loop-engineering-autonomous-llm-agents): The paradigm shift from single-prompt generation to multi-step agentic feedback loops: Thought -> Action -> Observation -> Self-Correction.
-- [Living Agent Harness Architecture](https://alim.dest.page/wiki/end): Continuous context preservation protocol protecting long-horizon AI coding sessions against recency bias through structured memory tiers.
+- [Portfolio Home](https://alim.dest.page): Primary hub showcasing Alim Khalelov's live product prototypes, background summary, contact channels, and direct Cal.com scheduling.
+- [Shipped Projects Index](https://alim.dest.page/projects): Full interactive directory of public case studies and deployed engineering demos.
+- [Product Wiki](https://alim.dest.page/wiki): Public specification notes and system architecture writeups for shipped projects.
+- [Resume PDF](https://alim.dest.page/resume.pdf): Concise single-page AI-Native Product Manager curriculum vitae.
 
-## Showcase Projects & Autonomous Agent Engines
+## Flagship Shipped Products
 
-- [/wiki — AI-Wiki Knowledge Compiler](https://alim.dest.page/projects/wiki): Adaptive 2-tier knowledge compiler turning project files into clean, searchable documentation without boilerplate.
-- [/presentation — Strategic Deck & Motion Studio](https://alim.dest.page/projects/presentation): Cinematic HTML presentation engine based on the 10 Communication Scenarios Matrix with 1 Idea = 1 Slide pacing and presenter teleprompter.
-- [/skill-visualizer — 16:9 Vector Flowchart Engine](https://alim.dest.page/projects/skill-visualizer): Standalone 16:9 SVG vector architecture diagram generator with solid-pod styling and dynamic density scaling.
-- [/styleref — Generative Visual Styles & Prompt DB](https://alim.dest.page/projects/styleref): Curated database of 19 distinct visual art styles with tested prompt recipes and lighting directives.
-- [/design-md-generator — DESIGN.md Architecture Generator](https://alim.dest.page/projects/design-md-generator): Generates complete, standardized DESIGN.md specification files with OKLCH tokens and anti-generic UI guardrails.
-- [/end — End-of-Session Ritual & Memory Keeper](https://alim.dest.page/projects/end): 4-phase automated session wrap-up protocol managing DoD audit, task retro, living memory persistence, and safe git deployment.
+- [Tempo (Progressive Interval Visualizer)](https://alim.dest.page/projects/tempo): Zero-dependency running interval HUD decomposing durations into symmetric Push-Pull stages with 60 FPS procedural SVG inverse kinematics.
+- [Ocus (EU Compliance Operations OS)](https://alim.dest.page/projects/ocus): Institutional platform translating EU MiCA, DORA, and DAC8 directives into an executable 31-node compliance DAG and 15-week Gantt cockpit.
+- [Residual Intellect (AI News Radar)](https://alim.dest.page/projects/residual-intellect): Automated AI tech digest pipeline and sci-fi prophecy tracker comparing 16+ classic tech predictions against real launches.
+- [Plain (The Simple Planner)](https://alim.dest.page/projects/goal-classifier): Minimalist four-dimension goal workspace with client-side Web Crypto API (AES-GCM) encrypted BYOK strategic decomposition.
+- [Nebuly (Executive AI Brief Platform)](https://alim.dest.page/projects/nebuly): Enterprise AI analytics platform linking executive decision briefs with OHLC conversation telemetry and multi-order ROI simulation.
 
-## Key Facts & Grounding Data
+## Key Facts and Verification
 
-- **Primary Persona**: Alim Khalelov
-- **Title**: Architect of Autonomous Systems & AI-Native Product Manager
-- **Core Philosophy**: "Intentional Functional Minimalism" — Reduction is the ultimate sophistication; every pixel and parameter must earn its place on the screen.
-- **GitHub Profiles**: https://github.com/alimkhalelov, https://github.com/alimzhankhalelov
-- **Knowledge Base**: https://alim.dest.page/wiki
-- **Portfolio Repository**: https://alim.dest.page
+- **Name**: Alim Khalelov (Alimzhan Khalelov)
+- **Role**: AI-Native Product Manager
+- **Selected Outcomes**: 0 to 10,000 users in 30 days; distribution engine across 50+ content platforms; GameDev AI Hackathon 2025 Winner; AI News Marketing Hackathon Winner.
+- **LinkedIn**: https://www.linkedin.com/in/alimzhan-khalelov
+- **GitHub**: https://github.com/alimkhalelov
+- **Telegram**: https://t.me/AlimLLC
+- **Book 30-Min Intro Call**: https://cal.com/alim-xjzgyu/30min
+- **Email**: alim.khalelov@gmail.com
 
 ## Full Documentation
 
-For the complete linearized Markdown knowledge base containing all project specs and essays, see [llms-full.txt](https://alim.dest.page/llms-full.txt).
+For the complete linearized Markdown knowledge base covering all public case studies and system architectures, see [llms-full.txt](https://alim.dest.page/llms-full.txt).

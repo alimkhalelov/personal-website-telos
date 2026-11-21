@@ -145,7 +145,7 @@ export default function Home() {
           </div>
 
           {/* Crisp Bio (No redundant "Product Manager" repeats, no divider line) */}
-          <p className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
+          <p id="hero-summary" className="text-base sm:text-lg text-white/90 max-w-2xl leading-relaxed font-light pt-1">
             5+ years shipping 0-to-1 products across AI & Web3. Building multi-agent systems, LLM evaluation pipelines, and rapid prototyping cycles to validate product-market fit before scaling.
           </p>
         </section>

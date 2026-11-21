@@ -15,6 +15,10 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Alim Khalelov | AI-Native Product Manager",
   description: "Product builder with 5+ years leading 0-to-1 roadmaps across monetization tools, ad tech, and AI software. Fast-cycle experimentation, rapid prototyping in code, and lean GTM.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 function TelegramIcon({ className = "w-5 h-5" }: { className?: string }) {

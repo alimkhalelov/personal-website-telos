@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin/", "/admin/draft", "/api/"],
+        disallow: ["/admin/", "/admin/draft", "/api/", "/dashboard/", "/laminar"],
       },
       {
         userAgent: [
@@ -23,9 +23,10 @@ export default function robots(): MetadataRoute.Robots {
           "Bingbot",
         ],
         allow: "/",
+        disallow: ["/admin/", "/api/", "/laminar"],
       },
       {
-        userAgent: ["CCBot", "Bytespider"],
+        userAgent: ["CCBot", "Bytespider", "anthropic-ai", "cohere-ai"],
         disallow: ["/"],
       },
     ],
