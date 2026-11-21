@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { recordClick } from "@/lib/link-tracker";
-import { isAdminRequest, isAutomatedBotOrProbe, verifyOwnerToken, OWNER_COOKIE } from "@/lib/admin-auth";
+import {
+  isAdminRequest,
+  isAutomatedBotOrProbe,
+  verifyOwnerToken,
+  OWNER_COOKIE,
+  ALLOWED_MAIL_PROXY_RE,
+} from "@/lib/admin-auth";
 
 const TRANSPARENT_GIF_BUFFER = Buffer.from(
   "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
@@ -14,7 +20,6 @@ const VALID_OUTREACH_TARGETS = new Set([
   "vendo",
   "rosebud",
   "cygrid",
-  "general",
   "test-self",
 ]);
 
@@ -25,8 +30,8 @@ function sanitizePixelParam(value: string | null, fallback: string): string {
 
 /**
  * Shared 1x1 transparent GIF handler for email open alerts.
- * Strictly enforces campaign allowlist, filters bots/probes, verifies owner cookie,
- * and completely drops synthetic fuzzer payloads (e.g. i45863probe, ops@example.com).
+ * Strictly enforces campaign allowlist, verified mail proxy headers, filters bots/probes,
+ * and completely drops synthetic fuzzer payloads (e.g. i45863probe, requestcatcher.com).
  */
 export async function serveTrackingPixel(req: NextRequest): Promise<NextResponse> {
   try {
@@ -35,7 +40,7 @@ export async function serveTrackingPixel(req: NextRequest): Promise<NextResponse
     const rawRecipient = searchParams.get("r") || searchParams.get("to");
     const userAgent = req.headers.get("user-agent") || "";
 
-    // 1. Instant drop for automated crawlers and fuzzing probes
+    // 1. Instant drop for automated crawlers, security fuzzers, and probe domains
     if (isAutomatedBotOrProbe(userAgent, rawTarget || "", rawRecipient || "", "Email Client")) {
       return gifResponse();
     }
@@ -49,8 +54,16 @@ export async function serveTrackingPixel(req: NextRequest): Promise<NextResponse
       return gifResponse();
     }
 
-    // 3. Drop synthetic probe domains (e.g. ops@example.com, test@test.com)
-    if (/@(example|test|domain|localhost)\./i.test(recipient)) {
+    // 3. Drop synthetic probe domains (e.g. ops@example.com, requestcatcher.com)
+    if (/@(example|test|domain|localhost)\./i.test(recipient) || recipient.includes("requestcatcher")) {
+      return gifResponse();
+    }
+
+    // 4. Strict Mail Client / Mail Proxy Verification:
+    // Real email opens in webmail/mobile clients (Gmail, Apple Mail, Yahoo, Outlook) ALWAYS arrive via their verified caching image proxies.
+    // Bare desktop browsers requesting the 1x1 GIF directly from datacenter/VPN IPs (e.g. PacketHub, AWS, cloud hosts) are web crawlers/fuzzers and are dropped.
+    const isMailProxy = ALLOWED_MAIL_PROXY_RE.test(userAgent);
+    if (!isMailProxy && !force) {
       return gifResponse();
     }
     const insertedAt = Number(searchParams.get("v") || "0");

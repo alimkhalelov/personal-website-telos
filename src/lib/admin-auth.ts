@@ -111,11 +111,11 @@ export function escapeTelegramHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-const ALLOWED_MAIL_PROXY_RE = /(googleimageproxy|yahoomailproxy|thunderbird|outlook|apple)/i;
+export const ALLOWED_MAIL_PROXY_RE = /(googleimageproxy|yahoomailproxy|thunderbird|outlook|apple)/i;
 const BOT_UA_RE =
   /(curl\/|wget\/|python-requests|python-urllib|httpx|aiohttp|go-http-client|okhttp|java\/|axios\/|node-fetch|undici|headlesschrome|playwright|puppeteer|selenium|phantomjs|slurp|ahrefsbot|semrushbot|mj12bot|bytespider|ccbot|bingbot|googlebot|gptbot|claudebot|perplexitybot|vercel|uptime|pingdom|nmap|sqlmap|nikto|nuclei|ffuf|gobuster|\bbot\b|\bcrawler\b|\bspider\b|\bscanner\b)/i;
 const PROBE_PAYLOAD_RE =
-  /(<script|<svg|javascript:|data:text|alert\(|onerror=|onload=|\bi\d+|\bprobe\b|probe|openredirect|ownerprobe|legacyprobe|ownerforce|\bxss\b|\bfuzz\b|\bcanary\b|\bssrf\b|@example\.(com|org|net)|@test\.com|localhost)/i;
+  /(<script|<svg|javascript:|data:text|alert\(|onerror=|onload=|\bi\d+|\bprobe\b|probe|openredirect|ownerprobe|legacyprobe|ownerforce|\bxss\b|\bfuzz\b|\bcanary\b|\bssrf\b|@example\.(com|org|net)|@test\.com|localhost|requestcatcher|burpcollaborator|interactsh|oastify|webhook\.site|pipedream|ngrok)/i;
 
 /** Filter automated crawlers, CLI tools, and security probes while allowing real browsers and mail image proxies. */
 export function isAutomatedBotOrProbe(
