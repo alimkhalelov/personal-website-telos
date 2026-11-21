@@ -7,6 +7,17 @@ const TRANSPARENT_GIF_BUFFER = Buffer.from(
   "base64"
 );
 
+const VALID_OUTREACH_TARGETS = new Set([
+  "laminar",
+  "nebuly",
+  "magnitude",
+  "vendo",
+  "rosebud",
+  "cygrid",
+  "general",
+  "test-self",
+]);
+
 function sanitizePixelParam(value: string | null, fallback: string): string {
   const cleaned = (value || "").trim().replace(/[^a-zA-Z0-9._@-]/g, "").slice(0, 64);
   return cleaned || fallback;
@@ -14,7 +25,8 @@ function sanitizePixelParam(value: string | null, fallback: string): string {
 
 /**
  * Shared 1x1 transparent GIF handler for email open alerts.
- * Filters bots/probes, verifies owner cookie cryptographically, and restricts force=1 to admin requests.
+ * Strictly enforces campaign allowlist, filters bots/probes, verifies owner cookie,
+ * and completely drops synthetic fuzzer payloads (e.g. i45863probe, ops@example.com).
  */
 export async function serveTrackingPixel(req: NextRequest): Promise<NextResponse> {
   try {
@@ -23,14 +35,25 @@ export async function serveTrackingPixel(req: NextRequest): Promise<NextResponse
     const rawRecipient = searchParams.get("r") || searchParams.get("to");
     const userAgent = req.headers.get("user-agent") || "";
 
+    // 1. Instant drop for automated crawlers and fuzzing probes
     if (isAutomatedBotOrProbe(userAgent, rawTarget || "", rawRecipient || "", "Email Client")) {
       return gifResponse();
     }
 
-    const target = sanitizePixelParam(rawTarget, "laminar");
+    const target = sanitizePixelParam(rawTarget, "laminar").toLowerCase();
     const recipient = sanitizePixelParam(rawRecipient, "founder");
-    const insertedAt = Number(searchParams.get("v") || "0");
+
+    // 2. Strict Campaign Allowlist: Bots cannot invent arbitrary target names
     const force = searchParams.get("force") === "1" && isAdminRequest(req);
+    if (!VALID_OUTREACH_TARGETS.has(target) && !force) {
+      return gifResponse();
+    }
+
+    // 3. Drop synthetic probe domains (e.g. ops@example.com, test@test.com)
+    if (/@(example|test|domain|localhost)\./i.test(recipient)) {
+      return gifResponse();
+    }
+    const insertedAt = Number(searchParams.get("v") || "0");
     const isOwner = verifyOwnerToken(req.cookies.get(OWNER_COOKIE)?.value);
 
     // Ignore owner cookie AND Gmail Compose draft preview render (first 6s after insert)
