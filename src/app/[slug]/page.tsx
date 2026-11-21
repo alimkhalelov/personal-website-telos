@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import TeardownHero from "@/components/startup-pitch/TeardownHero";
 import PoWClusterSelect from "@/components/startup-pitch/PoWClusterSelect";
 import { getTrackedLink, recordClick } from "@/lib/link-tracker";
+import { isSafeRedirectUrl, OWNER_COOKIE, verifyOwnerToken } from "@/lib/admin-auth";
 
 export const dynamicParams = true;
 
@@ -86,7 +87,9 @@ export default async function DynamicSlugPage({
 
   // 1. Check if this slug is a custom tracked link (e.g. /nebuly, /tempo, /ocus, /cv)
   const customLink = getTrackedLink(slug);
-  if (customLink) {
+  if (customLink && isSafeRedirectUrl(customLink.targetUrl)) {
+    const cookieStore = await cookies();
+    const isOwner = verifyOwnerToken(cookieStore.get(OWNER_COOKIE)?.value);
     const headersList = await headers();
     const ip =
       headersList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -98,20 +101,20 @@ export default async function DynamicSlugPage({
     const referer = headersList.get("referer") || "direct";
     const userAgent = headersList.get("user-agent") || "";
 
-    // Record click analytics asynchronously
-    await recordClick({
-      slug,
-      targetUrl: customLink.targetUrl,
-      title: customLink.title,
-      ip,
-      country,
-      city,
-      region,
-      referer,
-      userAgent,
-    });
+    if (!isOwner) {
+      await recordClick({
+        slug,
+        targetUrl: customLink.targetUrl,
+        title: customLink.title,
+        ip,
+        country,
+        city,
+        region,
+        referer,
+        userAgent,
+      });
+    }
 
-    // Instant temporary 307 redirect
     redirect(customLink.targetUrl);
   }
 
@@ -119,7 +122,7 @@ export default async function DynamicSlugPage({
   const teardownData = await getTeardownData(slug);
   if (teardownData) {
     const cookieStore = await cookies();
-    const isOwner = cookieStore.get("alim_owner")?.value === "1";
+    const isOwner = verifyOwnerToken(cookieStore.get(OWNER_COOKIE)?.value);
 
     if (!isOwner) {
       const headersList = await headers();

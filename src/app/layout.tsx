@@ -8,6 +8,7 @@ import { KebabNav } from "@/components/kebab-nav";
 import { ScrollController } from "@/components/scroll-controller";
 import { Analytics } from "@vercel/analytics/next";
 import { JsonLd, getPersonAndWebsiteGraph } from "@/components/seo/json-ld";
+import { WebMcpProvider } from "@/components/seo/webmcp-provider";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -120,6 +121,7 @@ export default function RootLayout({
           <AuthProvider>
             <KebabNav />
             <GoogleSignInModal />
+            <WebMcpProvider />
             {children}
           </AuthProvider>
           <Analytics />

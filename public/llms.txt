@@ -32,3 +32,9 @@
 ## Full Documentation
 
 For the complete linearized Markdown knowledge base covering all public case studies and system architectures, see [llms-full.txt](https://alim.dest.page/llms-full.txt).
+
+## Agent Tools (Read-Only WebMCP and MCP)
+
+- **HTTP MCP JSON-RPC Endpoint**: https://alim.dest.page/api/mcp
+- **MCP Discovery Manifest**: https://alim.dest.page/.well-known/mcp.json
+- **Available Tools**: `get_profile`, `list_projects`, `get_project_details`, `get_contact_and_booking` (browser WebMCP via `navigator.modelContext` and HTTP JSON-RPC 2.0, strictly read-only).

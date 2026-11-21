@@ -1,5 +1,10 @@
 import fs from "fs";
 import path from "path";
+import {
+  escapeTelegramHtml,
+  isAutomatedBotOrProbe,
+  isSafeRedirectUrl,
+} from "@/lib/admin-auth";
 
 export interface ClickEvent {
   id: string;
@@ -266,19 +271,28 @@ export function getCountryFlag(countryCode: string): string {
 export function getTrackedLink(slug: string): CustomLink | null {
   const normalized = slug.trim().toLowerCase();
   const data = loadAnalyticsData();
-  return data.links[normalized] || null;
+  const link = data.links[normalized] || null;
+  if (!link || !isSafeRedirectUrl(link.targetUrl)) {
+    return null;
+  }
+  return link;
 }
 
 export function registerCustomLink(link: { slug: string; targetUrl: string; title: string; description?: string }): CustomLink {
+  const targetUrl = link.targetUrl.trim();
+  if (!isSafeRedirectUrl(targetUrl)) {
+    throw new Error("Unsafe targetUrl: only http(s) URLs or clean relative paths are permitted.");
+  }
+
   const data = loadAnalyticsData();
   const normalizedSlug = link.slug.trim().toLowerCase().replace(/^\/+/, "");
 
   const existing = data.links[normalizedSlug];
   const newLink: CustomLink = {
     slug: normalizedSlug,
-    targetUrl: link.targetUrl.trim(),
-    title: link.title.trim() || normalizedSlug,
-    description: link.description?.trim(),
+    targetUrl,
+    title: link.title.trim().slice(0, 120) || normalizedSlug,
+    description: link.description?.trim().slice(0, 240),
     createdAt: existing?.createdAt || new Date().toISOString(),
     totalClicks: existing?.totalClicks || 0,
     uniqueVisitors: existing?.uniqueVisitors || 0,
@@ -301,8 +315,12 @@ export async function recordClick(params: {
   referer: string;
   userAgent: string;
 }): Promise<void> {
+  if (isAutomatedBotOrProbe(params.userAgent, params.slug, params.title, params.referer)) {
+    return;
+  }
+
   const data = loadAnalyticsData();
-  const slug = params.slug.trim().toLowerCase();
+  const slug = params.slug.trim().toLowerCase().slice(0, 80);
   const { device, os, browser } = parseUserAgent(params.userAgent);
 
   const event: ClickEvent = {
@@ -374,16 +392,21 @@ async function sendTelegramPush(event: ClickEvent, stats: { total: number; uniqu
 
   const isEmailOpen = event.slug.startsWith("email-open-");
   const timeStr = new Date().toLocaleString("ru-RU", { timeZone: "Asia/Almaty" });
+  const safeTitle = escapeTelegramHtml(event.title);
+  const safeLocation = escapeTelegramHtml(location);
+  const safeSlug = escapeTelegramHtml(event.slug);
+  const safeIp = escapeTelegramHtml(event.ip);
+  const safeClient = escapeTelegramHtml(`${event.browser} · ${event.os} · ${event.device}`);
 
   let text = "";
   if (isEmailOpen) {
-    const targetName = event.slug.replace("email-open-", "").toUpperCase();
+    const targetName = escapeTelegramHtml(event.slug.replace("email-open-", "").toUpperCase());
     text =
       `📬 <b>ПИСЬМО ОТКРЫТО! (${targetName})</b>\n\n` +
-      `🎯 <b>Событие:</b> ${event.title}\n` +
-      `📍 <b>Гео:</b> ${location}\n` +
-      `💻 <b>Клиент / Прокси:</b> ${event.browser} · ${event.os} · ${event.device}\n` +
-      `🌐 <b>IP:</b> <code>${event.ip}</code>\n` +
+      `🎯 <b>Событие:</b> ${safeTitle}\n` +
+      `📍 <b>Гео:</b> ${safeLocation}\n` +
+      `💻 <b>Клиент / Прокси:</b> ${safeClient}\n` +
+      `🌐 <b>IP:</b> <code>${safeIp}</code>\n` +
       `📊 <b>Всего открытий:</b> ${stats.total}\n` +
       `⏱️ <b>Время (Алматы):</b> ${timeStr}`;
   } else {
@@ -391,13 +414,17 @@ async function sendTelegramPush(event: ClickEvent, stats: { total: number; uniqu
       event.referer === "direct" || !event.referer
         ? "Прямой переход"
         : event.referer.replace(/^https?:\/\/(www\.)?/, "");
+    const safeReferer = escapeTelegramHtml(cleanReferer);
+    const targetLabel = isSafeRedirectUrl(event.targetUrl)
+      ? `<a href="${escapeTelegramHtml(event.targetUrl)}">${safeTitle}</a>`
+      : safeTitle;
 
     text =
-      `🔔 <b>Клик по кастомной ссылке:</b> <code>/${event.slug}</code>\n\n` +
-      `📍 <b>Откуда:</b> ${location}\n` +
-      `💻 <b>Клиент:</b> ${event.device} · ${event.os} · ${event.browser}\n` +
-      `🔗 <b>Источник:</b> <code>${cleanReferer}</code>\n` +
-      `🎯 <b>Цель:</b> <a href="${event.targetUrl}">${event.title}</a>\n` +
+      `🔔 <b>Клик по кастомной ссылке:</b> <code>/${safeSlug}</code>\n\n` +
+      `📍 <b>Откуда:</b> ${safeLocation}\n` +
+      `💻 <b>Клиент:</b> ${escapeTelegramHtml(`${event.device} · ${event.os} · ${event.browser}`)}\n` +
+      `🔗 <b>Источник:</b> <code>${safeReferer}</code>\n` +
+      `🎯 <b>Цель:</b> ${targetLabel}\n` +
       `📊 <b>Кликов:</b> ${stats.total} (уникальных: ${stats.unique})\n` +
       `⏱️ <b>Время:</b> ${timeStr}`;
   }

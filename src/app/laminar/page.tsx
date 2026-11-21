@@ -8,6 +8,7 @@ import { LeftRailSectionIndicator } from "@/components/home/left-rail-section-in
 import { AdminNetworkSection } from "@/components/home/admin-network-section";
 import { CalBookingSection } from "@/components/home/cal-booking-section";
 import { recordClick } from "@/lib/link-tracker";
+import { OWNER_COOKIE, verifyOwnerToken } from "@/lib/admin-auth";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -54,10 +55,10 @@ function LinkedinIcon({ className = "w-5 h-5" }: { className?: string }) {
 export default async function LaminarPortfolioPage() {
   const articles = getSortedArticles();
 
-  // Record visit analytics for outreach tracking (skip if owner cookie is set)
+  // Record visit analytics for outreach tracking (skip if signed owner cookie is set)
   try {
     const cookieStore = await cookies();
-    const isOwner = cookieStore.get("alim_owner")?.value === "1";
+    const isOwner = verifyOwnerToken(cookieStore.get(OWNER_COOKIE)?.value);
 
     if (!isOwner) {
       const headersList = await headers();

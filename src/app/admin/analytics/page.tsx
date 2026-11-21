@@ -1,11 +1,50 @@
+import { cookies } from "next/headers";
 import { getAnalyticsSummary } from "@/lib/link-tracker";
+import { OWNER_COOKIE, verifyOwnerToken } from "@/lib/admin-auth";
 import AnalyticsClient from "./AnalyticsClient";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default function AnalyticsDashboardPage() {
+export default async function AnalyticsDashboardPage() {
+  const cookieStore = await cookies();
+  const isOwner = verifyOwnerToken(cookieStore.get(OWNER_COOKIE)?.value);
+
+  if (!isOwner) {
+    return (
+      <div className="min-h-screen bg-background text-foreground font-sans flex items-center justify-center p-6">
+        <form
+          method="POST"
+          action="/api/owner"
+          className="w-full max-w-sm rounded-2xl border border-white/15 bg-card p-6 flex flex-col gap-4"
+        >
+          <div className="flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground">
+            <Lock className="w-4 h-4" />
+            <span>Protected Analytics</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Enter your admin passphrase to inspect links, click logs, and visitor stats.
+          </p>
+          <input type="hidden" name="next" value="/admin/analytics" />
+          <input
+            type="password"
+            name="key"
+            placeholder="Admin passphrase"
+            required
+            className="w-full px-3.5 py-2 rounded-lg border border-white/15 bg-background text-sm focus:outline-none focus:border-primary"
+          />
+          <button
+            type="submit"
+            className="w-full py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium cursor-pointer"
+          >
+            Unlock Analytics
+          </button>
+        </form>
+      </div>
+    );
+  }
+
   const initialData = getAnalyticsSummary();
 
   return (
@@ -27,7 +66,7 @@ export default function AnalyticsDashboardPage() {
               Demiurge.OS / Analytics
             </h1>
             <p className="text-muted-foreground text-sm tracking-widest uppercase">
-              Custom Links Telemetry & Real-Time Visitor Stream
+              Custom Links Telemetry &amp; Real-Time Visitor Stream
             </p>
           </div>
 
@@ -36,13 +75,13 @@ export default function AnalyticsDashboardPage() {
               href="/admin"
               className="px-3.5 py-1.5 rounded-lg text-xs font-mono bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 transition-colors"
             >
-              Content & Articles
+              Content &amp; Articles
             </Link>
             <Link
               href="/admin/analytics"
               className="px-3.5 py-1.5 rounded-lg text-xs font-mono bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 transition-colors"
             >
-              📊 Links & Analytics
+              Links &amp; Analytics
             </Link>
             <Link
               href="/admin/draft"

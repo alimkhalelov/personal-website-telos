@@ -1,0 +1,19 @@
+{
+  "name": "alim-khalelov-portfolio",
+  "description": "Read-only WebMCP and HTTP MCP directory for Alim Khalelov (AI-Native Product Manager) public profile, flagship shipped projects, resume PDF, and Cal.com scheduling.",
+  "protocol": "mcp",
+  "version": "1.0.0",
+  "readOnly": true,
+  "endpoint": "https://alim.dest.page/api/mcp",
+  "discovery": {
+    "llmsTxt": "https://alim.dest.page/llms.txt",
+    "llmsFullTxt": "https://alim.dest.page/llms-full.txt",
+    "sitemap": "https://alim.dest.page/sitemap.xml"
+  },
+  "tools": [
+    "get_profile",
+    "list_projects",
+    "get_project_details",
+    "get_contact_and_booking"
+  ]
+}
